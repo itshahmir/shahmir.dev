@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shahmir Khan - Founder & Developer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.7;
+            color: #1e1e1e;
+            background: #fdfcf8;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 243, 176, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 236, 139, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 40% 60%, rgba(252, 248, 227, 0.4) 0%, transparent 50%);
+            background-size: 800px 600px, 600px 400px, 1000px 800px;
+            opacity: 0.8;
+            z-index: -1;
+            animation: grain 25s linear infinite;
+        }
+        
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-2%, -2%) rotate(1deg); }
+            50% { transform: translate(2%, -1%) rotate(-1deg); }
+            75% { transform: translate(-1%, 2%) rotate(1deg); }
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+        
+        .site-header {
+            margin-bottom: 60px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e8e5d8;
+        }
+        
+        .site-title {
+            font-size: 2.8rem;
+            font-weight: 400;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            letter-spacing: -0.02em;
+        }
+        
+        .site-tagline {
+            font-size: 1.1rem;
+            color: #5a6c7d;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #5a6c7d;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border: 1px solid #e8e5d8;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .social-links a:hover {
+            color: #0073aa;
+            border-color: #0073aa;
+            background: rgba(0, 115, 170, 0.05);
+        }
+        
+        .social-icon {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        
+        .wp-admin-bar {
+            background: #23282d;
+            color: #ffffff;
+            padding: 8px 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 13px;
+            margin: -60px -40px 40px -40px;
+            border-bottom: 1px solid #32373c;
+        }
+        
+        .wp-admin-bar a {
+            color: #00a0d2;
+            text-decoration: none;
+        }
+        
+        .wp-admin-bar a:hover {
+            color: #00b9eb;
+        }
+        
+        .post {
+            margin-bottom: 50px;
+        }
+        
+        .post-title {
+            font-size: 2rem;
+            font-weight: 400;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+        
+        .post-meta {
+            font-size: 0.9rem;
+            color: #7a8ea1;
+            margin-bottom: 25px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .post-content {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #2c3e50;
+        }
+        
+        .post-content p {
+            margin-bottom: 20px;
+        }
+        
+        .post-content a {
+            color: #0073aa;
+            text-decoration: underline;
+            text-underline-offset: 3px;
+            text-decoration-thickness: 1px;
+        }
+        
+        .post-content a:hover {
+            color: #005177;
+            text-decoration-thickness: 2px;
+        }
+        
+        .stats {
+            background: rgba(255, 248, 220, 0.6);
+            padding: 25px;
+            margin: 30px 0;
+            border-left: 4px solid #0073aa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .stats-list {
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: left;
+        }
+        
+        .stat-number {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #2c3e50;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 0.85rem;
+            color: #7a8ea1;
+            margin-top: 4px;
+        }
+        
+        .companies-list {
+            margin: 30px 0;
+        }
+        
+        .company-item {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f0ede3;
+        }
+        
+        .company-item:last-child {
+            border-bottom: none;
+        }
+        
+        .company-name {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+        
+        .company-role {
+            color: #0073aa;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .company-desc {
+            color: #5a6c7d;
+            font-size: 1rem;
+        }
+        
+        .current-marker {
+            background: #0073aa;
+            color: #ffffff;
+            padding: 2px 8px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            margin-left: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .story-section {
+            background: rgba(250, 247, 235, 0.8);
+            padding: 30px;
+            margin: 40px 0;
+            border-left: 4px solid #d4af37;
+            font-style: italic;
+        }
+        
+        .contact-info {
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #e8e5d8;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        .wp-footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #e8e5d8;
+            font-size: 0.85rem;
+            color: #7a8ea1;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 40px 20px;
+            }
+            
+            .wp-admin-bar {
+                margin: -40px -20px 30px -20px;
+            }
+            
+            .site-title {
+                font-size: 2.2rem;
+            }
+            
+            .post-title {
+                font-size: 1.6rem;
+            }
+            
+            .stats-list {
+                gap: 25px;
+            }
+            
+            .story-section, .stats {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="wp-admin-bar">
+        <strong>WordPress Admin</strong> • <a href="#dashboard">Dashboard</a> • <a href="#posts">Posts</a> • <a href="#media">Media</a> • <a href="#pages">Pages</a> • <a href="mailto:shahmirkhanutmanzai@gmail.com">Contact Developer</a>
+    </div>
+    
+    <div class="container">
+        <header class="site-header">
+            <h1 class="site-title">Shahmir Khan</h1>
+            <p class="site-tagline">an almost compulsive need to understand how things work and make them work better.</p>
+            <div class="social-links">
+                <a href="https://linkedin.com/in/itshahmir" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    </svg>
+                    LinkedIn
+                </a>
+                <a href="https://github.com/itshahmir" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+                <a href="https://github.com/pixelabs-wp" target="_blank" rel="noopener noreferrer">
+                    <svg class="social-icon" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    Pixelabs
+                </a>
+            </div>
+        </header>
+        
+        <article class="post">
+            <header>
+                <h2 class="post-title">About</h2>
+                <div class="post-meta">Published on August 22, 2025 by Shahmir Khan</div>
+            </header>
+            
+            <div class="post-content">
+                <p>I'm a developer who accidentally keeps starting companies. Five ventures launched, mostly because I got annoyed with existing solutions and decided to build better ones myself.</p>
+                
+                <div class="stats">
+                    <div class="stats-list">
+                        <div class="stat-item">
+                            <span class="stat-number">5</span>
+                            <div class="stat-label">Companies Founded</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">$60K+</span>
+                            <div class="stat-label">First Year Revenue</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">300+</span>
+                            <div class="stat-label">Solutions Delivered</div>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number">$5M+</span>
+                            <div class="stat-label">Client Revenue Impact</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <p>My technical background spans JavaScript, PHP, Python, and modern frameworks. I've worked with companies across Pakistan, UAE, UK, and USA - from building Pakistan's first biometric e-voting system (because regular voting seemed hackable) to scaling real estate platforms handling 15,000+ property listings (because their previous system kept crashing).</p>
+                
+                <p>Currently building <a href="mailto:shahmirkhanutmanzai@gmail.com">WPCursor</a>, a WordPress development tool that somehow got 40+ agencies to sign up in the first 5 hours. Apparently other developers hate repetitive WordPress tasks as much as I do.</p>
+            </div>
+        </article>
+        
+        <article class="post">
+            <header>
+                <h2 class="post-title">Companies</h2>
+                <div class="post-meta">Updated August 22, 2025</div>
+            </header>
+            
+            <div class="post-content">
+                <div class="companies-list">
+                    <div class="company-item" style="background: rgba(255, 248, 220, 0.6); padding: 25px; border-left: 4px solid #0073aa; margin-bottom: 30px;">
+                        <div class="company-name" style="font-size: 1.4rem; margin-bottom: 15px;">WPCursor <span class="current-marker">CURRENT</span></div>
+                        <div class="company-desc" style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">
+                            A comprehensive WordPress development tool that helps developers build themes and plugins faster, featuring an AI-first visual builder. Built out of pure frustration with manual WordPress workflows that were taking hours every day.
+                        </div>
+                        <div style="display: flex; gap: 30px; flex-wrap: wrap; margin-top: 20px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                            <div>
+                                <div style="font-size: 1.2rem; font-weight: 600; color: #2c3e50;">40+</div>
+                                <div style="font-size: 0.85rem; color: #7a8ea1;">Agencies signed up in first 5 hours</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.2rem; font-weight: 600; color: #2c3e50;">80%</div>
+                                <div style="font-size: 0.85rem; color: #7a8ea1;">Time saved on repetitive tasks</div>
+                            </div>
+                            <div>
+                                <div style="font-size: 1.2rem; font-weight: 600; color: #2c3e50;">24/7</div>
+                                <div style="font-size: 0.85rem; color: #7a8ea1;">Automation running</div>
+                            </div>
+                        </div>
+                        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid #e8e5d8; font-size: 0.9rem; color: #5a6c7d;">
+                            <strong>What it does:</strong> Helps developers build themes and plugins faster with an AI-first visual builder, while also automating plugin updates, theme modifications, content migrations, and deployment workflows. Basically everything that used to require manual clicking, copying, and pasting across multiple WordPress installations.
+                        </div>
+                        <div style="margin-top: 20px; padding: 20px; background: rgba(0, 115, 170, 0.05); border-radius: 8px; border: 1px solid rgba(0, 115, 170, 0.2);">
+                            <div style="font-weight: 600; color: #2c3e50; margin-bottom: 10px; font-size: 1rem;">🚀 Join Early Access</div>
+                            <div style="color: #5a6c7d; margin-bottom: 15px; font-size: 0.9rem;">Be among the first to experience the future of WordPress development.</div>
+                            <form style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <input type="email" placeholder="Your email address" style="flex: 1; min-width: 200px; padding: 10px 12px; border: 1px solid #e8e5d8; border-radius: 6px; font-size: 0.9rem; font-family: inherit;" required>
+                                <button type="submit" style="background: #0073aa; color: white; border: none; padding: 10px 20px; border-radius: 6px; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: background 0.2s ease;">Join Waitlist</button>
+                            </form>
+                        </div>
+                    </div>
+                    
+                    <div class="company-item">
+                        <div class="company-name">Pixelabs</div>
+                        <div class="company-desc">WordPress solutions company. Hit $60K+ revenue in first year through 40+ plugins and 75+ custom projects. Turns out businesses will pay good money to not deal with WordPress headaches themselves. <a href="https://pixelabs.io" target="_blank" rel="noopener noreferrer">pixelabs.io</a></div>
+                    </div>
+                    
+                    <div class="company-item">
+                        <div class="company-name">Reachwise</div>
+                        <div class="company-desc">Meet Reachwise. It understands your ICP and brand voice, and quietly handles the details. While you focus on calls and demos, Reachwise is flying the LinkedIn outreach: finding prospects, tailoring intros, and scheduling follow-ups. <a href="https://reachwise.io" target="_blank" rel="noopener noreferrer">reachwise.io</a></div>
+                    </div>
+                    
+                    <div class="company-item">
+                        <div class="company-name">Staezy</div>
+                        <div class="company-desc">Local hostel finder for students in Pakistan. <a href="https://staezy.pk" target="_blank" rel="noopener noreferrer">staezy.pk</a></div>
+                    </div>
+                    
+                    <div class="company-item">
+                        <div class="company-name">HatchIt</div>
+                        <div class="company-desc">HatchIt was to build sustainable & automated products for poultry farming in Pakistan. In the 6 months of the program, we built a completely automated egg incubator with 2000 eggs capacity at a cost of just $357 completely locally sourced, while similar solutions from china costed upto $1785. Even though our startup failed eventually, but we worked on a real problem for the betterment of our people.</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        
+        <article class="post">
+            <header>
+                <h2 class="post-title">Professional Experience</h2>
+                <div class="post-meta">Work history and key achievements</div>
+            </header>
+            
+            <div class="post-content">
+                <div class="companies-list">
+                    <div class="company-item">
+                        <div class="company-name">Coresol Studio <span style="font-size: 0.8rem; color: #7a8ea1;">(Enterprise WP Agency - Remote)</span></div>
+                        <div class="company-role">Head of Product (May 2025 - August 2025)</div>
+                        <div class="company-desc">Developed and implemented processes across the distributed team, working directly with the founders. That's where I snapped at WordPress, manual tasks, taking hours every day, over and over again.</div>
+                    </div>
+                    
+                    <div class="company-item">
+                        <div class="company-name">5 Stars Real Estate <span style="font-size: 0.8rem; color: #7a8ea1;">(Dubai, UAE - Remote)</span></div>
+                        <div class="company-role">Head of Product (Nov 2022 - Feb 2024)</div>
+                        <div class="company-desc">Led distributed teams to rebuild <a href="#dalile">Dalile.com</a> from a legacy WordPress mess into a proper TypeScript application. Migrated the entire platform while keeping 250+ agencies and 15,000+ property listings running. Delivered 25+ modules using agile development, mostly by rewriting everything that was previously held together with duct tape.</div>
+                    </div>
+                    
+                    <div class="company-item">
+                        <div class="company-name">Triox LLC <span style="font-size: 0.8rem; color: #7a8ea1;">(Boulder, Colorado - Remote)</span></div>
+                        <div class="company-role">Chief Technology Officer (May 2023 - Jan 2024)</div>
+                        <div class="company-desc">Directed cross-functional teams delivering end-to-end WordPress websites and applications. Implemented CI/CD pipelines and DevOps practices. Led UI/UX efforts via Figma. Delivered solutions generating $5M+ USD in client revenue.</div>
+                    </div>
+                    
+                    <div class="company-item">
+                        <div class="company-name">QuickTech <span style="font-size: 0.8rem; color: #7a8ea1;">(United Kingdom - Remote)</span></div>
+                        <div class="company-role">Senior Developer (Jan 2022 - Dec 2022)</div>
+                        <div class="company-desc">Developed IEP, a backend system for the elevator industry. Contributed to system scalability enabling adoption by industry leaders including Schindler, Mitsubishi, and Otis. Engineered backend logic for complex vertical transportation workflows.</div>
+                    </div>
+                    
+                    <div class="company-item">
+                        <div class="company-name">SJP Legnocrats (SMC-PVT.) Ltd. <span style="font-size: 0.8rem; color: #7a8ea1;">(Abbottabad, Pakistan)</span></div>
+                        <div class="company-role">Full Stack Developer (Feb 2020 - Jan 2022)</div>
+                        <div class="company-desc">Contributed to Pakistan's first Biometric E-Voting System, facilitating 3,000+ votes via 15 deployed machines. Led API integrations, core feature development, and mentored new interns. Built client portals and kiosk-based systems using Python, PHP, JavaScript, and WordPress.</div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        
+        <article class="post">
+            <header>
+                <h2 class="post-title">Technical Skills</h2>
+                <div class="post-meta">Programming languages and technologies</div>
+            </header>
+            
+            <div class="post-content">
+                <p><strong>Advanced:</strong> JavaScript, PHP, Node.js, TypeScript</p>
+                <p><strong>Intermediate:</strong> Python, React, Next.js, Data Analytics, Reinforcement Learning</p>
+                <p><strong>Learning:</strong> Computer Vision, AI</p>
+                
+                <p>I focus on building stuff that actually works and doesn't break when someone looks at it wrong. Experience spans from backend systems (the fun part) to full-stack applications (the necessary part), with particular expertise in WordPress ecosystem and API development (the profitable part).</p>
+            </div>
+        </article>
+        
+        <article class="post">
+            <header>
+                <h2 class="post-title">Interval Story</h2>
+                <div class="post-meta">The hotel project that started it all</div>
+            </header>
+            
+            <div class="post-content">
+                <div class="story-section">
+                    <p>At 16, I was broke in Swat with no plan. My friend and I convinced a hotel owner to pay us upfront for a guest management system we hadn't built yet. I spent three days straight coding a custom OCR that could read Pakistani ID cards - something no existing hotel software could do. Check-in time went from 15 minutes to under 1 minute. The best part? I made the interface so simple that literally anyone could use it, because I knew the hotel staff weren't going to read a manual.</p>
+                </div>
+                
+                <p>That project taught me that users don't care about your clever code - they just want their problems solved. I've been obsessively building solutions ever since, usually at 3 AM with too much coffee.</p>
+            </div>
+        </article>
+        
+        <div class="contact-info">
+            <h3>Get in touch</h3>
+            <p>Email: <a href="mailto:shahmirkhanutmanzai@gmail.com">shahmirkhanutmanzai@gmail.com</a></p>
+            <p>Phone: <a href="tel:+923105054025">+92 (310) 505-4025</a></p>
+            <p>Location: Abbottabad, Pakistan</p>
+        </div>
+        
+        <footer class="wp-footer">
+            <p>Built with obsessive attention to detail</p>
+        </footer>
+    </div>
+</body>
+</html>
