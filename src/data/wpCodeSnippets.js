@@ -10133,7 +10133,7 @@ function add_featured_image_to_rss($content) {
 add_filter('the_excerpt_rss', 'add_featured_image_to_rss');
 add_filter('the_content_feed', 'add_featured_image_to_rss');`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -10155,7 +10155,7 @@ add_filter('the_content_feed', 'add_featured_image_to_rss');`,
         description: 'Complete guide to adding featured images to WordPress RSS feeds for better content syndication and social media sharing.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-15',
         dateModified: '2025-01-15',
@@ -10726,7 +10726,7 @@ function auto_set_featured_image_from_content($post_id) {
 }
 add_action('save_post', 'auto_set_featured_image_from_content');`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -10748,7 +10748,7 @@ add_action('save_post', 'auto_set_featured_image_from_content');`,
         description: 'Complete guide to automatically setting featured images from post content, attachments, or external sources in WordPress.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-15',
         dateModified: '2025-01-15',
@@ -11271,7 +11271,7 @@ function add_content_after_post($content) {
 }
 add_filter('the_content', 'add_content_after_post');`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -11293,7 +11293,7 @@ add_filter('the_content', 'add_content_after_post');`,
         description: 'Complete guide to inserting custom content, CTAs, ads, social sharing buttons, and more before or after WordPress posts.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-15',
         dateModified: '2025-01-15',
@@ -11640,7 +11640,7 @@ function remove_p_tags_around_images($content) {
 }
 add_filter('the_content', 'remove_p_tags_around_images');`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -11662,7 +11662,7 @@ add_filter('the_content', 'remove_p_tags_around_images');`,
         description: 'Complete guide to removing unwanted paragraph tags around images in WordPress for better layout control and cleaner HTML.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-15',
         dateModified: '2025-01-15',
@@ -12275,7 +12275,7 @@ function generate_table_of_contents($content) {
 }
 add_filter('the_content', 'generate_table_of_contents', 10);`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -12297,7 +12297,7 @@ add_filter('the_content', 'generate_table_of_contents', 10);`,
         description: 'Complete guide to automatically generating table of contents from post headings for better navigation and SEO.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-15',
         dateModified: '2025-01-15',
@@ -12894,7 +12894,7 @@ function display_reading_time() {
     return $reading_time . ' min read';
 }`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -12916,7 +12916,7 @@ function display_reading_time() {
         description: 'Complete guide to calculating and displaying estimated reading time for posts to improve user experience.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-15',
         dateModified: '2025-01-15',
@@ -13345,7 +13345,7 @@ function remove_archive_title_prefix($title) {
 }
 add_filter('get_the_archive_title', 'remove_archive_title_prefix');`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -13367,7 +13367,7 @@ add_filter('get_the_archive_title', 'remove_archive_title_prefix');`,
         description: 'Complete guide to customizing archive page titles and removing default prefixes in WordPress.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-15',
         dateModified: '2025-01-15',
@@ -13791,7 +13791,7 @@ function get_post_views($post_id = null) {
     return $count ? number_format($count) . ' views' : '0 views';
 }`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -13813,7 +13813,7 @@ function get_post_views($post_id = null) {
         description: 'Complete guide to tracking and displaying post views in WordPress without plugins.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-15',
         dateModified: '2025-01-15',
@@ -14242,7 +14242,7 @@ function remove_custom_role() {
 }
 add_action('switch_theme', 'remove_custom_role');`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -14264,7 +14264,7 @@ add_action('switch_theme', 'remove_custom_role');`,
         description: 'Complete guide to creating custom WordPress user roles with specific capabilities and permissions.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-15',
         dateModified: '2025-01-15',
@@ -14668,7 +14668,7 @@ function save_custom_user_profile_fields($user_id) {
 add_action('personal_options_update', 'save_custom_user_profile_fields');
 add_action('edit_user_profile_update', 'save_custom_user_profile_fields');`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -14690,7 +14690,7 @@ add_action('edit_user_profile_update', 'save_custom_user_profile_fields');`,
         description: 'Complete guide to adding custom fields to WordPress user profiles.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-15',
         dateModified: '2025-01-15',
@@ -15010,7 +15010,7 @@ add_filter('user_can_richedit', function($can_richedit) {
 }
 add_action('after_setup_theme', 'hide_admin_bar_for_non_admins');`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -15032,7 +15032,7 @@ add_action('after_setup_theme', 'hide_admin_bar_for_non_admins');`,
         description: 'Complete guide to hiding the WordPress admin bar from non-administrator users with multiple implementation approaches and best practices.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-18',
         dateModified: '2025-01-18',
@@ -15570,7 +15570,7 @@ function custom_login_logo_url() {
 }
 add_filter('login_headerurl', 'custom_login_logo_url');`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -15592,7 +15592,7 @@ add_filter('login_headerurl', 'custom_login_logo_url');`,
         description: 'Complete guide to customizing the WordPress login page with branding, custom styles, logos, and user experience improvements.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-18',
         dateModified: '2025-01-18',
@@ -15955,7 +15955,7 @@ function role_based_login_redirect($redirect_to, $request, $user) {
 }
 add_filter('login_redirect', 'role_based_login_redirect', 10, 3);`,
     author: {
-      name: 'Shahmir Haris',
+      name: 'Shahmir Khan',
       avatar: '/images/avatar.jpg',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
@@ -15977,7 +15977,7 @@ add_filter('login_redirect', 'role_based_login_redirect', 10, 3);`,
         description: 'Complete guide to redirecting users after login in WordPress with role-based redirects, custom URLs, and advanced conditional logic.',
         author: {
           '@type': 'Person',
-          name: 'Shahmir Haris'
+          name: 'Shahmir Khan'
         },
         datePublished: '2025-01-18',
         dateModified: '2025-01-18',
@@ -16007,9 +16007,4687 @@ add_filter('login_redirect', 'role_based_login_redirect', 10, 3);`,
         answer: "Use user meta to track first login status. In your redirect function: $first_login = get_user_meta($user->ID, 'first_login', true); if (empty($first_login)) { update_user_meta($user->ID, 'first_login', 'no'); return home_url('/welcome/'); }. This checks if the 'first_login' meta exists, and if not, sets it and redirects to a welcome page. Subsequent logins will have this meta set, so the redirect won't trigger. For more precision, store a timestamp instead of boolean: update_user_meta($user->ID, 'first_login_date', current_time('mysql')). This lets you track exactly when the first login occurred. Consider combining this with profile completion checks to ensure users complete onboarding."
       }
     ]
-  }
-];
+  },
+  {
+    id: 46,
+    slug: 'show-total-users',
+    title: 'Display User Count in WordPress',
+    excerpt: 'Create a shortcode to display the total number of registered users on your WordPress site with filtering options by role.',
+    content: `
+      <h2>Why Display User Count?</h2>
+      <p>Showing the total number of users can build social proof, especially for membership sites, communities, and forums. It demonstrates site activity and growth.</p>
 
+      <h3>Basic User Count Snippet</h3>
+      <pre><code class="language-php">// Display total user count
+function display_user_count() {
+    $users = count_users();
+    return number_format($users['total_users']);
+}
+add_shortcode('total_users', 'display_user_count');</code></pre>
+
+      <h3>Usage</h3>
+      <p>Add this shortcode anywhere in your content:</p>
+      <pre><code class="language-html">We have [total_users] members!</code></pre>
+
+      <h3>Count Users by Role</h3>
+      <pre><code class="language-php">// Display user count by specific role
+function display_users_by_role($atts) {
+    $atts = shortcode_atts(array(
+        'role' => 'subscriber',
+    ), $atts);
+
+    $users = count_users();
+    $role_count = isset($users['avail_roles'][$atts['role']])
+        ? $users['avail_roles'][$atts['role']]
+        : 0;
+
+    return number_format($role_count);
+}
+add_shortcode('users_by_role', 'display_users_by_role');
+
+// Usage: [users_by_role role="subscriber"]</code></pre>
+
+      <h3>Advanced: User Growth Stats</h3>
+      <pre><code class="language-php">// Show users registered this month
+function users_this_month() {
+    $args = array(
+        'date_query' => array(
+            array(
+                'after' => '1 month ago',
+            ),
+        ),
+        'fields' => 'ID',
+    );
+
+    $user_query = new WP_User_Query($args);
+    return number_format($user_query->get_total());
+}
+add_shortcode('users_this_month', 'users_this_month');</code></pre>
+
+      <h3>Display with Custom HTML</h3>
+      <pre><code class="language-php">// User count with custom formatting
+function formatted_user_count() {
+    $users = count_users();
+    $total = $users['total_users'];
+
+    $output = '&lt;div class="user-stats"&gt;';
+    $output .= '&lt;span class="user-count"&gt;' . number_format($total) . '&lt;/span&gt;';
+    $output .= '&lt;span class="user-label"&gt;Active Members&lt;/span&gt;';
+    $output .= '&lt;/div&gt;';
+
+    return $output;
+}
+add_shortcode('user_stats', 'formatted_user_count');</code></pre>
+
+      <h3>Use Cases</h3>
+      <ul>
+        <li><strong>Membership Sites:</strong> Show community size</li>
+        <li><strong>Forums:</strong> Display active member count</li>
+        <li><strong>Social Proof:</strong> Build credibility</li>
+        <li><strong>Course Platforms:</strong> Show student enrollment</li>
+      </ul>
+    `,
+    code: `function display_user_count() {
+    $users = count_users();
+    return number_format($users['total_users']);
+}
+add_shortcode('total_users', 'display_user_count');`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '4 min',
+    category: 'WordPress Users',
+    tags: ['Users', 'Shortcodes', 'Statistics'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Display User Count in WordPress - Total Members Shortcode',
+      metaDescription: 'Show the total number of registered users on your WordPress site with shortcodes. Filter by role, display growth stats, and build social proof.',
+      keywords: ['wordpress user count', 'display total users', 'member count shortcode', 'count_users wordpress', 'user statistics', 'membership count'],
+      canonical: 'https://shahmir.dev/blog/show-total-users',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Display User Count in WordPress',
+        description: 'Create shortcodes to display total registered users with role filtering and custom formatting.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Beginner',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Does count_users() include all user roles?",
+        answer: "Yes, count_users() returns the total count of all registered users regardless of role, plus a breakdown by individual roles in the 'avail_roles' array. The function queries the database efficiently using a single query to count users."
+      },
+      {
+        question: "Will displaying user count slow down my site?",
+        answer: "The count_users() function is optimized and uses database counting rather than retrieving all user objects. However, on sites with millions of users, consider caching the result using transients to avoid running the count on every page load."
+      },
+      {
+        question: "How can I exclude certain roles from the total count?",
+        answer: "Use WP_User_Query with role__not_in parameter: new WP_User_Query(array('role__not_in' => array('administrator', 'editor'), 'fields' => 'ID')). Then use get_total() method to get the count."
+      },
+      {
+        question: "Can I display the user count in my theme without a shortcode?",
+        answer: "Yes, call the function directly in your theme template: &lt;?php echo display_user_count(); ?&gt; or use count_users() directly: &lt;?php $users = count_users(); echo $users['total_users']; ?&gt;"
+      },
+      {
+        question: "How do I show user count with animated numbers?",
+        answer: "Use JavaScript libraries like CountUp.js. Output the count in a data attribute: &lt;span class='counter' data-count='&lt;?php echo display_user_count(); ?&gt;'&gt;0&lt;/span&gt; and animate with JavaScript on page load."
+      }
+    ]
+  },
+  {
+    id: 47,
+    slug: 'last-login-time',
+    title: 'Track User Last Login Time in WordPress',
+    excerpt: 'Record and display the last login time for WordPress users. Perfect for membership sites and user activity monitoring.',
+    content: `
+      <h2>Why Track Last Login Time?</h2>
+      <p>Monitoring user login activity helps identify inactive accounts, track engagement, and maintain site security. It's essential for membership sites and community platforms.</p>
+
+      <h3>Basic Login Tracking Snippet</h3>
+      <pre><code class="language-php">// Track last login time
+function track_last_login($user_login, $user) {
+    update_user_meta($user->ID, 'last_login', current_time('mysql'));
+}
+add_action('wp_login', 'track_last_login', 10, 2);</code></pre>
+
+      <h3>Display Last Login in User Profile</h3>
+      <pre><code class="language-php">// Show last login in user profile
+function show_last_login_profile($user) {
+    $last_login = get_user_meta($user->ID, 'last_login', true);
+
+    if ($last_login) {
+        $formatted_date = date('F j, Y g:i a', strtotime($last_login));
+        echo '&lt;h3&gt;Last Login&lt;/h3&gt;';
+        echo '&lt;table class="form-table"&gt;';
+        echo '&lt;tr&gt;&lt;th&gt;Last Login:&lt;/th&gt;';
+        echo '&lt;td&gt;' . $formatted_date . '&lt;/td&gt;&lt;/tr&gt;';
+        echo '&lt;/table&gt;';
+    }
+}
+add_action('show_user_profile', 'show_last_login_profile');
+add_action('edit_user_profile', 'show_last_login_profile');</code></pre>
+
+      <h3>Add Last Login Column to Users List</h3>
+      <pre><code class="language-php">// Add last login column
+function add_last_login_column($columns) {
+    $columns['last_login'] = 'Last Login';
+    return $columns;
+}
+add_filter('manage_users_columns', 'add_last_login_column');
+
+// Populate last login column
+function show_last_login_column($value, $column_name, $user_id) {
+    if ('last_login' === $column_name) {
+        $last_login = get_user_meta($user_id, 'last_login', true);
+
+        if ($last_login) {
+            return human_time_diff(strtotime($last_login)) . ' ago';
+        }
+        return 'Never';
+    }
+    return $value;
+}
+add_filter('manage_users_custom_column', 'show_last_login_column', 10, 3);
+
+// Make column sortable
+function make_last_login_sortable($columns) {
+    $columns['last_login'] = 'last_login';
+    return $columns;
+}
+add_filter('manage_users_sortable_columns', 'make_last_login_sortable');</code></pre>
+
+      <h3>Find Inactive Users</h3>
+      <pre><code class="language-php">// Get users inactive for 30+ days
+function get_inactive_users($days = 30) {
+    $args = array(
+        'meta_query' => array(
+            array(
+                'key' => 'last_login',
+                'value' => date('Y-m-d H:i:s', strtotime("-$days days")),
+                'compare' => '&lt;',
+                'type' => 'DATETIME'
+            )
+        )
+    );
+
+    return get_users($args);
+}
+
+// Display inactive users count
+function show_inactive_users_count() {
+    $inactive = get_inactive_users(30);
+    return count($inactive) . ' users inactive for 30+ days';
+}
+add_shortcode('inactive_users', 'show_inactive_users_count');</code></pre>
+
+      <h3>Send Email Reminders to Inactive Users</h3>
+      <pre><code class="language-php">// Email inactive users
+function email_inactive_users() {
+    $inactive_users = get_inactive_users(90);
+
+    foreach ($inactive_users as $user) {
+        $to = $user->user_email;
+        $subject = "We miss you at " . get_bloginfo('name');
+        $message = "Hi " . $user->display_name . ",\n\n";
+        $message .= "We noticed you haven't logged in for a while. ";
+        $message .= "Come back and see what's new!\n\n";
+        $message .= wp_login_url();
+
+        wp_mail($to, $subject, $message);
+    }
+}
+// Schedule this function with wp-cron or call manually</code></pre>
+
+      <h3>Benefits</h3>
+      <ul>
+        <li><strong>Security:</strong> Identify compromised accounts</li>
+        <li><strong>Engagement:</strong> Re-engage inactive users</li>
+        <li><strong>Analytics:</strong> Track user activity patterns</li>
+        <li><strong>Cleanup:</strong> Remove truly inactive accounts</li>
+      </ul>
+    `,
+    code: `function track_last_login($user_login, $user) {
+    update_user_meta($user->ID, 'last_login', current_time('mysql'));
+}
+add_action('wp_login', 'track_last_login', 10, 2);`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '6 min',
+    category: 'WordPress Users',
+    tags: ['Users', 'Login', 'Tracking'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Track User Last Login Time in WordPress - Activity Monitoring',
+      metaDescription: 'Learn how to track and display user last login time in WordPress. Monitor user activity, find inactive accounts, and improve engagement.',
+      keywords: ['wordpress track login', 'last login time', 'user activity tracking', 'monitor user logins', 'inactive users wordpress', 'wp_login hook'],
+      canonical: 'https://shahmir.dev/blog/last-login-time',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Track User Last Login Time in WordPress',
+        description: 'Complete guide to tracking and displaying user last login time with custom columns, profile fields, and inactive user detection.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Does tracking login time work with social login plugins?",
+        answer: "Yes, as long as the social login plugin triggers the wp_login action hook. Most popular plugins like Nextend Social Login and Super Socializer fire this hook. If tracking doesn't work, check the plugin's documentation for custom hooks you may need to use instead."
+      },
+      {
+        question: "How can I track login attempts, not just successful logins?",
+        answer: "Use the wp_login_failed action hook to track failed attempts: add_action('wp_login_failed', 'track_failed_login'); This lets you monitor suspicious activity like brute force attacks. Store failed attempts in user meta with timestamps and IP addresses for security auditing."
+      },
+      {
+        question: "Can I show last login time to the user on frontend?",
+        answer: "Yes, create a shortcode or add to your account dashboard: $last_login = get_user_meta(get_current_user_id(), 'last_login', true); if ($last_login) { echo 'Last login: ' . human_time_diff(strtotime($last_login)) . ' ago'; }. This improves user awareness of account activity."
+      },
+      {
+        question: "Will this work if users are already logged in via remember me?",
+        answer: "No, wp_login only fires during active login. If users stay logged in via cookies (remember me), they won't trigger the hook. Consider also hooking into 'init' to update a 'last_seen' timestamp on every page load for more accurate activity tracking."
+      },
+      {
+        question: "How do I delete inactive users automatically?",
+        answer: "Create a scheduled cron job: $inactive = get_inactive_users(365); // 1 year inactive. Then loop through and use wp_delete_user($user->ID). IMPORTANT: Always backup first and notify users before deletion. Better approach is to deactivate accounts first, then delete after another warning period."
+      }
+    ]
+  },
+  {
+    id: 48,
+    slug: 'custom-avatar',
+    title: 'Set Custom Default Avatar in WordPress',
+    excerpt: 'Replace the default WordPress avatar (Gravatar) with a custom image for users without profile pictures.',
+    content: `
+      <h2>Why Customize Default Avatars?</h2>
+      <p>The default WordPress mystery person avatar can look unprofessional. A custom default avatar matching your brand improves visual consistency across your site.</p>
+
+      <h3>Basic Custom Avatar Snippet</h3>
+      <pre><code class="language-php">// Set custom default avatar
+function custom_default_avatar($avatar_defaults) {
+    $custom_avatar = get_stylesheet_directory_uri() . '/images/default-avatar.png';
+    $avatar_defaults[$custom_avatar] = 'Custom Default Avatar';
+    return $avatar_defaults;
+}
+add_filter('avatar_defaults', 'custom_default_avatar');</code></pre>
+
+      <h3>Implementation Steps</h3>
+      <ol>
+        <li>Upload your custom avatar image to /wp-content/themes/your-theme/images/</li>
+        <li>Add the code snippet to functions.php</li>
+        <li>Go to Settings → Discussion in WordPress admin</li>
+        <li>Select your custom avatar from the Default Avatar dropdown</li>
+        <li>Save changes</li>
+      </ol>
+
+      <h3>Force Custom Avatar for All Users</h3>
+      <pre><code class="language-php">// Override Gravatar with custom avatar
+function force_custom_avatar($avatar, $id_or_email, $size, $default, $alt) {
+    $custom_avatar_url = get_stylesheet_directory_uri() . '/images/default-avatar.png';
+    $avatar = "&lt;img alt='{$alt}' src='{$custom_avatar_url}' class='avatar avatar-{$size}' height='{$size}' width='{$size}' /&gt;";
+    return $avatar;
+}
+add_filter('get_avatar', 'force_custom_avatar', 10, 5);</code></pre>
+
+      <h3>Different Avatars by User Role</h3>
+      <pre><code class="language-php">// Role-based default avatars
+function role_based_avatars($avatar, $id_or_email, $size, $default, $alt) {
+    // Get user data
+    $user = false;
+
+    if (is_numeric($id_or_email)) {
+        $user = get_user_by('id', $id_or_email);
+    } elseif (is_object($id_or_email)) {
+        if (!empty($id_or_email->user_id)) {
+            $user = get_user_by('id', $id_or_email->user_id);
+        }
+    } else {
+        $user = get_user_by('email', $id_or_email);
+    }
+
+    if ($user && is_object($user)) {
+        // Check if user has Gravatar
+        $has_gravatar = validate_gravatar($user->user_email);
+
+        if (!$has_gravatar) {
+            $theme_dir = get_stylesheet_directory_uri();
+
+            if (in_array('administrator', $user->roles)) {
+                $avatar_url = $theme_dir . '/images/admin-avatar.png';
+            } elseif (in_array('editor', $user->roles)) {
+                $avatar_url = $theme_dir . '/images/editor-avatar.png';
+            } else {
+                $avatar_url = $theme_dir . '/images/default-avatar.png';
+            }
+
+            $avatar = "&lt;img alt='{$alt}' src='{$avatar_url}' class='avatar avatar-{$size}' height='{$size}' width='{$size}' /&gt;";
+        }
+    }
+
+    return $avatar;
+}
+add_filter('get_avatar', 'role_based_avatars', 10, 5);
+
+// Helper function to check if user has Gravatar
+function validate_gravatar($email) {
+    $hash = md5(strtolower(trim($email)));
+    $uri = 'http://www.gravatar.com/avatar/' . $hash . '?d=404';
+    $headers = @get_headers($uri);
+
+    if (!preg_match("|200|", $headers[0])) {
+        return false;
+    }
+    return true;
+}</code></pre>
+
+      <h3>SVG Avatars by User Initial</h3>
+      <pre><code class="language-php">// Generate SVG avatar with user initial
+function generate_initial_avatar($avatar, $id_or_email, $size) {
+    $user = false;
+
+    if (is_numeric($id_or_email)) {
+        $user = get_user_by('id', $id_or_email);
+    } elseif (is_string($id_or_email)) {
+        $user = get_user_by('email', $id_or_email);
+    }
+
+    if ($user) {
+        $initial = strtoupper(substr($user->display_name, 0, 1));
+        $background_color = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
+
+        $svg = "&lt;svg width='{$size}' height='{$size}' xmlns='http://www.w3.org/2000/svg'&gt;";
+        $svg .= "&lt;rect fill='{$background_color}' width='{$size}' height='{$size}'/&gt;";
+        $svg .= "&lt;text fill='white' font-size='" . ($size/2) . "' x='50%' y='50%' ";
+        $svg .= "text-anchor='middle' dominant-baseline='central'&gt;{$initial}&lt;/text&gt;";
+        $svg .= "&lt;/svg&gt;";
+
+        $avatar = 'data:image/svg+xml;base64,' . base64_encode($svg);
+        return "&lt;img src='{$avatar}' class='avatar' width='{$size}' height='{$size}' /&gt;";
+    }
+
+    return $avatar;
+}
+add_filter('get_avatar', 'generate_initial_avatar', 10, 3);</code></pre>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Use square images (e.g., 256×256px)</li>
+        <li>Optimize images for web (PNG or JPG under 50KB)</li>
+        <li>Consider using SVG for scalability</li>
+        <li>Match your brand colors and style</li>
+        <li>Test avatars at different sizes</li>
+      </ul>
+    `,
+    code: `function custom_default_avatar($avatar_defaults) {
+    $custom_avatar = get_stylesheet_directory_uri() . '/images/default-avatar.png';
+    $avatar_defaults[$custom_avatar] = 'Custom Default Avatar';
+    return $avatar_defaults;
+}
+add_filter('avatar_defaults', 'custom_default_avatar');`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '5 min',
+    category: 'WordPress Users',
+    tags: ['Avatars', 'Gravatar', 'Users'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 2.5+',
+    seo: {
+      metaTitle: 'Custom Default Avatar in WordPress - Replace Gravatar Default',
+      metaDescription: 'Learn how to set a custom default avatar in WordPress to replace the generic Gravatar. Role-based avatars, SVG initials, and more.',
+      keywords: ['wordpress custom avatar', 'default avatar wordpress', 'replace gravatar', 'custom default avatar', 'avatar_defaults filter', 'wordpress profile picture'],
+      canonical: 'https://shahmir.dev/blog/custom-avatar',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Set Custom Default Avatar in WordPress',
+        description: 'Replace default WordPress avatars with custom images, role-based avatars, or generated SVG initials for better branding.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Beginner',
+        dependencies: 'WordPress 2.5+'
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between avatar_defaults and get_avatar filters?",
+        answer: "avatar_defaults adds your custom avatar as an option in Settings → Discussion, giving admins a choice. get_avatar completely overrides the avatar display logic and forces your custom avatar. Use avatar_defaults for flexibility, get_avatar for complete control."
+      },
+      {
+        question: "Can I use different avatars for men and women?",
+        answer: "WordPress doesn't store gender information by default. You'd need to add a custom user meta field for gender, then check that in your get_avatar filter to return different avatars. Alternatively, let users choose their preferred default avatar style in their profile."
+      },
+      {
+        question: "Will custom avatars show in email notifications?",
+        answer: "It depends on how emails are generated. WordPress core emails don't include avatars. Plugins that do (like bbPress or BuddyPress) typically use get_avatar(), so your custom avatars will appear if you're using the get_avatar filter."
+      },
+      {
+        question: "How do I disable Gravatar completely?",
+        answer: "Uncheck 'Show Avatars' in Settings → Discussion, or use remove_filter('get_avatar', 'get_avatar', 10, 5); This prevents external Gravatar requests, improving privacy and page load time. Then implement your custom avatar system."
+      },
+      {
+        question: "Can users upload their own avatar without Gravatar?",
+        answer: "WordPress core doesn't support local avatar uploads. Use plugins like 'Simple Local Avatars' or 'WP User Avatar'. These add upload fields to user profiles and integrate seamlessly with get_avatar()."
+      }
+    ]
+  },
+  {
+    id: 49,
+    slug: 'prevent-admin-access',
+    title: 'Restrict Dashboard Access by Role in WordPress',
+    excerpt: 'Prevent specific user roles from accessing the WordPress admin dashboard while keeping full frontend functionality.',
+    content: `
+      <h2>Why Restrict Dashboard Access?</h2>
+      <p>Not all users need admin dashboard access. Subscribers, customers, and members should stay on the frontend for better UX and security. This prevents confusion and unauthorized configuration changes.</p>
+
+      <h3>Basic Dashboard Restriction</h3>
+      <pre><code class="language-php">// Redirect non-admins away from dashboard
+function restrict_admin_access() {
+    if (!current_user_can('edit_posts') && !wp_doing_ajax()) {
+        wp_redirect(home_url());
+        exit;
+    }
+}
+add_action('admin_init', 'restrict_admin_access');</code></pre>
+
+      <h3>Role-Based Restrictions</h3>
+      <pre><code class="language-php">// Restrict specific roles from dashboard
+function restrict_dashboard_by_role() {
+    $user = wp_get_current_user();
+    $restricted_roles = array('subscriber', 'customer', 'member');
+
+    if (array_intersect($restricted_roles, $user->roles) && !wp_doing_ajax()) {
+        wp_redirect(home_url('/my-account/'));
+        exit;
+    }
+}
+add_action('admin_init', 'restrict_dashboard_by_role');</code></pre>
+
+      <h3>Custom Redirect URLs by Role</h3>
+      <pre><code class="language-php">// Redirect different roles to different pages
+function role_based_admin_redirect() {
+    if (wp_doing_ajax()) {
+        return;
+    }
+
+    $user = wp_get_current_user();
+    $redirect_url = '';
+
+    if (in_array('subscriber', $user->roles)) {
+        $redirect_url = home_url('/dashboard/');
+    } elseif (in_array('customer', $user->roles)) {
+        $redirect_url = home_url('/my-orders/');
+    } elseif (in_array('member', $user->roles)) {
+        $redirect_url = home_url('/member-area/');
+    }
+
+    if ($redirect_url && !current_user_can('edit_posts')) {
+        wp_redirect($redirect_url);
+        exit;
+    }
+}
+add_action('admin_init', 'role_based_admin_redirect');</code></pre>
+
+      <h3>Hide Admin Bar for Restricted Users</h3>
+      <pre><code class="language-php">// Hide admin bar for users without dashboard access
+function hide_admin_bar_from_restricted_users() {
+    if (!current_user_can('edit_posts')) {
+        show_admin_bar(false);
+    }
+}
+add_action('after_setup_theme', 'hide_admin_bar_from_restricted_users');</code></pre>
+
+      <h3>Allow Specific Admin Pages</h3>
+      <pre><code class="language-php">// Allow profile.php but block other admin pages
+function allow_profile_page_only() {
+    $allowed_pages = array('profile.php', 'admin-ajax.php');
+    $current_page = basename($_SERVER['PHP_SELF']);
+
+    if (!current_user_can('edit_posts')
+        && !in_array($current_page, $allowed_pages)
+        && !wp_doing_ajax()) {
+        wp_redirect(home_url());
+        exit;
+    }
+}
+add_action('admin_init', 'allow_profile_page_only');</code></pre>
+
+      <h3>Complete Restriction with Custom Message</h3>
+      <pre><code class="language-php">// Show custom error message before redirect
+function restrict_admin_with_message() {
+    if (!current_user_can('edit_posts') && !wp_doing_ajax()) {
+        $message = 'You do not have permission to access the dashboard.';
+        wp_die($message, 'Restricted Access', array(
+            'response' => 403,
+            'back_link' => true,
+            'link_url' => home_url(),
+            'link_text' => 'Return to Homepage'
+        ));
+    }
+}
+add_action('admin_init', 'restrict_admin_with_message');</code></pre>
+
+      <h3>Disable Admin Bar CSS for Performance</h3>
+      <pre><code class="language-php">// Remove admin bar CSS for restricted users
+function remove_admin_bar_styles() {
+    if (!current_user_can('edit_posts')) {
+        remove_action('wp_head', '_admin_bar_bump_cb');
+    }
+}
+add_action('get_header', 'remove_admin_bar_styles');</code></pre>
+
+      <h3>Use Cases</h3>
+      <ul>
+        <li><strong>WooCommerce:</strong> Keep customers on My Account page</li>
+        <li><strong>Membership Sites:</strong> Redirect members to custom dashboard</li>
+        <li><strong>Forums:</strong> Keep forum users on frontend</li>
+        <li><strong>Course Platforms:</strong> Direct students to learning dashboard</li>
+      </ul>
+
+      <h3>Important Notes</h3>
+      <ul>
+        <li>Always check !wp_doing_ajax() to prevent breaking AJAX requests</li>
+        <li>Allow access to profile.php if users need to edit their profiles</li>
+        <li>Hide admin bar to prevent confusion</li>
+        <li>Create custom frontend dashboards for better UX</li>
+      </ul>
+    `,
+    code: `function restrict_admin_access() {
+    if (!current_user_can('edit_posts') && !wp_doing_ajax()) {
+        wp_redirect(home_url());
+        exit;
+    }
+}
+add_action('admin_init', 'restrict_admin_access');`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '6 min',
+    category: 'WordPress Users',
+    tags: ['Security', 'Users', 'Dashboard'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Restrict WordPress Dashboard Access by User Role - Code Snippet',
+      metaDescription: 'Prevent subscribers and customers from accessing WordPress admin dashboard. Role-based restrictions with custom redirects for better security and UX.',
+      keywords: ['restrict wordpress dashboard', 'prevent admin access', 'block dashboard by role', 'wordpress user permissions', 'admin_init hook', 'redirect non-admin users'],
+      canonical: 'https://shahmir.dev/blog/prevent-admin-access',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Restrict Dashboard Access by Role in WordPress',
+        description: 'Complete guide to preventing specific user roles from accessing the WordPress admin dashboard with custom redirects and restrictions.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Will restricting dashboard access prevent users from editing their profiles?",
+        answer: "Yes, if you redirect all admin pages. To allow profile editing, either: 1) Add profile.php to the allowed pages array, 2) Create a frontend profile editing form using plugins like WP User Frontend, or 3) Check if current page is profile.php before redirecting."
+      },
+      {
+        question: "How do I restrict dashboard access for WooCommerce customers?",
+        answer: "Use the code snippet with 'customer' role: if (in_array('customer', $user->roles)) { wp_redirect(wc_get_page_permalink('myaccount')); exit; }. This redirects customers to their My Account page. WooCommerce also has a built-in setting under WooCommerce → Settings → Accounts to disable dashboard access."
+      },
+      {
+        question: "What does wp_doing_ajax() check prevent?",
+        answer: "Many plugins and themes use admin-ajax.php for AJAX requests on the frontend. If you redirect all admin access without checking wp_doing_ajax(), you'll break these requests. The check ensures AJAX calls work even for restricted users."
+      },
+      {
+        question: "Can I restrict access to specific admin pages instead of the entire dashboard?",
+        answer: "Yes, check the current admin page: global $pagenow; if (!current_user_can('manage_options') && $pagenow === 'tools.php') { wp_redirect(admin_url()); }. This example blocks the Tools page for non-administrators while allowing other admin pages."
+      },
+      {
+        question: "How do I create a custom frontend dashboard for restricted users?",
+        answer: "Create a custom page template with shortcodes or custom queries to display user-specific content. Popular plugins like Ultimate Member, BuddyPress, or WooCommerce provide frontend dashboards. You can also build custom dashboards using get_current_user_id() to display personalized content, recent orders, profile info, etc."
+      }
+    ]
+  },
+  {
+    id: 50,
+    slug: 'auto-logout-users',
+    title: 'Auto Logout Inactive Users in WordPress',
+    excerpt: 'Automatically log out users after a period of inactivity for enhanced security. Perfect for membership sites and secure environments.',
+    content: `
+      <h2>Why Auto Logout Inactive Users?</h2>
+      <p>Auto logout protects user accounts from unauthorized access when users forget to log out, especially on shared computers. It's essential for financial sites, membership platforms, and any site handling sensitive data.</p>
+
+      <h3>Basic Auto Logout Snippet</h3>
+      <pre><code class="language-php">// Auto logout after 15 minutes of inactivity
+function auto_logout_inactive_users() {
+    $timeout = 900; // 15 minutes in seconds
+
+    if (is_user_logged_in()) {
+        $last_activity = get_user_meta(get_current_user_id(), 'last_activity', true);
+
+        if ($last_activity && (time() - $last_activity) > $timeout) {
+            wp_logout();
+            wp_redirect(home_url('/session-expired/'));
+            exit;
+        }
+
+        update_user_meta(get_current_user_id(), 'last_activity', time());
+    }
+}
+add_action('init', 'auto_logout_inactive_users');</code></pre>
+
+      <h3>JavaScript-Based Timeout Warning</h3>
+      <pre><code class="language-php">// Show warning before auto logout
+function auto_logout_with_warning() {
+    if (!is_user_logged_in()) {
+        return;
+    }
+    ?&gt;
+    &lt;script type="text/javascript"&gt;
+    let inactivityTime = function () {
+        let time;
+        let warningTime = 840000; // 14 minutes (warning 1 min before logout)
+        let logoutTime = 900000; // 15 minutes
+
+        // Reset timer on user activity
+        window.onload = resetTimer;
+        document.onmousemove = resetTimer;
+        document.onkeypress = resetTimer;
+        document.onclick = resetTimer;
+        document.onscroll = resetTimer;
+
+        function showWarning() {
+            alert('You will be logged out due to inactivity in 1 minute.');
+        }
+
+        function logout() {
+            window.location.href = '&lt;?php echo wp_logout_url(home_url('/session-expired/')); ?&gt;';
+        }
+
+        function resetTimer() {
+            clearTimeout(time);
+            time = setTimeout(showWarning, warningTime);
+            setTimeout(logout, logoutTime);
+        }
+    };
+
+    inactivityTime();
+    &lt;/script&gt;
+    &lt;?php
+}
+add_action('wp_footer', 'auto_logout_with_warning');</code></pre>
+
+      <h3>Role-Based Timeout Durations</h3>
+      <pre><code class="language-php">// Different timeout for different roles
+function role_based_auto_logout() {
+    if (!is_user_logged_in()) {
+        return;
+    }
+
+    $user = wp_get_current_user();
+    $last_activity = get_user_meta($user->ID, 'last_activity', true);
+
+    // Set timeout based on role
+    if (in_array('administrator', $user->roles)) {
+        $timeout = 3600; // 1 hour for admins
+    } elseif (in_array('editor', $user->roles)) {
+        $timeout = 1800; // 30 minutes for editors
+    } else {
+        $timeout = 900; // 15 minutes for others
+    }
+
+    if ($last_activity && (time() - $last_activity) > $timeout) {
+        wp_logout();
+        $redirect = add_query_arg('session_expired', '1', wp_login_url());
+        wp_redirect($redirect);
+        exit;
+    }
+
+    update_user_meta($user->ID, 'last_activity', time());
+}
+add_action('init', 'role_based_auto_logout');</code></pre>
+
+      <h3>Session Expired Message</h3>
+      <pre><code class="language-php">// Display message on login page after auto logout
+function session_expired_message() {
+    if (isset($_GET['session_expired'])) {
+        return '&lt;p class="message"&gt;Your session has expired due to inactivity. Please log in again.&lt;/p&gt;';
+    }
+}
+add_filter('login_message', 'session_expired_message');</code></pre>
+
+      <h3>AJAX Heartbeat Method</h3>
+      <pre><code class="language-php">// Use WordPress Heartbeat API for activity tracking
+function heartbeat_auto_logout($response, $data) {
+    if (is_user_logged_in()) {
+        $timeout = 900; // 15 minutes
+        $last_activity = get_user_meta(get_current_user_id(), 'last_activity', true);
+
+        if ($last_activity && (time() - $last_activity) > $timeout) {
+            $response['heartbeat_logout'] = true;
+        } else {
+            update_user_meta(get_current_user_id(), 'last_activity', time());
+        }
+    }
+
+    return $response;
+}
+add_filter('heartbeat_received', 'heartbeat_auto_logout', 10, 2);
+
+// Handle logout on frontend
+function heartbeat_logout_script() {
+    if (!is_user_logged_in()) {
+        return;
+    }
+    ?&gt;
+    &lt;script type="text/javascript"&gt;
+    jQuery(document).on('heartbeat-tick', function(e, data) {
+        if (data.heartbeat_logout) {
+            window.location.href = '&lt;?php echo wp_logout_url(home_url()); ?&gt;';
+        }
+    });
+    &lt;/script&gt;
+    &lt;?php
+}
+add_action('wp_footer', 'heartbeat_logout_script');</code></pre>
+
+      <h3>Extend Session on Activity</h3>
+      <pre><code class="language-php">// Extend WordPress auth cookie on activity
+function extend_session_on_activity() {
+    if (is_user_logged_in()) {
+        $expiration = time() + 900; // 15 minutes from now
+        $user_id = get_current_user_id();
+
+        // Set new auth cookie
+        wp_set_auth_cookie($user_id, true);
+    }
+}
+add_action('init', 'extend_session_on_activity');</code></pre>
+
+      <h3>Security Best Practices</h3>
+      <ul>
+        <li><strong>Shorter timeouts for sensitive pages:</strong> 5-10 minutes for banking, healthcare</li>
+        <li><strong>Warning before logout:</strong> Give users chance to extend session</li>
+        <li><strong>Clear session data:</strong> Remove sensitive data on logout</li>
+        <li><strong>Log logout events:</strong> Track security incidents</li>
+        <li><strong>AJAX-based checking:</strong> More accurate than page-load checks</li>
+      </ul>
+
+      <h3>Recommended Timeout Durations</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Site Type</th>
+            <th>Recommended Timeout</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Banking/Financial</td>
+            <td>5-10 minutes</td>
+          </tr>
+          <tr>
+            <td>Healthcare/HIPAA</td>
+            <td>10-15 minutes</td>
+          </tr>
+          <tr>
+            <td>E-commerce</td>
+            <td>30-60 minutes</td>
+          </tr>
+          <tr>
+            <td>Membership Sites</td>
+            <td>30 minutes - 2 hours</td>
+          </tr>
+          <tr>
+            <td>Admin Dashboard</td>
+            <td>1-4 hours</td>
+          </tr>
+        </tbody>
+      </table>
+    `,
+    code: `function auto_logout_inactive_users() {
+    $timeout = 900; // 15 minutes
+
+    if (is_user_logged_in()) {
+        $last_activity = get_user_meta(get_current_user_id(), 'last_activity', true);
+
+        if ($last_activity && (time() - $last_activity) > $timeout) {
+            wp_logout();
+            wp_redirect(home_url('/session-expired/'));
+            exit;
+        }
+
+        update_user_meta(get_current_user_id(), 'last_activity', time());
+    }
+}
+add_action('init', 'auto_logout_inactive_users');`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '7 min',
+    category: 'WordPress Users',
+    tags: ['Security', 'Sessions', 'Users'],
+    difficulty: 'Advanced',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Auto Logout Inactive Users in WordPress - Session Timeout Code',
+      metaDescription: 'Automatically log out inactive WordPress users for better security. Implement session timeouts, warnings, and role-based durations.',
+      keywords: ['wordpress auto logout', 'session timeout wordpress', 'inactive user logout', 'wordpress security timeout', 'auto logout code', 'session expiration'],
+      canonical: 'https://shahmir.dev/blog/auto-logout-users',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Auto Logout Inactive Users in WordPress',
+        description: 'Complete guide to implementing automatic logout for inactive users with warnings, role-based timeouts, and session management.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Advanced',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between activity tracking and WordPress session duration?",
+        answer: "WordPress sessions (auth cookies) have an expiration set at login (default 14 days with 'remember me', 2 days without). Activity tracking monitors actual user interaction and can log out users before the session expires. You need both: WordPress handles session validity, your code handles inactivity timeout."
+      },
+      {
+        question: "Will auto logout break functionality for users with multiple tabs open?",
+        answer: "The basic implementation tracks activity across all tabs since user meta is shared. However, if one tab times out and logs out, other tabs will show errors. Use the Heartbeat API method to sync logout across all tabs simultaneously, or update last_activity on any tab's activity."
+      },
+      {
+        question: "How can I prevent logout while users are watching videos or reading long content?",
+        answer: "Use JavaScript to detect scroll events, video play events, or mouse movements to reset the timer. For video specifically: document.querySelector('video').addEventListener('playing', resetTimer). For reading, reset timer on scroll: window.addEventListener('scroll', resetTimer)."
+      },
+      {
+        question: "Is it better to use JavaScript or PHP for auto logout?",
+        answer: "Both have advantages. JavaScript provides immediate feedback and warnings without page reload, but can be bypassed. PHP is more secure but only checks on page loads. Best practice: use JavaScript for UX (warnings, countdowns) and PHP for actual security enforcement (logout and session cleanup)."
+      },
+      {
+        question: "How do I comply with PCI DSS requirements for payment sites?",
+        answer: "PCI DSS requires 15-minute maximum session timeout for cardholder data environments. Use the 900-second (15-minute) timeout from the code above, ensure it cannot be overridden, log all timeout events, and destroy all session data on timeout. Also implement re-authentication for sensitive operations."
+      }
+    ]
+  },
+  {
+    id: 51,
+    slug: 'hide-prices-not-logged-in',
+    title: 'Hide WooCommerce Prices for Non-Logged Users',
+    excerpt: 'Hide product prices and add to cart buttons for visitors who are not logged in. Perfect for wholesale stores and B2B sites.',
+    content: `
+      <h2>Why Hide Prices for Non-Logged Users?</h2>
+      <p>Many WooCommerce stores need to hide pricing from visitors, especially B2B stores, wholesale sites, membership-based shops, or premium product catalogs. This encourages user registration and helps protect pricing strategies from competitors.</p>
+
+      <h3>Basic Hide Prices Snippet</h3>
+      <pre><code class="language-php">// Hide prices for non-logged users
+function hide_prices_for_guests() {
+    if (!is_user_logged_in()) {
+        // Remove price from product pages
+        remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_price', 10);
+
+        // Remove price from loops
+        remove_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10);
+
+        // Remove add to cart button
+        remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_add_to_cart', 30);
+        remove_action('woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 10);
+    }
+}
+add_action('after_setup_theme', 'hide_prices_for_guests');</code></pre>
+
+      <h3>Replace Price with Custom Message</h3>
+      <pre><code class="language-php">// Show login message instead of price
+function replace_price_with_login_message($price, $product) {
+    if (!is_user_logged_in()) {
+        $login_url = wp_login_url(get_permalink());
+        return '&lt;a href="' . $login_url . '" class="login-to-see-price"&gt;Login to see prices&lt;/a&gt;';
+    }
+    return $price;
+}
+add_filter('woocommerce_get_price_html', 'replace_price_with_login_message', 10, 2);</code></pre>
+
+      <h3>Role-Based Price Visibility</h3>
+      <pre><code class="language-php">// Hide prices from specific user roles
+function hide_prices_by_role($price, $product) {
+    if (!is_user_logged_in()) {
+        return '&lt;span class="guest-price-notice"&gt;Login to view pricing&lt;/span&gt;';
+    }
+
+    $user = wp_get_current_user();
+    $allowed_roles = array('customer', 'wholesale_customer', 'administrator');
+
+    if (!array_intersect($allowed_roles, $user->roles)) {
+        return '&lt;span class="restricted-price-notice"&gt;Contact us for pricing&lt;/span&gt;';
+    }
+
+    return $price;
+}
+add_filter('woocommerce_get_price_html', 'hide_prices_by_role', 10, 2);</code></pre>
+
+      <h3>Hide Prices for Specific Categories</h3>
+      <pre><code class="language-php">// Hide prices for products in specific categories
+function hide_prices_by_category($price, $product) {
+    if (!is_user_logged_in()) {
+        $terms = get_the_terms($product->get_id(), 'product_cat');
+        $hide_categories = array('wholesale', 'bulk-orders', 'premium');
+
+        if ($terms) {
+            foreach ($terms as $term) {
+                if (in_array($term->slug, $hide_categories)) {
+                    return '&lt;a href="' . wp_login_url() . '"&gt;Login to see price&lt;/a&gt;';
+                }
+            }
+        }
+    }
+    return $price;
+}
+add_filter('woocommerce_get_price_html', 'hide_prices_by_category', 10, 2);</code></pre>
+
+      <h3>Add Custom Registration Link</h3>
+      <pre><code class="language-php">// Show register and login links
+function add_registration_message_to_products() {
+    if (!is_user_logged_in()) {
+        $login_url = wp_login_url(get_permalink());
+        $register_url = wp_registration_url();
+
+        echo '&lt;div class="woocommerce-guest-notice"&gt;';
+        echo '&lt;p&gt;&lt;strong&gt;Want to see prices?&lt;/strong&gt;&lt;/p&gt;';
+        echo '&lt;p&gt;&lt;a href="' . $login_url . '" class="button"&gt;Login&lt;/a&gt; ';
+        echo '&lt;a href="' . $register_url . '" class="button"&gt;Register&lt;/a&gt;&lt;/p&gt;';
+        echo '&lt;/div&gt;';
+    }
+}
+add_action('woocommerce_single_product_summary', 'add_registration_message_to_products', 31);</code></pre>
+
+      <h3>Prevent Cart Access for Guests</h3>
+      <pre><code class="language-php">// Redirect guests away from cart and checkout
+function restrict_cart_for_guests() {
+    if (!is_user_logged_in()) {
+        if (is_cart() || is_checkout()) {
+            wp_redirect(wp_login_url(wc_get_page_permalink('shop')));
+            exit;
+        }
+    }
+}
+add_action('template_redirect', 'restrict_cart_for_guests');</code></pre>
+
+      <h3>Implementation Best Practices</h3>
+      <ul>
+        <li><strong>Clear messaging:</strong> Tell users why they can't see prices</li>
+        <li><strong>Easy registration:</strong> Provide prominent login/register buttons</li>
+        <li><strong>SEO consideration:</strong> Use CSS to hide prices but keep in HTML for bots</li>
+        <li><strong>Mobile friendly:</strong> Ensure messages display well on mobile</li>
+        <li><strong>Email capture:</strong> Consider requiring email before showing prices</li>
+      </ul>
+
+      <h3>Use Cases</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Business Type</th>
+            <th>Why Hide Prices</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>B2B/Wholesale</td>
+            <td>Different pricing tiers for registered buyers</td>
+          </tr>
+          <tr>
+            <td>Membership Sites</td>
+            <td>Exclusive pricing for members only</td>
+          </tr>
+          <tr>
+            <td>Luxury Brands</td>
+            <td>Create exclusivity and prevent price comparison</td>
+          </tr>
+          <tr>
+            <td>Trade Suppliers</td>
+            <td>Verify professional buyers before showing trade prices</td>
+          </tr>
+          <tr>
+            <td>Regional Stores</td>
+            <td>Show prices only to specific geographic regions</td>
+          </tr>
+        </tbody>
+      </table>
+    `,
+    code: `if (!is_user_logged_in()) {
+    remove_action('woocommerce_single_product_summary', 'woocommerce_template_single_price', 10);
+    remove_action('woocommerce_after_shop_loop_item_title', 'woocommerce_template_loop_price', 10);
+}`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '6 min',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Pricing', 'Users'],
+    difficulty: 'Intermediate',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Hide WooCommerce Prices for Non-Logged Users - Complete Guide 2025',
+      metaDescription: 'Hide product prices and add to cart buttons for guests in WooCommerce. Perfect for B2B, wholesale stores, and membership sites.',
+      keywords: ['hide woocommerce prices', 'woocommerce guest prices', 'hide prices not logged in', 'woocommerce login to see prices', 'b2b woocommerce pricing'],
+      canonical: 'https://shahmir.dev/blog/hide-prices-not-logged-in',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Hide WooCommerce Prices for Non-Logged Users',
+        description: 'Complete guide to hiding WooCommerce prices for non-logged in users with code snippets and best practices.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WooCommerce 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Will hiding prices affect my SEO and Google Shopping?",
+        answer: "Yes, hiding prices completely can impact SEO and prevent Google Shopping listings. Consider using CSS to hide prices visually while keeping them in the HTML for search engines. Use schema markup with 'PriceSpecification' and 'eligibleCustomerType' to indicate prices are for registered users only."
+      },
+      {
+        question: "Can I hide prices but still allow add to cart functionality?",
+        answer: "Yes, you can hide only the price display while keeping the add to cart button. Use the woocommerce_get_price_html filter to return an empty string or custom message, but don't remove the woocommerce_template_single_add_to_cart action. Users can add items and see prices in their cart."
+      },
+      {
+        question: "How do I automatically redirect to login when someone tries to add to cart?",
+        answer: "Use the woocommerce_add_to_cart_validation filter to check if user is logged in. Return false and use wc_add_notice() to display a message, then redirect to login page with wp_safe_redirect(). Make sure to include the current page URL as a redirect parameter after login."
+      },
+      {
+        question: "Will this work with variable products and product variations?",
+        answer: "The basic snippet works for simple products. For variable products, also filter woocommerce_variable_price_html and woocommerce_variation_price_html. Remove the variation form with remove_action('woocommerce_single_variation', 'woocommerce_single_variation_add_to_cart_button', 20)."
+      },
+      {
+        question: "Can I show a price range or 'from' price to guests?",
+        answer: "Yes, modify the woocommerce_get_price_html filter to show a teaser like 'Prices from $X' where X is the lowest price. This encourages registration while giving some pricing context: return 'Prices from ' . wc_price($product->get_price()) for simple products."
+      }
+    ]
+  },
+  {
+    id: 52,
+    slug: 'custom-add-to-cart-text',
+    title: 'Change WooCommerce Add to Cart Button Text',
+    excerpt: 'Customize the add to cart button text in WooCommerce for different product types, categories, and contexts.',
+    content: `
+      <h2>Why Customize Add to Cart Button Text?</h2>
+      <p>The default "Add to Cart" text might not fit your brand voice or product type. Changing it to "Add to Bag", "Buy Now", "Reserve Now", or other custom text can improve conversions and better match your store's language.</p>
+
+      <h3>Change Button Text for All Products</h3>
+      <pre><code class="language-php">// Change add to cart text globally
+function custom_add_to_cart_text() {
+    return __('Buy Now', 'woocommerce');
+}
+add_filter('woocommerce_product_single_add_to_cart_text', 'custom_add_to_cart_text');
+add_filter('woocommerce_product_add_to_cart_text', 'custom_add_to_cart_text');</code></pre>
+
+      <h3>Different Text for Product Types</h3>
+      <pre><code class="language-php">// Custom text based on product type
+function product_type_add_to_cart_text($text, $product) {
+    if ($product->is_type('simple')) {
+        return __('Purchase', 'woocommerce');
+    }
+
+    if ($product->is_type('variable')) {
+        return __('Select Options', 'woocommerce');
+    }
+
+    if ($product->is_type('grouped')) {
+        return __('View Products', 'woocommerce');
+    }
+
+    if ($product->is_type('external')) {
+        return __('Buy Now', 'woocommerce');
+    }
+
+    return $text;
+}
+add_filter('woocommerce_product_add_to_cart_text', 'product_type_add_to_cart_text', 10, 2);
+add_filter('woocommerce_product_single_add_to_cart_text', 'product_type_add_to_cart_text', 10, 2);</code></pre>
+
+      <h3>Custom Text by Product Category</h3>
+      <pre><code class="language-php">// Different button text for different categories
+function category_based_cart_text($text, $product) {
+    $terms = get_the_terms($product->get_id(), 'product_cat');
+
+    if ($terms) {
+        foreach ($terms as $term) {
+            switch ($term->slug) {
+                case 'digital-downloads':
+                    return __('Download Now', 'woocommerce');
+                case 'services':
+                    return __('Book Service', 'woocommerce');
+                case 'subscriptions':
+                    return __('Subscribe', 'woocommerce');
+                case 'rentals':
+                    return __('Rent Now', 'woocommerce');
+            }
+        }
+    }
+
+    return $text;
+}
+add_filter('woocommerce_product_add_to_cart_text', 'category_based_cart_text', 10, 2);
+add_filter('woocommerce_product_single_add_to_cart_text', 'category_based_cart_text', 10, 2);</code></pre>
+
+      <h3>Different Text When Out of Stock</h3>
+      <pre><code class="language-php">// Change text for out of stock products
+function out_of_stock_button_text($text, $product) {
+    if (!$product->is_in_stock()) {
+        return __('Out of Stock - Notify Me', 'woocommerce');
+    }
+    return $text;
+}
+add_filter('woocommerce_product_add_to_cart_text', 'out_of_stock_button_text', 10, 2);
+add_filter('woocommerce_product_single_add_to_cart_text', 'out_of_stock_button_text', 10, 2);</code></pre>
+
+      <h3>Custom Text with Product Price</h3>
+      <pre><code class="language-php">// Include price in button text
+function add_price_to_cart_button($text, $product) {
+    if ($product->is_type('simple') && $product->is_purchasable() && $product->is_in_stock()) {
+        return sprintf(__('Add to Cart - %s', 'woocommerce'), $product->get_price_html());
+    }
+    return $text;
+}
+add_filter('woocommerce_product_add_to_cart_text', 'add_price_to_cart_button', 10, 2);</code></pre>
+
+      <h3>Different Text for Shop vs Single Product</h3>
+      <pre><code class="language-php">// Different text on shop page vs product page
+function shop_vs_product_button_text($text, $product) {
+    if (is_product()) {
+        // Single product page
+        return __('Add to Bag', 'woocommerce');
+    } else {
+        // Shop/archive pages
+        return __('Quick Add', 'woocommerce');
+    }
+}
+add_filter('woocommerce_product_add_to_cart_text', 'shop_vs_product_button_text', 10, 2);
+add_filter('woocommerce_product_single_add_to_cart_text', 'shop_vs_product_button_text', 10, 2);</code></pre>
+
+      <h3>Custom Text Based on Sale Status</h3>
+      <pre><code class="language-php">// Different text for products on sale
+function sale_product_button_text($text, $product) {
+    if ($product->is_on_sale()) {
+        $savings = $product->get_regular_price() - $product->get_sale_price();
+        return sprintf(__('Get Sale - Save %s', 'woocommerce'), wc_price($savings));
+    }
+    return $text;
+}
+add_filter('woocommerce_product_add_to_cart_text', 'sale_product_button_text', 10, 2);
+add_filter('woocommerce_product_single_add_to_cart_text', 'sale_product_button_text', 10, 2);</code></pre>
+
+      <h3>Best Button Text Examples</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Store Type</th>
+            <th>Recommended Text</th>
+            <th>Why It Works</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Fashion/Apparel</td>
+            <td>Add to Bag, Add to Wardrobe</td>
+            <td>Matches shopping terminology</td>
+          </tr>
+          <tr>
+            <td>Digital Products</td>
+            <td>Get Instant Access, Download Now</td>
+            <td>Emphasizes immediate delivery</td>
+          </tr>
+          <tr>
+            <td>Services/Bookings</td>
+            <td>Book Now, Reserve Spot</td>
+            <td>Action-oriented for appointments</td>
+          </tr>
+          <tr>
+            <td>Food/Restaurants</td>
+            <td>Order Now, Add to Order</td>
+            <td>Restaurant-specific language</td>
+          </tr>
+          <tr>
+            <td>B2B/Wholesale</td>
+            <td>Request Quote, Add to Inquiry</td>
+            <td>Professional tone</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Testing & Optimization Tips</h3>
+      <ul>
+        <li><strong>A/B test different texts:</strong> Use tools like Google Optimize</li>
+        <li><strong>Match your brand voice:</strong> Casual vs professional tone</li>
+        <li><strong>Consider urgency:</strong> "Buy Now" vs "Add to Cart"</li>
+        <li><strong>Mobile-friendly text:</strong> Keep it short for mobile buttons</li>
+        <li><strong>Clear action verbs:</strong> Start with action words (Add, Buy, Get, Purchase)</li>
+      </ul>
+    `,
+    code: `add_filter('woocommerce_product_single_add_to_cart_text', function() {
+    return __('Buy Now', 'woocommerce');
+});
+add_filter('woocommerce_product_add_to_cart_text', function() {
+    return __('Buy Now', 'woocommerce');
+});`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '5 min',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Buttons', 'Customization'],
+    difficulty: 'Beginner',
+    compatibility: 'WooCommerce 2.0+',
+    seo: {
+      metaTitle: 'Change WooCommerce Add to Cart Button Text - Complete Guide 2025',
+      metaDescription: 'Customize WooCommerce add to cart button text by product type, category, or globally. Code snippets included for all scenarios.',
+      keywords: ['woocommerce change button text', 'add to cart button text', 'customize woocommerce buttons', 'woocommerce buy now button', 'change add to cart text'],
+      canonical: 'https://shahmir.dev/blog/custom-add-to-cart-text',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Change WooCommerce Add to Cart Button Text',
+        description: 'Complete guide to customizing WooCommerce add to cart button text with multiple code examples.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Beginner',
+        dependencies: 'WooCommerce 2.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Why isn't my custom button text showing on variable products?",
+        answer: "Variable products use a different filter. Make sure you're applying both woocommerce_product_add_to_cart_text (for shop pages) and woocommerce_product_single_add_to_cart_text (for single product pages). For variable products, the default is 'Select options' which you need to override specifically."
+      },
+      {
+        question: "How can I change the 'Read more' text for external/affiliate products?",
+        answer: "External products use a special filter: add_filter('woocommerce_product_add_to_cart_text', function($text, $product) { if($product->is_type('external')) return 'View Product'; return $text; }, 10, 2). This changes the button that links to the external URL."
+      },
+      {
+        question: "Can I make the button text dynamic based on cart contents?",
+        answer: "Yes, check if the product is already in cart using WC()->cart->find_product_in_cart($cart_item_key). Return 'Already in Cart' or 'Add Another' accordingly. However, this requires AJAX refresh to update without page reload when items are added."
+      },
+      {
+        question: "How do I translate custom button text for multilingual stores?",
+        answer: "Use the __() function with a text domain as shown in examples: __('Buy Now', 'your-text-domain'). Then use WPML, Polylang, or Loco Translate plugins to create translations. Or use conditional logic with if(ICL_LANGUAGE_CODE == 'es') for specific languages."
+      },
+      {
+        question: "Will changing button text affect Google Analytics tracking?",
+        answer: "If you're tracking button clicks by text, yes. Update your GA tracking code to match the new text, or better yet, track by CSS class (.single_add_to_cart_button) instead of button text. This makes your tracking more resilient to text changes."
+      }
+    ]
+  },
+  {
+    id: 53,
+    slug: 'remove-woocommerce-styles',
+    title: 'Disable WooCommerce Default Styles and Scripts',
+    excerpt: 'Remove WooCommerce CSS and JavaScript for better performance and complete style control. Optimize your WooCommerce store loading speed.',
+    content: `
+      <h2>Why Disable WooCommerce Styles?</h2>
+      <p>WooCommerce loads several CSS and JavaScript files on every page, even where they're not needed. Disabling default styles gives you complete control over design and can significantly improve page load times, especially if you're using custom styles or page builders.</p>
+
+      <h3>Disable All WooCommerce Styles</h3>
+      <pre><code class="language-php">// Remove WooCommerce styles completely
+add_filter('woocommerce_enqueue_styles', '__return_empty_array');</code></pre>
+
+      <h3>Disable Specific WooCommerce Styles</h3>
+      <pre><code class="language-php">// Selectively disable WooCommerce stylesheets
+function disable_specific_woocommerce_styles($enqueue_styles) {
+    // Remove general WooCommerce layout styles
+    unset($enqueue_styles['woocommerce-general']);
+
+    // Remove small screen styles
+    unset($enqueue_styles['woocommerce-smallscreen']);
+
+    // Keep layout styles (optional)
+    // unset($enqueue_styles['woocommerce-layout']);
+
+    return $enqueue_styles;
+}
+add_filter('woocommerce_enqueue_styles', 'disable_specific_woocommerce_styles');</code></pre>
+
+      <h3>Disable Styles on Non-WooCommerce Pages</h3>
+      <pre><code class="language-php">// Only load WooCommerce styles where needed
+function disable_woocommerce_styles_on_non_shop_pages($enqueue_styles) {
+    // Return empty if not a WooCommerce page
+    if (!is_woocommerce() && !is_cart() && !is_checkout() && !is_account_page()) {
+        return array();
+    }
+
+    return $enqueue_styles;
+}
+add_filter('woocommerce_enqueue_styles', 'disable_woocommerce_styles_on_non_shop_pages');</code></pre>
+
+      <h3>Disable WooCommerce Scripts</h3>
+      <pre><code class="language-php">// Remove WooCommerce JavaScript files
+function disable_woocommerce_scripts() {
+    // Remove on non-WooCommerce pages
+    if (!is_woocommerce() && !is_cart() && !is_checkout() && !is_account_page()) {
+
+        // Disable cart fragments (AJAX cart update)
+        wp_dequeue_script('wc-cart-fragments');
+        wp_deregister_script('wc-cart-fragments');
+
+        // Disable add to cart script
+        wp_dequeue_script('wc-add-to-cart');
+
+        // Disable general WooCommerce scripts
+        wp_dequeue_script('woocommerce');
+
+        // Disable select2 (used for dropdowns)
+        wp_dequeue_script('selectWoo');
+        wp_deregister_script('selectWoo');
+    }
+}
+add_action('wp_enqueue_scripts', 'disable_woocommerce_scripts', 99);</code></pre>
+
+      <h3>Disable Cart Fragments (Biggest Performance Impact)</h3>
+      <pre><code class="language-php">// Disable AJAX cart fragments for better performance
+function disable_cart_fragments() {
+    if (is_front_page()) {
+        wp_dequeue_script('wc-cart-fragments');
+    }
+}
+add_action('wp_enqueue_scripts', 'disable_cart_fragments', 11);
+
+// Completely remove cart fragments functionality
+add_action('wp_enqueue_scripts', function() {
+    wp_deregister_script('wc-cart-fragments');
+}, 11);</code></pre>
+
+      <h3>Disable Password Strength Meter</h3>
+      <pre><code class="language-php">// Remove password strength meter script
+function disable_password_strength_meter() {
+    if (!is_checkout() && !is_account_page()) {
+        wp_dequeue_script('wc-password-strength-meter');
+        wp_deregister_script('wc-password-strength-meter');
+    }
+}
+add_action('wp_print_scripts', 'disable_password_strength_meter', 100);</code></pre>
+
+      <h3>Disable Block Styles (For WordPress 5.8+)</h3>
+      <pre><code class="language-php">// Remove WooCommerce block styles
+function disable_woocommerce_block_styles() {
+    wp_dequeue_style('wc-blocks-style');
+    wp_dequeue_style('wc-blocks-style-active-filters');
+    wp_dequeue_style('wc-blocks-style-add-to-cart-form');
+    wp_dequeue_style('wc-blocks-packages-style');
+    wp_dequeue_style('wc-blocks-style-all-products');
+    wp_dequeue_style('wc-blocks-style-all-reviews');
+    wp_dequeue_style('wc-blocks-style-attribute-filter');
+    wp_dequeue_style('wc-blocks-style-breadcrumbs');
+    wp_dequeue_style('wc-blocks-style-catalog-sorting');
+    wp_dequeue_style('wc-blocks-style-customer-account');
+    wp_dequeue_style('wc-blocks-style-featured-category');
+    wp_dequeue_style('wc-blocks-style-featured-product');
+    wp_dequeue_style('wc-blocks-style-mini-cart');
+    wp_dequeue_style('wc-blocks-style-price-filter');
+    wp_dequeue_style('wc-blocks-style-product-add-to-cart');
+}
+add_action('enqueue_block_assets', 'disable_woocommerce_block_styles', 100);</code></pre>
+
+      <h3>Complete Performance Optimization</h3>
+      <pre><code class="language-php">// Comprehensive WooCommerce optimization
+function optimize_woocommerce_scripts() {
+    // Get WooCommerce pages
+    $woo_pages = array(is_woocommerce(), is_cart(), is_checkout(), is_account_page());
+
+    // If not on WooCommerce page
+    if (!in_array(true, $woo_pages)) {
+
+        // Remove all WooCommerce styles
+        add_filter('woocommerce_enqueue_styles', '__return_empty_array');
+
+        // Remove scripts
+        wp_dequeue_script('wc-cart-fragments');
+        wp_deregister_script('wc-cart-fragments');
+        wp_dequeue_script('wc-add-to-cart');
+        wp_dequeue_script('woocommerce');
+        wp_dequeue_script('selectWoo');
+        wp_deregister_script('selectWoo');
+
+        // Remove styles
+        wp_dequeue_style('woocommerce-general');
+        wp_dequeue_style('woocommerce-layout');
+        wp_dequeue_style('woocommerce-smallscreen');
+    }
+}
+add_action('wp_enqueue_scripts', 'optimize_woocommerce_scripts', 99);</code></pre>
+
+      <h3>Performance Impact Comparison</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Optimization</th>
+            <th>Page Load Improvement</th>
+            <th>Requests Saved</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Disable All Styles</td>
+            <td>200-300ms faster</td>
+            <td>3-5 CSS files</td>
+          </tr>
+          <tr>
+            <td>Disable Cart Fragments</td>
+            <td>400-600ms faster</td>
+            <td>1 AJAX request per page</td>
+          </tr>
+          <tr>
+            <td>Disable Select2</td>
+            <td>100-150ms faster</td>
+            <td>1 JS + 1 CSS file</td>
+          </tr>
+          <tr>
+            <td>Conditional Loading</td>
+            <td>500-800ms on non-shop pages</td>
+            <td>5-10 requests</td>
+          </tr>
+          <tr>
+            <td>Full Optimization</td>
+            <td>1-2 seconds on homepage</td>
+            <td>10-15 requests</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Important Considerations</h3>
+      <ul>
+        <li><strong>Test thoroughly:</strong> Ensure cart, checkout, and shop pages work correctly</li>
+        <li><strong>Custom styles required:</strong> You'll need to style WooCommerce elements yourself</li>
+        <li><strong>Cart fragments:</strong> Disabling may break AJAX cart updates</li>
+        <li><strong>Plugin compatibility:</strong> Some WooCommerce extensions may break</li>
+        <li><strong>Fallback styles:</strong> Keep essential layout styles for functionality</li>
+      </ul>
+    `,
+    code: `// Remove WooCommerce styles
+add_filter('woocommerce_enqueue_styles', '__return_empty_array');
+
+// Disable cart fragments
+add_action('wp_enqueue_scripts', function() {
+    wp_deregister_script('wc-cart-fragments');
+}, 11);`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '6 min',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'CSS', 'Performance'],
+    difficulty: 'Beginner',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Disable WooCommerce Styles & Scripts - Performance Optimization 2025',
+      metaDescription: 'Remove WooCommerce default CSS and JavaScript to improve performance. Complete guide with code snippets for selective optimization.',
+      keywords: ['disable woocommerce styles', 'remove woocommerce css', 'woocommerce performance', 'disable cart fragments', 'woocommerce optimization'],
+      canonical: 'https://shahmir.dev/blog/remove-woocommerce-styles',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Disable WooCommerce Default Styles and Scripts',
+        description: 'Comprehensive guide to removing WooCommerce CSS and JavaScript for better performance and custom styling.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Beginner',
+        dependencies: 'WooCommerce 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Will disabling WooCommerce styles break my store's appearance?",
+        answer: "Yes, if you remove all WooCommerce styles without adding custom CSS, your store will appear unstyled. This method is for developers who want complete control. Either keep woocommerce-layout for basic structure, or ensure your theme has comprehensive WooCommerce styling before disabling defaults."
+      },
+      {
+        question: "What happens if I disable cart fragments?",
+        answer: "Cart fragments are AJAX calls that update the cart count in real-time. Disabling them means the cart widget won't update until page refresh. If your site doesn't display cart counts in the header, or you're okay with refresh-based updates, disabling fragments can save 400-600ms per page load."
+      },
+      {
+        question: "Can I disable styles site-wide but re-enable on specific pages?",
+        answer: "Yes, use conditional logic. First disable globally with add_filter('woocommerce_enqueue_styles', '__return_empty_array'), then manually enqueue specific stylesheets on needed pages using wp_enqueue_style() within conditional checks like if(is_product())."
+      },
+      {
+        question: "How do I check which WooCommerce scripts are loading on my site?",
+        answer: "Install Query Monitor plugin or use browser DevTools. In Chrome: right-click > Inspect > Network tab > filter by 'wc-' or 'woocommerce'. This shows all WooCommerce assets. Look for unused scripts on non-shop pages that you can safely disable."
+      },
+      {
+        question: "Will this affect WooCommerce functionality or just appearance?",
+        answer: "Disabling styles only affects appearance. However, disabling scripts CAN break functionality. Cart fragments enable AJAX cart updates, select2 powers enhanced dropdowns, and password-strength-meter is needed for registration. Only disable scripts you've verified aren't used on your site."
+      }
+    ]
+  },
+  {
+    id: 54,
+    slug: 'custom-product-tabs',
+    title: 'Add Custom Product Tabs in WooCommerce',
+    excerpt: 'Create custom product tabs in WooCommerce to display additional information like size guides, shipping info, or reviews.',
+    content: `
+      <h2>Why Add Custom Product Tabs?</h2>
+      <p>Custom product tabs help organize product information better, improve user experience, and increase conversions by displaying essential details like size charts, shipping information, FAQs, or warranty details in an organized manner.</p>
+
+      <h3>Add a Simple Custom Tab</h3>
+      <pre><code class="language-php">// Add a custom product tab
+function add_custom_product_tab($tabs) {
+    $tabs['custom_tab'] = array(
+        'title'    => __('Size Guide', 'woocommerce'),
+        'priority' => 50,
+        'callback' => 'custom_product_tab_content'
+    );
+
+    return $tabs;
+}
+add_filter('woocommerce_product_tabs', 'add_custom_product_tab');
+
+// Custom tab content
+function custom_product_tab_content() {
+    echo '&lt;h2&gt;Size Guide&lt;/h2&gt;';
+    echo '&lt;p&gt;Please refer to our size chart to find your perfect fit.&lt;/p&gt;';
+    echo '&lt;table class="size-chart"&gt;';
+    echo '&lt;tr&gt;&lt;th&gt;Size&lt;/th&gt;&lt;th&gt;Chest&lt;/th&gt;&lt;th&gt;Waist&lt;/th&gt;&lt;/tr&gt;';
+    echo '&lt;tr&gt;&lt;td&gt;S&lt;/td&gt;&lt;td&gt;34-36"&lt;/td&gt;&lt;td&gt;28-30"&lt;/td&gt;&lt;/tr&gt;';
+    echo '&lt;tr&gt;&lt;td&gt;M&lt;/td&gt;&lt;td&gt;38-40"&lt;/td&gt;&lt;td&gt;32-34"&lt;/td&gt;&lt;/tr&gt;';
+    echo '&lt;tr&gt;&lt;td&gt;L&lt;/td&gt;&lt;td&gt;42-44"&lt;/td&gt;&lt;td&gt;36-38"&lt;/td&gt;&lt;/tr&gt;';
+    echo '&lt;/table&gt;';
+}</code></pre>
+
+      <h3>Tab with Custom Field Content</h3>
+      <pre><code class="language-php">// Add tab with content from custom field
+function add_custom_field_tab($tabs) {
+    global $post;
+
+    // Check if custom field exists
+    if (get_post_meta($post->ID, 'custom_tab_content', true)) {
+        $tabs['custom_info'] = array(
+            'title'    => get_post_meta($post->ID, 'custom_tab_title', true) ?: __('Additional Info', 'woocommerce'),
+            'priority' => 50,
+            'callback' => 'custom_field_tab_content'
+        );
+    }
+
+    return $tabs;
+}
+add_filter('woocommerce_product_tabs', 'add_custom_field_tab');
+
+function custom_field_tab_content() {
+    global $post;
+    $content = get_post_meta($post->ID, 'custom_tab_content', true);
+    echo wpautop($content);
+}</code></pre>
+
+      <h3>Multiple Custom Tabs</h3>
+      <pre><code class="language-php">// Add multiple custom tabs
+function add_multiple_custom_tabs($tabs) {
+
+    // Shipping Information Tab
+    $tabs['shipping_tab'] = array(
+        'title'    => __('Shipping Info', 'woocommerce'),
+        'priority' => 25,
+        'callback' => 'shipping_tab_content'
+    );
+
+    // Warranty Tab
+    $tabs['warranty_tab'] = array(
+        'title'    => __('Warranty', 'woocommerce'),
+        'priority' => 30,
+        'callback' => 'warranty_tab_content'
+    );
+
+    // FAQ Tab
+    $tabs['faq_tab'] = array(
+        'title'    => __('FAQs', 'woocommerce'),
+        'priority' => 35,
+        'callback' => 'faq_tab_content'
+    );
+
+    return $tabs;
+}
+add_filter('woocommerce_product_tabs', 'add_multiple_custom_tabs');
+
+function shipping_tab_content() {
+    echo '&lt;h2&gt;Shipping Information&lt;/h2&gt;';
+    echo '&lt;p&gt;Free shipping on orders over $50. Delivery within 3-5 business days.&lt;/p&gt;';
+}
+
+function warranty_tab_content() {
+    echo '&lt;h2&gt;Warranty Details&lt;/h2&gt;';
+    echo '&lt;p&gt;1-year manufacturer warranty included. Extended warranties available.&lt;/p&gt;';
+}
+
+function faq_tab_content() {
+    echo '&lt;h2&gt;Frequently Asked Questions&lt;/h2&gt;';
+    echo '&lt;p&gt;&lt;strong&gt;Q: Is this product in stock?&lt;/strong&gt;&lt;br&gt;A: Yes, available for immediate shipping.&lt;/p&gt;';
+}</code></pre>
+
+      <h3>Conditional Tabs by Product Category</h3>
+      <pre><code class="language-php">// Show tab only for specific categories
+function category_specific_tab($tabs) {
+    global $post;
+
+    if (has_term('clothing', 'product_cat', $post->ID)) {
+        $tabs['care_instructions'] = array(
+            'title'    => __('Care Instructions', 'woocommerce'),
+            'priority' => 40,
+            'callback' => 'care_instructions_content'
+        );
+    }
+
+    if (has_term('electronics', 'product_cat', $post->ID)) {
+        $tabs['specifications'] = array(
+            'title'    => __('Tech Specs', 'woocommerce'),
+            'priority' => 40,
+            'callback' => 'tech_specs_content'
+        );
+    }
+
+    return $tabs;
+}
+add_filter('woocommerce_product_tabs', 'category_specific_tab');
+
+function care_instructions_content() {
+    echo '&lt;h2&gt;Care Instructions&lt;/h2&gt;';
+    echo '&lt;ul&gt;';
+    echo '&lt;li&gt;Machine wash cold&lt;/li&gt;';
+    echo '&lt;li&gt;Tumble dry low&lt;/li&gt;';
+    echo '&lt;li&gt;Do not bleach&lt;/li&gt;';
+    echo '&lt;/ul&gt;';
+}
+
+function tech_specs_content() {
+    echo '&lt;h2&gt;Technical Specifications&lt;/h2&gt;';
+    echo '&lt;p&gt;Detailed technical information and specifications.&lt;/p&gt;';
+}</code></pre>
+
+      <h3>Remove Default Tabs</h3>
+      <pre><code class="language-php">// Remove default WooCommerce tabs
+function remove_default_tabs($tabs) {
+    // Remove description tab
+    unset($tabs['description']);
+
+    // Remove reviews tab
+    unset($tabs['reviews']);
+
+    // Remove additional information tab
+    unset($tabs['additional_information']);
+
+    return $tabs;
+}
+add_filter('woocommerce_product_tabs', 'remove_default_tabs', 98);</code></pre>
+
+      <h3>Rename Default Tabs</h3>
+      <pre><code class="language-php">// Rename existing tabs
+function rename_product_tabs($tabs) {
+    // Rename description tab
+    if (isset($tabs['description'])) {
+        $tabs['description']['title'] = __('Product Details', 'woocommerce');
+    }
+
+    // Rename reviews tab
+    if (isset($tabs['reviews'])) {
+        $tabs['reviews']['title'] = __('Customer Feedback', 'woocommerce');
+    }
+
+    // Rename additional information tab
+    if (isset($tabs['additional_information'])) {
+        $tabs['additional_information']['title'] = __('Specifications', 'woocommerce');
+    }
+
+    return $tabs;
+}
+add_filter('woocommerce_product_tabs', 'rename_product_tabs', 98);</code></pre>
+
+      <h3>Reorder Product Tabs</h3>
+      <pre><code class="language-php">// Change tab display order
+function reorder_product_tabs($tabs) {
+    // Change priorities (lower = displays first)
+    $tabs['description']['priority'] = 10;          // First
+    $tabs['additional_information']['priority'] = 20; // Second
+    $tabs['reviews']['priority'] = 30;              // Third
+
+    return $tabs;
+}
+add_filter('woocommerce_product_tabs', 'reorder_product_tabs', 98);</code></pre>
+
+      <h3>Common Tab Ideas</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Tab Name</th>
+            <th>Best For</th>
+            <th>Content Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Size Guide</td>
+            <td>Clothing, Shoes</td>
+            <td>Size charts, measurement tips</td>
+          </tr>
+          <tr>
+            <td>Shipping Info</td>
+            <td>All products</td>
+            <td>Delivery times, costs, tracking</td>
+          </tr>
+          <tr>
+            <td>Care Instructions</td>
+            <td>Apparel, Furniture</td>
+            <td>Washing, maintenance tips</td>
+          </tr>
+          <tr>
+            <td>Warranty</td>
+            <td>Electronics, Appliances</td>
+            <td>Warranty terms, returns</td>
+          </tr>
+          <tr>
+            <td>FAQs</td>
+            <td>Complex products</td>
+            <td>Common questions, troubleshooting</td>
+          </tr>
+          <tr>
+            <td>Specifications</td>
+            <td>Tech products</td>
+            <td>Technical details, compatibility</td>
+          </tr>
+          <tr>
+            <td>Ingredients</td>
+            <td>Food, Cosmetics</td>
+            <td>Components, allergen info</td>
+          </tr>
+          <tr>
+            <td>Video Guide</td>
+            <td>Assembly products</td>
+            <td>Tutorial videos, demos</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li><strong>Keep it scannable:</strong> Use bullet points and short paragraphs</li>
+        <li><strong>Relevant content only:</strong> Don't add tabs just for the sake of it</li>
+        <li><strong>Mobile-friendly:</strong> Test tabs on mobile devices</li>
+        <li><strong>Clear titles:</strong> Use descriptive tab names</li>
+        <li><strong>Priority ordering:</strong> Most important information first</li>
+        <li><strong>Consistent styling:</strong> Match your theme's design</li>
+      </ul>
+    `,
+    code: `add_filter('woocommerce_product_tabs', function($tabs) {
+    $tabs['custom_tab'] = array(
+        'title'    => __('Size Guide', 'woocommerce'),
+        'priority' => 50,
+        'callback' => 'custom_tab_content'
+    );
+    return $tabs;
+});`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '7 min',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Products', 'Tabs'],
+    difficulty: 'Intermediate',
+    compatibility: 'WooCommerce 2.0+',
+    seo: {
+      metaTitle: 'Add Custom Product Tabs in WooCommerce - Complete Guide 2025',
+      metaDescription: 'Create custom WooCommerce product tabs for size guides, shipping info, warranties, and more. Multiple code examples included.',
+      keywords: ['woocommerce custom tabs', 'add product tabs woocommerce', 'woocommerce size guide tab', 'custom product information', 'woocommerce tabs tutorial'],
+      canonical: 'https://shahmir.dev/blog/custom-product-tabs',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Add Custom Product Tabs in WooCommerce',
+        description: 'Complete guide to creating, customizing, and managing WooCommerce product tabs with code snippets.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WooCommerce 2.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "How do I add different tabs for different products individually?",
+        answer: "Use custom fields (post meta) to store tab content per product. Check if get_post_meta($post->ID, 'custom_tab_content', true) exists before adding the tab. This allows you to enable/disable tabs and customize content for each product through the product edit screen."
+      },
+      {
+        question: "Can I use HTML and shortcodes in custom tab content?",
+        answer: "Yes, HTML works directly. For shortcodes, use do_shortcode($content) to process them. For custom field content, use echo wpautop(do_shortcode($content)) to handle both paragraphs and shortcodes. Be cautious with user-submitted HTML; sanitize with wp_kses_post() for security."
+      },
+      {
+        question: "How do I make tabs accordion-style on mobile devices?",
+        answer: "WooCommerce tabs are already responsive by default. For custom accordion behavior, modify the CSS or use JavaScript. Target .woocommerce-tabs with media queries. Alternatively, use a plugin like 'Product Tabs for WooCommerce' which includes mobile accordion options."
+      },
+      {
+        question: "Why aren't my custom tabs showing up?",
+        answer: "Common causes: 1) Theme doesn't support WooCommerce product tabs (check if theme calls wc_get_template('single-product/tabs/tabs.php')), 2) Another plugin is filtering woocommerce_product_tabs with higher priority, 3) Tab callback function isn't defined, or 4) Conditional logic is preventing tab from appearing. Test with a default theme like Storefront."
+      },
+      {
+        question: "Can I use ACF (Advanced Custom Fields) for tab content?",
+        answer: "Absolutely. In your callback function, use get_field('tab_content') instead of get_post_meta(). ACF provides better UI for content editors. Example: if(get_field('tab_content')) { $tabs['acf_tab'] = array(...); } This makes tab management easier for non-developers."
+      }
+    ]
+  },
+  {
+    id: 55,
+    slug: 'minimum-order-amount',
+    title: 'Set Minimum Order Amount in WooCommerce',
+    excerpt: 'Require a minimum order total in WooCommerce before customers can checkout. Perfect for wholesale stores and bulk orders.',
+    content: `
+      <h2>Why Set a Minimum Order Amount?</h2>
+      <p>Setting a minimum order amount helps cover shipping costs, transaction fees, and ensures profitability. It's particularly useful for wholesale stores, food delivery services, and businesses with high fixed costs per order.</p>
+
+      <h3>Basic Minimum Order Amount</h3>
+      <pre><code class="language-php">// Set minimum order amount
+function minimum_order_amount() {
+    $minimum = 50; // Minimum cart total
+
+    if (WC()->cart->total < $minimum) {
+        if (is_cart()) {
+            wc_print_notice(
+                sprintf('Your current order total is %s — you must have an order with a minimum of %s to place your order.',
+                    wc_price(WC()->cart->total),
+                    wc_price($minimum)
+                ), 'error'
+            );
+        } else {
+            wc_add_notice(
+                sprintf('Your current order total is %s — you must have an order with a minimum of %s to place your order.',
+                    wc_price(WC()->cart->total),
+                    wc_price($minimum)
+                ), 'error'
+            );
+        }
+    }
+}
+add_action('woocommerce_checkout_process', 'minimum_order_amount');
+add_action('woocommerce_before_cart', 'minimum_order_amount');</code></pre>
+
+      <h3>Minimum Based on Subtotal (Excluding Shipping)</h3>
+      <pre><code class="language-php">// Minimum order based on subtotal only
+function minimum_subtotal_amount() {
+    $minimum = 50;
+    $subtotal = WC()->cart->subtotal; // Excludes shipping and taxes
+
+    if ($subtotal < $minimum) {
+        wc_add_notice(
+            sprintf('Minimum order subtotal is %s (current: %s). Add more products to continue.',
+                wc_price($minimum),
+                wc_price($subtotal)
+            ), 'error'
+        );
+
+        // Prevent checkout
+        remove_action('woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20);
+    }
+}
+add_action('woocommerce_check_cart_items', 'minimum_subtotal_amount');
+add_action('woocommerce_before_cart', 'minimum_subtotal_amount');</code></pre>
+
+      <h3>Different Minimums by User Role</h3>
+      <pre><code class="language-php">// Role-based minimum order amounts
+function role_based_minimum_order() {
+    $user = wp_get_current_user();
+
+    // Set minimum by role
+    if (in_array('wholesale_customer', $user->roles)) {
+        $minimum = 100; // Wholesale minimum
+        $message = 'Wholesale orders require a minimum of %s';
+    } elseif (in_array('customer', $user->roles)) {
+        $minimum = 30; // Regular customer minimum
+        $message = 'Minimum order amount is %s';
+    } else {
+        $minimum = 50; // Guest/other users
+        $message = 'Please create an account or add items totaling at least %s';
+    }
+
+    if (WC()->cart->total < $minimum) {
+        wc_add_notice(
+            sprintf($message, wc_price($minimum)),
+            'error'
+        );
+    }
+}
+add_action('woocommerce_checkout_process', 'role_based_minimum_order');
+add_action('woocommerce_before_cart', 'role_based_minimum_order');</code></pre>
+
+      <h3>Minimum for Specific Shipping Methods</h3>
+      <pre><code class="language-php">// Minimum order for free shipping
+function minimum_for_free_shipping() {
+    $minimum = 75;
+    $cart_total = WC()->cart->subtotal;
+    $chosen_methods = WC()->session->get('chosen_shipping_methods');
+
+    // Check if free shipping is selected
+    if (!empty($chosen_methods) && strpos($chosen_methods[0], 'free_shipping') !== false) {
+        if ($cart_total < $minimum) {
+            wc_add_notice(
+                sprintf('Free shipping requires a minimum order of %s. Your current total is %s. Add %s more to qualify.',
+                    wc_price($minimum),
+                    wc_price($cart_total),
+                    wc_price($minimum - $cart_total)
+                ), 'notice'
+            );
+        }
+    }
+}
+add_action('woocommerce_review_order_before_payment', 'minimum_for_free_shipping');</code></pre>
+
+      <h3>Category-Based Minimum Order</h3>
+      <pre><code class="language-php">// Minimum order for specific product categories
+function category_minimum_order() {
+    $minimum = 100;
+    $category_slug = 'bulk-items';
+    $category_total = 0;
+    $has_category_product = false;
+
+    // Calculate total for specific category
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        if (has_term($category_slug, 'product_cat', $cart_item['product_id'])) {
+            $has_category_product = true;
+            $category_total += $cart_item['line_total'];
+        }
+    }
+
+    if ($has_category_product && $category_total < $minimum) {
+        wc_add_notice(
+            sprintf('Bulk items require a minimum order of %s. Current bulk items total: %s',
+                wc_price($minimum),
+                wc_price($category_total)
+            ), 'error'
+        );
+    }
+}
+add_action('woocommerce_checkout_process', 'category_minimum_order');
+add_action('woocommerce_before_cart', 'category_minimum_order');</code></pre>
+
+      <h3>Progress Bar for Minimum Order</h3>
+      <pre><code class="language-php">// Show progress bar towards minimum order
+function minimum_order_progress_bar() {
+    $minimum = 50;
+    $current = WC()->cart->subtotal;
+
+    if ($current < $minimum) {
+        $remaining = $minimum - $current;
+        $percentage = ($current / $minimum) * 100;
+
+        echo '&lt;div class="minimum-order-notice"&gt;';
+        echo sprintf('&lt;p&gt;Add %s more to reach minimum order amount!&lt;/p&gt;', wc_price($remaining));
+        echo '&lt;div class="progress-bar" style="background: #f0f0f0; height: 20px; border-radius: 10px;"&gt;';
+        echo sprintf('&lt;div class="progress" style="width: %s%%; background: #4CAF50; height: 100%%; border-radius: 10px;"&gt;&lt;/div&gt;', $percentage);
+        echo '&lt;/div&gt;';
+        echo '&lt;/div&gt;';
+    } else {
+        echo '&lt;div class="minimum-order-notice success"&gt;';
+        echo '&lt;p&gt;✓ Minimum order amount reached!&lt;/p&gt;';
+        echo '&lt;/div&gt;';
+    }
+}
+add_action('woocommerce_before_cart', 'minimum_order_progress_bar');</code></pre>
+
+      <h3>Country-Specific Minimums</h3>
+      <pre><code class="language-php">// Different minimums by country
+function country_based_minimum() {
+    $customer = WC()->customer;
+    $country = $customer->get_billing_country();
+
+    // Set minimum by country
+    $minimums = array(
+        'US' => 50,
+        'CA' => 75,
+        'GB' => 40,
+        'AU' => 60,
+        'default' => 50
+    );
+
+    $minimum = isset($minimums[$country]) ? $minimums[$country] : $minimums['default'];
+
+    if (WC()->cart->total < $minimum) {
+        wc_add_notice(
+            sprintf('Minimum order for %s is %s',
+                $country,
+                wc_price($minimum)
+            ), 'error'
+        );
+    }
+}
+add_action('woocommerce_checkout_process', 'country_based_minimum');</code></pre>
+
+      <h3>Minimum Order Strategies</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Business Type</th>
+            <th>Recommended Minimum</th>
+            <th>Reasoning</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Food Delivery</td>
+            <td>$15-25</td>
+            <td>Cover delivery costs and prep time</td>
+          </tr>
+          <tr>
+            <td>Wholesale/B2B</td>
+            <td>$100-500</td>
+            <td>Bulk order focus, higher margins</td>
+          </tr>
+          <tr>
+            <td>Fashion Retail</td>
+            <td>$30-50</td>
+            <td>Shipping costs, average item price</td>
+          </tr>
+          <tr>
+            <td>Grocery Delivery</td>
+            <td>$25-40</td>
+            <td>Justify delivery fee and packing</td>
+          </tr>
+          <tr>
+            <td>Digital Products</td>
+            <td>No minimum</td>
+            <td>No shipping costs involved</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Implementation Tips</h3>
+      <ul>
+        <li><strong>Clear messaging:</strong> Tell customers how much more they need to add</li>
+        <li><strong>Progress indicators:</strong> Show visual progress towards minimum</li>
+        <li><strong>Smart suggestions:</strong> Recommend products to reach minimum</li>
+        <li><strong>Exclude from minimums:</strong> Consider excluding shipping/taxes</li>
+        <li><strong>Free shipping threshold:</strong> Set minimum lower than free shipping</li>
+        <li><strong>Test thoroughly:</strong> Check with coupons, discounts, and tax calculations</li>
+      </ul>
+    `,
+    code: `add_action('woocommerce_checkout_process', function() {
+    $minimum = 50;
+    if (WC()->cart->total < $minimum) {
+        wc_add_notice(sprintf('Minimum order amount is %s', wc_price($minimum)), 'error');
+    }
+});`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '6 min',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Cart', 'Orders'],
+    difficulty: 'Beginner',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Set Minimum Order Amount in WooCommerce - Complete Guide 2025',
+      metaDescription: 'Add minimum order requirements in WooCommerce with role-based, country-specific, and category-based options. Code snippets included.',
+      keywords: ['woocommerce minimum order', 'minimum order amount woocommerce', 'woocommerce order minimum', 'minimum cart total', 'woocommerce checkout minimum'],
+      canonical: 'https://shahmir.dev/blog/minimum-order-amount',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Set Minimum Order Amount in WooCommerce',
+        description: 'Complete guide to implementing minimum order amounts in WooCommerce with various customization options.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Beginner',
+        dependencies: 'WooCommerce 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Should the minimum be based on subtotal or total (including shipping)?",
+        answer: "It depends on your business model. Use subtotal (WC()->cart->subtotal) to exclude shipping costs if shipping varies greatly. Use total (WC()->cart->total) if you want to include everything. Most stores use subtotal to avoid confusion when shipping costs push the order above minimum."
+      },
+      {
+        question: "How do I handle coupons when calculating minimum order amount?",
+        answer: "Use WC()->cart->subtotal for pre-discount total, or WC()->cart->get_cart_contents_total() for post-discount. Decide if minimum applies before or after discounts. Most stores check minimum before coupons using subtotal, then validate after discounts: if(WC()->cart->get_total('edit') < $minimum) for post-discount validation."
+      },
+      {
+        question: "Can I set minimum quantity instead of minimum amount?",
+        answer: "Yes, use WC()->cart->get_cart_contents_count() for total item quantity. Example: if(WC()->cart->get_cart_contents_count() < 5) { wc_add_notice('Minimum 5 items required', 'error'); }. This is useful for promotional bundles or sample packs."
+      },
+      {
+        question: "Will minimum order validation work with AJAX add to cart?",
+        answer: "The checkout validation will work, but cart page notices require page reload with default AJAX cart. To show immediate feedback, add validation to woocommerce_add_to_cart_validation filter and return false to prevent adding item if cart is below minimum and item won't reach it."
+      },
+      {
+        question: "How do I completely hide checkout button until minimum is reached?",
+        answer: "Use remove_action('woocommerce_proceed_to_checkout', 'woocommerce_button_proceed_to_checkout', 20) when cart is below minimum. Add a disabled button or message instead. For better UX, show a progress bar and 'Continue Shopping' button rather than completely hiding checkout."
+      }
+    ]
+  },
+  {
+    id: 56,
+    slug: 'custom-thank-you-page',
+    title: 'Redirect to Custom Thank You Page in WooCommerce',
+    excerpt: 'Create custom thank you pages in WooCommerce with order details, upsells, and personalized messages for better customer experience.',
+    content: `
+      <h2>Why Use Custom Thank You Pages?</h2>
+      <p>Custom thank you pages allow you to provide a better post-purchase experience, display order-specific upsells, collect feedback, encourage social shares, and track conversions more effectively. A well-designed thank you page can increase customer lifetime value.</p>
+
+      <h3>Basic Thank You Page Redirect</h3>
+      <pre><code class="language-php">// Redirect to custom thank you page
+function custom_thank_you_redirect($order_id) {
+    $order = wc_get_order($order_id);
+    $redirect_url = home_url('/thank-you/');
+
+    // Add order ID to URL
+    $redirect_url = add_query_arg('order_id', $order_id, $redirect_url);
+
+    wp_redirect($redirect_url);
+    exit;
+}
+add_action('woocommerce_thankyou', 'custom_thank_you_redirect');</code></pre>
+
+      <h3>Display Order Details on Custom Page</h3>
+      <pre><code class="language-php">// Show order information on custom thank you page
+function display_order_details() {
+    if (isset($_GET['order_id'])) {
+        $order_id = absint($_GET['order_id']);
+        $order = wc_get_order($order_id);
+
+        if ($order && $order->get_user_id() == get_current_user_id()) {
+            echo '&lt;div class="custom-order-details"&gt;';
+            echo '&lt;h2&gt;Order #' . $order->get_order_number() . '&lt;/h2&gt;';
+            echo '&lt;p&gt;Order Date: ' . $order->get_date_created()->format('F j, Y') . '&lt;/p&gt;';
+            echo '&lt;p&gt;Total: ' . $order->get_formatted_order_total() . '&lt;/p&gt;';
+            echo '&lt;p&gt;Payment Method: ' . $order->get_payment_method_title() . '&lt;/p&gt;';
+
+            // Order items
+            echo '&lt;h3&gt;Order Items&lt;/h3&gt;';
+            echo '&lt;ul&gt;';
+            foreach ($order->get_items() as $item) {
+                echo '&lt;li&gt;' . $item->get_name() . ' × ' . $item->get_quantity() . '&lt;/li&gt;';
+            }
+            echo '&lt;/ul&gt;';
+            echo '&lt;/div&gt;';
+        }
+    }
+}
+// Use in your custom thank you page template</code></pre>
+
+      <h3>Different Pages Based on Product Category</h3>
+      <pre><code class="language-php">// Redirect to different thank you pages by category
+function category_based_thank_you($order_id) {
+    $order = wc_get_order($order_id);
+    $redirect_url = home_url('/thank-you/');
+
+    // Check order items for specific categories
+    foreach ($order->get_items() as $item) {
+        $product_id = $item->get_product_id();
+
+        if (has_term('digital-products', 'product_cat', $product_id)) {
+            $redirect_url = home_url('/thank-you-digital/');
+            break;
+        } elseif (has_term('subscriptions', 'product_cat', $product_id)) {
+            $redirect_url = home_url('/thank-you-subscription/');
+            break;
+        } elseif (has_term('physical-products', 'product_cat', $product_id)) {
+            $redirect_url = home_url('/thank-you-shipping/');
+            break;
+        }
+    }
+
+    $redirect_url = add_query_arg('order_id', $order_id, $redirect_url);
+    wp_redirect($redirect_url);
+    exit;
+}
+add_action('woocommerce_thankyou', 'category_based_thank_you');</code></pre>
+
+      <h3>Add Upsells to Thank You Page</h3>
+      <pre><code class="language-php">// Display related products on thank you page
+function thank_you_page_upsells() {
+    if (!isset($_GET['order_id'])) {
+        return;
+    }
+
+    $order_id = absint($_GET['order_id']);
+    $order = wc_get_order($order_id);
+
+    if (!$order) {
+        return;
+    }
+
+    // Get order items
+    $product_ids = array();
+    foreach ($order->get_items() as $item) {
+        $product_ids[] = $item->get_product_id();
+    }
+
+    // Get related products
+    $related_products = wc_get_related_products($product_ids[0], 4);
+
+    if ($related_products) {
+        echo '&lt;div class="thank-you-upsells"&gt;';
+        echo '&lt;h3&gt;Customers Also Bought&lt;/h3&gt;';
+        echo '&lt;div class="products"&gt;';
+
+        foreach ($related_products as $related_id) {
+            $product = wc_get_product($related_id);
+            echo '&lt;div class="product"&gt;';
+            echo '&lt;a href="' . get_permalink($related_id) . '"&gt;';
+            echo $product->get_image();
+            echo '&lt;h4&gt;' . $product->get_name() . '&lt;/h4&gt;';
+            echo '&lt;span class="price"&gt;' . $product->get_price_html() . '&lt;/span&gt;';
+            echo '&lt;/a&gt;';
+            echo '&lt;/div&gt;';
+        }
+
+        echo '&lt;/div&gt;';
+        echo '&lt;/div&gt;';
+    }
+}
+// Use in your custom thank you page template</code></pre>
+
+      <h3>First-Time Customer Thank You</h3>
+      <pre><code class="language-php">// Different message for first-time customers
+function first_order_thank_you($order_id) {
+    $order = wc_get_order($order_id);
+    $customer_id = $order->get_customer_id();
+
+    // Count customer orders
+    $customer_orders = wc_get_customer_order_count($customer_id);
+
+    if ($customer_orders == 1) {
+        // First time customer - special thank you page
+        $redirect_url = home_url('/thank-you-first-order/');
+    } else {
+        // Returning customer
+        $redirect_url = home_url('/thank-you-returning/');
+    }
+
+    $redirect_url = add_query_arg('order_id', $order_id, $redirect_url);
+    wp_redirect($redirect_url);
+    exit;
+}
+add_action('woocommerce_thankyou', 'first_order_thank_you');</code></pre>
+
+      <h3>Add Coupon Code to Thank You Page</h3>
+      <pre><code class="language-php">// Display discount coupon on thank you page
+function thank_you_discount_coupon() {
+    if (!isset($_GET['order_id'])) {
+        return;
+    }
+
+    $coupon_code = 'THANKYOU10';
+    $discount_amount = 10; // 10% discount
+
+    echo '&lt;div class="thank-you-coupon"&gt;';
+    echo '&lt;h3&gt;Thank You for Your Order!&lt;/h3&gt;';
+    echo '&lt;p&gt;Here\'s a special ' . $discount_amount . '% discount code for your next purchase:&lt;/p&gt;';
+    echo '&lt;div class="coupon-code"&gt;' . $coupon_code . '&lt;/div&gt;';
+    echo '&lt;button onclick="navigator.clipboard.writeText(\'' . $coupon_code . '\')"&gt;Copy Code&lt;/button&gt;';
+    echo '&lt;/div&gt;';
+}
+// Use in your custom thank you page template</code></pre>
+
+      <h3>Social Sharing Buttons</h3>
+      <pre><code class="language-php">// Add social sharing to thank you page
+function thank_you_social_share() {
+    $share_url = urlencode(home_url());
+    $share_text = urlencode('I just made a purchase from ' . get_bloginfo('name'));
+
+    echo '&lt;div class="social-share"&gt;';
+    echo '&lt;h3&gt;Share Your Purchase&lt;/h3&gt;';
+    echo '&lt;a href="https://twitter.com/intent/tweet?text=' . $share_text . '&amp;url=' . $share_url . '" target="_blank"&gt;Twitter&lt;/a&gt; ';
+    echo '&lt;a href="https://www.facebook.com/sharer/sharer.php?u=' . $share_url . '" target="_blank"&gt;Facebook&lt;/a&gt; ';
+    echo '&lt;a href="https://www.linkedin.com/sharing/share-offsite/?url=' . $share_url . '" target="_blank"&gt;LinkedIn&lt;/a&gt;';
+    echo '&lt;/div&gt;';
+}
+// Use in your custom thank you page template</code></pre>
+
+      <h3>Order Tracking Information</h3>
+      <pre><code class="language-php">// Add tracking number to thank you page
+function display_tracking_info() {
+    if (!isset($_GET['order_id'])) {
+        return;
+    }
+
+    $order_id = absint($_GET['order_id']);
+    $order = wc_get_order($order_id);
+    $tracking_number = $order->get_meta('_tracking_number');
+
+    if ($tracking_number) {
+        echo '&lt;div class="order-tracking"&gt;';
+        echo '&lt;h3&gt;Track Your Order&lt;/h3&gt;';
+        echo '&lt;p&gt;Tracking Number: &lt;strong&gt;' . esc_html($tracking_number) . '&lt;/strong&gt;&lt;/p&gt;';
+        echo '&lt;a href="https://tracking-site.com/track/' . $tracking_number . '" class="button"&gt;Track Package&lt;/a&gt;';
+        echo '&lt;/div&gt;';
+    } else {
+        echo '&lt;div class="order-tracking"&gt;';
+        echo '&lt;p&gt;Your order is being prepared. You\'ll receive tracking information via email once shipped.&lt;/p&gt;';
+        echo '&lt;/div&gt;';
+    }
+}
+// Use in your custom thank you page template</code></pre>
+
+      <h3>Thank You Page Elements</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Element</th>
+            <th>Purpose</th>
+            <th>Conversion Impact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Order Summary</td>
+            <td>Confirm purchase details</td>
+            <td>Reduces support inquiries</td>
+          </tr>
+          <tr>
+            <td>Upsell Products</td>
+            <td>Increase order value</td>
+            <td>10-30% purchase rate</td>
+          </tr>
+          <tr>
+            <td>Discount Coupon</td>
+            <td>Encourage repeat purchase</td>
+            <td>Improves retention 20-40%</td>
+          </tr>
+          <tr>
+            <td>Social Sharing</td>
+            <td>Generate referrals</td>
+            <td>Increases brand awareness</td>
+          </tr>
+          <tr>
+            <td>Account Creation</td>
+            <td>Build customer database</td>
+            <td>Boosts repeat purchases</td>
+          </tr>
+          <tr>
+            <td>Survey/Feedback</td>
+            <td>Gather insights</td>
+            <td>Improves customer service</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li><strong>Clear confirmation:</strong> Always show order number and details</li>
+        <li><strong>Next steps:</strong> Tell customers what happens next</li>
+        <li><strong>Contact info:</strong> Provide easy way to reach support</li>
+        <li><strong>Personalization:</strong> Use customer name and order details</li>
+        <li><strong>Mobile optimization:</strong> Ensure page works on all devices</li>
+        <li><strong>Email confirmation:</strong> Mention they'll receive email</li>
+        <li><strong>Analytics tracking:</strong> Track conversions and behavior</li>
+      </ul>
+    `,
+    code: `add_action('woocommerce_thankyou', function($order_id) {
+    $redirect_url = home_url('/thank-you/');
+    $redirect_url = add_query_arg('order_id', $order_id, $redirect_url);
+    wp_redirect($redirect_url);
+    exit;
+});`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '7 min',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Checkout', 'Redirects'],
+    difficulty: 'Intermediate',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Custom WooCommerce Thank You Page - Redirect & Display Order Details',
+      metaDescription: 'Create custom thank you pages in WooCommerce with order details, upsells, coupons, and social sharing. Complete code guide.',
+      keywords: ['woocommerce thank you page', 'custom thank you page woocommerce', 'woocommerce order confirmation', 'thank you page redirect', 'woocommerce upsell'],
+      canonical: 'https://shahmir.dev/blog/custom-thank-you-page',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Redirect to Custom Thank You Page in WooCommerce',
+        description: 'Complete guide to creating custom thank you pages in WooCommerce with order details and upsells.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WooCommerce 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "How do I prevent customers from accessing thank you page without making a purchase?",
+        answer: "Validate the order ID and check if it belongs to the current user: if(!$order || $order->get_user_id() != get_current_user_id()) { wp_redirect(home_url()); exit; }. For guests, check session data or use a secure token passed in URL that expires after first view."
+      },
+      {
+        question: "Can I A/B test different thank you pages?",
+        answer: "Yes, use conditional logic to randomly redirect: if(rand(0,1) == 0) { $redirect_url = '/thank-you-a/'; } else { $redirect_url = '/thank-you-b/'; }. Track conversions with Google Analytics events or custom database logging. Use a consistent experience per user by storing variant in user meta."
+      },
+      {
+        question: "Will this redirect affect the default WooCommerce email notifications?",
+        answer: "No, email notifications are triggered before the thank you page redirect. The woocommerce_thankyou hook runs after emails are sent, so redirecting won't affect email delivery. If emails aren't sending, the issue is elsewhere, not the redirect."
+      },
+      {
+        question: "How do I display the thank you page in an iframe or modal instead of redirecting?",
+        answer: "Instead of wp_redirect(), use JavaScript to load content in iframe/modal. Remove the woocommerce_thankyou redirect and add AJAX endpoint that returns order details. Use jQuery to fetch and display: jQuery.get('/wp-admin/admin-ajax.php?action=get_order_details&order_id=' + order_id) in modal."
+      },
+      {
+        question: "Can I prevent the redirect for specific payment methods?",
+        answer: "Yes, check payment method before redirecting: $order = wc_get_order($order_id); if($order->get_payment_method() == 'paypal') { return; }. This is useful for payment methods that have their own confirmation pages or require special handling like bank transfers."
+      }
+    ]
+  },
+  {
+    id: 57,
+    slug: 'change-product-quantity',
+    title: 'Customize WooCommerce Product Quantity Inputs',
+    excerpt: 'Modify product quantity fields in WooCommerce - set min/max values, change step increments, and customize quantity input display.',
+    content: `
+      <h2>Why Customize Quantity Inputs?</h2>
+      <p>Customizing quantity inputs helps control how customers purchase products - useful for wholesale stores (minimum quantities), bulk items (step increments), limited stock (maximum quantities), or products sold by specific units (dozen, case, box).</p>
+
+      <h3>Set Minimum and Maximum Quantities</h3>
+      <pre><code class="language-php">// Set min and max quantity for all products
+function custom_quantity_limits($args, $product) {
+    $args['min_value'] = 2; // Minimum quantity
+    $args['max_value'] = 10; // Maximum quantity
+    return $args;
+}
+add_filter('woocommerce_quantity_input_args', 'custom_quantity_limits', 10, 2);</code></pre>
+
+      <h3>Set Quantity Step Increment</h3>
+      <pre><code class="language-php">// Products must be bought in multiples of 6
+function quantity_step_increment($args, $product) {
+    $args['min_value'] = 6;   // Minimum 6 items
+    $args['max_value'] = 60;  // Maximum 60 items
+    $args['step'] = 6;        // Increments of 6
+    return $args;
+}
+add_filter('woocommerce_quantity_input_args', 'quantity_step_increment', 10, 2);</code></pre>
+
+      <h3>Category-Based Quantity Rules</h3>
+      <pre><code class="language-php">// Different quantity rules by category
+function category_quantity_rules($args, $product) {
+    if (has_term('wholesale', 'product_cat', $product->get_id())) {
+        $args['min_value'] = 10;
+        $args['max_value'] = 100;
+        $args['step'] = 10;
+    } elseif (has_term('bulk-items', 'product_cat', $product->get_id())) {
+        $args['min_value'] = 12;
+        $args['step'] = 12;
+    } elseif (has_term('limited-edition', 'product_cat', $product->get_id())) {
+        $args['max_value'] = 2; // Limit to 2 per customer
+    }
+
+    return $args;
+}
+add_filter('woocommerce_quantity_input_args', 'category_quantity_rules', 10, 2);</code></pre>
+
+      <h3>Product-Specific Quantity Limits</h3>
+      <pre><code class="language-php">// Set quantity limits per product using custom fields
+function product_specific_quantity($args, $product) {
+    $min = get_post_meta($product->get_id(), '_min_quantity', true);
+    $max = get_post_meta($product->get_id(), '_max_quantity', true);
+    $step = get_post_meta($product->get_id(), '_quantity_step', true);
+
+    if ($min) {
+        $args['min_value'] = absint($min);
+    }
+
+    if ($max) {
+        $args['max_value'] = absint($max);
+    }
+
+    if ($step) {
+        $args['step'] = absint($step);
+    }
+
+    return $args;
+}
+add_filter('woocommerce_quantity_input_args', 'product_specific_quantity', 10, 2);</code></pre>
+
+      <h3>Remove Quantity Input (Sold Individually)</h3>
+      <pre><code class="language-php">// Force quantity to 1 for all products
+function force_single_quantity($return, $product) {
+    return true;
+}
+add_filter('woocommerce_is_sold_individually', 'force_single_quantity', 10, 2);
+
+// Or set per category
+function category_sold_individually($return, $product) {
+    if (has_term('services', 'product_cat', $product->get_id())) {
+        return true;
+    }
+    return $return;
+}
+add_filter('woocommerce_is_sold_individually', 'category_sold_individually', 10, 2);</code></pre>
+
+      <h3>Add Quantity Dropdown Instead of Input</h3>
+      <pre><code class="language-php">// Replace quantity input with dropdown
+function quantity_input_dropdown($html, $args) {
+    $min = $args['min_value'];
+    $max = $args['max_value'];
+    $step = $args['step'];
+
+    $options = '';
+    for ($count = $min; $count <= $max; $count = $count + $step) {
+        $selected = $count == $args['input_value'] ? 'selected' : '';
+        $options .= '&lt;option value="' . $count . '" ' . $selected . '&gt;' . $count . '&lt;/option&gt;';
+    }
+
+    $html = '&lt;div class="quantity"&gt;';
+    $html .= '&lt;select name="' . $args['input_name'] . '" class="qty"&gt;';
+    $html .= $options;
+    $html .= '&lt;/select&gt;';
+    $html .= '&lt;/div&gt;';
+
+    return $html;
+}
+add_filter('woocommerce_quantity_input', 'quantity_input_dropdown', 10, 2);</code></pre>
+
+      <h3>Display Custom Quantity Labels</h3>
+      <pre><code class="language-php">// Show "Pack of X" instead of quantity number
+function custom_quantity_label() {
+    ?&gt;
+    &lt;script type="text/javascript"&gt;
+    jQuery(document).ready(function($) {
+        $('.quantity input').before('&lt;span class="qty-label"&gt;Pack of &lt;/span&gt;');
+    });
+    &lt;/script&gt;
+    &lt;?php
+}
+add_action('wp_footer', 'custom_quantity_label');</code></pre>
+
+      <h3>Validate Quantity at Checkout</h3>
+      <pre><code class="language-php">// Enforce minimum quantity at checkout
+function validate_cart_quantities() {
+    $min_quantity = 5;
+
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        if ($cart_item['quantity'] < $min_quantity) {
+            $product_name = $cart_item['data']->get_name();
+            wc_add_notice(
+                sprintf('Minimum order quantity for %s is %d', $product_name, $min_quantity),
+                'error'
+            );
+        }
+    }
+}
+add_action('woocommerce_check_cart_items', 'validate_cart_quantities');</code></pre>
+
+      <h3>Role-Based Quantity Limits</h3>
+      <pre><code class="language-php">// Different quantity limits by user role
+function role_based_quantity($args, $product) {
+    if (!is_user_logged_in()) {
+        $args['max_value'] = 5; // Guests limited to 5
+        return $args;
+    }
+
+    $user = wp_get_current_user();
+
+    if (in_array('wholesale_customer', $user->roles)) {
+        $args['min_value'] = 10;
+        $args['max_value'] = 1000;
+        $args['step'] = 10;
+    } elseif (in_array('customer', $user->roles)) {
+        $args['max_value'] = 20;
+    }
+
+    return $args;
+}
+add_filter('woocommerce_quantity_input_args', 'role_based_quantity', 10, 2);</code></pre>
+
+      <h3>Common Quantity Scenarios</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Use Case</th>
+            <th>Min</th>
+            <th>Max</th>
+            <th>Step</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Eggs (dozen)</td>
+            <td>12</td>
+            <td>120</td>
+            <td>12</td>
+          </tr>
+          <tr>
+            <td>Wholesale Cases</td>
+            <td>6</td>
+            <td>600</td>
+            <td>6</td>
+          </tr>
+          <tr>
+            <td>Limited Edition</td>
+            <td>1</td>
+            <td>1</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Services (per hour)</td>
+            <td>1</td>
+            <td>8</td>
+            <td>1</td>
+          </tr>
+          <tr>
+            <td>Bulk Food (kg)</td>
+            <td>0.5</td>
+            <td>100</td>
+            <td>0.5</td>
+          </tr>
+          <tr>
+            <td>Sample Packs</td>
+            <td>3</td>
+            <td>3</td>
+            <td>1</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Implementation Tips</h3>
+      <ul>
+        <li><strong>Clear messaging:</strong> Explain why minimum/maximum exists</li>
+        <li><strong>Visual feedback:</strong> Show errors immediately</li>
+        <li><strong>Default values:</strong> Set smart default quantities</li>
+        <li><strong>Mobile friendly:</strong> Ensure inputs work on touch devices</li>
+        <li><strong>Stock validation:</strong> Respect available stock levels</li>
+        <li><strong>Cart validation:</strong> Check quantities at checkout too</li>
+      </ul>
+    `,
+    code: `add_filter('woocommerce_quantity_input_args', function($args, $product) {
+    $args['min_value'] = 2;
+    $args['max_value'] = 10;
+    $args['step'] = 2;
+    return $args;
+}, 10, 2);`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '6 min',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Products', 'Cart'],
+    difficulty: 'Intermediate',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Customize WooCommerce Product Quantity - Min, Max, Step Guide 2025',
+      metaDescription: 'Set minimum, maximum, and step quantities in WooCommerce. Complete guide with code for wholesale, bulk, and custom quantity rules.',
+      keywords: ['woocommerce quantity', 'woocommerce minimum quantity', 'woocommerce max quantity', 'quantity step woocommerce', 'custom quantity input'],
+      canonical: 'https://shahmir.dev/blog/change-product-quantity',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Customize WooCommerce Product Quantity Inputs',
+        description: 'Complete guide to modifying WooCommerce quantity inputs with minimum, maximum, and step values.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WooCommerce 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "How do I set decimal quantities for products sold by weight?",
+        answer: "Set 'step' to decimal value in quantity args: $args['step'] = 0.5; $args['min_value'] = 0.5;. This allows quantities like 1.5, 2.0, 2.5. Ensure your theme CSS supports decimal display and that stock management handles decimals correctly with woocommerce_stock_amount filter."
+      },
+      {
+        question: "Why isn't my quantity validation working in the cart?",
+        answer: "Quantity filters only apply to input fields. For cart validation, use woocommerce_update_cart_validation or woocommerce_check_cart_items hooks. Check both $cart_item['quantity'] and product min/max settings. Return error with wc_add_notice() and prevent checkout."
+      },
+      {
+        question: "Can I set different quantities for product variations?",
+        answer: "Yes, quantity args are variation-specific. The $product parameter in woocommerce_quantity_input_args filter will be the variation object. Set custom fields on variations (_min_quantity_variation) and check: if($product->is_type('variation')) { //custom logic }."
+      },
+      {
+        question: "How do I enforce maximum quantity per user (lifetime limit)?",
+        answer: "Track purchases with user meta. On add to cart, check total purchased: $purchased = (int)get_user_meta($user_id, 'product_'.$product_id.'_purchased', true); if($purchased + $quantity > $max) { return false; }. Update meta after successful order with woocommerce_order_status_completed hook."
+      },
+      {
+        question: "Will minimum quantity work with AJAX add to cart?",
+        answer: "Frontend validation won't trigger with AJAX add to cart. Add JavaScript validation: jQuery('.single_add_to_cart_button').click(function(){ if($('.qty').val() < min){ alert('Minimum quantity is ' + min); return false; }}). Also add server-side validation with woocommerce_add_to_cart_validation filter as backup."
+      }
+    ]
+  },
+  {
+    id: 86,
+    slug: 'custom-search-query',
+    title: 'Customize WordPress Search Query for Better Results',
+    excerpt: 'Enhance WordPress default search by customizing queries, adding custom post types, meta fields, and improving search accuracy.',
+    content: `
+      <h2>Why Customize WordPress Search?</h2>
+      <p>The default WordPress search is limited - it only searches post titles and content. By customizing the search query, you can search custom post types, taxonomies, meta fields, and even implement fuzzy matching for better user experience.</p>
+
+      <h3>Basic Search Customization</h3>
+      <pre><code class="language-php">// Extend search to custom post types
+function custom_search_query($query) {
+    if ($query->is_search && !is_admin()) {
+        $query->set('post_type', array('post', 'page', 'product', 'portfolio'));
+    }
+    return $query;
+}
+add_filter('pre_get_posts', 'custom_search_query');</code></pre>
+
+      <h3>Search Custom Fields and Meta Data</h3>
+      <pre><code class="language-php">// Search post meta and custom fields
+function search_custom_fields($search, $wp_query) {
+    global $wpdb;
+
+    if (empty($search) || !$wp_query->is_search()) {
+        return $search;
+    }
+
+    $search_term = $wp_query->query_vars['s'];
+
+    // Add meta search to query
+    $meta_search = $wpdb->prepare("
+        OR EXISTS (
+            SELECT * FROM {$wpdb->postmeta}
+            WHERE post_id = {$wpdb->posts}.ID
+            AND meta_value LIKE %s
+        )",
+        '%' . $wpdb->esc_like($search_term) . '%'
+    );
+
+    $search = preg_replace(
+        "/\(\s*{$wpdb->posts}.post_title\s+LIKE\s*(\'[^\']+\')\s*\)/",
+        "({$wpdb->posts}.post_title LIKE $1) $meta_search",
+        $search
+    );
+
+    return $search;
+}
+add_filter('posts_search', 'search_custom_fields', 10, 2);</code></pre>
+
+      <h3>Search Taxonomy Terms</h3>
+      <pre><code class="language-php">// Include taxonomy terms in search
+function search_taxonomy_terms($search, $wp_query) {
+    global $wpdb;
+
+    if (!$wp_query->is_search()) {
+        return $search;
+    }
+
+    $search_term = $wp_query->query_vars['s'];
+
+    $tax_search = $wpdb->prepare("
+        OR {$wpdb->posts}.ID IN (
+            SELECT object_id FROM {$wpdb->term_relationships}
+            INNER JOIN {$wpdb->term_taxonomy} ON {$wpdb->term_relationships}.term_taxonomy_id = {$wpdb->term_taxonomy}.term_taxonomy_id
+            INNER JOIN {$wpdb->terms} ON {$wpdb->term_taxonomy}.term_id = {$wpdb->terms}.term_id
+            WHERE {$wpdb->terms}.name LIKE %s
+        )",
+        '%' . $wpdb->esc_like($search_term) . '%'
+    );
+
+    $search = preg_replace(
+        "/\)\s*\)\s*$/",
+        ") $tax_search )",
+        $search
+    );
+
+    return $search;
+}
+add_filter('posts_search', 'search_taxonomy_terms', 10, 2);</code></pre>
+
+      <h3>Advanced Search with Relevance Scoring</h3>
+      <pre><code class="language-php">// Search with relevance scoring
+function search_by_relevance($orderby, $query) {
+    if (!$query->is_search()) {
+        return $orderby;
+    }
+
+    global $wpdb;
+    $search_term = $query->query_vars['s'];
+
+    // Create relevance score
+    $orderby = "
+        CASE
+            WHEN {$wpdb->posts}.post_title LIKE '%{$search_term}%' THEN 1
+            WHEN {$wpdb->posts}.post_content LIKE '%{$search_term}%' THEN 2
+            ELSE 3
+        END ASC,
+        {$wpdb->posts}.post_date DESC
+    ";
+
+    return $orderby;
+}
+add_filter('posts_orderby', 'search_by_relevance', 10, 2);</code></pre>
+
+      <h3>Exclude Specific Post Types or Categories</h3>
+      <pre><code class="language-php">// Exclude specific content from search
+function exclude_from_search($query) {
+    if ($query->is_search && !is_admin()) {
+        // Exclude specific post types
+        $excluded_types = array('attachment');
+        $post_types = get_post_types(array('public' => true));
+        $post_types = array_diff($post_types, $excluded_types);
+        $query->set('post_type', $post_types);
+
+        // Exclude specific categories
+        $query->set('category__not_in', array(5, 12, 23));
+
+        // Exclude specific posts
+        $query->set('post__not_in', array(100, 200, 300));
+    }
+    return $query;
+}
+add_filter('pre_get_posts', 'exclude_from_search');</code></pre>
+
+      <h3>Live AJAX Search Implementation</h3>
+      <pre><code class="language-php">// AJAX search handler
+function ajax_search_handler() {
+    check_ajax_referer('search_nonce', 'nonce');
+
+    $search_query = sanitize_text_field($_POST['query']);
+
+    $args = array(
+        's' => $search_query,
+        'post_type' => array('post', 'page', 'product'),
+        'posts_per_page' => 10,
+        'post_status' => 'publish'
+    );
+
+    $search = new WP_Query($args);
+    $results = array();
+
+    if ($search->have_posts()) {
+        while ($search->have_posts()) {
+            $search->the_post();
+            $results[] = array(
+                'title' => get_the_title(),
+                'url' => get_permalink(),
+                'excerpt' => wp_trim_words(get_the_excerpt(), 20),
+                'image' => get_the_post_thumbnail_url(get_the_ID(), 'thumbnail')
+            );
+        }
+        wp_reset_postdata();
+    }
+
+    wp_send_json_success($results);
+}
+add_action('wp_ajax_live_search', 'ajax_search_handler');
+add_action('wp_ajax_nopriv_live_search', 'ajax_search_handler');</code></pre>
+
+      <h3>JavaScript for AJAX Search</h3>
+      <pre><code class="language-javascript">// Frontend AJAX search
+jQuery(document).ready(function($) {
+    var searchTimeout;
+
+    $('#search-input').on('keyup', function() {
+        clearTimeout(searchTimeout);
+        var query = $(this).val();
+
+        if (query.length < 3) {
+            $('#search-results').hide();
+            return;
+        }
+
+        searchTimeout = setTimeout(function() {
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'live_search',
+                    query: query,
+                    nonce: search_nonce
+                },
+                success: function(response) {
+                    if (response.success) {
+                        displayResults(response.data);
+                    }
+                }
+            });
+        }, 300);
+    });
+
+    function displayResults(results) {
+        var html = '';
+        results.forEach(function(item) {
+            html += '<div class="search-item">';
+            html += '<h4><a href="' + item.url + '">' + item.title + '</a></h4>';
+            html += '<p>' + item.excerpt + '</p>';
+            html += '</div>';
+        });
+        $('#search-results').html(html).show();
+    }
+});</code></pre>
+
+      <h3>Search with Highlighted Terms</h3>
+      <pre><code class="language-php">// Highlight search terms in results
+function highlight_search_terms($text) {
+    if (is_search() && !empty(get_search_query())) {
+        $pattern = '/(' . get_search_query() . ')/i';
+        $replacement = '<mark class="search-highlight">$1</mark>';
+        $text = preg_replace($pattern, $replacement, $text);
+    }
+    return $text;
+}
+add_filter('the_content', 'highlight_search_terms');
+add_filter('the_excerpt', 'highlight_search_terms');
+add_filter('the_title', 'highlight_search_terms');</code></pre>
+
+      <h3>Implementation Steps</h3>
+      <ol>
+        <li>Add the code to your theme's functions.php file or a custom plugin</li>
+        <li>Test search functionality with various queries</li>
+        <li>Monitor search performance with Query Monitor plugin</li>
+        <li>Implement caching for frequently searched terms</li>
+        <li>Consider using Elasticsearch for very large sites</li>
+      </ol>
+
+      <h3>Performance Optimization</h3>
+      <ul>
+        <li><strong>Index Custom Fields:</strong> Add database indexes to frequently searched meta fields</li>
+        <li><strong>Cache Results:</strong> Use transients to cache popular search queries</li>
+        <li><strong>Limit Results:</strong> Set reasonable posts_per_page limits</li>
+        <li><strong>Use AJAX:</strong> Load results asynchronously to improve perceived performance</li>
+        <li><strong>Debouncing:</strong> Implement debouncing for live search to reduce server load</li>
+      </ul>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Always sanitize and validate user input</li>
+        <li>Use prepared statements for database queries</li>
+        <li>Implement search analytics to understand user behavior</li>
+        <li>Consider relevance scoring for better results</li>
+        <li>Add search suggestions and autocomplete</li>
+        <li>Handle special characters and accented letters</li>
+      </ul>
+    `,
+    code: `add_filter('pre_get_posts', 'custom_search_query');`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '10 min',
+    category: 'WordPress Advanced',
+    tags: ['Search', 'WP_Query', 'Advanced'],
+    difficulty: 'Advanced',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Customize WordPress Search Query - Complete Guide 2025',
+      metaDescription: 'Learn how to customize WordPress search to include custom post types, meta fields, taxonomies, and implement AJAX live search with relevance scoring.',
+      keywords: ['wordpress custom search', 'wp_query search', 'search custom fields', 'ajax live search', 'wordpress search relevance', 'search optimization'],
+      canonical: 'https://shahmir.dev/blog/custom-search-query',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Customize WordPress Search Query for Better Results',
+        description: 'Complete guide to extending WordPress search functionality with custom post types, meta fields, taxonomies, and AJAX implementation.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Advanced',
+        dependencies: 'WordPress 4.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "How do I search custom post types in WordPress?",
+        answer: "Use the pre_get_posts filter and set the post_type parameter to an array of post types you want to search. For example: $query->set('post_type', array('post', 'page', 'product')). This extends the search beyond the default posts and pages."
+      },
+      {
+        question: "Can I search custom fields and post meta in WordPress?",
+        answer: "Yes, by using the posts_search filter, you can modify the SQL query to include meta_value searches. Use wpdb->prepare() to safely add meta queries, and join the postmeta table to search custom field values. The code above shows how to implement this securely."
+      },
+      {
+        question: "How can I implement AJAX live search in WordPress?",
+        answer: "Create an AJAX handler using wp_ajax_* hooks, query posts using WP_Query with the search parameter, and return JSON results. On the frontend, use JavaScript to send AJAX requests on keyup events with debouncing to prevent excessive server requests. Return formatted results with titles, excerpts, and permalinks."
+      },
+      {
+        question: "What's the best way to implement search relevance scoring?",
+        answer: "Use the posts_orderby filter to modify the SQL ORDER BY clause. Assign scores based on where the search term appears: highest score for title matches, lower for content matches. You can also use MATCH AGAINST for full-text searches on MySQL tables with FULLTEXT indexes for better performance."
+      },
+      {
+        question: "How do I exclude certain content from WordPress search results?",
+        answer: "Use pre_get_posts to exclude content: set post__not_in for specific post IDs, category__not_in for categories, or filter out post types. You can also use post_status to only show published content, or combine multiple conditions for complex exclusion rules."
+      }
+    ]
+  },
+  {
+    id: 87,
+    slug: 'add-ajax-functionality',
+    title: 'Add AJAX Functionality to WordPress Properly',
+    excerpt: 'Learn how to implement AJAX in WordPress the right way using wp_ajax hooks, nonces, and proper enqueuing for dynamic content loading.',
+    content: `
+      <h2>Understanding WordPress AJAX</h2>
+      <p>WordPress has a built-in AJAX API that handles security, nonces, and routing. Using it properly ensures compatibility, security, and maintainability. The WordPress AJAX URL is admin-ajax.php, which routes requests to your PHP handlers.</p>
+
+      <h3>Basic AJAX Setup</h3>
+      <pre><code class="language-php">// Enqueue script with AJAX URL
+function enqueue_ajax_script() {
+    wp_enqueue_script('custom-ajax', get_template_directory_uri() . '/js/ajax.js', array('jquery'), '1.0', true);
+
+    wp_localize_script('custom-ajax', 'ajax_object', array(
+        'ajax_url' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('ajax_nonce')
+    ));
+}
+add_action('wp_enqueue_scripts', 'enqueue_ajax_script');</code></pre>
+
+      <h3>PHP Handler for Logged-In Users</h3>
+      <pre><code class="language-php">// AJAX handler for authenticated users
+function handle_ajax_request() {
+    // Security check
+    check_ajax_referer('ajax_nonce', 'nonce');
+
+    // Get POST data
+    $data = sanitize_text_field($_POST['data']);
+
+    // Process data
+    $result = process_your_data($data);
+
+    // Return response
+    if ($result) {
+        wp_send_json_success(array(
+            'message' => 'Success!',
+            'data' => $result
+        ));
+    } else {
+        wp_send_json_error(array(
+            'message' => 'Something went wrong'
+        ));
+    }
+}
+add_action('wp_ajax_custom_action', 'handle_ajax_request');</code></pre>
+
+      <h3>PHP Handler for Non-Logged-In Users</h3>
+      <pre><code class="language-php">// AJAX handler for public access
+function public_ajax_handler() {
+    check_ajax_referer('ajax_nonce', 'nonce');
+
+    $value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+
+    // Query database
+    $posts = get_posts(array(
+        'numberposts' => $value,
+        'post_status' => 'publish'
+    ));
+
+    $response = array();
+    foreach ($posts as $post) {
+        $response[] = array(
+            'title' => get_the_title($post->ID),
+            'url' => get_permalink($post->ID),
+            'excerpt' => wp_trim_words($post->post_content, 20)
+        );
+    }
+
+    wp_send_json_success($response);
+}
+add_action('wp_ajax_nopriv_load_posts', 'public_ajax_handler');
+add_action('wp_ajax_load_posts', 'public_ajax_handler');</code></pre>
+
+      <h3>JavaScript Implementation</h3>
+      <pre><code class="language-javascript">// ajax.js - Basic AJAX request
+jQuery(document).ready(function($) {
+    $('#ajax-button').on('click', function(e) {
+        e.preventDefault();
+
+        var data = {
+            action: 'custom_action',
+            nonce: ajax_object.nonce,
+            data: $('#input-field').val()
+        };
+
+        $.ajax({
+            url: ajax_object.ajax_url,
+            type: 'POST',
+            data: data,
+            beforeSend: function() {
+                $('#ajax-button').prop('disabled', true).text('Loading...');
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('#result').html(response.data.message);
+                } else {
+                    alert('Error: ' + response.data.message);
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', error);
+                alert('Request failed. Please try again.');
+            },
+            complete: function() {
+                $('#ajax-button').prop('disabled', false).text('Submit');
+            }
+        });
+    });
+});</code></pre>
+
+      <h3>Load More Posts with AJAX</h3>
+      <pre><code class="language-php">// Load more posts handler
+function load_more_posts() {
+    check_ajax_referer('load_more_nonce', 'nonce');
+
+    $paged = isset($_POST['page']) ? intval($_POST['page']) : 1;
+    $posts_per_page = isset($_POST['posts_per_page']) ? intval($_POST['posts_per_page']) : 6;
+
+    $args = array(
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'posts_per_page' => $posts_per_page,
+        'paged' => $paged
+    );
+
+    $query = new WP_Query($args);
+
+    if ($query->have_posts()) {
+        ob_start();
+
+        while ($query->have_posts()) {
+            $query->the_post();
+            get_template_part('template-parts/content', 'post');
+        }
+
+        $html = ob_get_clean();
+        wp_reset_postdata();
+
+        wp_send_json_success(array(
+            'html' => $html,
+            'max_pages' => $query->max_num_pages,
+            'current_page' => $paged
+        ));
+    } else {
+        wp_send_json_error(array('message' => 'No more posts'));
+    }
+}
+add_action('wp_ajax_load_more_posts', 'load_more_posts');
+add_action('wp_ajax_nopriv_load_more_posts', 'load_more_posts');</code></pre>
+
+      <h3>Load More JavaScript</h3>
+      <pre><code class="language-javascript">// Load more posts implementation
+jQuery(document).ready(function($) {
+    var page = 1;
+    var loading = false;
+
+    $('#load-more').on('click', function() {
+        if (loading) return;
+
+        loading = true;
+        page++;
+
+        $.ajax({
+            url: ajax_object.ajax_url,
+            type: 'POST',
+            data: {
+                action: 'load_more_posts',
+                nonce: ajax_object.load_more_nonce,
+                page: page,
+                posts_per_page: 6
+            },
+            beforeSend: function() {
+                $('#load-more').text('Loading...').prop('disabled', true);
+            },
+            success: function(response) {
+                if (response.success) {
+                    $('#posts-container').append(response.data.html);
+
+                    if (page >= response.data.max_pages) {
+                        $('#load-more').hide();
+                    }
+                } else {
+                    $('#load-more').hide();
+                }
+            },
+            error: function() {
+                alert('Failed to load posts');
+                page--;
+            },
+            complete: function() {
+                $('#load-more').text('Load More').prop('disabled', false);
+                loading = false;
+            }
+        });
+    });
+});</code></pre>
+
+      <h3>AJAX Form Submission</h3>
+      <pre><code class="language-php">// Handle form submission
+function ajax_form_handler() {
+    check_ajax_referer('form_nonce', 'nonce');
+
+    // Sanitize inputs
+    $name = sanitize_text_field($_POST['name']);
+    $email = sanitize_email($_POST['email']);
+    $message = sanitize_textarea_field($_POST['message']);
+
+    // Validate
+    if (empty($name) || empty($email) || !is_email($email)) {
+        wp_send_json_error(array(
+            'message' => 'Please fill all required fields correctly.'
+        ));
+    }
+
+    // Process form (e.g., send email, save to database)
+    $sent = wp_mail(
+        get_option('admin_email'),
+        'New Contact Form Submission',
+        "Name: $name\nEmail: $email\nMessage: $message"
+    );
+
+    if ($sent) {
+        wp_send_json_success(array(
+            'message' => 'Thank you! Your message has been sent.'
+        ));
+    } else {
+        wp_send_json_error(array(
+            'message' => 'Failed to send message. Please try again.'
+        ));
+    }
+}
+add_action('wp_ajax_submit_contact_form', 'ajax_form_handler');
+add_action('wp_ajax_nopriv_submit_contact_form', 'ajax_form_handler');</code></pre>
+
+      <h3>AJAX File Upload</h3>
+      <pre><code class="language-php">// Handle file upload via AJAX
+function ajax_file_upload() {
+    check_ajax_referer('upload_nonce', 'nonce');
+
+    if (!function_exists('wp_handle_upload')) {
+        require_once(ABSPATH . 'wp-admin/includes/file.php');
+    }
+
+    $uploadedfile = $_FILES['file'];
+    $upload_overrides = array('test_form' => false);
+
+    $movefile = wp_handle_upload($uploadedfile, $upload_overrides);
+
+    if ($movefile && !isset($movefile['error'])) {
+        wp_send_json_success(array(
+            'url' => $movefile['url'],
+            'file' => $movefile['file']
+        ));
+    } else {
+        wp_send_json_error(array(
+            'message' => $movefile['error']
+        ));
+    }
+}
+add_action('wp_ajax_upload_file', 'ajax_file_upload');</code></pre>
+
+      <h3>Implementation Steps</h3>
+      <ol>
+        <li>Enqueue your JavaScript file with wp_enqueue_script()</li>
+        <li>Use wp_localize_script() to pass AJAX URL and nonce</li>
+        <li>Create PHP handlers with wp_ajax_* hooks</li>
+        <li>Always verify nonces with check_ajax_referer()</li>
+        <li>Sanitize all input data</li>
+        <li>Use wp_send_json_success() or wp_send_json_error()</li>
+        <li>Test thoroughly with browser dev tools</li>
+      </ol>
+
+      <h3>Security Best Practices</h3>
+      <ul>
+        <li><strong>Always Use Nonces:</strong> Generate with wp_create_nonce() and verify with check_ajax_referer()</li>
+        <li><strong>Sanitize Input:</strong> Use sanitize_text_field(), sanitize_email(), etc.</li>
+        <li><strong>Validate Data:</strong> Check data types, ranges, and formats</li>
+        <li><strong>Check Permissions:</strong> Use current_user_can() for privileged operations</li>
+        <li><strong>Escape Output:</strong> Use esc_html(), esc_url(), etc. for output</li>
+      </ul>
+
+      <h3>Performance Tips</h3>
+      <ul>
+        <li>Implement request throttling to prevent spam</li>
+        <li>Use caching for frequently requested data</li>
+        <li>Return only necessary data (avoid sending entire post objects)</li>
+        <li>Implement pagination for large datasets</li>
+        <li>Use HTTP caching headers when appropriate</li>
+      </ul>
+    `,
+    code: `add_action('wp_ajax_custom_action', 'handle_ajax_request');`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '12 min',
+    category: 'WordPress Advanced',
+    tags: ['AJAX', 'JavaScript', 'Advanced'],
+    difficulty: 'Advanced',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'WordPress AJAX Tutorial - Complete Implementation Guide 2025',
+      metaDescription: 'Master WordPress AJAX with proper implementation, security, nonces, and real-world examples including load more posts, form submissions, and file uploads.',
+      keywords: ['wordpress ajax', 'admin-ajax.php', 'wp_ajax', 'ajax wordpress tutorial', 'wordpress ajax security', 'load more posts ajax'],
+      canonical: 'https://shahmir.dev/blog/add-ajax-functionality',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Add AJAX Functionality to WordPress Properly',
+        description: 'Complete guide to implementing AJAX in WordPress with security best practices, nonces, and real-world examples.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Advanced',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between wp_ajax and wp_ajax_nopriv hooks?",
+        answer: "wp_ajax_ hooks handle AJAX requests from logged-in users only, while wp_ajax_nopriv_ hooks handle requests from non-logged-in users. For public functionality (like contact forms), use both hooks to handle all users. For admin-only features, use only wp_ajax_."
+      },
+      {
+        question: "How do I secure WordPress AJAX requests?",
+        answer: "Use nonces (number used once) created with wp_create_nonce() and verify them with check_ajax_referer(). Always sanitize input with sanitize_text_field() or similar functions, validate data types and ranges, check user capabilities with current_user_can(), and escape output properly."
+      },
+      {
+        question: "Why should I use wp_localize_script instead of hardcoding the AJAX URL?",
+        answer: "wp_localize_script() passes PHP variables to JavaScript safely and handles escaping automatically. It also ensures your script works in different WordPress environments (subdirectory installations, multisite) and follows WordPress coding standards. It's the recommended method for passing data from PHP to JavaScript."
+      },
+      {
+        question: "What's the best way to handle AJAX errors in WordPress?",
+        answer: "Use wp_send_json_error() in PHP to return structured error responses. In JavaScript, implement error callbacks to handle network failures, display user-friendly messages, log errors to console for debugging, and provide retry options. Always have a complete callback to reset UI states."
+      },
+      {
+        question: "How can I debug WordPress AJAX requests?",
+        answer: "Use browser DevTools Network tab to inspect requests/responses, check the Console for JavaScript errors, add error_log() statements in PHP handlers, use plugins like Query Monitor, verify nonces are valid, and check that action names match between JavaScript and PHP. Return detailed error messages during development (remove in production)."
+      }
+    ]
+  },
+  {
+    id: 88,
+    slug: 'custom-api-endpoint',
+    title: 'Create Custom REST API Endpoints in WordPress',
+    excerpt: 'Learn how to create custom REST API endpoints in WordPress for exposing data, accepting submissions, and building headless applications.',
+    content: `
+      <h2>WordPress REST API Overview</h2>
+      <p>The WordPress REST API allows you to interact with your WordPress site remotely by sending and receiving JSON data. Creating custom endpoints extends this functionality for your specific needs, enabling headless WordPress, mobile apps, and third-party integrations.</p>
+
+      <h3>Basic Custom Endpoint</h3>
+      <pre><code class="language-php">// Register custom API endpoint
+function register_custom_endpoint() {
+    register_rest_route('custom/v1', '/posts', array(
+        'methods' => 'GET',
+        'callback' => 'get_custom_posts',
+        'permission_callback' => '__return_true'
+    ));
+}
+add_action('rest_api_init', 'register_custom_endpoint');
+
+// Endpoint callback
+function get_custom_posts($request) {
+    $args = array(
+        'post_type' => 'post',
+        'posts_per_page' => 10,
+        'post_status' => 'publish'
+    );
+
+    $posts = get_posts($args);
+    $data = array();
+
+    foreach ($posts as $post) {
+        $data[] = array(
+            'id' => $post->ID,
+            'title' => $post->post_title,
+            'content' => $post->post_content,
+            'excerpt' => $post->post_excerpt,
+            'date' => $post->post_date,
+            'author' => get_the_author_meta('display_name', $post->post_author),
+            'featured_image' => get_the_post_thumbnail_url($post->ID, 'full')
+        );
+    }
+
+    return new WP_REST_Response($data, 200);
+}</code></pre>
+
+      <h3>Endpoint with Parameters</h3>
+      <pre><code class="language-php">// Endpoint with URL parameters
+function register_parameterized_endpoint() {
+    register_rest_route('custom/v1', '/posts/(?P<id>\d+)', array(
+        'methods' => 'GET',
+        'callback' => 'get_post_by_id',
+        'args' => array(
+            'id' => array(
+                'validate_callback' => function($param, $request, $key) {
+                    return is_numeric($param);
+                }
+            )
+        ),
+        'permission_callback' => '__return_true'
+    ));
+}
+add_action('rest_api_init', 'register_parameterized_endpoint');
+
+function get_post_by_id($request) {
+    $post_id = $request['id'];
+    $post = get_post($post_id);
+
+    if (empty($post)) {
+        return new WP_Error('no_post', 'Post not found', array('status' => 404));
+    }
+
+    $data = array(
+        'id' => $post->ID,
+        'title' => $post->post_title,
+        'content' => apply_filters('the_content', $post->post_content),
+        'author' => get_the_author_meta('display_name', $post->post_author),
+        'date' => $post->post_date,
+        'categories' => wp_get_post_categories($post->ID, array('fields' => 'names')),
+        'tags' => wp_get_post_tags($post->ID, array('fields' => 'names'))
+    );
+
+    return rest_ensure_response($data);
+}</code></pre>
+
+      <h3>POST Endpoint for Data Submission</h3>
+      <pre><code class="language-php">// Accept POST data
+function register_submission_endpoint() {
+    register_rest_route('custom/v1', '/submit', array(
+        'methods' => 'POST',
+        'callback' => 'handle_submission',
+        'permission_callback' => 'check_submission_permission',
+        'args' => array(
+            'title' => array(
+                'required' => true,
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_text_field',
+                'validate_callback' => function($value) {
+                    return !empty($value) && strlen($value) <= 200;
+                }
+            ),
+            'content' => array(
+                'required' => true,
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_textarea_field'
+            ),
+            'email' => array(
+                'required' => true,
+                'type' => 'string',
+                'sanitize_callback' => 'sanitize_email',
+                'validate_callback' => function($value) {
+                    return is_email($value);
+                }
+            )
+        )
+    ));
+}
+add_action('rest_api_init', 'register_submission_endpoint');
+
+function handle_submission($request) {
+    $title = $request->get_param('title');
+    $content = $request->get_param('content');
+    $email = $request->get_param('email');
+
+    // Create post
+    $post_id = wp_insert_post(array(
+        'post_title' => $title,
+        'post_content' => $content,
+        'post_status' => 'draft',
+        'post_type' => 'post',
+        'meta_input' => array(
+            'submitter_email' => $email
+        )
+    ));
+
+    if (is_wp_error($post_id)) {
+        return new WP_Error('submission_failed', 'Failed to create submission', array('status' => 500));
+    }
+
+    return rest_ensure_response(array(
+        'success' => true,
+        'post_id' => $post_id,
+        'message' => 'Submission received successfully'
+    ));
+}
+
+function check_submission_permission($request) {
+    // Check nonce or API key
+    $api_key = $request->get_header('X-API-Key');
+    return $api_key === get_option('custom_api_key');
+}</code></pre>
+
+      <h3>Authentication with API Keys</h3>
+      <pre><code class="language-php">// API Key authentication
+function register_authenticated_endpoint() {
+    register_rest_route('custom/v1', '/secure-data', array(
+        'methods' => 'GET',
+        'callback' => 'get_secure_data',
+        'permission_callback' => 'verify_api_key'
+    ));
+}
+add_action('rest_api_init', 'register_authenticated_endpoint');
+
+function verify_api_key($request) {
+    $api_key = $request->get_header('X-API-Key');
+
+    if (empty($api_key)) {
+        return new WP_Error('no_api_key', 'API key is required', array('status' => 401));
+    }
+
+    // Verify against stored key
+    $valid_key = get_option('custom_api_key');
+
+    if ($api_key !== $valid_key) {
+        return new WP_Error('invalid_api_key', 'Invalid API key', array('status' => 403));
+    }
+
+    return true;
+}
+
+function get_secure_data($request) {
+    // Return sensitive data only to authenticated requests
+    return rest_ensure_response(array(
+        'data' => 'This is secure data',
+        'timestamp' => current_time('mysql')
+    ));
+}</code></pre>
+
+      <h3>Rate Limiting</h3>
+      <pre><code class="language-php">// Implement rate limiting
+function rate_limit_check($request) {
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $transient_key = 'api_rate_limit_' . md5($ip);
+    $requests = get_transient($transient_key);
+
+    $max_requests = 100; // per hour
+
+    if ($requests === false) {
+        set_transient($transient_key, 1, HOUR_IN_SECONDS);
+        return true;
+    }
+
+    if ($requests >= $max_requests) {
+        return new WP_Error(
+            'rate_limit_exceeded',
+            'Rate limit exceeded. Please try again later.',
+            array('status' => 429)
+        );
+    }
+
+    set_transient($transient_key, $requests + 1, HOUR_IN_SECONDS);
+    return true;
+}
+
+// Apply rate limiting to endpoint
+function register_rate_limited_endpoint() {
+    register_rest_route('custom/v1', '/limited', array(
+        'methods' => 'GET',
+        'callback' => 'limited_endpoint_callback',
+        'permission_callback' => 'rate_limit_check'
+    ));
+}
+add_action('rest_api_init', 'register_rate_limited_endpoint');</code></pre>
+
+      <h3>Pagination Support</h3>
+      <pre><code class="language-php">// Endpoint with pagination
+function get_paginated_posts($request) {
+    $page = $request->get_param('page') ?: 1;
+    $per_page = $request->get_param('per_page') ?: 10;
+    $per_page = min($per_page, 100); // Max 100 items
+
+    $args = array(
+        'post_type' => 'post',
+        'posts_per_page' => $per_page,
+        'paged' => $page,
+        'post_status' => 'publish'
+    );
+
+    $query = new WP_Query($args);
+    $posts = array();
+
+    foreach ($query->posts as $post) {
+        $posts[] = array(
+            'id' => $post->ID,
+            'title' => $post->post_title,
+            'excerpt' => wp_trim_words($post->post_content, 20)
+        );
+    }
+
+    $response = rest_ensure_response($posts);
+
+    // Add pagination headers
+    $response->header('X-WP-Total', $query->found_posts);
+    $response->header('X-WP-TotalPages', $query->max_num_pages);
+
+    return $response;
+}
+
+function register_paginated_endpoint() {
+    register_rest_route('custom/v1', '/paginated-posts', array(
+        'methods' => 'GET',
+        'callback' => 'get_paginated_posts',
+        'args' => array(
+            'page' => array(
+                'default' => 1,
+                'validate_callback' => function($param) {
+                    return is_numeric($param) && $param > 0;
+                }
+            ),
+            'per_page' => array(
+                'default' => 10,
+                'validate_callback' => function($param) {
+                    return is_numeric($param) && $param > 0 && $param <= 100;
+                }
+            )
+        ),
+        'permission_callback' => '__return_true'
+    ));
+}
+add_action('rest_api_init', 'register_paginated_endpoint');</code></pre>
+
+      <h3>Consuming Your API with JavaScript</h3>
+      <pre><code class="language-javascript">// Fetch data from custom endpoint
+fetch('https://yoursite.com/wp-json/custom/v1/posts')
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        displayPosts(data);
+    })
+    .catch(error => console.error('Error:', error));
+
+// POST data to endpoint
+async function submitData() {
+    const response = await fetch('https://yoursite.com/wp-json/custom/v1/submit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-API-Key': 'your-api-key-here'
+        },
+        body: JSON.stringify({
+            title: 'My Title',
+            content: 'My Content',
+            email: 'user@example.com'
+        })
+    });
+
+    const result = await response.json();
+    console.log(result);
+}
+
+// Fetch with pagination
+async function getPaginatedPosts(page = 1, perPage = 10) {
+    const response = await fetch(
+        \`https://yoursite.com/wp-json/custom/v1/paginated-posts?page=\${page}&per_page=\${perPage}\`
+    );
+
+    const data = await response.json();
+    const totalPosts = response.headers.get('X-WP-Total');
+    const totalPages = response.headers.get('X-WP-TotalPages');
+
+    return { data, totalPosts, totalPages };
+}</code></pre>
+
+      <h3>Testing Your API</h3>
+      <pre><code class="language-bash"># Test with cURL
+curl https://yoursite.com/wp-json/custom/v1/posts
+
+# POST request with cURL
+curl -X POST https://yoursite.com/wp-json/custom/v1/submit \
+  -H "Content-Type: application/json" \
+  -H "X-API-Key: your-key" \
+  -d '{"title":"Test","content":"Test content","email":"test@example.com"}'
+
+# Test with API key
+curl https://yoursite.com/wp-json/custom/v1/secure-data \
+  -H "X-API-Key: your-api-key"</code></pre>
+
+      <h3>Implementation Steps</h3>
+      <ol>
+        <li>Plan your API structure and endpoints</li>
+        <li>Register routes with register_rest_route()</li>
+        <li>Define callbacks to handle requests</li>
+        <li>Implement permission callbacks for security</li>
+        <li>Add validation and sanitization</li>
+        <li>Test endpoints thoroughly</li>
+        <li>Document your API for consumers</li>
+        <li>Monitor usage and performance</li>
+      </ol>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li><strong>Use Namespaces:</strong> Version your API (e.g., 'myapi/v1')</li>
+        <li><strong>Validate Input:</strong> Always validate and sanitize parameters</li>
+        <li><strong>Authentication:</strong> Protect sensitive endpoints</li>
+        <li><strong>Error Handling:</strong> Return proper HTTP status codes</li>
+        <li><strong>Documentation:</strong> Document parameters, responses, and examples</li>
+        <li><strong>Caching:</strong> Implement caching for heavy queries</li>
+        <li><strong>Rate Limiting:</strong> Prevent abuse with rate limits</li>
+      </ul>
+
+      <h3>Security Considerations</h3>
+      <ul>
+        <li>Never expose sensitive data without authentication</li>
+        <li>Use nonces for cookie-based authentication</li>
+        <li>Implement API keys for programmatic access</li>
+        <li>Add CORS headers if needed for cross-domain requests</li>
+        <li>Log API access for security monitoring</li>
+        <li>Consider OAuth2 for complex applications</li>
+      </ul>
+    `,
+    code: `register_rest_route('custom/v1', '/posts', array('methods' => 'GET', 'callback' => 'get_custom_posts'));`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '15 min',
+    category: 'WordPress Advanced',
+    tags: ['REST API', 'API', 'Development'],
+    difficulty: 'Advanced',
+    compatibility: 'WordPress 4.7+',
+    seo: {
+      metaTitle: 'Create Custom WordPress REST API Endpoints - Complete Guide 2025',
+      metaDescription: 'Learn how to create custom REST API endpoints in WordPress with authentication, rate limiting, pagination, and security best practices.',
+      keywords: ['wordpress rest api', 'custom api endpoint', 'register_rest_route', 'wordpress api', 'headless wordpress', 'wp rest api tutorial'],
+      canonical: 'https://shahmir.dev/blog/custom-api-endpoint',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Create Custom REST API Endpoints in WordPress',
+        description: 'Comprehensive guide to creating custom WordPress REST API endpoints with authentication, validation, and security.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Advanced',
+        dependencies: 'WordPress 4.7+'
+      }
+    },
+    faqs: [
+      {
+        question: "How do I create a custom REST API endpoint in WordPress?",
+        answer: "Use register_rest_route() in a function hooked to 'rest_api_init'. Specify the namespace (e.g., 'myapi/v1'), route pattern, HTTP methods, callback function, and permission callback. The callback function receives a WP_REST_Request object and should return WP_REST_Response or use rest_ensure_response()."
+      },
+      {
+        question: "What's the difference between permission_callback and authentication?",
+        answer: "permission_callback determines if a request is allowed to proceed (authorization), while authentication identifies who is making the request. You can use permission_callback to check user capabilities, verify API keys, or implement custom access control. Returning __return_true makes the endpoint public."
+      },
+      {
+        question: "How do I secure my custom WordPress API endpoints?",
+        answer: "Implement proper permission callbacks, validate and sanitize all input, use API keys or OAuth for authentication, implement rate limiting, return appropriate HTTP status codes, never expose sensitive data without authentication, add CORS headers carefully, and log API access for monitoring."
+      },
+      {
+        question: "Can I use WordPress authentication for my custom API endpoints?",
+        answer: "Yes, WordPress REST API supports cookie authentication (for same-origin requests), application passwords (WordPress 5.6+), and OAuth via plugins. For custom authentication, check headers in your permission_callback and validate against stored credentials or API keys."
+      },
+      {
+        question: "How do I add pagination to my WordPress API endpoint?",
+        answer: "Accept 'page' and 'per_page' parameters, use WP_Query with 'paged' and 'posts_per_page' arguments, and add X-WP-Total and X-WP-TotalPages headers to the response using $response->header(). Limit max per_page to prevent abuse (typically 100). Return pagination metadata in the response or headers."
+      }
+    ]
+  },
+  {
+    id: 89,
+    slug: 'custom-cron-job',
+    title: 'Schedule Custom WordPress Cron Jobs',
+    excerpt: 'Learn how to create and manage custom WordPress cron jobs for automated tasks like backups, email sending, and data synchronization.',
+    content: `
+      <h2>Understanding WordPress Cron</h2>
+      <p>WordPress Cron (WP-Cron) is a scheduled task system that runs when someone visits your site. Unlike server cron, WP-Cron executes on page load, making it reliable for most WordPress sites without requiring server access.</p>
+
+      <h3>Basic Cron Job Setup</h3>
+      <pre><code class="language-php">// Schedule a recurring cron job
+function schedule_custom_cron() {
+    if (!wp_next_scheduled('my_custom_cron_event')) {
+        wp_schedule_event(time(), 'hourly', 'my_custom_cron_event');
+    }
+}
+add_action('wp', 'schedule_custom_cron');
+
+// Define what the cron job does
+function execute_custom_cron() {
+    // Your code here
+    error_log('Custom cron job executed at ' . current_time('mysql'));
+
+    // Example: Clean up old data
+    global $wpdb;
+    $wpdb->query("DELETE FROM {$wpdb->postmeta} WHERE meta_key = '_transient_timeout_%' AND meta_value < UNIX_TIMESTAMP()");
+}
+add_action('my_custom_cron_event', 'execute_custom_cron');</code></pre>
+
+      <h3>Custom Cron Schedule Intervals</h3>
+      <pre><code class="language-php">// Add custom cron intervals
+function add_custom_cron_intervals($schedules) {
+    // Every 5 minutes
+    $schedules['every_five_minutes'] = array(
+        'interval' => 300,
+        'display' => __('Every 5 Minutes')
+    );
+
+    // Every 15 minutes
+    $schedules['every_fifteen_minutes'] = array(
+        'interval' => 900,
+        'display' => __('Every 15 Minutes')
+    );
+
+    // Twice daily
+    $schedules['twice_daily'] = array(
+        'interval' => 43200, // 12 hours
+        'display' => __('Twice Daily')
+    );
+
+    // Weekly
+    $schedules['weekly'] = array(
+        'interval' => 604800,
+        'display' => __('Once Weekly')
+    );
+
+    // Monthly
+    $schedules['monthly'] = array(
+        'interval' => 2635200, // 30.5 days
+        'display' => __('Once Monthly')
+    );
+
+    return $schedules;
+}
+add_filter('cron_schedules', 'add_custom_cron_intervals');</code></pre>
+
+      <h3>Schedule at Specific Time</h3>
+      <pre><code class="language-php">// Schedule daily task at 3 AM
+function schedule_daily_task() {
+    if (!wp_next_scheduled('daily_cleanup_task')) {
+        // Get next 3 AM timestamp
+        $next_3am = strtotime('tomorrow 3:00 AM');
+
+        wp_schedule_event($next_3am, 'daily', 'daily_cleanup_task');
+    }
+}
+add_action('wp', 'schedule_daily_task');
+
+function run_daily_cleanup() {
+    // Clean up expired transients
+    delete_expired_transients();
+
+    // Remove old post revisions
+    global $wpdb;
+    $wpdb->query("DELETE FROM {$wpdb->posts} WHERE post_type = 'revision' AND post_modified < DATE_SUB(NOW(), INTERVAL 30 DAY)");
+
+    // Optimize database tables
+    $tables = $wpdb->get_results('SHOW TABLES', ARRAY_N);
+    foreach ($tables as $table) {
+        $wpdb->query("OPTIMIZE TABLE {$table[0]}");
+    }
+
+    error_log('Daily cleanup completed at ' . current_time('mysql'));
+}
+add_action('daily_cleanup_task', 'run_daily_cleanup');</code></pre>
+
+      <h3>One-Time Scheduled Event</h3>
+      <pre><code class="language-php">// Schedule a one-time event
+function schedule_one_time_event() {
+    // Schedule 2 hours from now
+    $timestamp = time() + (2 * HOUR_IN_SECONDS);
+
+    if (!wp_next_scheduled('one_time_notification', array(123))) {
+        wp_schedule_single_event($timestamp, 'one_time_notification', array(123));
+    }
+}
+
+// Execute one-time event
+function send_one_time_notification($user_id) {
+    $user = get_user_by('id', $user_id);
+
+    if ($user) {
+        wp_mail(
+            $user->user_email,
+            'Scheduled Notification',
+            'This is a scheduled message sent 2 hours after registration.'
+        );
+    }
+}
+add_action('one_time_notification', 'send_one_time_notification');</code></pre>
+
+      <h3>Email Digest Cron Job</h3>
+      <pre><code class="language-php">// Send weekly email digest
+function schedule_weekly_digest() {
+    if (!wp_next_scheduled('send_weekly_digest')) {
+        // Schedule for every Monday at 8 AM
+        $next_monday = strtotime('next Monday 8:00 AM');
+        wp_schedule_event($next_monday, 'weekly', 'send_weekly_digest');
+    }
+}
+add_action('wp', 'schedule_weekly_digest');
+
+function send_weekly_email_digest() {
+    // Get posts from last week
+    $args = array(
+        'post_type' => 'post',
+        'posts_per_page' => 10,
+        'date_query' => array(
+            array(
+                'after' => '1 week ago'
+            )
+        )
+    );
+
+    $recent_posts = get_posts($args);
+
+    if (empty($recent_posts)) {
+        return;
+    }
+
+    // Build email content
+    $message = '<h2>Weekly Digest</h2>';
+    $message .= '<p>Here are the posts from last week:</p><ul>';
+
+    foreach ($recent_posts as $post) {
+        $message .= sprintf(
+            '<li><a href="%s">%s</a> - %s</li>',
+            get_permalink($post->ID),
+            $post->post_title,
+            get_the_date('', $post->ID)
+        );
+    }
+
+    $message .= '</ul>';
+
+    // Send to all subscribers
+    $subscribers = get_users(array(
+        'meta_key' => 'newsletter_subscriber',
+        'meta_value' => '1'
+    ));
+
+    $headers = array('Content-Type: text/html; charset=UTF-8');
+
+    foreach ($subscribers as $subscriber) {
+        wp_mail(
+            $subscriber->user_email,
+            'Your Weekly Digest',
+            $message,
+            $headers
+        );
+    }
+
+    error_log('Weekly digest sent to ' . count($subscribers) . ' subscribers');
+}
+add_action('send_weekly_digest', 'send_weekly_email_digest');</code></pre>
+
+      <h3>Database Backup Cron</h3>
+      <pre><code class="language-php">// Daily database backup
+function schedule_database_backup() {
+    if (!wp_next_scheduled('daily_database_backup')) {
+        $timestamp = strtotime('tomorrow 2:00 AM');
+        wp_schedule_event($timestamp, 'daily', 'daily_database_backup');
+    }
+}
+add_action('wp', 'schedule_database_backup');
+
+function perform_database_backup() {
+    global $wpdb;
+
+    $backup_dir = WP_CONTENT_DIR . '/backups/';
+
+    // Create directory if not exists
+    if (!file_exists($backup_dir)) {
+        mkdir($backup_dir, 0755, true);
+    }
+
+    // Get all tables
+    $tables = $wpdb->get_results('SHOW TABLES', ARRAY_N);
+    $backup_file = $backup_dir . 'backup-' . date('Y-m-d-H-i-s') . '.sql';
+
+    $handle = fopen($backup_file, 'w+');
+
+    foreach ($tables as $table) {
+        $table_name = $table[0];
+
+        // Get table structure
+        $create_table = $wpdb->get_row("SHOW CREATE TABLE $table_name", ARRAY_N);
+        fwrite($handle, "\n\n" . $create_table[1] . ";\n\n");
+
+        // Get table data
+        $rows = $wpdb->get_results("SELECT * FROM $table_name", ARRAY_A);
+
+        foreach ($rows as $row) {
+            $values = array_map(function($value) use ($wpdb) {
+                return $wpdb->prepare('%s', $value);
+            }, array_values($row));
+
+            $insert = "INSERT INTO $table_name VALUES(" . implode(',', $values) . ");\n";
+            fwrite($handle, $insert);
+        }
+    }
+
+    fclose($handle);
+
+    // Delete backups older than 7 days
+    $files = glob($backup_dir . '*.sql');
+    foreach ($files as $file) {
+        if (filemtime($file) < strtotime('-7 days')) {
+            unlink($file);
+        }
+    }
+
+    error_log('Database backup completed: ' . $backup_file);
+}
+add_action('daily_database_backup', 'perform_database_backup');</code></pre>
+
+      <h3>Unscheduling Cron Jobs</h3>
+      <pre><code class="language-php">// Remove scheduled event
+function remove_custom_cron() {
+    $timestamp = wp_next_scheduled('my_custom_cron_event');
+    if ($timestamp) {
+        wp_unschedule_event($timestamp, 'my_custom_cron_event');
+    }
+
+    // Or clear all instances
+    wp_clear_scheduled_hook('my_custom_cron_event');
+}
+
+// Clear on plugin deactivation
+register_deactivation_hook(__FILE__, 'remove_custom_cron');</code></pre>
+
+      <h3>Debug and Monitor Cron</h3>
+      <pre><code class="language-php">// List all scheduled cron jobs
+function list_scheduled_crons() {
+    $crons = _get_cron_array();
+
+    echo '<pre>';
+    foreach ($crons as $timestamp => $cron) {
+        foreach ($cron as $hook => $events) {
+            echo 'Hook: ' . $hook . "\n";
+            echo 'Next run: ' . date('Y-m-d H:i:s', $timestamp) . "\n";
+            echo 'Schedule: ' . (isset($events[key($events)]['schedule']) ? $events[key($events)]['schedule'] : 'once') . "\n\n";
+        }
+    }
+    echo '</pre>';
+}
+
+// Check if cron is working
+function test_wp_cron() {
+    $doing_cron = get_transient('doing_cron');
+
+    if ($doing_cron) {
+        echo 'WP-Cron is currently running';
+    } else {
+        echo 'WP-Cron is idle';
+    }
+
+    // Test spawn cron
+    $result = spawn_cron();
+    echo $result ? ' - Spawn successful' : ' - Spawn failed';
+}</code></pre>
+
+      <h3>Using Real Server Cron (Alternative)</h3>
+      <pre><code class="language-php">// Disable WP-Cron in wp-config.php
+define('DISABLE_WP_CRON', true);
+
+// Add to server crontab (Linux)
+// */15 * * * * wget -q -O - https://yoursite.com/wp-cron.php?doing_wp_cron >/dev/null 2>&1
+
+// Or use curl
+// */15 * * * * curl https://yoursite.com/wp-cron.php?doing_wp_cron >/dev/null 2>&1</code></pre>
+
+      <h3>Implementation Steps</h3>
+      <ol>
+        <li>Define custom cron schedules with cron_schedules filter</li>
+        <li>Schedule event with wp_schedule_event() or wp_schedule_single_event()</li>
+        <li>Create callback function for the scheduled task</li>
+        <li>Hook callback to your custom event with add_action()</li>
+        <li>Test thoroughly in development environment</li>
+        <li>Monitor execution with error logs</li>
+        <li>Unschedule events on plugin deactivation</li>
+      </ol>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li><strong>Check Before Scheduling:</strong> Use wp_next_scheduled() to avoid duplicates</li>
+        <li><strong>Efficient Queries:</strong> Optimize database queries for cron tasks</li>
+        <li><strong>Error Handling:</strong> Log errors and failures for monitoring</li>
+        <li><strong>Resource Management:</strong> Keep tasks lightweight to avoid timeouts</li>
+        <li><strong>Cleanup:</strong> Always unschedule on deactivation</li>
+        <li><strong>Testing:</strong> Test cron jobs thoroughly before production</li>
+      </ul>
+
+      <h3>Common Use Cases</h3>
+      <ul>
+        <li>Automated database backups and optimization</li>
+        <li>Sending scheduled email newsletters</li>
+        <li>Cleaning up expired transients and cache</li>
+        <li>Synchronizing data with external APIs</li>
+        <li>Generating reports and analytics</li>
+        <li>Publishing scheduled content</li>
+        <li>Checking for updates and maintenance</li>
+      </ul>
+    `,
+    code: `wp_schedule_event(time(), 'hourly', 'my_custom_cron_event');`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '12 min',
+    category: 'WordPress Advanced',
+    tags: ['Cron', 'Automation', 'WP-Cron'],
+    difficulty: 'Advanced',
+    compatibility: 'WordPress 2.1+',
+    seo: {
+      metaTitle: 'WordPress Cron Jobs - Complete Scheduling Guide 2025',
+      metaDescription: 'Master WordPress cron jobs with custom schedules, automated tasks, email sending, database backups, and WP-Cron optimization tips.',
+      keywords: ['wordpress cron', 'wp_cron', 'schedule wordpress task', 'wordpress automation', 'wp_schedule_event', 'custom cron interval'],
+      canonical: 'https://shahmir.dev/blog/custom-cron-job',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Schedule Custom WordPress Cron Jobs',
+        description: 'Comprehensive guide to creating and managing WordPress cron jobs for automated tasks, backups, and scheduled operations.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Advanced',
+        dependencies: 'WordPress 2.1+'
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between WP-Cron and server cron?",
+        answer: "WP-Cron runs when someone visits your WordPress site, making it dependent on site traffic. Server cron runs at exact times regardless of traffic, making it more reliable but requiring server access. For high-traffic sites, WP-Cron works fine. For low-traffic sites or time-critical tasks, use server cron with DISABLE_WP_CRON."
+      },
+      {
+        question: "Why isn't my WordPress cron job running?",
+        answer: "Common reasons: No site visitors (WP-Cron requires traffic), caching plugins preventing wp-cron.php execution, server timeout on long tasks, duplicate scheduling conflicts, or WP-Cron is disabled. Check with wp_next_scheduled() if event is scheduled, monitor error logs, and test with WP-Cron plugins like WP Crontrol."
+      },
+      {
+        question: "How do I create a custom cron schedule in WordPress?",
+        answer: "Use the cron_schedules filter to add custom intervals. Return an array with 'interval' (seconds) and 'display' (name) keys. For example: $schedules['every_5_minutes'] = array('interval' => 300, 'display' => 'Every 5 Minutes'). Then use this schedule name in wp_schedule_event()."
+      },
+      {
+        question: "Should I disable WP-Cron and use server cron instead?",
+        answer: "Use server cron if you need exact execution times, have low site traffic, run resource-intensive tasks, or require guaranteed execution. Keep WP-Cron if you don't have server access, have high traffic (10+ visitors per minute), or prefer simplicity. For most sites, WP-Cron works perfectly fine."
+      },
+      {
+        question: "How do I debug WordPress cron jobs that aren't working?",
+        answer: "Install WP Crontrol plugin to view all scheduled events, check error logs for execution errors, use wp_next_scheduled() to verify scheduling, test callback function independently, ensure no fatal PHP errors in callback, check server timeout limits, and verify no caching preventing wp-cron.php access. Add error_log() statements for debugging."
+      }
+    ]
+  },
+  {
+    id: 90,
+    slug: 'custom-shortcodes',
+    title: 'Create Custom Shortcodes in WordPress',
+    excerpt: 'Build powerful custom shortcodes with attributes, content wrapping, and dynamic functionality for flexible content management.',
+    content: `
+      <h2>Understanding WordPress Shortcodes</h2>
+      <p>Shortcodes are special tags that WordPress replaces with dynamic content. They allow users to add complex functionality to posts and pages without writing code. Custom shortcodes extend WordPress with reusable content blocks and interactive features.</p>
+
+      <h3>Basic Shortcode Creation</h3>
+      <pre><code class="language-php">// Simple shortcode without parameters
+function hello_world_shortcode() {
+    return '<p>Hello World! This is a custom shortcode.</p>';
+}
+add_shortcode('hello', 'hello_world_shortcode');
+
+// Usage: [hello]</code></pre>
+
+      <h3>Shortcode with Attributes</h3>
+      <pre><code class="language-php">// Shortcode with parameters
+function button_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'url' => '#',
+        'text' => 'Click Here',
+        'color' => 'blue',
+        'size' => 'medium',
+        'target' => '_self'
+    ), $atts, 'button');
+
+    $classes = 'custom-button btn-' . esc_attr($atts['color']) . ' btn-' . esc_attr($atts['size']);
+
+    return sprintf(
+        '<a href="%s" class="%s" target="%s">%s</a>',
+        esc_url($atts['url']),
+        $classes,
+        esc_attr($atts['target']),
+        esc_html($atts['text'])
+    );
+}
+add_shortcode('button', 'button_shortcode');
+
+// Usage: [button url="https://example.com" text="Learn More" color="green" target="_blank"]</code></pre>
+
+      <h3>Enclosing Shortcode (With Content)</h3>
+      <pre><code class="language-php">// Shortcode that wraps content
+function highlight_shortcode($atts, $content = null) {
+    $atts = shortcode_atts(array(
+        'color' => 'yellow',
+        'text_color' => 'black'
+    ), $atts, 'highlight');
+
+    $style = sprintf(
+        'background-color: %s; color: %s; padding: 10px; border-radius: 5px;',
+        esc_attr($atts['color']),
+        esc_attr($atts['text_color'])
+    );
+
+    return sprintf(
+        '<span class="highlight" style="%s">%s</span>',
+        $style,
+        do_shortcode($content) // Allow nested shortcodes
+    );
+}
+add_shortcode('highlight', 'highlight_shortcode');
+
+// Usage: [highlight color="yellow"]This text is highlighted[/highlight]</code></pre>
+
+      <h3>Display Recent Posts Shortcode</h3>
+      <pre><code class="language-php">// Recent posts shortcode
+function recent_posts_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'posts' => 5,
+        'category' => '',
+        'show_excerpt' => 'yes',
+        'show_date' => 'yes',
+        'show_thumbnail' => 'yes'
+    ), $atts, 'recent_posts');
+
+    $args = array(
+        'posts_per_page' => intval($atts['posts']),
+        'post_status' => 'publish',
+        'ignore_sticky_posts' => 1
+    );
+
+    if (!empty($atts['category'])) {
+        $args['category_name'] = sanitize_text_field($atts['category']);
+    }
+
+    $query = new WP_Query($args);
+
+    if (!$query->have_posts()) {
+        return '<p>No posts found.</p>';
+    }
+
+    ob_start();
+    ?>
+    <div class="recent-posts-shortcode">
+        <?php while ($query->have_posts()) : $query->the_post(); ?>
+            <div class="recent-post-item">
+                <?php if ($atts['show_thumbnail'] === 'yes' && has_post_thumbnail()) : ?>
+                    <div class="post-thumbnail">
+                        <a href="<?php the_permalink(); ?>">
+                            <?php the_post_thumbnail('thumbnail'); ?>
+                        </a>
+                    </div>
+                <?php endif; ?>
+
+                <div class="post-content">
+                    <h3><a href="<?php the_permalink(); ?>"><?php the_title(); ?></a></h3>
+
+                    <?php if ($atts['show_date'] === 'yes') : ?>
+                        <span class="post-date"><?php echo get_the_date(); ?></span>
+                    <?php endif; ?>
+
+                    <?php if ($atts['show_excerpt'] === 'yes') : ?>
+                        <div class="post-excerpt">
+                            <?php echo wp_trim_words(get_the_excerpt(), 20); ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <a href="<?php the_permalink(); ?>" class="read-more">Read More</a>
+                </div>
+            </div>
+        <?php endwhile; ?>
+    </div>
+    <?php
+    wp_reset_postdata();
+
+    return ob_get_clean();
+}
+add_shortcode('recent_posts', 'recent_posts_shortcode');
+
+// Usage: [recent_posts posts="5" category="news" show_excerpt="yes"]</code></pre>
+
+      <h3>Contact Form Shortcode</h3>
+      <pre><code class="language-php">// Simple contact form shortcode
+function contact_form_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'email' => get_option('admin_email'),
+        'subject' => 'Contact Form Submission'
+    ), $atts, 'contact_form');
+
+    // Handle form submission
+    if (isset($_POST['contact_submit'])) {
+        $name = sanitize_text_field($_POST['contact_name']);
+        $email = sanitize_email($_POST['contact_email']);
+        $message = sanitize_textarea_field($_POST['contact_message']);
+
+        if (empty($name) || empty($email) || !is_email($email) || empty($message)) {
+            $error = 'Please fill all fields correctly.';
+        } else {
+            $headers = array('Content-Type: text/html; charset=UTF-8', 'Reply-To: ' . $email);
+            $body = "<p><strong>Name:</strong> $name</p>";
+            $body .= "<p><strong>Email:</strong> $email</p>";
+            $body .= "<p><strong>Message:</strong></p><p>$message</p>";
+
+            if (wp_mail($atts['email'], $atts['subject'], $body, $headers)) {
+                return '<div class="contact-success">Thank you! Your message has been sent.</div>';
+            } else {
+                $error = 'Failed to send message. Please try again.';
+            }
+        }
+    }
+
+    ob_start();
+    ?>
+    <form method="post" class="contact-form-shortcode">
+        <?php if (isset($error)) : ?>
+            <div class="contact-error"><?php echo esc_html($error); ?></div>
+        <?php endif; ?>
+
+        <p>
+            <label for="contact_name">Name:</label>
+            <input type="text" name="contact_name" id="contact_name" required>
+        </p>
+
+        <p>
+            <label for="contact_email">Email:</label>
+            <input type="email" name="contact_email" id="contact_email" required>
+        </p>
+
+        <p>
+            <label for="contact_message">Message:</label>
+            <textarea name="contact_message" id="contact_message" rows="5" required></textarea>
+        </p>
+
+        <p>
+            <button type="submit" name="contact_submit">Send Message</button>
+        </p>
+    </form>
+    <?php
+    return ob_get_clean();
+}
+add_shortcode('contact_form', 'contact_form_shortcode');
+
+// Usage: [contact_form email="info@example.com" subject="New Contact"]</code></pre>
+
+      <h3>Pricing Table Shortcode</h3>
+      <pre><code class="language-php">// Pricing table shortcode
+function pricing_table_shortcode($atts, $content = null) {
+    $atts = shortcode_atts(array(
+        'columns' => 3
+    ), $atts, 'pricing_table');
+
+    return sprintf(
+        '<div class="pricing-table columns-%d">%s</div>',
+        intval($atts['columns']),
+        do_shortcode($content)
+    );
+}
+add_shortcode('pricing_table', 'pricing_table_shortcode');
+
+// Individual pricing column
+function pricing_column_shortcode($atts, $content = null) {
+    $atts = shortcode_atts(array(
+        'title' => 'Plan',
+        'price' => '$0',
+        'period' => 'month',
+        'featured' => 'no',
+        'button_text' => 'Choose Plan',
+        'button_url' => '#'
+    ), $atts, 'pricing_column');
+
+    $featured_class = $atts['featured'] === 'yes' ? ' featured' : '';
+
+    ob_start();
+    ?>
+    <div class="pricing-column<?php echo $featured_class; ?>">
+        <h3 class="plan-title"><?php echo esc_html($atts['title']); ?></h3>
+        <div class="plan-price">
+            <span class="price"><?php echo esc_html($atts['price']); ?></span>
+            <span class="period">per <?php echo esc_html($atts['period']); ?></span>
+        </div>
+        <div class="plan-features">
+            <?php echo do_shortcode($content); ?>
+        </div>
+        <a href="<?php echo esc_url($atts['button_url']); ?>" class="plan-button">
+            <?php echo esc_html($atts['button_text']); ?>
+        </a>
+    </div>
+    <?php
+    return ob_get_clean();
+}
+add_shortcode('pricing_column', 'pricing_column_shortcode');
+
+// Usage:
+// [pricing_table columns="3"]
+//   [pricing_column title="Basic" price="$9" period="month"]
+//     <ul><li>Feature 1</li><li>Feature 2</li></ul>
+//   [/pricing_column]
+//   [pricing_column title="Pro" price="$19" period="month" featured="yes"]
+//     <ul><li>All Basic</li><li>Feature 3</li></ul>
+//   [/pricing_column]
+// [/pricing_table]</code></pre>
+
+      <h3>Conditional Content Shortcode</h3>
+      <pre><code class="language-php">// Show content based on user role
+function user_role_shortcode($atts, $content = null) {
+    $atts = shortcode_atts(array(
+        'roles' => 'subscriber' // Comma-separated roles
+    ), $atts, 'user_role');
+
+    if (!is_user_logged_in()) {
+        return '';
+    }
+
+    $user = wp_get_current_user();
+    $allowed_roles = array_map('trim', explode(',', $atts['roles']));
+
+    foreach ($allowed_roles as $role) {
+        if (in_array($role, $user->roles)) {
+            return do_shortcode($content);
+        }
+    }
+
+    return '';
+}
+add_shortcode('user_role', 'user_role_shortcode');
+
+// Usage: [user_role roles="administrator,editor"]This content is for admins and editors only[/user_role]
+
+// Show content to logged-in users
+function logged_in_shortcode($atts, $content = null) {
+    return is_user_logged_in() ? do_shortcode($content) : '';
+}
+add_shortcode('logged_in', 'logged_in_shortcode');
+
+// Show content to guests
+function guest_shortcode($atts, $content = null) {
+    return !is_user_logged_in() ? do_shortcode($content) : '';
+}
+add_shortcode('guest', 'guest_shortcode');</code></pre>
+
+      <h3>Current Year/Date Shortcode</h3>
+      <pre><code class="language-php">// Display current year (for copyright)
+function year_shortcode() {
+    return date('Y');
+}
+add_shortcode('year', 'year_shortcode');
+
+// Display current date with format
+function current_date_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'format' => 'F j, Y' // Default: January 1, 2025
+    ), $atts, 'current_date');
+
+    return date($atts['format']);
+}
+add_shortcode('current_date', 'current_date_shortcode');
+
+// Usage: Copyright © [year] or Today is [current_date format="l, F j, Y"]</code></pre>
+
+      <h3>Enqueue Shortcode Assets</h3>
+      <pre><code class="language-php">// Enqueue styles and scripts for shortcodes
+function enqueue_shortcode_assets() {
+    global $post;
+
+    // Check if shortcode is present
+    if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'pricing_table')) {
+        wp_enqueue_style('pricing-table', get_template_directory_uri() . '/css/pricing-table.css');
+        wp_enqueue_script('pricing-table', get_template_directory_uri() . '/js/pricing-table.js', array('jquery'), '1.0', true);
+    }
+}
+add_action('wp_enqueue_scripts', 'enqueue_shortcode_assets');</code></pre>
+
+      <h3>Implementation Steps</h3>
+      <ol>
+        <li>Create a function that returns content (not echo)</li>
+        <li>Use shortcode_atts() to define default attributes</li>
+        <li>Sanitize and validate all input</li>
+        <li>Escape output for security</li>
+        <li>Register with add_shortcode()</li>
+        <li>Test in posts, pages, and widgets</li>
+        <li>Document usage for users</li>
+      </ol>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li><strong>Return, Don't Echo:</strong> Always return content, never echo</li>
+        <li><strong>Use shortcode_atts():</strong> Define defaults and sanitize attributes</li>
+        <li><strong>Escape Output:</strong> Use esc_html(), esc_url(), esc_attr()</li>
+        <li><strong>Allow Nesting:</strong> Use do_shortcode() for content parameters</li>
+        <li><strong>Unique Names:</strong> Prefix shortcode names to avoid conflicts</li>
+        <li><strong>Conditional Assets:</strong> Only load CSS/JS when shortcode is used</li>
+        <li><strong>Documentation:</strong> Provide clear usage examples</li>
+      </ul>
+    `,
+    code: `add_shortcode('button', 'button_shortcode');`,
+    author: {
+      name: 'Shahmir Khan',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '10 min',
+    category: 'WordPress Advanced',
+    tags: ['Shortcodes', 'Content', 'Development'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 2.5+',
+    seo: {
+      metaTitle: 'Create Custom WordPress Shortcodes - Complete Guide 2025',
+      metaDescription: 'Learn how to create custom WordPress shortcodes with attributes, nested content, and dynamic functionality. Includes practical examples and best practices.',
+      keywords: ['wordpress shortcodes', 'custom shortcodes', 'add_shortcode', 'shortcode_atts', 'wordpress shortcode tutorial', 'create shortcode'],
+      canonical: 'https://shahmir.dev/blog/custom-shortcodes',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Create Custom Shortcodes in WordPress',
+        description: 'Comprehensive guide to building custom WordPress shortcodes with attributes, content wrapping, and real-world examples.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khan'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WordPress 2.5+'
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between a self-closing and enclosing shortcode?",
+        answer: "Self-closing shortcodes like [button] don't wrap content and don't use the $content parameter. Enclosing shortcodes like [highlight]text[/highlight] wrap content and receive it as the $content parameter in the callback function. Use enclosing shortcodes when you need to apply formatting or functionality to user-provided content."
+      },
+      {
+        question: "Why should I use shortcode_atts() instead of accessing $atts directly?",
+        answer: "shortcode_atts() provides default values for missing attributes, filters attributes through WordPress hooks allowing modification, ensures consistent behavior, and helps prevent undefined index errors. It's the WordPress way to handle shortcode attributes and makes your code more maintainable and extensible."
+      },
+      {
+        question: "How do I allow nested shortcodes inside my custom shortcode?",
+        answer: "Use do_shortcode($content) on the content parameter before returning it. This processes any shortcodes within your shortcode's content. For example: return '<div>' . do_shortcode($content) . '</div>'. Without do_shortcode(), nested shortcodes would appear as plain text instead of being processed."
+      },
+      {
+        question: "What's the proper way to enqueue CSS/JS only when my shortcode is used?",
+        answer: "Check if the shortcode exists using has_shortcode($post->post_content, 'your_shortcode') in wp_enqueue_scripts hook. This prevents loading assets on every page. Alternatively, enqueue assets directly in your shortcode callback using wp_enqueue_style() and wp_enqueue_script() - WordPress will handle them correctly even in content."
+      },
+      {
+        question: "Why should shortcode functions return content instead of echo?",
+        answer: "Shortcodes must return content because WordPress replaces the shortcode tag with the returned value in the content flow. If you echo instead of return, the content appears at the top of the page (before headers) and the shortcode position remains empty. Always use return, never echo, in shortcode callbacks."
+      }
+    ]
+  }
+]
 // Helper functions for blog display
 export function getAllWPSnippets() {
   return wpCodeSnippets;
