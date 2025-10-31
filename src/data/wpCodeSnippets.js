@@ -10134,7 +10134,7 @@ add_filter('the_excerpt_rss', 'add_featured_image_to_rss');
 add_filter('the_content_feed', 'add_featured_image_to_rss');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-15',
@@ -10727,7 +10727,7 @@ function auto_set_featured_image_from_content($post_id) {
 add_action('save_post', 'auto_set_featured_image_from_content');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-15',
@@ -11272,7 +11272,7 @@ function add_content_after_post($content) {
 add_filter('the_content', 'add_content_after_post');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-15',
@@ -11641,7 +11641,7 @@ function remove_p_tags_around_images($content) {
 add_filter('the_content', 'remove_p_tags_around_images');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-15',
@@ -12276,7 +12276,7 @@ function generate_table_of_contents($content) {
 add_filter('the_content', 'generate_table_of_contents', 10);`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-15',
@@ -12895,7 +12895,7 @@ function display_reading_time() {
 }`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-15',
@@ -13346,7 +13346,7 @@ function remove_archive_title_prefix($title) {
 add_filter('get_the_archive_title', 'remove_archive_title_prefix');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-15',
@@ -13792,7 +13792,7 @@ function get_post_views($post_id = null) {
 }`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-15',
@@ -14243,7 +14243,7 @@ function remove_custom_role() {
 add_action('switch_theme', 'remove_custom_role');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-15',
@@ -14669,7 +14669,7 @@ add_action('personal_options_update', 'save_custom_user_profile_fields');
 add_action('edit_user_profile_update', 'save_custom_user_profile_fields');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-15',
@@ -15011,7 +15011,7 @@ add_filter('user_can_richedit', function($can_richedit) {
 add_action('after_setup_theme', 'hide_admin_bar_for_non_admins');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -15571,7 +15571,7 @@ function custom_login_logo_url() {
 add_filter('login_headerurl', 'custom_login_logo_url');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -15956,7 +15956,7 @@ function role_based_login_redirect($redirect_to, $request, $user) {
 add_filter('login_redirect', 'role_based_login_redirect', 10, 3);`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -16094,7 +16094,7 @@ add_shortcode('user_stats', 'formatted_user_count');</code></pre>
 add_shortcode('total_users', 'display_user_count');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -16264,7 +16264,7 @@ function email_inactive_users() {
 add_action('wp_login', 'track_last_login', 10, 2);`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -16449,7 +16449,7 @@ add_filter('get_avatar', 'generate_initial_avatar', 10, 3);</code></pre>
 add_filter('avatar_defaults', 'custom_default_avatar');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -16631,7 +16631,7 @@ add_action('get_header', 'remove_admin_bar_styles');</code></pre>
 add_action('admin_init', 'restrict_admin_access');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -16898,7 +16898,7 @@ add_action('init', 'extend_session_on_activity');</code></pre>
 add_action('init', 'auto_logout_inactive_users');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -17099,7 +17099,7 @@ add_action('template_redirect', 'restrict_cart_for_guests');</code></pre>
 }`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -17319,7 +17319,7 @@ add_filter('woocommerce_product_add_to_cart_text', function() {
 });`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -17564,7 +17564,7 @@ add_action('wp_enqueue_scripts', function() {
 }, 11);`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -17880,7 +17880,7 @@ add_filter('woocommerce_product_tabs', 'reorder_product_tabs', 98);</code></pre>
 });`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -18173,7 +18173,7 @@ add_action('woocommerce_checkout_process', 'country_based_minimum');</code></pre
 });`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -18492,7 +18492,7 @@ function display_tracking_info() {
 });`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -18772,7 +18772,7 @@ add_filter('woocommerce_quantity_input_args', 'role_based_quantity', 10, 2);</co
 }, 10, 2);`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -23494,7 +23494,7 @@ add_filter('the_title', 'highlight_search_terms');</code></pre>
     code: `add_filter('pre_get_posts', 'custom_search_query');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -23840,7 +23840,7 @@ add_action('wp_ajax_upload_file', 'ajax_file_upload');</code></pre>
     code: `add_action('wp_ajax_custom_action', 'handle_ajax_request');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -24265,7 +24265,7 @@ curl https://yoursite.com/wp-json/custom/v1/secure-data \
     code: `register_rest_route('custom/v1', '/posts', array('methods' => 'GET', 'callback' => 'get_custom_posts'));`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -24654,7 +24654,7 @@ define('DISABLE_WP_CRON', true);
     code: `wp_schedule_event(time(), 'hourly', 'my_custom_cron_event');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',
@@ -25056,7 +25056,7 @@ add_action('wp_enqueue_scripts', 'enqueue_shortcode_assets');</code></pre>
     code: `add_shortcode('button', 'button_shortcode');`,
     author: {
       name: 'Shahmir Khan',
-      avatar: '/images/avatar.jpg',
+      avatar: '/images/avatar.png',
       bio: 'WordPress Developer & Code Snippet Specialist'
     },
     date: '2025-01-18',

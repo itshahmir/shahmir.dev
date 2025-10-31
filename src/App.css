@@ -135,25 +135,6 @@ body::before {
   fill: currentColor;
 }
 
-.wp-admin-bar {
-  background: #23282d;
-  color: #ffffff;
-  padding: 8px 16px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 13px;
-  margin: -60px -40px 40px -40px;
-  border-bottom: 1px solid #32373c;
-}
-
-.wp-admin-bar a {
-  color: #00a0d2;
-  text-decoration: none;
-}
-
-.wp-admin-bar a:hover {
-  color: #00b9eb;
-}
-
 /* Legacy Futuristic Menu */
 .legacy-menu {
   position: fixed;
@@ -288,6 +269,131 @@ body::before {
   background: #005177;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 115, 170, 0.3);
+}
+
+/* Mobile Menu Toggle Button */
+.mobile-menu-toggle {
+  display: none; /* Hidden by default on desktop */
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 102;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(0, 115, 170, 0.95);
+  backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 115, 170, 0.3);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  pointer-events: auto;
+}
+
+.mobile-menu-toggle svg {
+  width: 28px;
+  height: 28px;
+  color: white;
+}
+
+.mobile-menu-toggle:hover {
+  background: rgba(0, 115, 170, 1);
+  transform: translateX(-50%) scale(1.05);
+  box-shadow: 0 12px 40px rgba(0, 115, 170, 0.4);
+}
+
+.mobile-menu-toggle:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+/* Mobile Menu Styles */
+@media (max-width: 768px) {
+  /* Show mobile toggle button */
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Hide menu by default on mobile */
+  .legacy-menu-inner {
+    position: fixed;
+    bottom: -100%;
+    left: 0;
+    right: 0;
+    max-width: 100% !important;
+    margin: 0;
+    padding: 30px 20px;
+    border-radius: 24px 24px 0 0;
+    flex-direction: column;
+    gap: 20px;
+    transition: bottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 -8px 32px rgba(0, 0, 0, 0.2);
+    animation: none;
+  }
+
+  /* Show menu when open */
+  .legacy-menu.mobile-open .legacy-menu-inner {
+    bottom: 0;
+  }
+
+  /* Brand always visible in mobile menu */
+  .legacy-menu-brand,
+  .legacy-menu.scrolled .legacy-menu-brand {
+    opacity: 1;
+    width: auto;
+    margin-right: 0;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+  }
+
+  /* Vertical menu links on mobile */
+  .legacy-menu-links,
+  .legacy-menu.scrolled .legacy-menu-links {
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .legacy-menu-links a {
+    width: 100%;
+    text-align: center;
+    padding: 12px 20px;
+    font-size: 1rem;
+    background: rgba(0, 115, 170, 0.05);
+    border-radius: 12px;
+  }
+
+  .legacy-menu-links a:hover {
+    background: rgba(0, 115, 170, 0.15);
+  }
+
+  /* CTA always visible on mobile */
+  .legacy-menu-cta,
+  .legacy-menu.scrolled .legacy-menu-cta {
+    opacity: 1;
+    width: 100%;
+    margin: 10px 0 0 0;
+    text-align: center;
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+
+  /* Move toggle button up when menu is open */
+  .legacy-menu.mobile-open .mobile-menu-toggle {
+    top: 20px;
+    bottom: auto;
+    background: rgba(231, 76, 60, 0.95);
+  }
+
+  .legacy-menu.mobile-open .mobile-menu-toggle:hover {
+    background: rgba(231, 76, 60, 1);
+    transform: translateX(-50%) scale(1.05);
+  }
 }
 
 html {

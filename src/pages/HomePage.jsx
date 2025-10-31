@@ -8,6 +8,7 @@ function HomePage() {
   const [formData, setFormData] = useState({ email: '' });
   const [formMessage, setFormMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // useEffect to initialize animations
   useEffect(() => {
@@ -81,6 +82,10 @@ function HomePage() {
 
 
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
@@ -123,23 +128,30 @@ function HomePage() {
 
   return (
     <div className="App">
-      <div className="wp-admin-bar">
-        <strong>WordPress Admin</strong> • <a href="#dashboard">Dashboard</a> • <a href="#posts">Posts</a> • <a href="#media">Media</a> • <a href="#pages">Pages</a> • <a href="mailto:shahmirkhanutmanzai@gmail.com">Contact Developer</a>
-      </div>
-
-      <nav className="legacy-menu">
+      <nav className={`legacy-menu ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+        <button className="mobile-menu-toggle" onClick={toggleMobileMenu} aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            {isMobileMenuOpen ? (
+              <path d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <>
+                <path d="M3 12h18M3 6h18M3 18h18" />
+              </>
+            )}
+          </svg>
+        </button>
         <div className="legacy-menu-inner">
           <div className="legacy-menu-brand">Shahmir Khan</div>
           <div className="legacy-menu-links">
-            <a href="#about">About</a>
-            <a href="#research">Research</a>
-            <a href="#companies">Companies</a>
-            <a href="#experience">Experience</a>
-            <a href="#skills">Skills</a>
-            <a href="#resources">Resources</a>
-            <Link to="/blog">Blog</Link>
+            <a href="#about" onClick={() => setIsMobileMenuOpen(false)}>About</a>
+            <a href="#research" onClick={() => setIsMobileMenuOpen(false)}>Research</a>
+            <a href="#companies" onClick={() => setIsMobileMenuOpen(false)}>Companies</a>
+            <a href="#experience" onClick={() => setIsMobileMenuOpen(false)}>Experience</a>
+            <a href="#skills" onClick={() => setIsMobileMenuOpen(false)}>Skills</a>
+            <a href="#resources" onClick={() => setIsMobileMenuOpen(false)}>Resources</a>
+            <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
           </div>
-          <a href="#contact" className="legacy-menu-cta">Contact</a>
+          <a href="#contact" className="legacy-menu-cta" onClick={() => setIsMobileMenuOpen(false)}>Contact</a>
         </div>
       </nav>
 

@@ -7,6 +7,7 @@ import '../App.css'
 function BlogPost() {
   const { slug } = useParams()
   const navigate = useNavigate()
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false)
 
   // Combine all data sources
   const allPosts = useMemo(() => {
@@ -233,23 +234,30 @@ function BlogPost() {
   if (!post) {
     return (
       <div className="App">
-        <div className="wp-admin-bar">
-          <strong>WordPress Admin</strong> • <Link to="/">Back to Home</Link>
-        </div>
-
-        <nav className="legacy-menu">
+        <nav className={`legacy-menu ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+          <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              {isMobileMenuOpen ? (
+                <path d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <>
+                  <path d="M3 12h18M3 6h18M3 18h18" />
+                </>
+              )}
+            </svg>
+          </button>
           <div className="legacy-menu-inner">
             <div className="legacy-menu-brand">Shahmir Khan</div>
             <div className="legacy-menu-links">
-              <Link to="/#about">About</Link>
-              <Link to="/#research">Research</Link>
-              <Link to="/#companies">Companies</Link>
-              <Link to="/#experience">Experience</Link>
-              <Link to="/#skills">Skills</Link>
-              <Link to="/#resources">Resources</Link>
-              <Link to="/blog">Blog</Link>
+              <Link to="/#about" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
+              <Link to="/#research" onClick={() => setIsMobileMenuOpen(false)}>Research</Link>
+              <Link to="/#companies" onClick={() => setIsMobileMenuOpen(false)}>Companies</Link>
+              <Link to="/#experience" onClick={() => setIsMobileMenuOpen(false)}>Experience</Link>
+              <Link to="/#skills" onClick={() => setIsMobileMenuOpen(false)}>Skills</Link>
+              <Link to="/#resources" onClick={() => setIsMobileMenuOpen(false)}>Resources</Link>
+              <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
             </div>
-            <Link to="/#contact" className="legacy-menu-cta">Contact</Link>
+            <Link to="/#contact" className="legacy-menu-cta" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
           </div>
         </nav>
 
@@ -280,23 +288,30 @@ function BlogPost() {
 
   return (
     <div className="App">
-      <div className="wp-admin-bar">
-        <strong>WordPress Admin</strong> • <Link to="/">Back to Home</Link> • <Link to="/blog">Blog Archive</Link>
-      </div>
-
-      <nav className="legacy-menu">
+      <nav className={`legacy-menu ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+        <button className="mobile-menu-toggle" onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} aria-label="Toggle menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            {isMobileMenuOpen ? (
+              <path d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <>
+                <path d="M3 12h18M3 6h18M3 18h18" />
+              </>
+            )}
+          </svg>
+        </button>
         <div className="legacy-menu-inner">
           <div className="legacy-menu-brand">Shahmir Khan</div>
           <div className="legacy-menu-links">
-            <Link to="/#about">About</Link>
-            <Link to="/#research">Research</Link>
-            <Link to="/#companies">Companies</Link>
-            <Link to="/#experience">Experience</Link>
-            <Link to="/#skills">Skills</Link>
-            <Link to="/#resources">Resources</Link>
-            <Link to="/blog">Blog</Link>
+            <Link to="/#about" onClick={() => setIsMobileMenuOpen(false)}>About</Link>
+            <Link to="/#research" onClick={() => setIsMobileMenuOpen(false)}>Research</Link>
+            <Link to="/#companies" onClick={() => setIsMobileMenuOpen(false)}>Companies</Link>
+            <Link to="/#experience" onClick={() => setIsMobileMenuOpen(false)}>Experience</Link>
+            <Link to="/#skills" onClick={() => setIsMobileMenuOpen(false)}>Skills</Link>
+            <Link to="/#resources" onClick={() => setIsMobileMenuOpen(false)}>Resources</Link>
+            <Link to="/blog" onClick={() => setIsMobileMenuOpen(false)}>Blog</Link>
           </div>
-          <Link to="/#contact" className="legacy-menu-cta">Contact</Link>
+          <Link to="/#contact" className="legacy-menu-cta" onClick={() => setIsMobileMenuOpen(false)}>Contact</Link>
         </div>
       </nav>
 
@@ -320,7 +335,11 @@ function BlogPost() {
             <h1 className="post-title">{post.title}</h1>
 
             <div className="post-meta">
-              {post.author && <span>By {post.author}</span>}
+              {post.author && (
+                <span>
+                  By {typeof post.author === 'string' ? post.author : post.author.name}
+                </span>
+              )}
               {post.author && post.date && <span> • </span>}
               {post.date && (
                 <span>{new Date(post.date).toLocaleDateString('en-US', {
