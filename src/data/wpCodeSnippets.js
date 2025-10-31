@@ -33,10 +33,10 @@ function disable_xmlrpc_pingback($methods) {
 
       <h3>Alternative Method: .htaccess</h3>
       <pre><code class="language-apache"># Block WordPress xmlrpc.php requests
-&lt;Files xmlrpc.php&gt;
+<Files xmlrpc.php>
   order deny,allow
   deny from all
-&lt;/Files&gt;</code></pre>
+</Files></code></pre>
 
       <h3>When to Keep XML-RPC Enabled</h3>
       <ul>
@@ -904,12 +904,12 @@ function register_theme_widget_areas() {
 add_action('widgets_init', 'register_theme_widget_areas');</code></pre>
 
       <h3>Display Widget Area in Template</h3>
-      <pre><code class="language-php">&lt;?php
+      <pre><code class="language-php"><?php
 // Display widget area in your theme template
 if (is_active_sidebar('custom-sidebar')) {
     dynamic_sidebar('custom-sidebar');
 }
-?&gt;</code></pre>
+?></code></pre>
 
       <h3>Conditional Widget Areas</h3>
       <pre><code class="language-php">// Show different widget area based on page type
@@ -2726,9 +2726,9 @@ add_filter('heartbeat_received', 'filter_heartbeat_response', 10, 2);</code></pr
 
       <h3>Recommended Settings</h3>
       <ul>
-        <li><strong>Small sites (&lt;1000 visits/day):</strong> Leave default or slow to 30s</li>
+        <li><strong>Small sites (<1000 visits/day):</strong> Leave default or slow to 30s</li>
         <li><strong>Medium sites (1000-10000 visits/day):</strong> Set to 60s or disable on frontend</li>
-        <li><strong>Large sites (&gt;10000 visits/day):</strong> Disable everywhere except post editor</li>
+        <li><strong>Large sites (>10000 visits/day):</strong> Disable everywhere except post editor</li>
         <li><strong>Shared hosting:</strong> Disable or set to 120s+ to avoid resource limits</li>
       </ul>
 
@@ -4689,7 +4689,7 @@ function get_posts_by_multiple_taxonomies($genre, $location) {
       <ul>
         <li>Cache taxonomy queries with transients</li>
         <li>Use wp_get_object_terms() for better performance</li>
-        <li>Avoid excessive hierarchical depth (&gt;3 levels)</li>
+        <li>Avoid excessive hierarchical depth (>3 levels)</li>
         <li>Index taxonomy relationships in custom tables for large sites</li>
       </ul>
     `,
@@ -5448,7 +5448,7 @@ add_action('wp_head', 'preload_critical_assets', 1);</code></pre>
           <tr>
             <td>Never hard-code tags</td>
             <td>Breaks WordPress ecosystem</td>
-            <td>Use enqueue functions, not &lt;script&gt; tags</td>
+            <td>Use enqueue functions, not <script> tags</td>
           </tr>
         </tbody>
       </table>
@@ -6502,7 +6502,7 @@ document.querySelector('.menu-toggle').addEventListener('click', function() {
         <li><strong>Register in after_setup_theme:</strong> Always register menus in this hook for proper theme support</li>
         <li><strong>Descriptive location names:</strong> Use clear names like 'primary', 'footer', not 'menu1', 'menu2'</li>
         <li><strong>Always check has_nav_menu():</strong> Provide fallbacks when no menu is assigned</li>
-        <li><strong>Use semantic HTML:</strong> Wrap menus in &lt;nav&gt; elements for accessibility</li>
+        <li><strong>Use semantic HTML:</strong> Wrap menus in <nav> elements for accessibility</li>
         <li><strong>Add ARIA attributes:</strong> Include aria-expanded, aria-label for better accessibility</li>
         <li><strong>Mobile-first approach:</strong> Design for mobile navigation first, enhance for desktop</li>
         <li><strong>Limit depth wisely:</strong> Deep nested menus can be difficult to navigate</li>
@@ -15545,7 +15545,7 @@ add_action('login_enqueue_scripts', 'complete_custom_login');</code></pre>
         </table>
 
         <h2>Performance Impact</h2>
-        <p><strong>Performance:</strong> Minimal impact when implemented correctly. Login page customizations only load on wp-login.php, not affecting site-wide performance. Use optimized images (logo &lt; 50KB, background &lt; 200KB) and inline critical CSS. The login page is accessed infrequently, so minor performance overhead is acceptable. Avoid loading heavy JavaScript libraries unless absolutely necessary. If using custom fonts, preload them or use system fonts for faster rendering.</p>
+        <p><strong>Performance:</strong> Minimal impact when implemented correctly. Login page customizations only load on wp-login.php, not affecting site-wide performance. Use optimized images (logo < 50KB, background < 200KB) and inline critical CSS. The login page is accessed infrequently, so minor performance overhead is acceptable. Avoid loading heavy JavaScript libraries unless absolutely necessary. If using custom fonts, preload them or use system fonts for faster rendering.</p>
       </div>
     `,
     code: `// Custom login logo
@@ -16070,10 +16070,10 @@ function formatted_user_count() {
     $users = count_users();
     $total = $users['total_users'];
 
-    $output = '&lt;div class="user-stats"&gt;';
-    $output .= '&lt;span class="user-count"&gt;' . number_format($total) . '&lt;/span&gt;';
-    $output .= '&lt;span class="user-label"&gt;Active Members&lt;/span&gt;';
-    $output .= '&lt;/div&gt;';
+    $output = '<div class="user-stats">';
+    $output .= '<span class="user-count">' . number_format($total) . '</span>';
+    $output .= '<span class="user-label">Active Members</span>';
+    $output .= '</div>';
 
     return $output;
 }
@@ -16138,11 +16138,11 @@ add_shortcode('total_users', 'display_user_count');`,
       },
       {
         question: "Can I display the user count in my theme without a shortcode?",
-        answer: "Yes, call the function directly in your theme template: &lt;?php echo display_user_count(); ?&gt; or use count_users() directly: &lt;?php $users = count_users(); echo $users['total_users']; ?&gt;"
+        answer: "Yes, call the function directly in your theme template: <?php echo display_user_count(); ?> or use count_users() directly: <?php $users = count_users(); echo $users['total_users']; ?>"
       },
       {
         question: "How do I show user count with animated numbers?",
-        answer: "Use JavaScript libraries like CountUp.js. Output the count in a data attribute: &lt;span class='counter' data-count='&lt;?php echo display_user_count(); ?&gt;'&gt;0&lt;/span&gt; and animate with JavaScript on page load."
+        answer: "Use JavaScript libraries like CountUp.js. Output the count in a data attribute: <span class='counter' data-count='<?php echo display_user_count(); ?>'>0</span> and animate with JavaScript on page load."
       }
     ]
   },
@@ -16169,11 +16169,11 @@ function show_last_login_profile($user) {
 
     if ($last_login) {
         $formatted_date = date('F j, Y g:i a', strtotime($last_login));
-        echo '&lt;h3&gt;Last Login&lt;/h3&gt;';
-        echo '&lt;table class="form-table"&gt;';
-        echo '&lt;tr&gt;&lt;th&gt;Last Login:&lt;/th&gt;';
-        echo '&lt;td&gt;' . $formatted_date . '&lt;/td&gt;&lt;/tr&gt;';
-        echo '&lt;/table&gt;';
+        echo '<h3>Last Login</h3>';
+        echo '<table class="form-table">';
+        echo '<tr><th>Last Login:</th>';
+        echo '<td>' . $formatted_date . '</td></tr>';
+        echo '</table>';
     }
 }
 add_action('show_user_profile', 'show_last_login_profile');
@@ -16216,7 +16216,7 @@ function get_inactive_users($days = 30) {
             array(
                 'key' => 'last_login',
                 'value' => date('Y-m-d H:i:s', strtotime("-$days days")),
-                'compare' => '&lt;',
+                'compare' => '<',
                 'type' => 'DATETIME'
             )
         )
@@ -16347,7 +16347,7 @@ add_filter('avatar_defaults', 'custom_default_avatar');</code></pre>
       <pre><code class="language-php">// Override Gravatar with custom avatar
 function force_custom_avatar($avatar, $id_or_email, $size, $default, $alt) {
     $custom_avatar_url = get_stylesheet_directory_uri() . '/images/default-avatar.png';
-    $avatar = "&lt;img alt='{$alt}' src='{$custom_avatar_url}' class='avatar avatar-{$size}' height='{$size}' width='{$size}' /&gt;";
+    $avatar = "<img alt='{$alt}' src='{$custom_avatar_url}' class='avatar avatar-{$size}' height='{$size}' width='{$size}' />";
     return $avatar;
 }
 add_filter('get_avatar', 'force_custom_avatar', 10, 5);</code></pre>
@@ -16383,7 +16383,7 @@ function role_based_avatars($avatar, $id_or_email, $size, $default, $alt) {
                 $avatar_url = $theme_dir . '/images/default-avatar.png';
             }
 
-            $avatar = "&lt;img alt='{$alt}' src='{$avatar_url}' class='avatar avatar-{$size}' height='{$size}' width='{$size}' /&gt;";
+            $avatar = "<img alt='{$alt}' src='{$avatar_url}' class='avatar avatar-{$size}' height='{$size}' width='{$size}' />";
         }
     }
 
@@ -16418,14 +16418,14 @@ function generate_initial_avatar($avatar, $id_or_email, $size) {
         $initial = strtoupper(substr($user->display_name, 0, 1));
         $background_color = sprintf('#%06X', mt_rand(0, 0xFFFFFF));
 
-        $svg = "&lt;svg width='{$size}' height='{$size}' xmlns='http://www.w3.org/2000/svg'&gt;";
-        $svg .= "&lt;rect fill='{$background_color}' width='{$size}' height='{$size}'/&gt;";
-        $svg .= "&lt;text fill='white' font-size='" . ($size/2) . "' x='50%' y='50%' ";
-        $svg .= "text-anchor='middle' dominant-baseline='central'&gt;{$initial}&lt;/text&gt;";
-        $svg .= "&lt;/svg&gt;";
+        $svg = "<svg width='{$size}' height='{$size}' xmlns='http://www.w3.org/2000/svg'>";
+        $svg .= "<rect fill='{$background_color}' width='{$size}' height='{$size}'/>";
+        $svg .= "<text fill='white' font-size='" . ($size/2) . "' x='50%' y='50%' ";
+        $svg .= "text-anchor='middle' dominant-baseline='central'>{$initial}</text>";
+        $svg .= "</svg>";
 
         $avatar = 'data:image/svg+xml;base64,' . base64_encode($svg);
-        return "&lt;img src='{$avatar}' class='avatar' width='{$size}' height='{$size}' /&gt;";
+        return "<img src='{$avatar}' class='avatar' width='{$size}' height='{$size}' />";
     }
 
     return $avatar;
@@ -16717,8 +16717,8 @@ function auto_logout_with_warning() {
     if (!is_user_logged_in()) {
         return;
     }
-    ?&gt;
-    &lt;script type="text/javascript"&gt;
+    ?>
+    <script type="text/javascript">
     let inactivityTime = function () {
         let time;
         let warningTime = 840000; // 14 minutes (warning 1 min before logout)
@@ -16736,7 +16736,7 @@ function auto_logout_with_warning() {
         }
 
         function logout() {
-            window.location.href = '&lt;?php echo wp_logout_url(home_url('/session-expired/')); ?&gt;';
+            window.location.href = '<?php echo wp_logout_url(home_url('/session-expired/')); ?>';
         }
 
         function resetTimer() {
@@ -16747,8 +16747,8 @@ function auto_logout_with_warning() {
     };
 
     inactivityTime();
-    &lt;/script&gt;
-    &lt;?php
+    </script>
+    <?php
 }
 add_action('wp_footer', 'auto_logout_with_warning');</code></pre>
 
@@ -16786,7 +16786,7 @@ add_action('init', 'role_based_auto_logout');</code></pre>
       <pre><code class="language-php">// Display message on login page after auto logout
 function session_expired_message() {
     if (isset($_GET['session_expired'])) {
-        return '&lt;p class="message"&gt;Your session has expired due to inactivity. Please log in again.&lt;/p&gt;';
+        return '<p class="message">Your session has expired due to inactivity. Please log in again.</p>';
     }
 }
 add_filter('login_message', 'session_expired_message');</code></pre>
@@ -16814,15 +16814,15 @@ function heartbeat_logout_script() {
     if (!is_user_logged_in()) {
         return;
     }
-    ?&gt;
-    &lt;script type="text/javascript"&gt;
+    ?>
+    <script type="text/javascript">
     jQuery(document).on('heartbeat-tick', function(e, data) {
         if (data.heartbeat_logout) {
-            window.location.href = '&lt;?php echo wp_logout_url(home_url()); ?&gt;';
+            window.location.href = '<?php echo wp_logout_url(home_url()); ?>';
         }
     });
-    &lt;/script&gt;
-    &lt;?php
+    </script>
+    <?php
 }
 add_action('wp_footer', 'heartbeat_logout_script');</code></pre>
 
@@ -16981,7 +16981,7 @@ add_action('after_setup_theme', 'hide_prices_for_guests');</code></pre>
 function replace_price_with_login_message($price, $product) {
     if (!is_user_logged_in()) {
         $login_url = wp_login_url(get_permalink());
-        return '&lt;a href="' . $login_url . '" class="login-to-see-price"&gt;Login to see prices&lt;/a&gt;';
+        return '<a href="' . $login_url . '" class="login-to-see-price">Login to see prices</a>';
     }
     return $price;
 }
@@ -16991,14 +16991,14 @@ add_filter('woocommerce_get_price_html', 'replace_price_with_login_message', 10,
       <pre><code class="language-php">// Hide prices from specific user roles
 function hide_prices_by_role($price, $product) {
     if (!is_user_logged_in()) {
-        return '&lt;span class="guest-price-notice"&gt;Login to view pricing&lt;/span&gt;';
+        return '<span class="guest-price-notice">Login to view pricing</span>';
     }
 
     $user = wp_get_current_user();
     $allowed_roles = array('customer', 'wholesale_customer', 'administrator');
 
     if (!array_intersect($allowed_roles, $user->roles)) {
-        return '&lt;span class="restricted-price-notice"&gt;Contact us for pricing&lt;/span&gt;';
+        return '<span class="restricted-price-notice">Contact us for pricing</span>';
     }
 
     return $price;
@@ -17015,7 +17015,7 @@ function hide_prices_by_category($price, $product) {
         if ($terms) {
             foreach ($terms as $term) {
                 if (in_array($term->slug, $hide_categories)) {
-                    return '&lt;a href="' . wp_login_url() . '"&gt;Login to see price&lt;/a&gt;';
+                    return '<a href="' . wp_login_url() . '">Login to see price</a>';
                 }
             }
         }
@@ -17031,11 +17031,11 @@ function add_registration_message_to_products() {
         $login_url = wp_login_url(get_permalink());
         $register_url = wp_registration_url();
 
-        echo '&lt;div class="woocommerce-guest-notice"&gt;';
-        echo '&lt;p&gt;&lt;strong&gt;Want to see prices?&lt;/strong&gt;&lt;/p&gt;';
-        echo '&lt;p&gt;&lt;a href="' . $login_url . '" class="button"&gt;Login&lt;/a&gt; ';
-        echo '&lt;a href="' . $register_url . '" class="button"&gt;Register&lt;/a&gt;&lt;/p&gt;';
-        echo '&lt;/div&gt;';
+        echo '<div class="woocommerce-guest-notice">';
+        echo '<p><strong>Want to see prices?</strong></p>';
+        echo '<p><a href="' . $login_url . '" class="button">Login</a> ';
+        echo '<a href="' . $register_url . '" class="button">Register</a></p>';
+        echo '</div>';
     }
 }
 add_action('woocommerce_single_product_summary', 'add_registration_message_to_products', 31);</code></pre>
@@ -17640,14 +17640,14 @@ add_filter('woocommerce_product_tabs', 'add_custom_product_tab');
 
 // Custom tab content
 function custom_product_tab_content() {
-    echo '&lt;h2&gt;Size Guide&lt;/h2&gt;';
-    echo '&lt;p&gt;Please refer to our size chart to find your perfect fit.&lt;/p&gt;';
-    echo '&lt;table class="size-chart"&gt;';
-    echo '&lt;tr&gt;&lt;th&gt;Size&lt;/th&gt;&lt;th&gt;Chest&lt;/th&gt;&lt;th&gt;Waist&lt;/th&gt;&lt;/tr&gt;';
-    echo '&lt;tr&gt;&lt;td&gt;S&lt;/td&gt;&lt;td&gt;34-36"&lt;/td&gt;&lt;td&gt;28-30"&lt;/td&gt;&lt;/tr&gt;';
-    echo '&lt;tr&gt;&lt;td&gt;M&lt;/td&gt;&lt;td&gt;38-40"&lt;/td&gt;&lt;td&gt;32-34"&lt;/td&gt;&lt;/tr&gt;';
-    echo '&lt;tr&gt;&lt;td&gt;L&lt;/td&gt;&lt;td&gt;42-44"&lt;/td&gt;&lt;td&gt;36-38"&lt;/td&gt;&lt;/tr&gt;';
-    echo '&lt;/table&gt;';
+    echo '<h2>Size Guide</h2>';
+    echo '<p>Please refer to our size chart to find your perfect fit.</p>';
+    echo '<table class="size-chart">';
+    echo '<tr><th>Size</th><th>Chest</th><th>Waist</th></tr>';
+    echo '<tr><td>S</td><td>34-36"</td><td>28-30"</td></tr>';
+    echo '<tr><td>M</td><td>38-40"</td><td>32-34"</td></tr>';
+    echo '<tr><td>L</td><td>42-44"</td><td>36-38"</td></tr>';
+    echo '</table>';
 }</code></pre>
 
       <h3>Tab with Custom Field Content</h3>
@@ -17704,18 +17704,18 @@ function add_multiple_custom_tabs($tabs) {
 add_filter('woocommerce_product_tabs', 'add_multiple_custom_tabs');
 
 function shipping_tab_content() {
-    echo '&lt;h2&gt;Shipping Information&lt;/h2&gt;';
-    echo '&lt;p&gt;Free shipping on orders over $50. Delivery within 3-5 business days.&lt;/p&gt;';
+    echo '<h2>Shipping Information</h2>';
+    echo '<p>Free shipping on orders over $50. Delivery within 3-5 business days.</p>';
 }
 
 function warranty_tab_content() {
-    echo '&lt;h2&gt;Warranty Details&lt;/h2&gt;';
-    echo '&lt;p&gt;1-year manufacturer warranty included. Extended warranties available.&lt;/p&gt;';
+    echo '<h2>Warranty Details</h2>';
+    echo '<p>1-year manufacturer warranty included. Extended warranties available.</p>';
 }
 
 function faq_tab_content() {
-    echo '&lt;h2&gt;Frequently Asked Questions&lt;/h2&gt;';
-    echo '&lt;p&gt;&lt;strong&gt;Q: Is this product in stock?&lt;/strong&gt;&lt;br&gt;A: Yes, available for immediate shipping.&lt;/p&gt;';
+    echo '<h2>Frequently Asked Questions</h2>';
+    echo '<p><strong>Q: Is this product in stock?</strong><br>A: Yes, available for immediate shipping.</p>';
 }</code></pre>
 
       <h3>Conditional Tabs by Product Category</h3>
@@ -17744,17 +17744,17 @@ function category_specific_tab($tabs) {
 add_filter('woocommerce_product_tabs', 'category_specific_tab');
 
 function care_instructions_content() {
-    echo '&lt;h2&gt;Care Instructions&lt;/h2&gt;';
-    echo '&lt;ul&gt;';
-    echo '&lt;li&gt;Machine wash cold&lt;/li&gt;';
-    echo '&lt;li&gt;Tumble dry low&lt;/li&gt;';
-    echo '&lt;li&gt;Do not bleach&lt;/li&gt;';
-    echo '&lt;/ul&gt;';
+    echo '<h2>Care Instructions</h2>';
+    echo '<ul>';
+    echo '<li>Machine wash cold</li>';
+    echo '<li>Tumble dry low</li>';
+    echo '<li>Do not bleach</li>';
+    echo '</ul>';
 }
 
 function tech_specs_content() {
-    echo '&lt;h2&gt;Technical Specifications&lt;/h2&gt;';
-    echo '&lt;p&gt;Detailed technical information and specifications.&lt;/p&gt;';
+    echo '<h2>Technical Specifications</h2>';
+    echo '<p>Detailed technical information and specifications.</p>';
 }</code></pre>
 
       <h3>Remove Default Tabs</h3>
@@ -18075,16 +18075,16 @@ function minimum_order_progress_bar() {
         $remaining = $minimum - $current;
         $percentage = ($current / $minimum) * 100;
 
-        echo '&lt;div class="minimum-order-notice"&gt;';
-        echo sprintf('&lt;p&gt;Add %s more to reach minimum order amount!&lt;/p&gt;', wc_price($remaining));
-        echo '&lt;div class="progress-bar" style="background: #f0f0f0; height: 20px; border-radius: 10px;"&gt;';
-        echo sprintf('&lt;div class="progress" style="width: %s%%; background: #4CAF50; height: 100%%; border-radius: 10px;"&gt;&lt;/div&gt;', $percentage);
-        echo '&lt;/div&gt;';
-        echo '&lt;/div&gt;';
+        echo '<div class="minimum-order-notice">';
+        echo sprintf('<p>Add %s more to reach minimum order amount!</p>', wc_price($remaining));
+        echo '<div class="progress-bar" style="background: #f0f0f0; height: 20px; border-radius: 10px;">';
+        echo sprintf('<div class="progress" style="width: %s%%; background: #4CAF50; height: 100%%; border-radius: 10px;"></div>', $percentage);
+        echo '</div>';
+        echo '</div>';
     } else {
-        echo '&lt;div class="minimum-order-notice success"&gt;';
-        echo '&lt;p&gt;✓ Minimum order amount reached!&lt;/p&gt;';
-        echo '&lt;/div&gt;';
+        echo '<div class="minimum-order-notice success">';
+        echo '<p>✓ Minimum order amount reached!</p>';
+        echo '</div>';
     }
 }
 add_action('woocommerce_before_cart', 'minimum_order_progress_bar');</code></pre>
@@ -18256,20 +18256,20 @@ function display_order_details() {
         $order = wc_get_order($order_id);
 
         if ($order && $order->get_user_id() == get_current_user_id()) {
-            echo '&lt;div class="custom-order-details"&gt;';
-            echo '&lt;h2&gt;Order #' . $order->get_order_number() . '&lt;/h2&gt;';
-            echo '&lt;p&gt;Order Date: ' . $order->get_date_created()->format('F j, Y') . '&lt;/p&gt;';
-            echo '&lt;p&gt;Total: ' . $order->get_formatted_order_total() . '&lt;/p&gt;';
-            echo '&lt;p&gt;Payment Method: ' . $order->get_payment_method_title() . '&lt;/p&gt;';
+            echo '<div class="custom-order-details">';
+            echo '<h2>Order #' . $order->get_order_number() . '</h2>';
+            echo '<p>Order Date: ' . $order->get_date_created()->format('F j, Y') . '</p>';
+            echo '<p>Total: ' . $order->get_formatted_order_total() . '</p>';
+            echo '<p>Payment Method: ' . $order->get_payment_method_title() . '</p>';
 
             // Order items
-            echo '&lt;h3&gt;Order Items&lt;/h3&gt;';
-            echo '&lt;ul&gt;';
+            echo '<h3>Order Items</h3>';
+            echo '<ul>';
             foreach ($order->get_items() as $item) {
-                echo '&lt;li&gt;' . $item->get_name() . ' × ' . $item->get_quantity() . '&lt;/li&gt;';
+                echo '<li>' . $item->get_name() . ' × ' . $item->get_quantity() . '</li>';
             }
-            echo '&lt;/ul&gt;';
-            echo '&lt;/div&gt;';
+            echo '</ul>';
+            echo '</div>';
         }
     }
 }
@@ -18327,23 +18327,23 @@ function thank_you_page_upsells() {
     $related_products = wc_get_related_products($product_ids[0], 4);
 
     if ($related_products) {
-        echo '&lt;div class="thank-you-upsells"&gt;';
-        echo '&lt;h3&gt;Customers Also Bought&lt;/h3&gt;';
-        echo '&lt;div class="products"&gt;';
+        echo '<div class="thank-you-upsells">';
+        echo '<h3>Customers Also Bought</h3>';
+        echo '<div class="products">';
 
         foreach ($related_products as $related_id) {
             $product = wc_get_product($related_id);
-            echo '&lt;div class="product"&gt;';
-            echo '&lt;a href="' . get_permalink($related_id) . '"&gt;';
+            echo '<div class="product">';
+            echo '<a href="' . get_permalink($related_id) . '">';
             echo $product->get_image();
-            echo '&lt;h4&gt;' . $product->get_name() . '&lt;/h4&gt;';
-            echo '&lt;span class="price"&gt;' . $product->get_price_html() . '&lt;/span&gt;';
-            echo '&lt;/a&gt;';
-            echo '&lt;/div&gt;';
+            echo '<h4>' . $product->get_name() . '</h4>';
+            echo '<span class="price">' . $product->get_price_html() . '</span>';
+            echo '</a>';
+            echo '</div>';
         }
 
-        echo '&lt;/div&gt;';
-        echo '&lt;/div&gt;';
+        echo '</div>';
+        echo '</div>';
     }
 }
 // Use in your custom thank you page template</code></pre>
@@ -18381,12 +18381,12 @@ function thank_you_discount_coupon() {
     $coupon_code = 'THANKYOU10';
     $discount_amount = 10; // 10% discount
 
-    echo '&lt;div class="thank-you-coupon"&gt;';
-    echo '&lt;h3&gt;Thank You for Your Order!&lt;/h3&gt;';
-    echo '&lt;p&gt;Here\'s a special ' . $discount_amount . '% discount code for your next purchase:&lt;/p&gt;';
-    echo '&lt;div class="coupon-code"&gt;' . $coupon_code . '&lt;/div&gt;';
-    echo '&lt;button onclick="navigator.clipboard.writeText(\'' . $coupon_code . '\')"&gt;Copy Code&lt;/button&gt;';
-    echo '&lt;/div&gt;';
+    echo '<div class="thank-you-coupon">';
+    echo '<h3>Thank You for Your Order!</h3>';
+    echo '<p>Here\'s a special ' . $discount_amount . '% discount code for your next purchase:</p>';
+    echo '<div class="coupon-code">' . $coupon_code . '</div>';
+    echo '<button onclick="navigator.clipboard.writeText(\'' . $coupon_code . '\')">Copy Code</button>';
+    echo '</div>';
 }
 // Use in your custom thank you page template</code></pre>
 
@@ -18396,12 +18396,12 @@ function thank_you_social_share() {
     $share_url = urlencode(home_url());
     $share_text = urlencode('I just made a purchase from ' . get_bloginfo('name'));
 
-    echo '&lt;div class="social-share"&gt;';
-    echo '&lt;h3&gt;Share Your Purchase&lt;/h3&gt;';
-    echo '&lt;a href="https://twitter.com/intent/tweet?text=' . $share_text . '&amp;url=' . $share_url . '" target="_blank"&gt;Twitter&lt;/a&gt; ';
-    echo '&lt;a href="https://www.facebook.com/sharer/sharer.php?u=' . $share_url . '" target="_blank"&gt;Facebook&lt;/a&gt; ';
-    echo '&lt;a href="https://www.linkedin.com/sharing/share-offsite/?url=' . $share_url . '" target="_blank"&gt;LinkedIn&lt;/a&gt;';
-    echo '&lt;/div&gt;';
+    echo '<div class="social-share">';
+    echo '<h3>Share Your Purchase</h3>';
+    echo '<a href="https://twitter.com/intent/tweet?text=' . $share_text . '&amp;url=' . $share_url . '" target="_blank">Twitter</a> ';
+    echo '<a href="https://www.facebook.com/sharer/sharer.php?u=' . $share_url . '" target="_blank">Facebook</a> ';
+    echo '<a href="https://www.linkedin.com/sharing/share-offsite/?url=' . $share_url . '" target="_blank">LinkedIn</a>';
+    echo '</div>';
 }
 // Use in your custom thank you page template</code></pre>
 
@@ -18417,15 +18417,15 @@ function display_tracking_info() {
     $tracking_number = $order->get_meta('_tracking_number');
 
     if ($tracking_number) {
-        echo '&lt;div class="order-tracking"&gt;';
-        echo '&lt;h3&gt;Track Your Order&lt;/h3&gt;';
-        echo '&lt;p&gt;Tracking Number: &lt;strong&gt;' . esc_html($tracking_number) . '&lt;/strong&gt;&lt;/p&gt;';
-        echo '&lt;a href="https://tracking-site.com/track/' . $tracking_number . '" class="button"&gt;Track Package&lt;/a&gt;';
-        echo '&lt;/div&gt;';
+        echo '<div class="order-tracking">';
+        echo '<h3>Track Your Order</h3>';
+        echo '<p>Tracking Number: <strong>' . esc_html($tracking_number) . '</strong></p>';
+        echo '<a href="https://tracking-site.com/track/' . $tracking_number . '" class="button">Track Package</a>';
+        echo '</div>';
     } else {
-        echo '&lt;div class="order-tracking"&gt;';
-        echo '&lt;p&gt;Your order is being prepared. You\'ll receive tracking information via email once shipped.&lt;/p&gt;';
-        echo '&lt;/div&gt;';
+        echo '<div class="order-tracking">';
+        echo '<p>Your order is being prepared. You\'ll receive tracking information via email once shipped.</p>';
+        echo '</div>';
     }
 }
 // Use in your custom thank you page template</code></pre>
@@ -18639,14 +18639,14 @@ function quantity_input_dropdown($html, $args) {
     $options = '';
     for ($count = $min; $count <= $max; $count = $count + $step) {
         $selected = $count == $args['input_value'] ? 'selected' : '';
-        $options .= '&lt;option value="' . $count . '" ' . $selected . '&gt;' . $count . '&lt;/option&gt;';
+        $options .= '<option value="' . $count . '" ' . $selected . '>' . $count . '</option>';
     }
 
-    $html = '&lt;div class="quantity"&gt;';
-    $html .= '&lt;select name="' . $args['input_name'] . '" class="qty"&gt;';
+    $html = '<div class="quantity">';
+    $html .= '<select name="' . $args['input_name'] . '" class="qty">';
     $html .= $options;
-    $html .= '&lt;/select&gt;';
-    $html .= '&lt;/div&gt;';
+    $html .= '</select>';
+    $html .= '</div>';
 
     return $html;
 }
@@ -18655,13 +18655,13 @@ add_filter('woocommerce_quantity_input', 'quantity_input_dropdown', 10, 2);</cod
       <h3>Display Custom Quantity Labels</h3>
       <pre><code class="language-php">// Show "Pack of X" instead of quantity number
 function custom_quantity_label() {
-    ?&gt;
-    &lt;script type="text/javascript"&gt;
+    ?>
+    <script type="text/javascript">
     jQuery(document).ready(function($) {
-        $('.quantity input').before('&lt;span class="qty-label"&gt;Pack of &lt;/span&gt;');
+        $('.quantity input').before('<span class="qty-label">Pack of </span>');
     });
-    &lt;/script&gt;
-    &lt;?php
+    </script>
+    <?php
 }
 add_action('wp_footer', 'custom_quantity_label');</code></pre>
 
@@ -18837,7 +18837,7 @@ add_filter('woocommerce_quantity_input_args', 'role_based_quantity', 10, 2);</co
       <pre><code class="language-php">// Add custom field to checkout
 add_action('woocommerce_after_order_notes', 'custom_checkout_field');
 function custom_checkout_field($checkout) {
-    echo '&lt;div id="custom_checkout_field"&gt;&lt;h3&gt;' . __('Additional Information') . '&lt;/h3&gt;';
+    echo '<div id="custom_checkout_field"><h3>' . __('Additional Information') . '</h3>';
 
     woocommerce_form_field('delivery_instructions', array(
         'type' => 'textarea',
@@ -18847,7 +18847,7 @@ function custom_checkout_field($checkout) {
         'required' => false,
     ), $checkout->get_value('delivery_instructions'));
 
-    echo '&lt;/div&gt;';
+    echo '</div>';
 }
 
 // Save custom field data
@@ -18864,8 +18864,8 @@ add_action('woocommerce_admin_order_data_after_billing_address', 'display_custom
 function display_custom_field_in_admin($order) {
     $delivery_instructions = get_post_meta($order->get_id(), 'delivery_instructions', true);
     if ($delivery_instructions) {
-        echo '&lt;p&gt;&lt;strong&gt;' . __('Delivery Instructions') . ':&lt;/strong&gt; ' .
-             esc_html($delivery_instructions) . '&lt;/p&gt;';
+        echo '<p><strong>' . __('Delivery Instructions') . ':</strong> ' .
+             esc_html($delivery_instructions) . '</p>';
     }
 }
 
@@ -19004,7 +19004,7 @@ function custom_sale_badge($html, $post, $product) {
             $percentage = round(100 - ($sale_price / $regular_price * 100));
         }
 
-        return '&lt;span class="onsale"&gt;-' . $percentage . '%&lt;/span&gt;';
+        return '<span class="onsale">-' . $percentage . '%</span>';
     }
     return $html;
 }</code></pre>
@@ -19023,8 +19023,8 @@ function show_savings_amount($html, $post, $product) {
         $sale_price = $product->get_sale_price();
         $savings = $regular_price - $sale_price;
 
-        $html = '&lt;span class="onsale"&gt;Save ' .
-                wc_price($savings) . '&lt;/span&gt;';
+        $html = '<span class="onsale">Save ' .
+                wc_price($savings) . '</span>';
     }
     return $html;
 }</code></pre>
@@ -19064,8 +19064,8 @@ function conditional_sale_badges($html, $post, $product) {
         $badge_class = 'regular-sale';
     }
 
-    return '&lt;span class="onsale ' . $badge_class . '"&gt;' .
-           $badge_text . '&lt;/span&gt;';
+    return '<span class="onsale ' . $badge_class . '">' .
+           $badge_text . '</span>';
 }</code></pre>
     `,
     code: `add_filter('woocommerce_sale_flash', 'custom_sale_badge', 10, 3);`,
@@ -19249,18 +19249,18 @@ function products_per_page_dropdown() {
     $per_page_options = array(12, 24, 36, 48);
     $current = isset($_GET['per_page']) ? $_GET['per_page'] : 12;
 
-    echo '&lt;div class="products-per-page"&gt;';
-    echo '&lt;label&gt;Show:&lt;/label&gt;';
-    echo '&lt;select onchange="window.location.href=this.value"&gt;';
+    echo '<div class="products-per-page">';
+    echo '<label>Show:</label>';
+    echo '<select onchange="window.location.href=this.value">';
 
     foreach ($per_page_options as $option) {
         $selected = ($current == $option) ? 'selected' : '';
         $link = add_query_arg('per_page', $option);
-        echo '&lt;option value="' . $link . '" ' . $selected . '&gt;' .
-             $option . '&lt;/option&gt;';
+        echo '<option value="' . $link . '" ' . $selected . '>' .
+             $option . '</option>';
     }
 
-    echo '&lt;/select&gt;&lt;/div&gt;';
+    echo '</select></div>';
 }
 
 // Apply user selection
@@ -19740,15 +19740,15 @@ function custom_checkout_login_message() {
       <pre><code class="language-php">add_action('woocommerce_before_checkout_form', 'account_benefits_message');
 function account_benefits_message() {
     if (!is_user_logged_in()) {
-        echo '&lt;div class="woocommerce-info"&gt;';
-        echo '&lt;h3&gt;Create an account and enjoy these benefits:&lt;/h3&gt;';
-        echo '&lt;ul&gt;';
-        echo '&lt;li&gt;✓ Track your orders&lt;/li&gt;';
-        echo '&lt;li&gt;✓ View order history&lt;/li&gt;';
-        echo '&lt;li&gt;✓ Faster checkout next time&lt;/li&gt;';
-        echo '&lt;li&gt;✓ Exclusive member discounts&lt;/li&gt;';
-        echo '&lt;/ul&gt;';
-        echo '&lt;/div&gt;';
+        echo '<div class="woocommerce-info">';
+        echo '<h3>Create an account and enjoy these benefits:</h3>';
+        echo '<ul>';
+        echo '<li>✓ Track your orders</li>';
+        echo '<li>✓ View order history</li>';
+        echo '<li>✓ Faster checkout next time</li>';
+        echo '<li>✓ Exclusive member discounts</li>';
+        echo '</ul>';
+        echo '</div>';
     }
 }
 </code></pre>
@@ -19931,12 +19931,12 @@ function init_custom_payment_gateway() {
             }
 
             // Add custom fields here
-            echo '&lt;div class="custom-payment-fields"&gt;';
-            echo '&lt;p class="form-row form-row-wide"&gt;';
-            echo '&lt;label&gt;Transaction ID &lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;';
-            echo '&lt;input type="text" name="transaction_id" required&gt;';
-            echo '&lt;/p&gt;';
-            echo '&lt;/div&gt;';
+            echo '<div class="custom-payment-fields">';
+            echo '<p class="form-row form-row-wide">';
+            echo '<label>Transaction ID <span class="required">*</span></label>';
+            echo '<input type="text" name="transaction_id" required>';
+            echo '</p>';
+            echo '</div>';
         }
 
         public function process_payment($order_id) {
@@ -20138,9 +20138,9 @@ function add_article_schema_markup() {
             'dateModified' => get_the_modified_date('c')
         );
 
-        echo '&lt;script type="application/ld+json"&gt;';
+        echo '<script type="application/ld+json">';
         echo json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
-        echo '&lt;/script&gt;';
+        echo '</script>';
     }
 }</code></pre>
 
@@ -20181,9 +20181,9 @@ function add_article_schema_markup() {
         'wordCount' => str_word_count(strip_tags(get_the_content()))
     );
 
-    echo '&lt;script type="application/ld+json"&gt;' .
+    echo '<script type="application/ld+json">' .
          json_encode($schema, JSON_UNESCAPED_SLASHES) .
-         '&lt;/script&gt;';
+         '</script>';
 }
 add_action('wp_head', 'add_blog_posting_schema');</code></pre>
 
@@ -20202,9 +20202,9 @@ function add_organization_schema() {
         'description' => get_bloginfo('description')
     );
 
-    echo '&lt;script type="application/ld+json"&gt;' .
+    echo '<script type="application/ld+json">' .
          json_encode($schema) .
-         '&lt;/script&gt;';
+         '</script>';
 }</code></pre>
 
       <h3>Testing Schema Markup</h3>
@@ -20273,15 +20273,15 @@ add_action('wp_head', 'add_canonical_url');
 function add_canonical_url() {
     if (is_singular()) {
         $canonical_url = get_permalink();
-        echo '&lt;link rel="canonical" href="' . esc_url($canonical_url) . '" /&gt;' . "\n";
+        echo '<link rel="canonical" href="' . esc_url($canonical_url) . '" />' . "\n";
     } elseif (is_category()) {
         $canonical_url = get_category_link(get_queried_object_id());
-        echo '&lt;link rel="canonical" href="' . esc_url($canonical_url) . '" /&gt;' . "\n";
+        echo '<link rel="canonical" href="' . esc_url($canonical_url) . '" />' . "\n";
     } elseif (is_tag()) {
         $canonical_url = get_tag_link(get_queried_object_id());
-        echo '&lt;link rel="canonical" href="' . esc_url($canonical_url) . '" /&gt;' . "\n";
+        echo '<link rel="canonical" href="' . esc_url($canonical_url) . '" />' . "\n";
     } elseif (is_home() || is_front_page()) {
-        echo '&lt;link rel="canonical" href="' . esc_url(home_url('/')) . '" /&gt;' . "\n";
+        echo '<link rel="canonical" href="' . esc_url(home_url('/')) . '" />' . "\n";
     }
 }</code></pre>
 
@@ -20299,7 +20299,7 @@ function add_canonical_with_pagination() {
         $canonical_url = get_permalink();
     }
 
-    echo '&lt;link rel="canonical" href="' . esc_url($canonical_url) . '" /&gt;';
+    echo '<link rel="canonical" href="' . esc_url($canonical_url) . '" />';
 }</code></pre>
 
       <h3>Custom Post Types</h3>
@@ -20311,7 +20311,7 @@ function add_canonical_custom_post_types() {
         // Remove query strings
         $canonical_url = strtok($canonical_url, '?');
 
-        echo '&lt;link rel="canonical" href="' . esc_url($canonical_url) . '" /&gt;';
+        echo '<link rel="canonical" href="' . esc_url($canonical_url) . '" />';
     }
 }</code></pre>
 
@@ -20420,13 +20420,13 @@ function add_meta_description_box() {
 function render_meta_description_box($post) {
     $meta_description = get_post_meta($post->ID, '_meta_description', true);
     wp_nonce_field('save_meta_description', 'meta_description_nonce');
-    ?&gt;
-    &lt;textarea name="meta_description" rows="3" style="width:100%;"
-              maxlength="160" placeholder="Enter meta description (max 160 characters)"&gt;&lt;?php
+    ?>
+    <textarea name="meta_description" rows="3" style="width:100%;"
+              maxlength="160" placeholder="Enter meta description (max 160 characters)"><?php
         echo esc_attr($meta_description);
-    ?&gt;&lt;/textarea&gt;
-    &lt;p&gt;&lt;small&gt;Character count: &lt;span id="char_count"&gt;0&lt;/span&gt;/160&lt;/small&gt;&lt;/p&gt;
-    &lt;script&gt;
+    ?></textarea>
+    <p><small>Character count: <span id="char_count">0</span>/160</small></p>
+    <script>
     jQuery(document).ready(function($) {
         var textarea = $('textarea[name="meta_description"]');
         var counter = $('#char_count');
@@ -20435,8 +20435,8 @@ function render_meta_description_box($post) {
             counter.text($(this).val().length);
         });
     });
-    &lt;/script&gt;
-    &lt;?php
+    </script>
+    <?php
 }
 
 // Save meta description
@@ -20467,19 +20467,19 @@ function output_meta_description() {
         }
 
         if (!empty($meta_description)) {
-            echo '&lt;meta name="description" content="' .
-                 esc_attr($meta_description) . '" /&gt;' . "\n";
+            echo '<meta name="description" content="' .
+                 esc_attr($meta_description) . '" />' . "\n";
         }
     } elseif (is_home() || is_front_page()) {
         $description = get_bloginfo('description');
-        echo '&lt;meta name="description" content="' .
-             esc_attr($description) . '" /&gt;' . "\n";
+        echo '<meta name="description" content="' .
+             esc_attr($description) . '" />' . "\n";
     } elseif (is_category()) {
         $description = category_description();
         $description = wp_strip_all_tags($description);
         if (!empty($description)) {
-            echo '&lt;meta name="description" content="' .
-                 esc_attr($description) . '" /&gt;' . "\n";
+            echo '<meta name="description" content="' .
+                 esc_attr($description) . '" />' . "\n";
         }
     }
 }</code></pre>
@@ -20574,41 +20574,41 @@ function add_open_graph_tags() {
     setup_postdata($post);
 
     // Basic OG tags
-    echo '&lt;meta property="og:type" content="article" /&gt;' . "\n";
-    echo '&lt;meta property="og:title" content="' . esc_attr(get_the_title()) . '" /&gt;' . "\n";
-    echo '&lt;meta property="og:url" content="' . esc_url(get_permalink()) . '" /&gt;' . "\n";
-    echo '&lt;meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '" /&gt;' . "\n";
+    echo '<meta property="og:type" content="article" />' . "\n";
+    echo '<meta property="og:title" content="' . esc_attr(get_the_title()) . '" />' . "\n";
+    echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '" />' . "\n";
+    echo '<meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '" />' . "\n";
 
     // Description
     $description = get_the_excerpt();
     $description = wp_strip_all_tags($description);
     if (!empty($description)) {
-        echo '&lt;meta property="og:description" content="' . esc_attr($description) . '" /&gt;' . "\n";
+        echo '<meta property="og:description" content="' . esc_attr($description) . '" />' . "\n";
     }
 
     // Image
     if (has_post_thumbnail()) {
         $thumbnail_url = get_the_post_thumbnail_url($post->ID, 'large');
-        echo '&lt;meta property="og:image" content="' . esc_url($thumbnail_url) . '" /&gt;' . "\n";
+        echo '<meta property="og:image" content="' . esc_url($thumbnail_url) . '" />' . "\n";
 
         // Image dimensions
         $thumbnail_id = get_post_thumbnail_id($post->ID);
         $image_meta = wp_get_attachment_metadata($thumbnail_id);
         if ($image_meta) {
-            echo '&lt;meta property="og:image:width" content="' . $image_meta['width'] . '" /&gt;' . "\n";
-            echo '&lt;meta property="og:image:height" content="' . $image_meta['height'] . '" /&gt;' . "\n";
+            echo '<meta property="og:image:width" content="' . $image_meta['width'] . '" />' . "\n";
+            echo '<meta property="og:image:height" content="' . $image_meta['height'] . '" />' . "\n";
         }
     }
 
     // Article metadata
-    echo '&lt;meta property="article:published_time" content="' .
-         get_the_date('c') . '" /&gt;' . "\n";
-    echo '&lt;meta property="article:modified_time" content="' .
-         get_the_modified_date('c') . '" /&gt;' . "\n";
+    echo '<meta property="article:published_time" content="' .
+         get_the_date('c') . '" />' . "\n";
+    echo '<meta property="article:modified_time" content="' .
+         get_the_modified_date('c') . '" />' . "\n";
 
     // Author
-    echo '&lt;meta property="article:author" content="' .
-         esc_attr(get_the_author()) . '" /&gt;' . "\n";
+    echo '<meta property="article:author" content="' .
+         esc_attr(get_the_author()) . '" />' . "\n";
 
     wp_reset_postdata();
 }</code></pre>
@@ -20620,45 +20620,45 @@ function add_open_graph_tags() {
     // Facebook App ID (optional but recommended)
     $fb_app_id = '1234567890'; // Replace with your FB App ID
     if ($fb_app_id) {
-        echo '&lt;meta property="fb:app_id" content="' . $fb_app_id . '" /&gt;' . "\n";
+        echo '<meta property="fb:app_id" content="' . $fb_app_id . '" />' . "\n";
     }
 
-    echo '&lt;meta property="og:locale" content="' . get_locale() . '" /&gt;' . "\n";
-    echo '&lt;meta property="og:type" content="article" /&gt;' . "\n";
-    echo '&lt;meta property="og:title" content="' . esc_attr(get_the_title()) . '" /&gt;' . "\n";
-    echo '&lt;meta property="og:url" content="' . esc_url(get_permalink()) . '" /&gt;' . "\n";
-    echo '&lt;meta property="og:site_name" content="' .
-         esc_attr(get_bloginfo('name')) . '" /&gt;' . "\n";
+    echo '<meta property="og:locale" content="' . get_locale() . '" />' . "\n";
+    echo '<meta property="og:type" content="article" />' . "\n";
+    echo '<meta property="og:title" content="' . esc_attr(get_the_title()) . '" />' . "\n";
+    echo '<meta property="og:url" content="' . esc_url(get_permalink()) . '" />' . "\n";
+    echo '<meta property="og:site_name" content="' .
+         esc_attr(get_bloginfo('name')) . '" />' . "\n";
 
     // Custom excerpt or meta description
     $description = get_post_meta(get_the_ID(), '_meta_description', true);
     if (empty($description)) {
         $description = get_the_excerpt();
     }
-    echo '&lt;meta property="og:description" content="' .
-         esc_attr(wp_strip_all_tags($description)) . '" /&gt;' . "\n";
+    echo '<meta property="og:description" content="' .
+         esc_attr(wp_strip_all_tags($description)) . '" />' . "\n";
 
     // Featured image
     if (has_post_thumbnail()) {
         $image_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
-        echo '&lt;meta property="og:image" content="' . esc_url($image_url) . '" /&gt;' . "\n";
-        echo '&lt;meta property="og:image:secure_url" content="' .
-             esc_url(str_replace('http:', 'https:', $image_url)) . '" /&gt;' . "\n";
+        echo '<meta property="og:image" content="' . esc_url($image_url) . '" />' . "\n";
+        echo '<meta property="og:image:secure_url" content="' .
+             esc_url(str_replace('http:', 'https:', $image_url)) . '" />' . "\n";
     }
 
     // Categories as tags
     $categories = get_the_category();
     foreach ($categories as $category) {
-        echo '&lt;meta property="article:section" content="' .
-             esc_attr($category->name) . '" /&gt;' . "\n";
+        echo '<meta property="article:section" content="' .
+             esc_attr($category->name) . '" />' . "\n";
     }
 
     // Tags
     $tags = get_the_tags();
     if ($tags) {
         foreach ($tags as $tag) {
-            echo '&lt;meta property="article:tag" content="' .
-                 esc_attr($tag->name) . '" /&gt;' . "\n";
+            echo '<meta property="article:tag" content="' .
+                 esc_attr($tag->name) . '" />' . "\n";
         }
     }
 }
@@ -20669,17 +20669,17 @@ add_action('wp_head', 'add_enhanced_open_graph_tags');</code></pre>
 function add_homepage_og_tags() {
     if (!is_front_page()) return;
 
-    echo '&lt;meta property="og:type" content="website" /&gt;' . "\n";
-    echo '&lt;meta property="og:title" content="' .
-         esc_attr(get_bloginfo('name')) . '" /&gt;' . "\n";
-    echo '&lt;meta property="og:description" content="' .
-         esc_attr(get_bloginfo('description')) . '" /&gt;' . "\n";
-    echo '&lt;meta property="og:url" content="' . esc_url(home_url('/')) . '" /&gt;' . "\n";
+    echo '<meta property="og:type" content="website" />' . "\n";
+    echo '<meta property="og:title" content="' .
+         esc_attr(get_bloginfo('name')) . '" />' . "\n";
+    echo '<meta property="og:description" content="' .
+         esc_attr(get_bloginfo('description')) . '" />' . "\n";
+    echo '<meta property="og:url" content="' . esc_url(home_url('/')) . '" />' . "\n";
 
     // Site logo or custom image
     $logo_url = get_site_icon_url(512);
     if ($logo_url) {
-        echo '&lt;meta property="og:image" content="' . esc_url($logo_url) . '" /&gt;' . "\n";
+        echo '<meta property="og:image" content="' . esc_url($logo_url) . '" />' . "\n";
     }
 }</code></pre>
 
@@ -20762,16 +20762,16 @@ function generate_xml_sitemap() {
     if (!get_query_var('custom_sitemap')) return;
 
     header('Content-Type: application/xml; charset=utf-8');
-    echo '&lt;?xml version="1.0" encoding="UTF-8"?&gt;';
-    echo '&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;';
+    echo '<?xml version="1.0" encoding="UTF-8"?>';
+    echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
 
     // Homepage
-    echo '&lt;url&gt;';
-    echo '&lt;loc&gt;' . esc_url(home_url('/')) . '&lt;/loc&gt;';
-    echo '&lt;lastmod&gt;' . date('c') . '&lt;/lastmod&gt;';
-    echo '&lt;changefreq&gt;daily&lt;/changefreq&gt;';
-    echo '&lt;priority&gt;1.0&lt;/priority&gt;';
-    echo '&lt;/url&gt;';
+    echo '<url>';
+    echo '<loc>' . esc_url(home_url('/')) . '</loc>';
+    echo '<lastmod>' . date('c') . '</lastmod>';
+    echo '<changefreq>daily</changefreq>';
+    echo '<priority>1.0</priority>';
+    echo '</url>';
 
     // Posts
     $posts = get_posts(array(
@@ -20783,12 +20783,12 @@ function generate_xml_sitemap() {
     ));
 
     foreach ($posts as $post) {
-        echo '&lt;url&gt;';
-        echo '&lt;loc&gt;' . esc_url(get_permalink($post->ID)) . '&lt;/loc&gt;';
-        echo '&lt;lastmod&gt;' . date('c', strtotime($post->post_modified)) . '&lt;/lastmod&gt;';
-        echo '&lt;changefreq&gt;weekly&lt;/changefreq&gt;';
-        echo '&lt;priority&gt;0.8&lt;/priority&gt;';
-        echo '&lt;/url&gt;';
+        echo '<url>';
+        echo '<loc>' . esc_url(get_permalink($post->ID)) . '</loc>';
+        echo '<lastmod>' . date('c', strtotime($post->post_modified)) . '</lastmod>';
+        echo '<changefreq>weekly</changefreq>';
+        echo '<priority>0.8</priority>';
+        echo '</url>';
     }
 
     // Pages
@@ -20799,15 +20799,15 @@ function generate_xml_sitemap() {
     ));
 
     foreach ($pages as $page) {
-        echo '&lt;url&gt;';
-        echo '&lt;loc&gt;' . esc_url(get_permalink($page->ID)) . '&lt;/loc&gt;';
-        echo '&lt;lastmod&gt;' . date('c', strtotime($page->post_modified)) . '&lt;/lastmod&gt;';
-        echo '&lt;changefreq&gt;monthly&lt;/changefreq&gt;';
-        echo '&lt;priority&gt;0.6&lt;/priority&gt;';
-        echo '&lt;/url&gt;';
+        echo '<url>';
+        echo '<loc>' . esc_url(get_permalink($page->ID)) . '</loc>';
+        echo '<lastmod>' . date('c', strtotime($page->post_modified)) . '</lastmod>';
+        echo '<changefreq>monthly</changefreq>';
+        echo '<priority>0.6</priority>';
+        echo '</url>';
     }
 
-    echo '&lt;/urlset&gt;';
+    echo '</urlset>';
     exit;
 }
 
@@ -20826,11 +20826,11 @@ foreach ($custom_post_types as $post_type) {
     ));
 
     foreach ($cpt_posts as $cpt) {
-        echo '&lt;url&gt;';
-        echo '&lt;loc&gt;' . esc_url(get_permalink($cpt->ID)) . '&lt;/loc&gt;';
-        echo '&lt;lastmod&gt;' . date('c', strtotime($cpt->post_modified)) . '&lt;/lastmod&gt;';
-        echo '&lt;priority&gt;0.7&lt;/priority&gt;';
-        echo '&lt;/url&gt;';
+        echo '<url>';
+        echo '<loc>' . esc_url(get_permalink($cpt->ID)) . '</loc>';
+        echo '<lastmod>' . date('c', strtotime($cpt->post_modified)) . '</lastmod>';
+        echo '<priority>0.7</priority>';
+        echo '</url>';
     }
 }</code></pre>
 
@@ -20838,21 +20838,21 @@ foreach ($custom_post_types as $post_type) {
       <pre><code class="language-php">// Add categories to sitemap
 $categories = get_categories(array('hide_empty' => true));
 foreach ($categories as $category) {
-    echo '&lt;url&gt;';
-    echo '&lt;loc&gt;' . esc_url(get_category_link($category->term_id)) . '&lt;/loc&gt;';
-    echo '&lt;changefreq&gt;weekly&lt;/changefreq&gt;';
-    echo '&lt;priority&gt;0.5&lt;/priority&gt;';
-    echo '&lt;/url&gt;';
+    echo '<url>';
+    echo '<loc>' . esc_url(get_category_link($category->term_id)) . '</loc>';
+    echo '<changefreq>weekly</changefreq>';
+    echo '<priority>0.5</priority>';
+    echo '</url>';
 }
 
 // Add tags
 $tags = get_tags(array('hide_empty' => true));
 foreach ($tags as $tag) {
-    echo '&lt;url&gt;';
-    echo '&lt;loc&gt;' . esc_url(get_tag_link($tag->term_id)) . '&lt;/loc&gt;';
-    echo '&lt;changefreq&gt;weekly&lt;/changefreq&gt;';
-    echo '&lt;priority&gt;0.4&lt;/priority&gt;';
-    echo '&lt;/url&gt;';
+    echo '<url>';
+    echo '<loc>' . esc_url(get_tag_link($tag->term_id)) . '</loc>';
+    echo '<changefreq>weekly</changefreq>';
+    echo '<priority>0.4</priority>';
+    echo '</url>';
 }</code></pre>
 
       <h3>Priority Guidelines</h3>
@@ -20928,13 +20928,13 @@ foreach ($tags as $tag) {
       <pre><code class="language-php">// Add nofollow to all external links
 add_filter('the_content', 'add_nofollow_to_external_links');
 function add_nofollow_to_external_links($content) {
-    $regexp = '&lt;a\s[^&gt;]*href=("??)([^" &gt;]*?)\\1[^&gt;]*&gt;';
+    $regexp = '<a\s[^>]*href=("??)([^" >]*?)\\1[^>]*>';
 
     if (preg_match_all("/$regexp/siU", $content, $matches, PREG_SET_ORDER)) {
         if (!empty($matches)) {
             $site_url = get_option('siteurl');
 
-            for ($i = 0; $i &lt; count($matches); $i++) {
+            for ($i = 0; $i < count($matches); $i++) {
                 $tag = $matches[$i][0];
                 $url = $matches[$i][2];
 
@@ -20949,7 +20949,7 @@ function add_nofollow_to_external_links($content) {
                                                'rel="$1 nofollow"', $tag);
                     } else {
                         // Add new rel attribute
-                        $new_tag = str_replace('&gt;', ' rel="nofollow"&gt;', $tag);
+                        $new_tag = str_replace('>', ' rel="nofollow">', $tag);
                     }
 
                     $content = str_replace($tag, $new_tag, $content);
@@ -21562,7 +21562,7 @@ add_action('manage_media_custom_column', 'display_alt_text_column', 10, 2);
 function display_alt_text_column($column_name, $post_id) {
     if ($column_name === 'alt_text') {
         $alt_text = get_post_meta($post_id, '_wp_attachment_image_alt', true);
-        echo $alt_text ? esc_html($alt_text) : '&lt;span style="color:red;"&gt;Missing&lt;/span&gt;';
+        echo $alt_text ? esc_html($alt_text) : '<span style="color:red;">Missing</span>';
     }
 }</code></pre>
 
@@ -21634,42 +21634,42 @@ function add_twitter_card_tags() {
     if (!is_singular()) return;
 
     // Card type
-    echo '&lt;meta name="twitter:card" content="summary_large_image" /&gt;' . "\n";
+    echo '<meta name="twitter:card" content="summary_large_image" />' . "\n";
 
     // Twitter handle
     $twitter_site = '@yourusername'; // Replace with your Twitter handle
-    echo '&lt;meta name="twitter:site" content="' . esc_attr($twitter_site) . '" /&gt;' . "\n";
+    echo '<meta name="twitter:site" content="' . esc_attr($twitter_site) . '" />' . "\n";
 
     // Title
-    echo '&lt;meta name="twitter:title" content="' . esc_attr(get_the_title()) . '" /&gt;' . "\n";
+    echo '<meta name="twitter:title" content="' . esc_attr(get_the_title()) . '" />' . "\n";
 
     // Description
     $description = get_the_excerpt();
     $description = wp_strip_all_tags($description);
     if (!empty($description)) {
-        echo '&lt;meta name="twitter:description" content="' .
-             esc_attr($description) . '" /&gt;' . "\n";
+        echo '<meta name="twitter:description" content="' .
+             esc_attr($description) . '" />' . "\n";
     }
 
     // Image
     if (has_post_thumbnail()) {
         $image_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
-        echo '&lt;meta name="twitter:image" content="' . esc_url($image_url) . '" /&gt;' . "\n";
+        echo '<meta name="twitter:image" content="' . esc_url($image_url) . '" />' . "\n";
 
         // Image alt text
         $thumbnail_id = get_post_thumbnail_id(get_the_ID());
         $image_alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
         if ($image_alt) {
-            echo '&lt;meta name="twitter:image:alt" content="' .
-                 esc_attr($image_alt) . '" /&gt;' . "\n";
+            echo '<meta name="twitter:image:alt" content="' .
+                 esc_attr($image_alt) . '" />' . "\n";
         }
     }
 
     // Author Twitter handle (if available)
     $author_twitter = get_the_author_meta('twitter');
     if ($author_twitter) {
-        echo '&lt;meta name="twitter:creator" content="@' .
-             esc_attr($author_twitter) . '" /&gt;' . "\n";
+        echo '<meta name="twitter:creator" content="@' .
+             esc_attr($author_twitter) . '" />' . "\n";
     }
 }</code></pre>
 
@@ -21680,11 +21680,11 @@ function add_enhanced_twitter_cards() {
 
     // Determine card type based on content
     $card_type = has_post_thumbnail() ? 'summary_large_image' : 'summary';
-    echo '&lt;meta name="twitter:card" content="' . $card_type . '" /&gt;' . "\n";
+    echo '<meta name="twitter:card" content="' . $card_type . '" />' . "\n";
 
-    echo '&lt;meta name="twitter:site" content="@yourusername" /&gt;' . "\n";
-    echo '&lt;meta name="twitter:title" content="' .
-         esc_attr(get_the_title()) . '" /&gt;' . "\n";
+    echo '<meta name="twitter:site" content="@yourusername" />' . "\n";
+    echo '<meta name="twitter:title" content="' .
+         esc_attr(get_the_title()) . '" />' . "\n";
 
     // Try custom meta description first
     $description = get_post_meta(get_the_ID(), '_meta_description', true);
@@ -21694,12 +21694,12 @@ function add_enhanced_twitter_cards() {
     $description = wp_strip_all_tags($description);
     $description = substr($description, 0, 200); // Twitter limit
 
-    echo '&lt;meta name="twitter:description" content="' .
-         esc_attr($description) . '" /&gt;' . "\n";
+    echo '<meta name="twitter:description" content="' .
+         esc_attr($description) . '" />' . "\n";
 
     if (has_post_thumbnail()) {
         $image_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
-        echo '&lt;meta name="twitter:image" content="' . esc_url($image_url) . '" /&gt;' . "\n";
+        echo '<meta name="twitter:image" content="' . esc_url($image_url) . '" />' . "\n";
     }
 }</code></pre>
 
@@ -21708,20 +21708,20 @@ function add_enhanced_twitter_cards() {
 add_action('show_user_profile', 'add_twitter_profile_field');
 add_action('edit_user_profile', 'add_twitter_profile_field');
 function add_twitter_profile_field($user) {
-    ?&gt;
-    &lt;h3&gt;Social Media&lt;/h3&gt;
-    &lt;table class="form-table"&gt;
-        &lt;tr&gt;
-            &lt;th&gt;&lt;label for="twitter"&gt;Twitter Handle&lt;/label&gt;&lt;/th&gt;
-            &lt;td&gt;
-                &lt;input type="text" name="twitter" id="twitter"
-                       value="&lt;?php echo esc_attr(get_user_meta($user->ID, 'twitter', true)); ?&gt;"
-                       class="regular-text" placeholder="yourusername" /&gt;
-                &lt;p class="description"&gt;Your Twitter username without @&lt;/p&gt;
-            &lt;/td&gt;
-        &lt;/tr&gt;
-    &lt;/table&gt;
-    &lt;?php
+    ?>
+    <h3>Social Media</h3>
+    <table class="form-table">
+        <tr>
+            <th><label for="twitter">Twitter Handle</label></th>
+            <td>
+                <input type="text" name="twitter" id="twitter"
+                       value="<?php echo esc_attr(get_user_meta($user->ID, 'twitter', true)); ?>"
+                       class="regular-text" placeholder="yourusername" />
+                <p class="description">Your Twitter username without @</p>
+            </td>
+        </tr>
+    </table>
+    <?php
 }
 
 // Save Twitter field
@@ -21802,45 +21802,45 @@ function save_twitter_profile_field($user_id) {
     slug: 'custom-admin-logo',
     title: 'Change WordPress Login Logo',
     excerpt: 'Replace the default WordPress logo on the login page with your own custom branding.',
-    content: `&lt;h2&gt;Why Customize the WordPress Login Logo?&lt;/h2&gt;
-&lt;p&gt;The WordPress login page displays the WordPress logo by default. Customizing it with your own logo creates a more professional, branded experience for users logging into your site.&lt;/p&gt;
+    content: `<h2>Why Customize the WordPress Login Logo?</h2>
+<p>The WordPress login page displays the WordPress logo by default. Customizing it with your own logo creates a more professional, branded experience for users logging into your site.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Add this code to your theme's functions.php file&lt;/li&gt;
-  &lt;li&gt;Upload your custom logo to your theme folder&lt;/li&gt;
-  &lt;li&gt;Update the logo URL in the code&lt;/li&gt;
-  &lt;li&gt;Adjust dimensions as needed&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Add this code to your theme's functions.php file</li>
+  <li>Upload your custom logo to your theme folder</li>
+  <li>Update the logo URL in the code</li>
+  <li>Adjust dimensions as needed</li>
+</ol>
 
-&lt;h2&gt;Logo Specifications&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Recommended size: 320×80 pixels&lt;/li&gt;
-  &lt;li&gt;Format: PNG with transparency&lt;/li&gt;
-  &lt;li&gt;Maximum width: 320px (scales down automatically)&lt;/li&gt;
-  &lt;li&gt;Keep file size under 100KB for fast loading&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Logo Specifications</h2>
+<ul>
+  <li>Recommended size: 320×80 pixels</li>
+  <li>Format: PNG with transparency</li>
+  <li>Maximum width: 320px (scales down automatically)</li>
+  <li>Keep file size under 100KB for fast loading</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Use high-quality images that look good on retina displays&lt;/li&gt;
-  &lt;li&gt;Test on different screen sizes&lt;/li&gt;
-  &lt;li&gt;Ensure the logo link points to your homepage&lt;/li&gt;
-  &lt;li&gt;Consider using SVG for better scaling&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Use high-quality images that look good on retina displays</li>
+  <li>Test on different screen sizes</li>
+  <li>Ensure the logo link points to your homepage</li>
+  <li>Consider using SVG for better scaling</li>
+</ul>
 
-&lt;h2&gt;Advanced Customization&lt;/h2&gt;
-&lt;p&gt;You can also customize the login page colors, background, and form styling using custom CSS in your theme or a custom login plugin.&lt;/p&gt;`,
+<h2>Advanced Customization</h2>
+<p>You can also customize the login page colors, background, and form styling using custom CSS in your theme or a custom login plugin.</p>`,
     code: `// Change login logo
 function custom_login_logo() {
-    echo '&lt;style type="text/css"&gt;
+    echo '<style type="text/css">
         #login h1 a {
             background-image: url(' . get_stylesheet_directory_uri() . '/images/custom-logo.png);
             background-size: contain;
             width: 320px;
             height: 80px;
         }
-    &lt;/style&gt;';
+    </style>';
 }
 add_action('login_enqueue_scripts', 'custom_login_logo');
 
@@ -21899,7 +21899,7 @@ add_filter('login_headertext', 'custom_login_logo_url_title');`,
       },
       {
         question: "Can I add CSS to further customize the login page?",
-        answer: "Absolutely! You can add more CSS within the &lt;style&gt; tags to customize background colors, form styling, button colors, and more. Just target the #login selector and its child elements."
+        answer: "Absolutely! You can add more CSS within the <style> tags to customize background colors, form styling, button colors, and more. Just target the #login selector and its child elements."
       }
     ]
   },
@@ -21908,37 +21908,37 @@ add_filter('login_headertext', 'custom_login_logo_url_title');`,
     slug: 'custom-dashboard-widgets',
     title: 'Add Custom Dashboard Widgets',
     excerpt: 'Create custom widgets for the WordPress admin dashboard to display important information and quick access tools.',
-    content: `&lt;h2&gt;Why Add Custom Dashboard Widgets?&lt;/h2&gt;
-&lt;p&gt;Custom dashboard widgets allow you to display important information, quick statistics, helpful links, or custom tools right on the WordPress admin dashboard where users see them first.&lt;/p&gt;
+    content: `<h2>Why Add Custom Dashboard Widgets?</h2>
+<p>Custom dashboard widgets allow you to display important information, quick statistics, helpful links, or custom tools right on the WordPress admin dashboard where users see them first.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Add the widget registration code to functions.php&lt;/li&gt;
-  &lt;li&gt;Create the callback function for widget content&lt;/li&gt;
-  &lt;li&gt;Customize the content and styling&lt;/li&gt;
-  &lt;li&gt;Test the widget appears on the dashboard&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Add the widget registration code to functions.php</li>
+  <li>Create the callback function for widget content</li>
+  <li>Customize the content and styling</li>
+  <li>Test the widget appears on the dashboard</li>
+</ol>
 
-&lt;h2&gt;Widget Content Ideas&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Site statistics and analytics overview&lt;/li&gt;
-  &lt;li&gt;Quick links to important pages&lt;/li&gt;
-  &lt;li&gt;Recent activity or notifications&lt;/li&gt;
-  &lt;li&gt;Support contact information&lt;/li&gt;
-  &lt;li&gt;Custom tools or calculators&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Widget Content Ideas</h2>
+<ul>
+  <li>Site statistics and analytics overview</li>
+  <li>Quick links to important pages</li>
+  <li>Recent activity or notifications</li>
+  <li>Support contact information</li>
+  <li>Custom tools or calculators</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Keep widgets concise and focused on one purpose&lt;/li&gt;
-  &lt;li&gt;Use appropriate WordPress admin styling&lt;/li&gt;
-  &lt;li&gt;Consider user roles when displaying sensitive data&lt;/li&gt;
-  &lt;li&gt;Allow users to hide/show widgets if not critical&lt;/li&gt;
-  &lt;li&gt;Optimize database queries to avoid slowing down the dashboard&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Keep widgets concise and focused on one purpose</li>
+  <li>Use appropriate WordPress admin styling</li>
+  <li>Consider user roles when displaying sensitive data</li>
+  <li>Allow users to hide/show widgets if not critical</li>
+  <li>Optimize database queries to avoid slowing down the dashboard</li>
+</ul>
 
-&lt;h2&gt;Advanced Features&lt;/h2&gt;
-&lt;p&gt;You can add AJAX functionality to update widget content without page reload, include charts using JavaScript libraries, or create interactive forms within widgets.&lt;/p&gt;`,
+<h2>Advanced Features</h2>
+<p>You can add AJAX functionality to update widget content without page reload, include charts using JavaScript libraries, or create interactive forms within widgets.</p>`,
     code: `// Add custom dashboard widget
 function add_custom_dashboard_widget() {
     wp_add_dashboard_widget(
@@ -21952,38 +21952,38 @@ add_action('wp_dashboard_setup', 'add_custom_dashboard_widget');
 // Widget content callback
 function custom_dashboard_widget_content() {
     $current_user = wp_get_current_user();
-    echo '&lt;div class="custom-widget-content"&gt;';
-    echo '&lt;h3&gt;Hello, ' . esc_html($current_user-&gt;display_name) . '!&lt;/h3&gt;';
-    echo '&lt;p&gt;Welcome to your WordPress dashboard.&lt;/p&gt;';
+    echo '<div class="custom-widget-content">';
+    echo '<h3>Hello, ' . esc_html($current_user->display_name) . '!</h3>';
+    echo '<p>Welcome to your WordPress dashboard.</p>';
 
     // Quick stats
-    $post_count = wp_count_posts('post')-&gt;publish;
-    $page_count = wp_count_posts('page')-&gt;publish;
+    $post_count = wp_count_posts('post')->publish;
+    $page_count = wp_count_posts('page')->publish;
 
-    echo '&lt;ul&gt;';
-    echo '&lt;li&gt;Published Posts: ' . $post_count . '&lt;/li&gt;';
-    echo '&lt;li&gt;Published Pages: ' . $page_count . '&lt;/li&gt;';
-    echo '&lt;/ul&gt;';
+    echo '<ul>';
+    echo '<li>Published Posts: ' . $post_count . '</li>';
+    echo '<li>Published Pages: ' . $page_count . '</li>';
+    echo '</ul>';
 
     // Quick links
-    echo '&lt;h4&gt;Quick Links&lt;/h4&gt;';
-    echo '&lt;ul&gt;';
-    echo '&lt;li&gt;&lt;a href="' . admin_url('post-new.php') . '"&gt;Create New Post&lt;/a&gt;&lt;/li&gt;';
-    echo '&lt;li&gt;&lt;a href="' . admin_url('edit.php') . '"&gt;View All Posts&lt;/a&gt;&lt;/li&gt;';
-    echo '&lt;/ul&gt;';
-    echo '&lt;/div&gt;';
+    echo '<h4>Quick Links</h4>';
+    echo '<ul>';
+    echo '<li><a href="' . admin_url('post-new.php') . '">Create New Post</a></li>';
+    echo '<li><a href="' . admin_url('edit.php') . '">View All Posts</a></li>';
+    echo '</ul>';
+    echo '</div>';
 }
 
 // Optional: Add custom styles
 function custom_dashboard_widget_styles() {
-    echo '&lt;style&gt;
+    echo '<style>
         .custom-widget-content h3 {
             color: #0073aa;
         }
         .custom-widget-content ul {
             margin-left: 20px;
         }
-    &lt;/style&gt;';
+    </style>';
 }
 add_action('admin_head', 'custom_dashboard_widget_styles');`,
     author: 'Shahmir Khaliq',
@@ -22039,37 +22039,37 @@ add_action('admin_head', 'custom_dashboard_widget_styles');`,
     slug: 'remove-admin-menu-items',
     title: 'Remove Admin Menu Items',
     excerpt: 'Simplify the WordPress admin by removing unnecessary menu items based on user roles and site requirements.',
-    content: `&lt;h2&gt;Why Remove Admin Menu Items?&lt;/h2&gt;
-&lt;p&gt;Removing unnecessary admin menu items creates a cleaner, more focused admin interface. This is especially useful for client sites or when you want to prevent users from accessing certain areas.&lt;/p&gt;
+    content: `<h2>Why Remove Admin Menu Items?</h2>
+<p>Removing unnecessary admin menu items creates a cleaner, more focused admin interface. This is especially useful for client sites or when you want to prevent users from accessing certain areas.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Identify menu items you want to remove&lt;/li&gt;
-  &lt;li&gt;Add the code to functions.php&lt;/li&gt;
-  &lt;li&gt;Customize based on user roles if needed&lt;/li&gt;
-  &lt;li&gt;Test with different user accounts&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Identify menu items you want to remove</li>
+  <li>Add the code to functions.php</li>
+  <li>Customize based on user roles if needed</li>
+  <li>Test with different user accounts</li>
+</ol>
 
-&lt;h2&gt;Common Menu Items to Remove&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Posts (if running a static site)&lt;/li&gt;
-  &lt;li&gt;Comments (if disabled)&lt;/li&gt;
-  &lt;li&gt;Tools (for basic users)&lt;/li&gt;
-  &lt;li&gt;Plugins (for non-admins)&lt;/li&gt;
-  &lt;li&gt;Themes (for editors)&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Common Menu Items to Remove</h2>
+<ul>
+  <li>Posts (if running a static site)</li>
+  <li>Comments (if disabled)</li>
+  <li>Tools (for basic users)</li>
+  <li>Plugins (for non-admins)</li>
+  <li>Themes (for editors)</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Only remove items users don't need access to&lt;/li&gt;
-  &lt;li&gt;Don't remove items you might need later&lt;/li&gt;
-  &lt;li&gt;Use role-based conditions for better control&lt;/li&gt;
-  &lt;li&gt;Document which items you've removed&lt;/li&gt;
-  &lt;li&gt;Test thoroughly with different user roles&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Only remove items users don't need access to</li>
+  <li>Don't remove items you might need later</li>
+  <li>Use role-based conditions for better control</li>
+  <li>Document which items you've removed</li>
+  <li>Test thoroughly with different user roles</li>
+</ul>
 
-&lt;h2&gt;Menu Slug Reference&lt;/h2&gt;
-&lt;p&gt;Common menu slugs: 'index.php' (Dashboard), 'edit.php' (Posts), 'upload.php' (Media), 'edit.php?post_type=page' (Pages), 'edit-comments.php' (Comments), 'themes.php' (Appearance), 'plugins.php' (Plugins), 'users.php' (Users), 'tools.php' (Tools), 'options-general.php' (Settings).&lt;/p&gt;`,
+<h2>Menu Slug Reference</h2>
+<p>Common menu slugs: 'index.php' (Dashboard), 'edit.php' (Posts), 'upload.php' (Media), 'edit.php?post_type=page' (Pages), 'edit-comments.php' (Comments), 'themes.php' (Appearance), 'plugins.php' (Plugins), 'users.php' (Users), 'tools.php' (Tools), 'options-general.php' (Settings).</p>`,
     code: `// Remove admin menu items
 function remove_admin_menu_items() {
     // Remove for all users
@@ -22102,12 +22102,12 @@ add_action('admin_menu', 'remove_admin_submenu_items', 999);
 // Hide menu items with CSS (alternative method)
 function hide_admin_menu_items_css() {
     if (!current_user_can('manage_options')) {
-        echo '&lt;style&gt;
+        echo '<style>
             #menu-tools,
             #menu-comments {
                 display: none !important;
             }
-        &lt;/style&gt;';
+        </style>';
     }
 }
 add_action('admin_head', 'hide_admin_menu_items_css');`,
@@ -22164,44 +22164,44 @@ add_action('admin_head', 'hide_admin_menu_items_css');`,
     slug: 'custom-admin-footer',
     title: 'Change Admin Footer Text',
     excerpt: 'Replace the default WordPress admin footer text with custom branding, support information, or helpful links.',
-    content: `&lt;h2&gt;Why Change Admin Footer Text?&lt;/h2&gt;
-&lt;p&gt;The WordPress admin footer displays "Thank you for creating with WordPress" by default. Customizing this text allows you to add your branding, support links, version information, or helpful messages for your team.&lt;/p&gt;
+    content: `<h2>Why Change Admin Footer Text?</h2>
+<p>The WordPress admin footer displays "Thank you for creating with WordPress" by default. Customizing this text allows you to add your branding, support links, version information, or helpful messages for your team.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Add the filter code to functions.php&lt;/li&gt;
-  &lt;li&gt;Customize the text content&lt;/li&gt;
-  &lt;li&gt;Optionally add HTML and links&lt;/li&gt;
-  &lt;li&gt;Test appearance on different admin pages&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Add the filter code to functions.php</li>
+  <li>Customize the text content</li>
+  <li>Optionally add HTML and links</li>
+  <li>Test appearance on different admin pages</li>
+</ol>
 
-&lt;h2&gt;Footer Content Ideas&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Company name and copyright&lt;/li&gt;
-  &lt;li&gt;Support contact information&lt;/li&gt;
-  &lt;li&gt;Link to documentation or help desk&lt;/li&gt;
-  &lt;li&gt;Developer credits&lt;/li&gt;
-  &lt;li&gt;Version or last updated date&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Footer Content Ideas</h2>
+<ul>
+  <li>Company name and copyright</li>
+  <li>Support contact information</li>
+  <li>Link to documentation or help desk</li>
+  <li>Developer credits</li>
+  <li>Version or last updated date</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Keep text concise and readable&lt;/li&gt;
-  &lt;li&gt;Include helpful links that make sense for your users&lt;/li&gt;
-  &lt;li&gt;Use proper HTML escaping for security&lt;/li&gt;
-  &lt;li&gt;Test on mobile devices as footer wraps on small screens&lt;/li&gt;
-  &lt;li&gt;Consider adding both left and right footer text&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Keep text concise and readable</li>
+  <li>Include helpful links that make sense for your users</li>
+  <li>Use proper HTML escaping for security</li>
+  <li>Test on mobile devices as footer wraps on small screens</li>
+  <li>Consider adding both left and right footer text</li>
+</ul>
 
-&lt;h2&gt;Styling Options&lt;/h2&gt;
-&lt;p&gt;You can add custom CSS to style the footer text, change colors, or add icons. The footer uses the #wpfooter selector for styling.&lt;/p&gt;`,
+<h2>Styling Options</h2>
+<p>You can add custom CSS to style the footer text, change colors, or add icons. The footer uses the #wpfooter selector for styling.</p>`,
     code: `// Change left admin footer text
 function custom_admin_footer_text() {
-    $text = '&lt;span id="footer-thankyou"&gt;';
-    $text .= 'Developed by &lt;a href="https://shahmir.dev" target="_blank"&gt;Shahmir Khaliq&lt;/a&gt; | ';
-    $text .= '&lt;a href="mailto:support@example.com"&gt;Support&lt;/a&gt; | ';
-    $text .= '&lt;a href="https://docs.example.com" target="_blank"&gt;Documentation&lt;/a&gt;';
-    $text .= '&lt;/span&gt;';
+    $text = '<span id="footer-thankyou">';
+    $text .= 'Developed by <a href="https://shahmir.dev" target="_blank">Shahmir Khaliq</a> | ';
+    $text .= '<a href="mailto:support@example.com">Support</a> | ';
+    $text .= '<a href="https://docs.example.com" target="_blank">Documentation</a>';
+    $text .= '</span>';
     return $text;
 }
 add_filter('admin_footer_text', 'custom_admin_footer_text');
@@ -22217,16 +22217,16 @@ function role_based_admin_footer() {
     $current_user = wp_get_current_user();
 
     if (current_user_can('manage_options')) {
-        return 'Admin View | &lt;a href="' . home_url() . '" target="_blank"&gt;View Site&lt;/a&gt;';
+        return 'Admin View | <a href="' . home_url() . '" target="_blank">View Site</a>';
     } else {
-        return 'Need help? Contact &lt;a href="mailto:support@example.com"&gt;support@example.com&lt;/a&gt;';
+        return 'Need help? Contact <a href="mailto:support@example.com">support@example.com</a>';
     }
 }
 add_filter('admin_footer_text', 'role_based_admin_footer');
 
 // Add custom styling to footer
 function custom_admin_footer_styles() {
-    echo '&lt;style&gt;
+    echo '<style>
         #wpfooter {
             background: #f0f0f1;
             padding: 10px;
@@ -22235,7 +22235,7 @@ function custom_admin_footer_styles() {
             color: #2271b1;
             font-weight: 600;
         }
-    &lt;/style&gt;';
+    </style>';
 }
 add_action('admin_head', 'custom_admin_footer_styles');`,
     author: 'Shahmir Khaliq',
@@ -22291,51 +22291,51 @@ add_action('admin_head', 'custom_admin_footer_styles');`,
     slug: 'add-admin-notice',
     title: 'Display Admin Notices',
     excerpt: 'Show custom notification messages in the WordPress admin area for important updates, warnings, or information.',
-    content: `&lt;h2&gt;Why Display Admin Notices?&lt;/h2&gt;
-&lt;p&gt;Admin notices are great for alerting users about important information like pending tasks, configuration requirements, updates, or warnings. They appear at the top of admin pages and grab attention.&lt;/p&gt;
+    content: `<h2>Why Display Admin Notices?</h2>
+<p>Admin notices are great for alerting users about important information like pending tasks, configuration requirements, updates, or warnings. They appear at the top of admin pages and grab attention.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Add the notice function to functions.php&lt;/li&gt;
-  &lt;li&gt;Choose the appropriate notice type&lt;/li&gt;
-  &lt;li&gt;Add conditions for when to show the notice&lt;/li&gt;
-  &lt;li&gt;Optionally make notices dismissible&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Add the notice function to functions.php</li>
+  <li>Choose the appropriate notice type</li>
+  <li>Add conditions for when to show the notice</li>
+  <li>Optionally make notices dismissible</li>
+</ol>
 
-&lt;h2&gt;Notice Types&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;success:&lt;/strong&gt; Green - for successful operations&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;error:&lt;/strong&gt; Red - for errors and critical issues&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;warning:&lt;/strong&gt; Yellow/Orange - for warnings&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;info:&lt;/strong&gt; Blue - for general information&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Notice Types</h2>
+<ul>
+  <li><strong>success:</strong> Green - for successful operations</li>
+  <li><strong>error:</strong> Red - for errors and critical issues</li>
+  <li><strong>warning:</strong> Yellow/Orange - for warnings</li>
+  <li><strong>info:</strong> Blue - for general information</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Use appropriate notice types for the message severity&lt;/li&gt;
-  &lt;li&gt;Keep messages clear and actionable&lt;/li&gt;
-  &lt;li&gt;Make non-critical notices dismissible&lt;/li&gt;
-  &lt;li&gt;Don't show too many notices at once&lt;/li&gt;
-  &lt;li&gt;Store dismissed notice state in user meta&lt;/li&gt;
-  &lt;li&gt;Only show notices to users who need to see them&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Use appropriate notice types for the message severity</li>
+  <li>Keep messages clear and actionable</li>
+  <li>Make non-critical notices dismissible</li>
+  <li>Don't show too many notices at once</li>
+  <li>Store dismissed notice state in user meta</li>
+  <li>Only show notices to users who need to see them</li>
+</ul>
 
-&lt;h2&gt;Common Use Cases&lt;/h2&gt;
-&lt;p&gt;Display notices for plugin configuration requirements, pending updates, security warnings, feature announcements, data migration status, or action confirmations.&lt;/p&gt;`,
+<h2>Common Use Cases</h2>
+<p>Display notices for plugin configuration requirements, pending updates, security warnings, feature announcements, data migration status, or action confirmations.</p>`,
     code: `// Basic admin notice
 function custom_admin_notice() {
-    echo '&lt;div class="notice notice-info is-dismissible"&gt;';
-    echo '&lt;p&gt;Welcome! Please complete your site setup.&lt;/p&gt;';
-    echo '&lt;/div&gt;';
+    echo '<div class="notice notice-info is-dismissible">';
+    echo '<p>Welcome! Please complete your site setup.</p>';
+    echo '</div>';
 }
 add_action('admin_notices', 'custom_admin_notice');
 
 // Success notice
 function success_admin_notice() {
     if (isset($_GET['settings-updated']) &amp;&amp; $_GET['settings-updated']) {
-        echo '&lt;div class="notice notice-success is-dismissible"&gt;';
-        echo '&lt;p&gt;&lt;strong&gt;Settings saved successfully!&lt;/strong&gt;&lt;/p&gt;';
-        echo '&lt;/div&gt;';
+        echo '<div class="notice notice-success is-dismissible">';
+        echo '<p><strong>Settings saved successfully!</strong></p>';
+        echo '</div>';
     }
 }
 add_action('admin_notices', 'success_admin_notice');
@@ -22343,10 +22343,10 @@ add_action('admin_notices', 'success_admin_notice');
 // Error notice
 function error_admin_notice() {
     if (!function_exists('required_plugin_function')) {
-        echo '&lt;div class="notice notice-error"&gt;';
-        echo '&lt;p&gt;&lt;strong&gt;Error:&lt;/strong&gt; Required plugin is not active. ';
-        echo '&lt;a href="' . admin_url('plugins.php') . '"&gt;Activate now&lt;/a&gt;&lt;/p&gt;';
-        echo '&lt;/div&gt;';
+        echo '<div class="notice notice-error">';
+        echo '<p><strong>Error:</strong> Required plugin is not active. ';
+        echo '<a href="' . admin_url('plugins.php') . '">Activate now</a></p>';
+        echo '</div>';
     }
 }
 add_action('admin_notices', 'error_admin_notice');
@@ -22360,9 +22360,9 @@ function dismissible_admin_notice() {
         return;
     }
 
-    echo '&lt;div class="notice notice-warning is-dismissible" data-notice="welcome"&gt;';
-    echo '&lt;p&gt;Important: Please review your &lt;a href="' . admin_url('options-general.php') . '"&gt;site settings&lt;/a&gt;.&lt;/p&gt;';
-    echo '&lt;/div&gt;';
+    echo '<div class="notice notice-warning is-dismissible" data-notice="welcome">';
+    echo '<p>Important: Please review your <a href="' . admin_url('options-general.php') . '">site settings</a>.</p>';
+    echo '</div>';
 }
 add_action('admin_notices', 'dismissible_admin_notice');
 
@@ -22377,9 +22377,9 @@ add_action('wp_ajax_dismiss_notice', 'dismiss_admin_notice');
 // Show notice only to admins
 function admin_only_notice() {
     if (current_user_can('manage_options')) {
-        echo '&lt;div class="notice notice-info"&gt;';
-        echo '&lt;p&gt;Admin only: Server backup scheduled for tonight.&lt;/p&gt;';
-        echo '&lt;/div&gt;';
+        echo '<div class="notice notice-info">';
+        echo '<p>Admin only: Server backup scheduled for tonight.</p>';
+        echo '</div>';
     }
 }
 add_action('admin_notices', 'admin_only_notice');`,
@@ -22419,7 +22419,7 @@ add_action('admin_notices', 'admin_only_notice');`,
       },
       {
         question: "Can I show notices only on specific admin pages?",
-        answer: "Yes, use get_current_screen() to check which admin page is currently displayed. For example: if (get_current_screen()-&gt;id === 'dashboard') { /* show notice */ }"
+        answer: "Yes, use get_current_screen() to check which admin page is currently displayed. For example: if (get_current_screen()->id === 'dashboard') { /* show notice */ }"
       },
       {
         question: "What's the difference between admin_notices and all_admin_notices hooks?",
@@ -22436,39 +22436,39 @@ add_action('admin_notices', 'admin_only_notice');`,
     slug: 'custom-post-columns',
     title: 'Add Custom Admin Columns',
     excerpt: 'Add custom columns to post, page, and custom post type listings in the WordPress admin for better content management.',
-    content: `&lt;h2&gt;Why Add Custom Admin Columns?&lt;/h2&gt;
-&lt;p&gt;Custom admin columns help you see important information at a glance in post listings. Display custom fields, taxonomies, featured images, word counts, or any meta data without opening each post.&lt;/p&gt;
+    content: `<h2>Why Add Custom Admin Columns?</h2>
+<p>Custom admin columns help you see important information at a glance in post listings. Display custom fields, taxonomies, featured images, word counts, or any meta data without opening each post.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Define new columns with the manage_posts_columns filter&lt;/li&gt;
-  &lt;li&gt;Populate column data with manage_posts_custom_column action&lt;/li&gt;
-  &lt;li&gt;Optionally make columns sortable&lt;/li&gt;
-  &lt;li&gt;Test the columns appear correctly&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Define new columns with the manage_posts_columns filter</li>
+  <li>Populate column data with manage_posts_custom_column action</li>
+  <li>Optionally make columns sortable</li>
+  <li>Test the columns appear correctly</li>
+</ol>
 
-&lt;h2&gt;Column Content Ideas&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Featured image thumbnails&lt;/li&gt;
-  &lt;li&gt;Custom field values&lt;/li&gt;
-  &lt;li&gt;Word count or character count&lt;/li&gt;
-  &lt;li&gt;Post status or visibility&lt;/li&gt;
-  &lt;li&gt;Custom taxonomy terms&lt;/li&gt;
-  &lt;li&gt;Last modified date&lt;/li&gt;
-  &lt;li&gt;View count or analytics&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Column Content Ideas</h2>
+<ul>
+  <li>Featured image thumbnails</li>
+  <li>Custom field values</li>
+  <li>Word count or character count</li>
+  <li>Post status or visibility</li>
+  <li>Custom taxonomy terms</li>
+  <li>Last modified date</li>
+  <li>View count or analytics</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Keep column content concise and scannable&lt;/li&gt;
-  &lt;li&gt;Use appropriate column widths with CSS&lt;/li&gt;
-  &lt;li&gt;Make data-heavy columns sortable for easier management&lt;/li&gt;
-  &lt;li&gt;Consider mobile responsiveness&lt;/li&gt;
-  &lt;li&gt;Add helpful tooltips for complex data&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Keep column content concise and scannable</li>
+  <li>Use appropriate column widths with CSS</li>
+  <li>Make data-heavy columns sortable for easier management</li>
+  <li>Consider mobile responsiveness</li>
+  <li>Add helpful tooltips for complex data</li>
+</ul>
 
-&lt;h2&gt;Advanced Features&lt;/h2&gt;
-&lt;p&gt;You can make columns sortable by implementing the manage_edit-{post_type}_sortable_columns filter and modifying the WP_Query with pre_get_posts to handle the sorting logic.&lt;/p&gt;`,
+<h2>Advanced Features</h2>
+<p>You can make columns sortable by implementing the manage_edit-{post_type}_sortable_columns filter and modifying the WP_Query with pre_get_posts to handle the sorting logic.</p>`,
     code: `// Add custom columns for posts
 function add_custom_post_columns($columns) {
     // Remove date column
@@ -22521,15 +22521,15 @@ add_filter('manage_edit-post_sortable_columns', 'make_columns_sortable');
 
 // Handle custom column sorting
 function custom_column_orderby($query) {
-    if (!is_admin() || !$query-&gt;is_main_query()) {
+    if (!is_admin() || !$query->is_main_query()) {
         return;
     }
 
-    $orderby = $query-&gt;get('orderby');
+    $orderby = $query->get('orderby');
 
     if ('word_count' === $orderby) {
-        $query-&gt;set('meta_key', 'word_count');
-        $query-&gt;set('orderby', 'meta_value_num');
+        $query->set('meta_key', 'word_count');
+        $query->set('orderby', 'meta_value_num');
     }
 }
 add_action('pre_get_posts', 'custom_column_orderby');
@@ -22544,11 +22544,11 @@ add_filter('manage_product_posts_columns', 'add_product_columns');
 
 // Style custom columns
 function style_custom_columns() {
-    echo '&lt;style&gt;
+    echo '<style>
         .column-featured_image { width: 60px; }
         .column-word_count { width: 100px; }
         .column-last_modified { width: 150px; }
-    &lt;/style&gt;';
+    </style>';
 }
 add_action('admin_head', 'style_custom_columns');`,
     author: 'Shahmir Khaliq',
@@ -22604,36 +22604,36 @@ add_action('admin_head', 'style_custom_columns');`,
     slug: 'hide-update-notices',
     title: 'Hide Update Notifications',
     excerpt: 'Remove WordPress core, plugin, and theme update notifications from the admin for specific user roles.',
-    content: `&lt;h2&gt;Why Hide Update Notifications?&lt;/h2&gt;
-&lt;p&gt;Update notifications can be distracting for non-admin users who don't handle site maintenance. Hiding them creates a cleaner admin interface for editors, authors, and other contributors while keeping admins informed.&lt;/p&gt;
+    content: `<h2>Why Hide Update Notifications?</h2>
+<p>Update notifications can be distracting for non-admin users who don't handle site maintenance. Hiding them creates a cleaner admin interface for editors, authors, and other contributors while keeping admins informed.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Add the code to functions.php&lt;/li&gt;
-  &lt;li&gt;Choose which updates to hide (core, plugins, themes)&lt;/li&gt;
-  &lt;li&gt;Set appropriate user role conditions&lt;/li&gt;
-  &lt;li&gt;Test with different user accounts&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Add the code to functions.php</li>
+  <li>Choose which updates to hide (core, plugins, themes)</li>
+  <li>Set appropriate user role conditions</li>
+  <li>Test with different user accounts</li>
+</ol>
 
-&lt;h2&gt;Types of Update Notices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Core Updates:&lt;/strong&gt; WordPress version updates&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Plugin Updates:&lt;/strong&gt; Available plugin updates&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Theme Updates:&lt;/strong&gt; Available theme updates&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Update Nags:&lt;/strong&gt; Persistent update reminders&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Types of Update Notices</h2>
+<ul>
+  <li><strong>Core Updates:</strong> WordPress version updates</li>
+  <li><strong>Plugin Updates:</strong> Available plugin updates</li>
+  <li><strong>Theme Updates:</strong> Available theme updates</li>
+  <li><strong>Update Nags:</strong> Persistent update reminders</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Only hide for non-admin users, never for site administrators&lt;/li&gt;
-  &lt;li&gt;Keep admins informed about all available updates&lt;/li&gt;
-  &lt;li&gt;Document which roles see update notifications&lt;/li&gt;
-  &lt;li&gt;Consider security implications of delayed updates&lt;/li&gt;
-  &lt;li&gt;Implement a regular update schedule&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Only hide for non-admin users, never for site administrators</li>
+  <li>Keep admins informed about all available updates</li>
+  <li>Document which roles see update notifications</li>
+  <li>Consider security implications of delayed updates</li>
+  <li>Implement a regular update schedule</li>
+</ul>
 
-&lt;h2&gt;Security Considerations&lt;/h2&gt;
-&lt;p&gt;Hiding update notifications doesn't prevent updates—it just hides the notices. Ensure someone with admin access regularly checks for and applies important security updates. Never completely disable updates on production sites.&lt;/p&gt;`,
+<h2>Security Considerations</h2>
+<p>Hiding update notifications doesn't prevent updates—it just hides the notices. Ensure someone with admin access regularly checks for and applies important security updates. Never completely disable updates on production sites.</p>`,
     code: `// Hide update notices for non-admins
 function hide_update_notices() {
     if (!current_user_can('update_core')) {
@@ -22753,46 +22753,46 @@ add_action('admin_menu', 'hide_updates_page');`,
     slug: 'change-admin-color-scheme',
     title: 'Set Default Admin Color Scheme',
     excerpt: 'Automatically set a default color scheme for the WordPress admin interface for all users or specific roles.',
-    content: `&lt;h2&gt;Why Set a Default Admin Color Scheme?&lt;/h2&gt;
-&lt;p&gt;WordPress offers several admin color schemes, but users start with the default blue. Setting a custom default creates brand consistency, improves readability, or matches your site's design from day one.&lt;/p&gt;
+    content: `<h2>Why Set a Default Admin Color Scheme?</h2>
+<p>WordPress offers several admin color schemes, but users start with the default blue. Setting a custom default creates brand consistency, improves readability, or matches your site's design from day one.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Choose from available WordPress color schemes&lt;/li&gt;
-  &lt;li&gt;Add the code to functions.php&lt;/li&gt;
-  &lt;li&gt;Optionally lock the scheme to prevent user changes&lt;/li&gt;
-  &lt;li&gt;Test with different user roles&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Choose from available WordPress color schemes</li>
+  <li>Add the code to functions.php</li>
+  <li>Optionally lock the scheme to prevent user changes</li>
+  <li>Test with different user roles</li>
+</ol>
 
-&lt;h2&gt;Available Color Schemes&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;fresh:&lt;/strong&gt; Default blue scheme&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;light:&lt;/strong&gt; Light gray scheme&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;modern:&lt;/strong&gt; Purple and white&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;blue:&lt;/strong&gt; Blue and white&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;midnight:&lt;/strong&gt; Dark blue&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;sunrise:&lt;/strong&gt; Orange and yellow&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;ectoplasm:&lt;/strong&gt; Green and purple&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;ocean:&lt;/strong&gt; Teal and gray&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;coffee:&lt;/strong&gt; Brown tones&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Available Color Schemes</h2>
+<ul>
+  <li><strong>fresh:</strong> Default blue scheme</li>
+  <li><strong>light:</strong> Light gray scheme</li>
+  <li><strong>modern:</strong> Purple and white</li>
+  <li><strong>blue:</strong> Blue and white</li>
+  <li><strong>midnight:</strong> Dark blue</li>
+  <li><strong>sunrise:</strong> Orange and yellow</li>
+  <li><strong>ectoplasm:</strong> Green and purple</li>
+  <li><strong>ocean:</strong> Teal and gray</li>
+  <li><strong>coffee:</strong> Brown tones</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Choose schemes that provide good contrast for readability&lt;/li&gt;
-  &lt;li&gt;Consider accessibility for users with vision impairments&lt;/li&gt;
-  &lt;li&gt;Allow users to change schemes unless required for branding&lt;/li&gt;
-  &lt;li&gt;Test the scheme with all admin pages you use&lt;/li&gt;
-  &lt;li&gt;Dark schemes may reduce eye strain for some users&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Choose schemes that provide good contrast for readability</li>
+  <li>Consider accessibility for users with vision impairments</li>
+  <li>Allow users to change schemes unless required for branding</li>
+  <li>Test the scheme with all admin pages you use</li>
+  <li>Dark schemes may reduce eye strain for some users</li>
+</ul>
 
-&lt;h2&gt;Custom Color Schemes&lt;/h2&gt;
-&lt;p&gt;You can also create completely custom admin color schemes using the wp_admin_css_color() function to register new color combinations with your own CSS files.&lt;/p&gt;`,
+<h2>Custom Color Schemes</h2>
+<p>You can also create completely custom admin color schemes using the wp_admin_css_color() function to register new color combinations with your own CSS files.</p>`,
     code: `// Set default admin color scheme for all users
 function set_default_admin_color($user_id) {
     $args = array(
-        'ID' =&gt; $user_id,
-        'admin_color' =&gt; 'midnight'
+        'ID' => $user_id,
+        'admin_color' => 'midnight'
     );
     wp_update_user($args);
 }
@@ -22818,11 +22818,11 @@ add_action('admin_init', 'remove_color_scheme_picker');
 // Hide color scheme selector from profile page
 function hide_color_scheme_selector() {
     if (!current_user_can('manage_options')) {
-        echo '&lt;style&gt;
+        echo '<style>
             .user-admin-color-wrap {
                 display: none;
             }
-        &lt;/style&gt;';
+        </style>';
     }
 }
 add_action('admin_head-profile.php', 'hide_color_scheme_selector');
@@ -22831,9 +22831,9 @@ add_action('admin_head-profile.php', 'hide_color_scheme_selector');
 function role_based_admin_colors($user_id) {
     $user = get_userdata($user_id);
 
-    if (in_array('administrator', $user-&gt;roles)) {
+    if (in_array('administrator', $user->roles)) {
         update_user_meta($user_id, 'admin_color', 'midnight');
-    } elseif (in_array('editor', $user-&gt;roles)) {
+    } elseif (in_array('editor', $user->roles)) {
         update_user_meta($user_id, 'admin_color', 'modern');
     } else {
         update_user_meta($user_id, 'admin_color', 'light');
@@ -22845,7 +22845,7 @@ add_action('set_user_role', 'role_based_admin_colors');
 // Force specific color scheme (overrides user preference)
 function force_admin_color_scheme() {
     global $_wp_admin_css_colors;
-    $_wp_admin_css_colors = array('midnight' =&gt; $_wp_admin_css_colors['midnight']);
+    $_wp_admin_css_colors = array('midnight' => $_wp_admin_css_colors['midnight']);
 }
 add_action('admin_init', 'force_admin_color_scheme');`,
     author: 'Shahmir Khaliq',
@@ -22901,79 +22901,79 @@ add_action('admin_init', 'force_admin_color_scheme');`,
     slug: 'custom-help-tabs',
     title: 'Add Custom Help Tabs',
     excerpt: 'Add contextual help tabs to WordPress admin pages to provide guidance and documentation for users.',
-    content: `&lt;h2&gt;Why Add Custom Help Tabs?&lt;/h2&gt;
-&lt;p&gt;Help tabs appear in the top-right corner of admin pages when you click "Help". Adding custom help content provides contextual guidance for your users, documents custom features, and reduces support requests.&lt;/p&gt;
+    content: `<h2>Why Add Custom Help Tabs?</h2>
+<p>Help tabs appear in the top-right corner of admin pages when you click "Help". Adding custom help content provides contextual guidance for your users, documents custom features, and reduces support requests.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Hook into admin page load&lt;/li&gt;
-  &lt;li&gt;Get the current screen object&lt;/li&gt;
-  &lt;li&gt;Add help tabs with add_help_tab()&lt;/li&gt;
-  &lt;li&gt;Optionally add a help sidebar&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Hook into admin page load</li>
+  <li>Get the current screen object</li>
+  <li>Add help tabs with add_help_tab()</li>
+  <li>Optionally add a help sidebar</li>
+</ol>
 
-&lt;h2&gt;Help Content Ideas&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Feature documentation and usage instructions&lt;/li&gt;
-  &lt;li&gt;Troubleshooting tips and FAQs&lt;/li&gt;
-  &lt;li&gt;Links to video tutorials or external docs&lt;/li&gt;
-  &lt;li&gt;Keyboard shortcuts and quick tips&lt;/li&gt;
-  &lt;li&gt;Support contact information&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Help Content Ideas</h2>
+<ul>
+  <li>Feature documentation and usage instructions</li>
+  <li>Troubleshooting tips and FAQs</li>
+  <li>Links to video tutorials or external docs</li>
+  <li>Keyboard shortcuts and quick tips</li>
+  <li>Support contact information</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Keep help text concise and scannable&lt;/li&gt;
-  &lt;li&gt;Use clear headings and bullet points&lt;/li&gt;
-  &lt;li&gt;Add help tabs only to relevant admin pages&lt;/li&gt;
-  &lt;li&gt;Include practical examples and screenshots when helpful&lt;/li&gt;
-  &lt;li&gt;Update help content when features change&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Keep help text concise and scannable</li>
+  <li>Use clear headings and bullet points</li>
+  <li>Add help tabs only to relevant admin pages</li>
+  <li>Include practical examples and screenshots when helpful</li>
+  <li>Update help content when features change</li>
+</ul>
 
-&lt;h2&gt;Advanced Usage&lt;/h2&gt;
-&lt;p&gt;You can add multiple help tabs per page, each with its own content. The help sidebar can contain quick links to external documentation or support resources that appear on all tabs.&lt;/p&gt;`,
+<h2>Advanced Usage</h2>
+<p>You can add multiple help tabs per page, each with its own content. The help sidebar can contain quick links to external documentation or support resources that appear on all tabs.</p>`,
     code: `// Add custom help tab to dashboard
 function add_custom_help_tab() {
     $screen = get_current_screen();
 
     // Only add to dashboard
-    if ($screen-&gt;id !== 'dashboard') {
+    if ($screen->id !== 'dashboard') {
         return;
     }
 
     // Add help tab
-    $screen-&gt;add_help_tab(array(
-        'id' =&gt; 'custom_help_tab',
-        'title' =&gt; 'Getting Started',
-        'content' =&gt; '&lt;h3&gt;Welcome to Your Dashboard&lt;/h3&gt;
-            &lt;p&gt;Here are some quick tips to get you started:&lt;/p&gt;
-            &lt;ul&gt;
-                &lt;li&gt;&lt;strong&gt;Create Content:&lt;/strong&gt; Use Posts for blog articles and Pages for static content.&lt;/li&gt;
-                &lt;li&gt;&lt;strong&gt;Customize Appearance:&lt;/strong&gt; Visit Appearance &amp;gt; Customize to change your site design.&lt;/li&gt;
-                &lt;li&gt;&lt;strong&gt;Manage Users:&lt;/strong&gt; Add team members in Users &amp;gt; Add New.&lt;/li&gt;
-            &lt;/ul&gt;
-            &lt;p&gt;Need more help? Check our &lt;a href="https://docs.example.com" target="_blank"&gt;documentation&lt;/a&gt;.&lt;/p&gt;'
+    $screen->add_help_tab(array(
+        'id' => 'custom_help_tab',
+        'title' => 'Getting Started',
+        'content' => '<h3>Welcome to Your Dashboard</h3>
+            <p>Here are some quick tips to get you started:</p>
+            <ul>
+                <li><strong>Create Content:</strong> Use Posts for blog articles and Pages for static content.</li>
+                <li><strong>Customize Appearance:</strong> Visit Appearance &amp;gt; Customize to change your site design.</li>
+                <li><strong>Manage Users:</strong> Add team members in Users &amp;gt; Add New.</li>
+            </ul>
+            <p>Need more help? Check our <a href="https://docs.example.com" target="_blank">documentation</a>.</p>'
     ));
 
     // Add another help tab
-    $screen-&gt;add_help_tab(array(
-        'id' =&gt; 'troubleshooting_tab',
-        'title' =&gt; 'Troubleshooting',
-        'content' =&gt; '&lt;h3&gt;Common Issues&lt;/h3&gt;
-            &lt;ul&gt;
-                &lt;li&gt;&lt;strong&gt;Can\'t upload images?&lt;/strong&gt; Check file size limits and permissions.&lt;/li&gt;
-                &lt;li&gt;&lt;strong&gt;Page not updating?&lt;/strong&gt; Clear browser cache and try again.&lt;/li&gt;
-                &lt;li&gt;&lt;strong&gt;Plugin conflicts?&lt;/strong&gt; Deactivate plugins one by one to identify the issue.&lt;/li&gt;
-            &lt;/ul&gt;
-            &lt;p&gt;Still stuck? &lt;a href="mailto:support@example.com"&gt;Contact Support&lt;/a&gt;&lt;/p&gt;'
+    $screen->add_help_tab(array(
+        'id' => 'troubleshooting_tab',
+        'title' => 'Troubleshooting',
+        'content' => '<h3>Common Issues</h3>
+            <ul>
+                <li><strong>Can\'t upload images?</strong> Check file size limits and permissions.</li>
+                <li><strong>Page not updating?</strong> Clear browser cache and try again.</li>
+                <li><strong>Plugin conflicts?</strong> Deactivate plugins one by one to identify the issue.</li>
+            </ul>
+            <p>Still stuck? <a href="mailto:support@example.com">Contact Support</a></p>'
     ));
 
     // Set help sidebar
-    $screen-&gt;set_help_sidebar(
-        '&lt;h4&gt;Resources&lt;/h4&gt;
-        &lt;p&gt;&lt;a href="https://docs.example.com" target="_blank"&gt;Documentation&lt;/a&gt;&lt;/p&gt;
-        &lt;p&gt;&lt;a href="https://support.example.com" target="_blank"&gt;Support Forum&lt;/a&gt;&lt;/p&gt;
-        &lt;p&gt;&lt;a href="mailto:support@example.com"&gt;Email Support&lt;/a&gt;&lt;/p&gt;'
+    $screen->set_help_sidebar(
+        '<h4>Resources</h4>
+        <p><a href="https://docs.example.com" target="_blank">Documentation</a></p>
+        <p><a href="https://support.example.com" target="_blank">Support Forum</a></p>
+        <p><a href="mailto:support@example.com">Email Support</a></p>'
     );
 }
 add_action('load-index.php', 'add_custom_help_tab');
@@ -22982,22 +22982,22 @@ add_action('load-index.php', 'add_custom_help_tab');
 function add_cpt_help_tab() {
     $screen = get_current_screen();
 
-    if ($screen-&gt;post_type !== 'product') {
+    if ($screen->post_type !== 'product') {
         return;
     }
 
-    $screen-&gt;add_help_tab(array(
-        'id' =&gt; 'product_help',
-        'title' =&gt; 'Product Help',
-        'content' =&gt; '&lt;h3&gt;Creating Products&lt;/h3&gt;
-            &lt;p&gt;Follow these steps to create a product:&lt;/p&gt;
-            &lt;ol&gt;
-                &lt;li&gt;Add a descriptive product title&lt;/li&gt;
-                &lt;li&gt;Write detailed product description&lt;/li&gt;
-                &lt;li&gt;Set price and inventory information&lt;/li&gt;
-                &lt;li&gt;Upload high-quality product images&lt;/li&gt;
-                &lt;li&gt;Assign categories and tags&lt;/li&gt;
-            &lt;/ol&gt;'
+    $screen->add_help_tab(array(
+        'id' => 'product_help',
+        'title' => 'Product Help',
+        'content' => '<h3>Creating Products</h3>
+            <p>Follow these steps to create a product:</p>
+            <ol>
+                <li>Add a descriptive product title</li>
+                <li>Write detailed product description</li>
+                <li>Set price and inventory information</li>
+                <li>Upload high-quality product images</li>
+                <li>Assign categories and tags</li>
+            </ol>'
     ));
 }
 add_action('load-post.php', 'add_cpt_help_tab');
@@ -23007,20 +23007,20 @@ add_action('load-post-new.php', 'add_cpt_help_tab');
 function add_settings_help_tab() {
     $screen = get_current_screen();
 
-    if ($screen-&gt;id !== 'settings_page_my-plugin') {
+    if ($screen->id !== 'settings_page_my-plugin') {
         return;
     }
 
-    $screen-&gt;add_help_tab(array(
-        'id' =&gt; 'settings_help',
-        'title' =&gt; 'Settings Overview',
-        'content' =&gt; '&lt;h3&gt;Plugin Settings&lt;/h3&gt;
-            &lt;p&gt;Configure your plugin settings:&lt;/p&gt;
-            &lt;ul&gt;
-                &lt;li&gt;&lt;strong&gt;API Key:&lt;/strong&gt; Enter your API key from the provider dashboard&lt;/li&gt;
-                &lt;li&gt;&lt;strong&gt;Cache Duration:&lt;/strong&gt; Set how long to cache API responses&lt;/li&gt;
-                &lt;li&gt;&lt;strong&gt;Debug Mode:&lt;/strong&gt; Enable for troubleshooting (disable on production)&lt;/li&gt;
-            &lt;/ul&gt;'
+    $screen->add_help_tab(array(
+        'id' => 'settings_help',
+        'title' => 'Settings Overview',
+        'content' => '<h3>Plugin Settings</h3>
+            <p>Configure your plugin settings:</p>
+            <ul>
+                <li><strong>API Key:</strong> Enter your API key from the provider dashboard</li>
+                <li><strong>Cache Duration:</strong> Set how long to cache API responses</li>
+                <li><strong>Debug Mode:</strong> Enable for troubleshooting (disable on production)</li>
+            </ul>'
     ));
 }
 add_action('load-settings_page_my-plugin', 'add_settings_help_tab');`,
@@ -23056,7 +23056,7 @@ add_action('load-settings_page_my-plugin', 'add_settings_help_tab');`,
       },
       {
         question: "Can I remove default WordPress help tabs?",
-        answer: "Yes, use $screen-&gt;remove_help_tab('tab_id') to remove specific tabs. You can get existing tab IDs by inspecting $screen-&gt;get_help_tabs(). This is useful when you want to replace default help with custom content."
+        answer: "Yes, use $screen->remove_help_tab('tab_id') to remove specific tabs. You can get existing tab IDs by inspecting $screen->get_help_tabs(). This is useful when you want to replace default help with custom content."
       },
       {
         question: "What's the difference between help tabs and help sidebar?",
@@ -23077,37 +23077,37 @@ add_action('load-settings_page_my-plugin', 'add_settings_help_tab');`,
     slug: 'remove-screen-options',
     title: 'Remove Screen Options Tab',
     excerpt: 'Hide or remove the Screen Options tab from WordPress admin pages to simplify the interface.',
-    content: `&lt;h2&gt;Why Remove Screen Options?&lt;/h2&gt;
-&lt;p&gt;The Screen Options tab allows users to customize what appears on admin pages. For client sites or simplified interfaces, removing it prevents confusion and maintains a consistent layout across all users.&lt;/p&gt;
+    content: `<h2>Why Remove Screen Options?</h2>
+<p>The Screen Options tab allows users to customize what appears on admin pages. For client sites or simplified interfaces, removing it prevents confusion and maintains a consistent layout across all users.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Identify which pages need Screen Options hidden&lt;/li&gt;
-  &lt;li&gt;Add the filter code to functions.php&lt;/li&gt;
-  &lt;li&gt;Test across different admin pages&lt;/li&gt;
-  &lt;li&gt;Verify desired layout is maintained&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Identify which pages need Screen Options hidden</li>
+  <li>Add the filter code to functions.php</li>
+  <li>Test across different admin pages</li>
+  <li>Verify desired layout is maintained</li>
+</ol>
 
-&lt;h2&gt;What Screen Options Controls&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Number of items displayed per page&lt;/li&gt;
-  &lt;li&gt;Which columns appear in lists&lt;/li&gt;
-  &lt;li&gt;Dashboard widget visibility&lt;/li&gt;
-  &lt;li&gt;Post editor meta boxes&lt;/li&gt;
-  &lt;li&gt;Page layout (1 or 2 columns)&lt;/li&gt;
-&lt;/ul&gt;
+<h2>What Screen Options Controls</h2>
+<ul>
+  <li>Number of items displayed per page</li>
+  <li>Which columns appear in lists</li>
+  <li>Dashboard widget visibility</li>
+  <li>Post editor meta boxes</li>
+  <li>Page layout (1 or 2 columns)</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Only remove for non-admin users when appropriate&lt;/li&gt;
-  &lt;li&gt;Consider if users benefit from customization options&lt;/li&gt;
-  &lt;li&gt;Document the decision to remove Screen Options&lt;/li&gt;
-  &lt;li&gt;Set sensible defaults when removing user control&lt;/li&gt;
-  &lt;li&gt;Test thoroughly to ensure nothing breaks&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Only remove for non-admin users when appropriate</li>
+  <li>Consider if users benefit from customization options</li>
+  <li>Document the decision to remove Screen Options</li>
+  <li>Set sensible defaults when removing user control</li>
+  <li>Test thoroughly to ensure nothing breaks</li>
+</ul>
 
-&lt;h2&gt;When to Keep Screen Options&lt;/h2&gt;
-&lt;p&gt;Screen Options are useful for power users who manage content regularly. Consider keeping them for administrators and editors who benefit from customizing their workflow. Only remove when simplification truly benefits the user.&lt;/p&gt;`,
+<h2>When to Keep Screen Options</h2>
+<p>Screen Options are useful for power users who manage content regularly. Consider keeping them for administrators and editors who benefit from customizing their workflow. Only remove when simplification truly benefits the user.</p>`,
     code: `// Remove Screen Options tab for non-admins
 function remove_screen_options() {
     if (!current_user_can('manage_options')) {
@@ -23120,12 +23120,12 @@ add_filter('screen_options_show_screen', 'remove_screen_options');
 // Remove Screen Options from specific pages
 function remove_screen_options_selectively($show, $screen) {
     // Remove from dashboard
-    if ($screen-&gt;id === 'dashboard') {
+    if ($screen->id === 'dashboard') {
         return false;
     }
 
     // Remove from post listing pages
-    if ($screen-&gt;id === 'edit-post' || $screen-&gt;id === 'edit-page') {
+    if ($screen->id === 'edit-post' || $screen->id === 'edit-page') {
         if (!current_user_can('manage_options')) {
             return false;
         }
@@ -23138,12 +23138,12 @@ add_filter('screen_options_show_screen', 'remove_screen_options_selectively', 10
 // Remove Screen Options with CSS (alternative method)
 function hide_screen_options_css() {
     if (!current_user_can('manage_options')) {
-        echo '&lt;style&gt;
+        echo '<style>
             #screen-options-link-wrap,
             #screen-options-wrap {
                 display: none !important;
             }
-        &lt;/style&gt;';
+        </style>';
     }
 }
 add_action('admin_head', 'hide_screen_options_css');
@@ -23153,7 +23153,7 @@ function remove_cpt_screen_options($show, $screen) {
     // Remove for specific custom post types
     $hide_for_types = array('product', 'portfolio', 'testimonial');
 
-    if (in_array($screen-&gt;post_type, $hide_for_types)) {
+    if (in_array($screen->post_type, $hide_for_types)) {
         return false;
     }
 
@@ -23180,7 +23180,7 @@ add_action('admin_init', 'set_default_screen_options');
 
 // Remove Screen Options from plugins page
 function remove_plugins_screen_options($show, $screen) {
-    if ($screen-&gt;id === 'plugins') {
+    if ($screen->id === 'plugins') {
         if (!current_user_can('install_plugins')) {
             return false;
         }
@@ -23229,7 +23229,7 @@ add_action('admin_head', 'remove_screen_options_and_help');`,
       },
       {
         question: "Can I remove Screen Options from only certain admin pages?",
-        answer: "Yes, the screen_options_show_screen filter provides a $screen parameter. Check $screen-&gt;id or $screen-&gt;post_type to conditionally remove Screen Options from specific pages only."
+        answer: "Yes, the screen_options_show_screen filter provides a $screen parameter. Check $screen->id or $screen->post_type to conditionally remove Screen Options from specific pages only."
       },
       {
         question: "Is it better to use the filter or CSS to hide Screen Options?",
@@ -25113,38 +25113,38 @@ add_action('wp_enqueue_scripts', 'enqueue_shortcode_assets');</code></pre>
     slug: 'database-optimization',
     title: 'Optimize WordPress Database',
     excerpt: 'Clean up and optimize your WordPress database for better performance by removing unnecessary data and optimizing tables.',
-    content: `&lt;h2&gt;Why Optimize the WordPress Database?&lt;/h2&gt;
-&lt;p&gt;Over time, WordPress databases accumulate post revisions, spam comments, transients, and other data that slows down queries. Regular optimization improves site speed and reduces server load.&lt;/p&gt;
+    content: `<h2>Why Optimize the WordPress Database?</h2>
+<p>Over time, WordPress databases accumulate post revisions, spam comments, transients, and other data that slows down queries. Regular optimization improves site speed and reduces server load.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Backup your database before making any changes&lt;/li&gt;
-  &lt;li&gt;Add optimization code to functions.php or use via cron&lt;/li&gt;
-  &lt;li&gt;Review what's being deleted before running&lt;/li&gt;
-  &lt;li&gt;Monitor database size and query performance&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Backup your database before making any changes</li>
+  <li>Add optimization code to functions.php or use via cron</li>
+  <li>Review what's being deleted before running</li>
+  <li>Monitor database size and query performance</li>
+</ol>
 
-&lt;h2&gt;What Gets Cleaned&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Post revisions (old versions of posts/pages)&lt;/li&gt;
-  &lt;li&gt;Auto-draft posts&lt;/li&gt;
-  &lt;li&gt;Trashed posts and comments&lt;/li&gt;
-  &lt;li&gt;Spam and deleted comments&lt;/li&gt;
-  &lt;li&gt;Expired transients&lt;/li&gt;
-  &lt;li&gt;Orphaned post meta&lt;/li&gt;
-&lt;/ul&gt;
+<h2>What Gets Cleaned</h2>
+<ul>
+  <li>Post revisions (old versions of posts/pages)</li>
+  <li>Auto-draft posts</li>
+  <li>Trashed posts and comments</li>
+  <li>Spam and deleted comments</li>
+  <li>Expired transients</li>
+  <li>Orphaned post meta</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Always backup before optimization&lt;/li&gt;
-  &lt;li&gt;Schedule optimizations during low-traffic periods&lt;/li&gt;
-  &lt;li&gt;Limit post revisions to prevent future bloat&lt;/li&gt;
-  &lt;li&gt;Use indices on large custom tables&lt;/li&gt;
-  &lt;li&gt;Monitor database size regularly&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Always backup before optimization</li>
+  <li>Schedule optimizations during low-traffic periods</li>
+  <li>Limit post revisions to prevent future bloat</li>
+  <li>Use indices on large custom tables</li>
+  <li>Monitor database size regularly</li>
+</ul>
 
-&lt;h2&gt;Safety Considerations&lt;/h2&gt;
-&lt;p&gt;Never run database optimization on a live site without testing first. Some operations are irreversible. Consider using plugins like WP-Optimize or Advanced Database Cleaner for safer automated optimization.&lt;/p&gt;`,
+<h2>Safety Considerations</h2>
+<p>Never run database optimization on a live site without testing first. Some operations are irreversible. Consider using plugins like WP-Optimize or Advanced Database Cleaner for safer automated optimization.</p>`,
     code: `// Clean post revisions
 function clean_post_revisions() {
     global $wpdb;
@@ -25279,36 +25279,36 @@ add_action('weekly_database_optimization', 'complete_database_optimization');
     slug: 'multisite-network-setup',
     title: 'Enable WordPress Multisite',
     excerpt: 'Set up a WordPress Multisite network to manage multiple sites from a single installation with shared themes and plugins.',
-    content: `&lt;h2&gt;Why Use WordPress Multisite?&lt;/h2&gt;
-&lt;p&gt;Multisite allows you to run multiple WordPress websites from one installation, sharing themes, plugins, and users. Perfect for managing company divisions, franchises, or educational institutions.&lt;/p&gt;
+    content: `<h2>Why Use WordPress Multisite?</h2>
+<p>Multisite allows you to run multiple WordPress websites from one installation, sharing themes, plugins, and users. Perfect for managing company divisions, franchises, or educational institutions.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Backup your WordPress installation completely&lt;/li&gt;
-  &lt;li&gt;Deactivate all plugins&lt;/li&gt;
-  &lt;li&gt;Add multisite constants to wp-config.php&lt;/li&gt;
-  &lt;li&gt;Run the network setup from WordPress admin&lt;/li&gt;
-  &lt;li&gt;Update .htaccess and wp-config.php with provided code&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Backup your WordPress installation completely</li>
+  <li>Deactivate all plugins</li>
+  <li>Add multisite constants to wp-config.php</li>
+  <li>Run the network setup from WordPress admin</li>
+  <li>Update .htaccess and wp-config.php with provided code</li>
+</ol>
 
-&lt;h2&gt;Multisite Types&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Subdomain:&lt;/strong&gt; site1.example.com, site2.example.com&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Subdirectory:&lt;/strong&gt; example.com/site1, example.com/site2&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Domain Mapping:&lt;/strong&gt; Custom domains for each site&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Multisite Types</h2>
+<ul>
+  <li><strong>Subdomain:</strong> site1.example.com, site2.example.com</li>
+  <li><strong>Subdirectory:</strong> example.com/site1, example.com/site2</li>
+  <li><strong>Domain Mapping:</strong> Custom domains for each site</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Plan your network structure before enabling multisite&lt;/li&gt;
-  &lt;li&gt;Use subdomain setup for better flexibility&lt;/li&gt;
-  &lt;li&gt;Test multisite on staging before production&lt;/li&gt;
-  &lt;li&gt;Configure wildcard DNS for subdomain networks&lt;/li&gt;
-  &lt;li&gt;Consider dedicated hosting for large networks&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Plan your network structure before enabling multisite</li>
+  <li>Use subdomain setup for better flexibility</li>
+  <li>Test multisite on staging before production</li>
+  <li>Configure wildcard DNS for subdomain networks</li>
+  <li>Consider dedicated hosting for large networks</li>
+</ul>
 
-&lt;h2&gt;Requirements&lt;/h2&gt;
-&lt;p&gt;WordPress must be installed in the root directory (not a subdirectory). You need access to wp-config.php and .htaccess files. For subdomain setup, wildcard DNS must be configured (*.example.com points to your server).&lt;/p&gt;`,
+<h2>Requirements</h2>
+<p>WordPress must be installed in the root directory (not a subdirectory). You need access to wp-config.php and .htaccess files. For subdomain setup, wildcard DNS must be configured (*.example.com points to your server).</p>`,
     code: `/* Step 1: Add to wp-config.php (above "That's all, stop editing!") */
 
 // Enable Multisite
@@ -25449,37 +25449,37 @@ function create_new_subsite($domain, $path, $title, $user_id) {
     slug: 'custom-post-status',
     title: 'Register Custom Post Statuses',
     excerpt: 'Create custom post statuses beyond draft and published to build editorial workflows and content approval processes.',
-    content: `&lt;h2&gt;Why Use Custom Post Statuses?&lt;/h2&gt;
-&lt;p&gt;Custom post statuses enable editorial workflows by adding states like "Pending Review," "Approved," or "Scheduled." Great for content teams with approval processes or publications with multiple stages.&lt;/p&gt;
+    content: `<h2>Why Use Custom Post Statuses?</h2>
+<p>Custom post statuses enable editorial workflows by adding states like "Pending Review," "Approved," or "Scheduled." Great for content teams with approval processes or publications with multiple stages.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Register your custom status with register_post_status()&lt;/li&gt;
-  &lt;li&gt;Add the status to the post editor dropdown&lt;/li&gt;
-  &lt;li&gt;Display the status in admin columns&lt;/li&gt;
-  &lt;li&gt;Set up notifications for status changes&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Register your custom status with register_post_status()</li>
+  <li>Add the status to the post editor dropdown</li>
+  <li>Display the status in admin columns</li>
+  <li>Set up notifications for status changes</li>
+</ol>
 
-&lt;h2&gt;Common Custom Statuses&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Pending Review:&lt;/strong&gt; Awaiting editor approval&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Approved:&lt;/strong&gt; Approved but not published&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;In Progress:&lt;/strong&gt; Currently being written&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Scheduled:&lt;/strong&gt; Custom scheduling status&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Archived:&lt;/strong&gt; Published but archived&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Common Custom Statuses</h2>
+<ul>
+  <li><strong>Pending Review:</strong> Awaiting editor approval</li>
+  <li><strong>Approved:</strong> Approved but not published</li>
+  <li><strong>In Progress:</strong> Currently being written</li>
+  <li><strong>Scheduled:</strong> Custom scheduling status</li>
+  <li><strong>Archived:</strong> Published but archived</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Keep status names short and descriptive&lt;/li&gt;
-  &lt;li&gt;Document your workflow for team members&lt;/li&gt;
-  &lt;li&gt;Set appropriate capabilities for each status&lt;/li&gt;
-  &lt;li&gt;Add email notifications for status changes&lt;/li&gt;
-  &lt;li&gt;Show status counts in admin menu&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Keep status names short and descriptive</li>
+  <li>Document your workflow for team members</li>
+  <li>Set appropriate capabilities for each status</li>
+  <li>Add email notifications for status changes</li>
+  <li>Show status counts in admin menu</li>
+</ul>
 
-&lt;h2&gt;Workflow Integration&lt;/h2&gt;
-&lt;p&gt;Custom post statuses integrate with user roles and capabilities. Use them to create approval workflows where authors submit, editors review, and publishers schedule content. Combine with custom notifications for complete editorial control.&lt;/p&gt;`,
+<h2>Workflow Integration</h2>
+<p>Custom post statuses integrate with user roles and capabilities. Use them to create approval workflows where authors submit, editors review, and publishers schedule content. Combine with custom notifications for complete editorial control.</p>`,
     code: `// Register custom post status
 function register_custom_post_statuses() {
     // Pending Review status
@@ -25490,8 +25490,8 @@ function register_custom_post_statuses() {
         'show_in_admin_all_list' => true,
         'show_in_admin_status_list' => true,
         'label_count' => _n_noop(
-            'Pending Review &lt;span class="count"&gt;(%s)&lt;/span&gt;',
-            'Pending Review &lt;span class="count"&gt;(%s)&lt;/span&gt;'
+            'Pending Review <span class="count">(%s)</span>',
+            'Pending Review <span class="count">(%s)</span>'
         )
     ));
 
@@ -25503,8 +25503,8 @@ function register_custom_post_statuses() {
         'show_in_admin_all_list' => true,
         'show_in_admin_status_list' => true,
         'label_count' => _n_noop(
-            'Approved &lt;span class="count"&gt;(%s)&lt;/span&gt;',
-            'Approved &lt;span class="count"&gt;(%s)&lt;/span&gt;'
+            'Approved <span class="count">(%s)</span>',
+            'Approved <span class="count">(%s)</span>'
         )
     ));
 
@@ -25516,8 +25516,8 @@ function register_custom_post_statuses() {
         'show_in_admin_all_list' => true,
         'show_in_admin_status_list' => true,
         'label_count' => _n_noop(
-            'In Progress &lt;span class="count"&gt;(%s)&lt;/span&gt;',
-            'In Progress &lt;span class="count"&gt;(%s)&lt;/span&gt;'
+            'In Progress <span class="count">(%s)</span>',
+            'In Progress <span class="count">(%s)</span>'
         )
     ));
 }
@@ -25536,19 +25536,19 @@ function add_custom_statuses_to_dropdown() {
         'in_progress' => 'In Progress'
     );
 
-    echo '&lt;script&gt;
+    echo '<script>
     jQuery(document).ready(function($) {
         ';
 
     foreach ($statuses as $value => $label) {
-        echo '$("#post-status-select").append("&lt;option value=\'' . $value . '\' " + ';
+        echo '$("#post-status-select").append("<option value=\'' . $value . '\' " + ';
         echo '("' . $status . '" === "' . $value . '" ? "selected" : "") + ';
-        echo '"&gt;' . $label . '&lt;/option&gt;");';
+        echo '">' . $label . '</option>");';
     }
 
     echo '
     });
-    &lt;/script&gt;';
+    </script>';
 }
 add_action('admin_footer-post.php', 'add_custom_statuses_to_dropdown');
 add_action('admin_footer-post-new.php', 'add_custom_statuses_to_dropdown');
@@ -25609,7 +25609,7 @@ function add_status_count_to_menu() {
     if ($count > 0) {
         foreach ($menu as $key => $value) {
             if ($menu[$key][2] == 'edit.php') {
-                $menu[$key][0] .= ' &lt;span class="update-plugins count-' . $count . '"&gt;&lt;span class="update-count"&gt;' . $count . '&lt;/span&gt;&lt;/span&gt;';
+                $menu[$key][0] .= ' <span class="update-plugins count-' . $count . '"><span class="update-count">' . $count . '</span></span>';
                 break;
             }
         }
@@ -25669,42 +25669,42 @@ add_action('admin_menu', 'add_status_count_to_menu');`,
     slug: 'white-label-wordpress',
     title: 'White Label WordPress Admin',
     excerpt: 'Rebrand the WordPress admin area by replacing WordPress branding with your own for client sites and custom installations.',
-    content: `&lt;h2&gt;Why White Label WordPress?&lt;/h2&gt;
-&lt;p&gt;White labeling removes WordPress branding from the admin area, replacing it with your agency or client's brand. Creates a professional, custom experience and reinforces your brand identity.&lt;/p&gt;
+    content: `<h2>Why White Label WordPress?</h2>
+<p>White labeling removes WordPress branding from the admin area, replacing it with your agency or client's brand. Creates a professional, custom experience and reinforces your brand identity.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Change the login logo and URL&lt;/li&gt;
-  &lt;li&gt;Customize admin footer text&lt;/li&gt;
-  &lt;li&gt;Replace dashboard widgets&lt;/li&gt;
-  &lt;li&gt;Modify the admin bar&lt;/li&gt;
-  &lt;li&gt;Customize email templates&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Change the login logo and URL</li>
+  <li>Customize admin footer text</li>
+  <li>Replace dashboard widgets</li>
+  <li>Modify the admin bar</li>
+  <li>Customize email templates</li>
+</ol>
 
-&lt;h2&gt;Elements to White Label&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Login page logo and styling&lt;/li&gt;
-  &lt;li&gt;Admin footer credits&lt;/li&gt;
-  &lt;li&gt;Dashboard welcome panel&lt;/li&gt;
-  &lt;li&gt;Admin bar WordPress logo&lt;/li&gt;
-  &lt;li&gt;Email from name and address&lt;/li&gt;
-  &lt;li&gt;Admin color scheme&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Elements to White Label</h2>
+<ul>
+  <li>Login page logo and styling</li>
+  <li>Admin footer credits</li>
+  <li>Dashboard welcome panel</li>
+  <li>Admin bar WordPress logo</li>
+  <li>Email from name and address</li>
+  <li>Admin color scheme</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Maintain WordPress credits somewhere (license requirement)&lt;/li&gt;
-  &lt;li&gt;Keep branding consistent across all elements&lt;/li&gt;
-  &lt;li&gt;Test with different user roles&lt;/li&gt;
-  &lt;li&gt;Provide custom documentation with your branding&lt;/li&gt;
-  &lt;li&gt;Consider using a white label plugin for easier management&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Maintain WordPress credits somewhere (license requirement)</li>
+  <li>Keep branding consistent across all elements</li>
+  <li>Test with different user roles</li>
+  <li>Provide custom documentation with your branding</li>
+  <li>Consider using a white label plugin for easier management</li>
+</ul>
 
-&lt;h2&gt;Legal Considerations&lt;/h2&gt;
-&lt;p&gt;WordPress is GPL licensed. You can modify and rebrand it, but cannot remove copyright notices from code or claim WordPress as your own product. Keep license files intact and acknowledge WordPress somewhere in your documentation.&lt;/p&gt;`,
+<h2>Legal Considerations</h2>
+<p>WordPress is GPL licensed. You can modify and rebrand it, but cannot remove copyright notices from code or claim WordPress as your own product. Keep license files intact and acknowledge WordPress somewhere in your documentation.</p>`,
     code: `// Change login logo
 function custom_login_logo() {
-    echo '&lt;style type="text/css"&gt;
+    echo '<style type="text/css">
         #login h1 a {
             background-image: url(' . get_stylesheet_directory_uri() . '/images/custom-logo.png);
             background-size: contain;
@@ -25718,7 +25718,7 @@ function custom_login_logo() {
             border: 1px solid #ddd;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
-    &lt;/style&gt;';
+    </style>';
 }
 add_action('login_enqueue_scripts', 'custom_login_logo');
 
@@ -25735,7 +25735,7 @@ add_filter('login_headertext', 'custom_login_title');
 
 // Customize admin footer
 function custom_admin_footer() {
-    echo 'Powered by &lt;a href="https://youragency.com"&gt;Your Agency&lt;/a&gt; | Built with WordPress';
+    echo 'Powered by <a href="https://youragency.com">Your Agency</a> | Built with WordPress';
 }
 add_filter('admin_footer_text', 'custom_admin_footer');
 
@@ -25755,7 +25755,7 @@ add_action('admin_bar_menu', 'remove_wp_logo', 999);
 function add_custom_admin_bar_logo($wp_admin_bar) {
     $args = array(
         'id' => 'custom_logo',
-        'title' => '&lt;span class="ab-icon"&gt;&lt;img src="' . get_stylesheet_directory_uri() . '/images/admin-icon.png" style="height: 20px; margin-top: 6px;"&gt;&lt;/span&gt;',
+        'title' => '<span class="ab-icon"><img src="' . get_stylesheet_directory_uri() . '/images/admin-icon.png" style="height: 20px; margin-top: 6px;"></span>',
         'href' => 'https://youragency.com',
         'meta' => array(
             'target' => '_blank',
@@ -25785,11 +25785,11 @@ function add_custom_dashboard_widget() {
 add_action('wp_dashboard_setup', 'add_custom_dashboard_widget');
 
 function custom_dashboard_content() {
-    echo '&lt;div style="text-align: center;"&gt;';
-    echo '&lt;img src="' . get_stylesheet_directory_uri() . '/images/dashboard-logo.png" style="max-width: 200px; margin: 20px 0;"&gt;';
-    echo '&lt;h3&gt;Welcome to Your Website Dashboard&lt;/h3&gt;';
-    echo '&lt;p&gt;Need help? &lt;a href="https://youragency.com/support"&gt;Contact Support&lt;/a&gt;&lt;/p&gt;';
-    echo '&lt;/div&gt;';
+    echo '<div style="text-align: center;">';
+    echo '<img src="' . get_stylesheet_directory_uri() . '/images/dashboard-logo.png" style="max-width: 200px; margin: 20px 0;">';
+    echo '<h3>Welcome to Your Website Dashboard</h3>';
+    echo '<p>Need help? <a href="https://youragency.com/support">Contact Support</a></p>';
+    echo '</div>';
 }
 
 // Change email from name and address
@@ -25809,14 +25809,14 @@ add_filter('the_generator', '__return_empty_string');
 
 // Custom admin CSS
 function custom_admin_css() {
-    echo '&lt;style&gt;
+    echo '<style>
         #wpadminbar .ab-icon:before {
             content: "" !important;
         }
         #wp-admin-bar-wp-logo {
             display: none;
         }
-    &lt;/style&gt;';
+    </style>';
 }
 add_action('admin_head', 'custom_admin_css');
 add_action('wp_head', 'custom_admin_css');`,
@@ -25873,37 +25873,37 @@ add_action('wp_head', 'custom_admin_css');`,
     slug: 'custom-email-sender',
     title: 'Change WordPress Email From Address',
     excerpt: 'Customize the sender name and email address for all WordPress system emails to match your brand.',
-    content: `&lt;h2&gt;Why Change Email From Address?&lt;/h2&gt;
-&lt;p&gt;By default, WordPress sends emails from "wordpress@yourdomain.com" which often gets flagged as spam. Changing to a professional address like "noreply@yourdomain.com" with your company name improves deliverability and brand recognition.&lt;/p&gt;
+    content: `<h2>Why Change Email From Address?</h2>
+<p>By default, WordPress sends emails from "wordpress@yourdomain.com" which often gets flagged as spam. Changing to a professional address like "noreply@yourdomain.com" with your company name improves deliverability and brand recognition.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Set up a valid email address on your domain&lt;/li&gt;
-  &lt;li&gt;Add the filter code to functions.php&lt;/li&gt;
-  &lt;li&gt;Test email delivery&lt;/li&gt;
-  &lt;li&gt;Check spam folder if emails don't arrive&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Set up a valid email address on your domain</li>
+  <li>Add the filter code to functions.php</li>
+  <li>Test email delivery</li>
+  <li>Check spam folder if emails don't arrive</li>
+</ol>
 
-&lt;h2&gt;Email Types Affected&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;New user registration emails&lt;/li&gt;
-  &lt;li&gt;Password reset emails&lt;/li&gt;
-  &lt;li&gt;Comment notification emails&lt;/li&gt;
-  &lt;li&gt;Admin notification emails&lt;/li&gt;
-  &lt;li&gt;Plugin and form emails (most)&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Email Types Affected</h2>
+<ul>
+  <li>New user registration emails</li>
+  <li>Password reset emails</li>
+  <li>Comment notification emails</li>
+  <li>Admin notification emails</li>
+  <li>Plugin and form emails (most)</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Use a real, monitored email address&lt;/li&gt;
-  &lt;li&gt;Configure SPF and DKIM records for better deliverability&lt;/li&gt;
-  &lt;li&gt;Consider using an SMTP plugin for improved reliability&lt;/li&gt;
-  &lt;li&gt;Test emails after changing settings&lt;/li&gt;
-  &lt;li&gt;Use a professional sender name (not "Admin" or "WordPress")&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Use a real, monitored email address</li>
+  <li>Configure SPF and DKIM records for better deliverability</li>
+  <li>Consider using an SMTP plugin for improved reliability</li>
+  <li>Test emails after changing settings</li>
+  <li>Use a professional sender name (not "Admin" or "WordPress")</li>
+</ul>
 
-&lt;h2&gt;Improving Deliverability&lt;/h2&gt;
-&lt;p&gt;For better email delivery, use an SMTP service like SendGrid, Mailgun, or Amazon SES instead of PHP mail(). Configure SPF, DKIM, and DMARC records. Use a transactional email service for important messages.&lt;/p&gt;`,
+<h2>Improving Deliverability</h2>
+<p>For better email delivery, use an SMTP service like SendGrid, Mailgun, or Amazon SES instead of PHP mail(). Configure SPF, DKIM, and DMARC records. Use a transactional email service for important messages.</p>`,
     code: `// Change email from address
 function custom_email_from_address($email) {
     return 'noreply@yourdomain.com'; // Replace with your email
@@ -26038,38 +26038,38 @@ add_filter('wp_mail', 'log_email_sending');`,
     slug: 'add-maintenance-mode',
     title: 'Enable Maintenance Mode',
     excerpt: 'Display a custom maintenance page to visitors while you update your site, with options for admin bypass.',
-    content: `&lt;h2&gt;Why Use Maintenance Mode?&lt;/h2&gt;
-&lt;p&gt;Maintenance mode shows a temporary "coming soon" or "under maintenance" page to visitors while you perform updates, redesigns, or troubleshooting. Admins can still access the site normally.&lt;/p&gt;
+    content: `<h2>Why Use Maintenance Mode?</h2>
+<p>Maintenance mode shows a temporary "coming soon" or "under maintenance" page to visitors while you perform updates, redesigns, or troubleshooting. Admins can still access the site normally.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Create a maintenance page template&lt;/li&gt;
-  &lt;li&gt;Add the maintenance mode code to functions.php&lt;/li&gt;
-  &lt;li&gt;Test that admins can bypass maintenance mode&lt;/li&gt;
-  &lt;li&gt;Disable when work is complete&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Create a maintenance page template</li>
+  <li>Add the maintenance mode code to functions.php</li>
+  <li>Test that admins can bypass maintenance mode</li>
+  <li>Disable when work is complete</li>
+</ol>
 
-&lt;h2&gt;Maintenance Page Elements&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Clear message about the situation&lt;/li&gt;
-  &lt;li&gt;Estimated return time (if known)&lt;/li&gt;
-  &lt;li&gt;Company logo and branding&lt;/li&gt;
-  &lt;li&gt;Contact information for urgent matters&lt;/li&gt;
-  &lt;li&gt;Social media links&lt;/li&gt;
-  &lt;li&gt;Countdown timer (optional)&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Maintenance Page Elements</h2>
+<ul>
+  <li>Clear message about the situation</li>
+  <li>Estimated return time (if known)</li>
+  <li>Company logo and branding</li>
+  <li>Contact information for urgent matters</li>
+  <li>Social media links</li>
+  <li>Countdown timer (optional)</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Return 503 status code (Service Temporarily Unavailable)&lt;/li&gt;
-  &lt;li&gt;Include Retry-After header for search engines&lt;/li&gt;
-  &lt;li&gt;Allow admins to bypass maintenance mode&lt;/li&gt;
-  &lt;li&gt;Keep the page simple and fast-loading&lt;/li&gt;
-  &lt;li&gt;Test before activating on live site&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Return 503 status code (Service Temporarily Unavailable)</li>
+  <li>Include Retry-After header for search engines</li>
+  <li>Allow admins to bypass maintenance mode</li>
+  <li>Keep the page simple and fast-loading</li>
+  <li>Test before activating on live site</li>
+</ul>
 
-&lt;h2&gt;SEO Considerations&lt;/h2&gt;
-&lt;p&gt;The 503 status code tells search engines this is temporary. Don't use maintenance mode for extended periods (weeks) as it may affect rankings. For longer outages, consider showing limited content or use a staging site for major work.&lt;/p&gt;`,
+<h2>SEO Considerations</h2>
+<p>The 503 status code tells search engines this is temporary. Don't use maintenance mode for extended periods (weeks) as it may affect rankings. For longer outages, consider showing limited content or use a staging site for major work.</p>`,
     code: `// Enable maintenance mode
 function enable_maintenance_mode() {
     // Allow admins to bypass
@@ -26095,13 +26095,13 @@ add_action('get_header', 'enable_maintenance_mode');
 // Custom maintenance page HTML
 function get_maintenance_page() {
     $html = '
-    &lt;!DOCTYPE html&gt;
-    &lt;html lang="en"&gt;
-    &lt;head&gt;
-        &lt;meta charset="UTF-8"&gt;
-        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
-        &lt;title&gt;Site Under Maintenance&lt;/title&gt;
-        &lt;style&gt;
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Site Under Maintenance</title>
+        <style>
             body {
                 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
                 display: flex;
@@ -26130,17 +26130,17 @@ function get_maintenance_page() {
                 font-size: 80px;
                 margin-bottom: 20px;
             }
-        &lt;/style&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        &lt;div class="container"&gt;
-            &lt;div class="icon"&gt;🔧&lt;/div&gt;
-            &lt;h1&gt;Under Maintenance&lt;/h1&gt;
-            &lt;p&gt;We\'re currently performing scheduled maintenance to improve your experience.&lt;/p&gt;
-            &lt;p&gt;We\'ll be back shortly. Thank you for your patience!&lt;/p&gt;
-        &lt;/div&gt;
-    &lt;/body&gt;
-    &lt;/html&gt;
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="icon">🔧</div>
+            <h1>Under Maintenance</h1>
+            <p>We\'re currently performing scheduled maintenance to improve your experience.</p>
+            <p>We\'ll be back shortly. Thank you for your patience!</p>
+        </div>
+    </body>
+    </html>
     ';
 
     return $html;
@@ -26176,11 +26176,11 @@ function maintenance_with_countdown() {
     }
 
     $html = '
-    &lt;!DOCTYPE html&gt;
-    &lt;html&gt;
-    &lt;head&gt;
-        &lt;title&gt;Coming Soon&lt;/title&gt;
-        &lt;style&gt;
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Coming Soon</title>
+        <style>
             body {
                 font-family: Arial, sans-serif;
                 text-align: center;
@@ -26192,12 +26192,12 @@ function maintenance_with_countdown() {
                 font-size: 48px;
                 margin: 30px 0;
             }
-        &lt;/style&gt;
-    &lt;/head&gt;
-    &lt;body&gt;
-        &lt;h1&gt;Coming Soon!&lt;/h1&gt;
-        &lt;div id="countdown"&gt;&lt;/div&gt;
-        &lt;script&gt;
+        </style>
+    </head>
+    <body>
+        <h1>Coming Soon!</h1>
+        <div id="countdown"></div>
+        <script>
             var endTime = ' . $end_time . ' * 1000;
             var countdown = setInterval(function() {
                 var now = new Date().getTime();
@@ -26215,9 +26215,9 @@ function maintenance_with_countdown() {
                     location.reload();
                 }
             }, 1000);
-        &lt;/script&gt;
-    &lt;/body&gt;
-    &lt;/html&gt;
+        </script>
+    </body>
+    </html>
     ';
 
     header('HTTP/1.1 503 Service Temporarily Unavailable');
@@ -26290,37 +26290,37 @@ add_action('get_header', 'check_maintenance_option');`,
     slug: 'custom-upload-mime-types',
     title: 'Allow Custom File Upload Types',
     excerpt: 'Enable uploading of additional file types beyond WordPress defaults like SVG, WebP, JSON, or custom document formats.',
-    content: `&lt;h2&gt;Why Allow Custom MIME Types?&lt;/h2&gt;
-&lt;p&gt;WordPress restricts file uploads to common formats for security. However, you may need to upload SVG files, WebP images, font files, or other specialized formats that are blocked by default.&lt;/p&gt;
+    content: `<h2>Why Allow Custom MIME Types?</h2>
+<p>WordPress restricts file uploads to common formats for security. However, you may need to upload SVG files, WebP images, font files, or other specialized formats that are blocked by default.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Identify the MIME type of the file format you need&lt;/li&gt;
-  &lt;li&gt;Add the upload_mimes filter to functions.php&lt;/li&gt;
-  &lt;li&gt;Test file uploads in the media library&lt;/li&gt;
-  &lt;li&gt;Consider security implications of each file type&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Identify the MIME type of the file format you need</li>
+  <li>Add the upload_mimes filter to functions.php</li>
+  <li>Test file uploads in the media library</li>
+  <li>Consider security implications of each file type</li>
+</ol>
 
-&lt;h2&gt;Common File Types to Enable&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;SVG:&lt;/strong&gt; Scalable vector graphics (image/svg+xml)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;WebP:&lt;/strong&gt; Modern image format (image/webp)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;JSON:&lt;/strong&gt; Data files (application/json)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;WEBM:&lt;/strong&gt; Video format (video/webm)&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Fonts:&lt;/strong&gt; WOFF, WOFF2, TTF files&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Common File Types to Enable</h2>
+<ul>
+  <li><strong>SVG:</strong> Scalable vector graphics (image/svg+xml)</li>
+  <li><strong>WebP:</strong> Modern image format (image/webp)</li>
+  <li><strong>JSON:</strong> Data files (application/json)</li>
+  <li><strong>WEBM:</strong> Video format (video/webm)</li>
+  <li><strong>Fonts:</strong> WOFF, WOFF2, TTF files</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Only enable file types you actually need&lt;/li&gt;
-  &lt;li&gt;Be cautious with executable file types&lt;/li&gt;
-  &lt;li&gt;Sanitize SVG files to prevent XSS attacks&lt;/li&gt;
-  &lt;li&gt;Consider user role restrictions for sensitive formats&lt;/li&gt;
-  &lt;li&gt;Document which file types are allowed and why&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Only enable file types you actually need</li>
+  <li>Be cautious with executable file types</li>
+  <li>Sanitize SVG files to prevent XSS attacks</li>
+  <li>Consider user role restrictions for sensitive formats</li>
+  <li>Document which file types are allowed and why</li>
+</ul>
 
-&lt;h2&gt;Security Warnings&lt;/h2&gt;
-&lt;p&gt;SVG files can contain JavaScript and pose XSS risks. Only allow SVG uploads for trusted users (admins). Never enable .php, .exe, .sh or other executable file types. Use plugins like Safe SVG for additional security when allowing SVG uploads.&lt;/p&gt;`,
+<h2>Security Warnings</h2>
+<p>SVG files can contain JavaScript and pose XSS risks. Only allow SVG uploads for trusted users (admins). Never enable .php, .exe, .sh or other executable file types. Use plugins like Safe SVG for additional security when allowing SVG uploads.</p>`,
     code: `// Enable common custom file types
 function enable_custom_mime_types($mimes) {
     // Images
@@ -26498,37 +26498,37 @@ add_filter('upload_size_limit', 'increase_upload_size_for_videos');`,
     slug: 'debug-mode-logging',
     title: 'Enable Debug Mode and Logging',
     excerpt: 'Enable WordPress debug mode to troubleshoot errors, log issues, and develop plugins and themes more effectively.',
-    content: `&lt;h2&gt;Why Enable Debug Mode?&lt;/h2&gt;
-&lt;p&gt;Debug mode reveals PHP errors, notices, and warnings that WordPress normally hides. Essential for development, troubleshooting plugin conflicts, and identifying issues before they affect users.&lt;/p&gt;
+    content: `<h2>Why Enable Debug Mode?</h2>
+<p>Debug mode reveals PHP errors, notices, and warnings that WordPress normally hides. Essential for development, troubleshooting plugin conflicts, and identifying issues before they affect users.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Access your wp-config.php file via FTP or hosting panel&lt;/li&gt;
-  &lt;li&gt;Add debug constants before "That's all, stop editing!"&lt;/li&gt;
-  &lt;li&gt;Check debug.log file in wp-content directory&lt;/li&gt;
-  &lt;li&gt;Disable debug mode on production sites&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Access your wp-config.php file via FTP or hosting panel</li>
+  <li>Add debug constants before "That's all, stop editing!"</li>
+  <li>Check debug.log file in wp-content directory</li>
+  <li>Disable debug mode on production sites</li>
+</ol>
 
-&lt;h2&gt;Debug Mode Options&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;WP_DEBUG:&lt;/strong&gt; Enable error reporting&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;WP_DEBUG_LOG:&lt;/strong&gt; Log errors to debug.log&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;WP_DEBUG_DISPLAY:&lt;/strong&gt; Show errors on screen&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SCRIPT_DEBUG:&lt;/strong&gt; Use unminified JS/CSS&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;SAVEQUERIES:&lt;/strong&gt; Log database queries&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Debug Mode Options</h2>
+<ul>
+  <li><strong>WP_DEBUG:</strong> Enable error reporting</li>
+  <li><strong>WP_DEBUG_LOG:</strong> Log errors to debug.log</li>
+  <li><strong>WP_DEBUG_DISPLAY:</strong> Show errors on screen</li>
+  <li><strong>SCRIPT_DEBUG:</strong> Use unminified JS/CSS</li>
+  <li><strong>SAVEQUERIES:</strong> Log database queries</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Never enable WP_DEBUG_DISPLAY on production sites&lt;/li&gt;
-  &lt;li&gt;Use WP_DEBUG_LOG to save errors without displaying them&lt;/li&gt;
-  &lt;li&gt;Regularly check and clear debug.log file&lt;/li&gt;
-  &lt;li&gt;Enable debug mode on staging/development environments&lt;/li&gt;
-  &lt;li&gt;Use error_log() function for custom debugging&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Never enable WP_DEBUG_DISPLAY on production sites</li>
+  <li>Use WP_DEBUG_LOG to save errors without displaying them</li>
+  <li>Regularly check and clear debug.log file</li>
+  <li>Enable debug mode on staging/development environments</li>
+  <li>Use error_log() function for custom debugging</li>
+</ul>
 
-&lt;h2&gt;Security Considerations&lt;/h2&gt;
-&lt;p&gt;Displaying errors publicly exposes sensitive information about your site structure, plugins, and potential vulnerabilities. Always disable WP_DEBUG_DISPLAY on live sites. Use WP_DEBUG_LOG instead to log errors privately.&lt;/p&gt;`,
+<h2>Security Considerations</h2>
+<p>Displaying errors publicly exposes sensitive information about your site structure, plugins, and potential vulnerabilities. Always disable WP_DEBUG_DISPLAY on live sites. Use WP_DEBUG_LOG instead to log errors privately.</p>`,
     code: `/* Add these constants to wp-config.php */
 
 // Enable WP_DEBUG mode (shows all PHP errors, notices, warnings)
@@ -26588,14 +26588,14 @@ function display_database_queries() {
     }
 
     global $wpdb;
-    echo '&lt;pre&gt;';
+    echo '<pre>';
     echo 'Total Queries: ' . count($wpdb->queries) . "\n";
     echo 'Total Time: ' . array_sum(array_column($wpdb->queries, 1)) . " seconds\n\n";
 
     foreach ($wpdb->queries as $query) {
         echo $query[0] . ' - ' . $query[1] . "s\n";
     }
-    echo '&lt;/pre&gt;';
+    echo '</pre>';
 }
 // Add to footer for testing: add_action('wp_footer', 'display_database_queries');
 
@@ -26706,51 +26706,51 @@ function monitor_errors() {
     slug: 'custom-comment-system',
     title: 'Build Custom Comment System',
     excerpt: 'Create a completely custom comment system with custom fields, validation, and display templates beyond WordPress defaults.',
-    content: `&lt;h2&gt;Why Build a Custom Comment System?&lt;/h2&gt;
-&lt;p&gt;While WordPress has a built-in comment system, you may need additional fields like ratings, custom validation, special formatting, or integration with external services. A custom system gives you complete control.&lt;/p&gt;
+    content: `<h2>Why Build a Custom Comment System?</h2>
+<p>While WordPress has a built-in comment system, you may need additional fields like ratings, custom validation, special formatting, or integration with external services. A custom system gives you complete control.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Add custom fields to the comment form&lt;/li&gt;
-  &lt;li&gt;Validate and save custom field data&lt;/li&gt;
-  &lt;li&gt;Create custom comment display templates&lt;/li&gt;
-  &lt;li&gt;Add AJAX submission (optional)&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Add custom fields to the comment form</li>
+  <li>Validate and save custom field data</li>
+  <li>Create custom comment display templates</li>
+  <li>Add AJAX submission (optional)</li>
+</ol>
 
-&lt;h2&gt;Custom Comment Features&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Rating stars or custom scores&lt;/li&gt;
-  &lt;li&gt;Image uploads or file attachments&lt;/li&gt;
-  &lt;li&gt;Social media profile links&lt;/li&gt;
-  &lt;li&gt;Custom formatting and emoji support&lt;/li&gt;
-  &lt;li&gt;Voting/like system for comments&lt;/li&gt;
-  &lt;li&gt;Custom moderation workflows&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Custom Comment Features</h2>
+<ul>
+  <li>Rating stars or custom scores</li>
+  <li>Image uploads or file attachments</li>
+  <li>Social media profile links</li>
+  <li>Custom formatting and emoji support</li>
+  <li>Voting/like system for comments</li>
+  <li>Custom moderation workflows</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Sanitize and validate all user input&lt;/li&gt;
-  &lt;li&gt;Use WordPress nonces for security&lt;/li&gt;
-  &lt;li&gt;Store custom data in comment meta&lt;/li&gt;
-  &lt;li&gt;Maintain spam protection (Akismet compatibility)&lt;/li&gt;
-  &lt;li&gt;Make forms accessible and mobile-friendly&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Sanitize and validate all user input</li>
+  <li>Use WordPress nonces for security</li>
+  <li>Store custom data in comment meta</li>
+  <li>Maintain spam protection (Akismet compatibility)</li>
+  <li>Make forms accessible and mobile-friendly</li>
+</ul>
 
-&lt;h2&gt;Advanced Features&lt;/h2&gt;
-&lt;p&gt;Integrate with services like Gravatar for avatars, implement threading levels, add real-time updates via AJAX, or create approval workflows with email notifications. Consider pagination for sites with many comments.&lt;/p&gt;`,
+<h2>Advanced Features</h2>
+<p>Integrate with services like Gravatar for avatars, implement threading levels, add real-time updates via AJAX, or create approval workflows with email notifications. Consider pagination for sites with many comments.</p>`,
     code: `// Add custom field to comment form (star rating)
 function add_rating_field_to_comment_form($fields) {
-    $fields['rating'] = '&lt;div class="comment-form-rating"&gt;
-        &lt;label for="rating"&gt;Rating&lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;
-        &lt;select name="rating" id="rating" required&gt;
-            &lt;option value=""&gt;Select Rating&lt;/option&gt;
-            &lt;option value="5"&gt;5 Stars&lt;/option&gt;
-            &lt;option value="4"&gt;4 Stars&lt;/option&gt;
-            &lt;option value="3"&gt;3 Stars&lt;/option&gt;
-            &lt;option value="2"&gt;2 Stars&lt;/option&gt;
-            &lt;option value="1"&gt;1 Star&lt;/option&gt;
-        &lt;/select&gt;
-    &lt;/div&gt;';
+    $fields['rating'] = '<div class="comment-form-rating">
+        <label for="rating">Rating<span class="required">*</span></label>
+        <select name="rating" id="rating" required>
+            <option value="">Select Rating</option>
+            <option value="5">5 Stars</option>
+            <option value="4">4 Stars</option>
+            <option value="3">3 Stars</option>
+            <option value="2">2 Stars</option>
+            <option value="1">1 Star</option>
+        </select>
+    </div>';
 
     return $fields;
 }
@@ -26786,7 +26786,7 @@ function display_comment_rating($comment_text, $comment) {
 
     if ($rating) {
         $stars = str_repeat('★', $rating) . str_repeat('☆', 5 - $rating);
-        $comment_text = '&lt;div class="comment-rating"&gt;' . $stars . '&lt;/div&gt;' . $comment_text;
+        $comment_text = '<div class="comment-rating">' . $stars . '</div>' . $comment_text;
     }
 
     return $comment_text;
@@ -26797,35 +26797,35 @@ add_filter('comment_text', 'display_comment_rating', 10, 2);
 function custom_comment_template($comment, $args, $depth) {
     $rating = get_comment_meta($comment->comment_ID, 'rating', true);
     ?>
-    &lt;li id="comment-&lt;?php comment_ID(); ?&gt;" &lt;?php comment_class(); ?&gt;&gt;
-        &lt;article class="comment-body"&gt;
-            &lt;div class="comment-author vcard"&gt;
-                &lt;?php echo get_avatar($comment, 60); ?&gt;
-                &lt;b class="fn"&gt;&lt;?php echo get_comment_author_link(); ?&gt;&lt;/b&gt;
-            &lt;/div&gt;
+    <li id="comment-<?php comment_ID(); ?>" <?php comment_class(); ?>>
+        <article class="comment-body">
+            <div class="comment-author vcard">
+                <?php echo get_avatar($comment, 60); ?>
+                <b class="fn"><?php echo get_comment_author_link(); ?></b>
+            </div>
 
-            &lt;?php if ($rating): ?&gt;
-                &lt;div class="comment-rating"&gt;
-                    &lt;?php echo str_repeat('★', $rating) . str_repeat('☆', 5 - $rating); ?&gt;
-                &lt;/div&gt;
-            &lt;?php endif; ?&gt;
+            <?php if ($rating): ?>
+                <div class="comment-rating">
+                    <?php echo str_repeat('★', $rating) . str_repeat('☆', 5 - $rating); ?>
+                </div>
+            <?php endif; ?>
 
-            &lt;div class="comment-meta"&gt;
-                &lt;time&gt;&lt;?php echo get_comment_date(); ?&gt; at &lt;?php echo get_comment_time(); ?&gt;&lt;/time&gt;
-            &lt;/div&gt;
+            <div class="comment-meta">
+                <time><?php echo get_comment_date(); ?> at <?php echo get_comment_time(); ?></time>
+            </div>
 
-            &lt;div class="comment-content"&gt;
-                &lt;?php comment_text(); ?&gt;
-            &lt;/div&gt;
+            <div class="comment-content">
+                <?php comment_text(); ?>
+            </div>
 
-            &lt;div class="reply"&gt;
-                &lt;?php comment_reply_link(array_merge($args, array(
+            <div class="reply">
+                <?php comment_reply_link(array_merge($args, array(
                     'depth' => $depth,
                     'max_depth' => $args['max_depth']
-                ))); ?&gt;
-            &lt;/div&gt;
-        &lt;/article&gt;
-    &lt;?php
+                ))); ?>
+            </div>
+        </article>
+    <?php
 }
 
 // AJAX comment submission
@@ -26967,38 +26967,38 @@ add_action('wp_ajax_nopriv_vote_comment', 'vote_comment');`,
     slug: 'custom-walker-class',
     title: 'Create Custom Walker Class for Menus',
     excerpt: 'Build a custom Walker class to completely control WordPress navigation menu output with custom HTML structure and CSS classes.',
-    content: `&lt;h2&gt;Why Create a Custom Walker?&lt;/h2&gt;
-&lt;p&gt;WordPress Walkers control how menus, taxonomies, and other hierarchical data are output. Creating a custom Walker gives you complete control over menu HTML, allowing you to add custom classes, data attributes, icons, or complex structures.&lt;/p&gt;
+    content: `<h2>Why Create a Custom Walker?</h2>
+<p>WordPress Walkers control how menus, taxonomies, and other hierarchical data are output. Creating a custom Walker gives you complete control over menu HTML, allowing you to add custom classes, data attributes, icons, or complex structures.</p>
 
-&lt;h2&gt;Implementation Steps&lt;/h2&gt;
-&lt;ol&gt;
-  &lt;li&gt;Extend the Walker_Nav_Menu class&lt;/li&gt;
-  &lt;li&gt;Override start_lvl(), start_el(), end_el(), end_lvl() methods&lt;/li&gt;
-  &lt;li&gt;Register your walker in wp_nav_menu() call&lt;/li&gt;
-  &lt;li&gt;Test menu output and nested items&lt;/li&gt;
-&lt;/ol&gt;
+<h2>Implementation Steps</h2>
+<ol>
+  <li>Extend the Walker_Nav_Menu class</li>
+  <li>Override start_lvl(), start_el(), end_el(), end_lvl() methods</li>
+  <li>Register your walker in wp_nav_menu() call</li>
+  <li>Test menu output and nested items</li>
+</ol>
 
-&lt;h2&gt;Use Cases&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Add custom CSS frameworks (Bootstrap, Foundation)&lt;/li&gt;
-  &lt;li&gt;Include icons or images in menu items&lt;/li&gt;
-  &lt;li&gt;Add mega menu markup&lt;/li&gt;
-  &lt;li&gt;Custom mobile menu structures&lt;/li&gt;
-  &lt;li&gt;Add data attributes for JavaScript&lt;/li&gt;
-  &lt;li&gt;Accessibility improvements&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Use Cases</h2>
+<ul>
+  <li>Add custom CSS frameworks (Bootstrap, Foundation)</li>
+  <li>Include icons or images in menu items</li>
+  <li>Add mega menu markup</li>
+  <li>Custom mobile menu structures</li>
+  <li>Add data attributes for JavaScript</li>
+  <li>Accessibility improvements</li>
+</ul>
 
-&lt;h2&gt;Best Practices&lt;/h2&gt;
-&lt;ul&gt;
-  &lt;li&gt;Extend Walker_Nav_Menu, don't modify core files&lt;/li&gt;
-  &lt;li&gt;Test with multiple menu levels (2-3 deep)&lt;/li&gt;
-  &lt;li&gt;Maintain accessibility (ARIA attributes)&lt;/li&gt;
-  &lt;li&gt;Use proper escaping for output&lt;/li&gt;
-  &lt;li&gt;Document custom classes for other developers&lt;/li&gt;
-&lt;/ul&gt;
+<h2>Best Practices</h2>
+<ul>
+  <li>Extend Walker_Nav_Menu, don't modify core files</li>
+  <li>Test with multiple menu levels (2-3 deep)</li>
+  <li>Maintain accessibility (ARIA attributes)</li>
+  <li>Use proper escaping for output</li>
+  <li>Document custom classes for other developers</li>
+</ul>
 
-&lt;h2&gt;Walker Methods&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;start_lvl():&lt;/strong&gt; Opens submenu wrapper. &lt;strong&gt;end_lvl():&lt;/strong&gt; Closes submenu wrapper. &lt;strong&gt;start_el():&lt;/strong&gt; Outputs individual menu item opening. &lt;strong&gt;end_el():&lt;/strong&gt; Outputs individual menu item closing.&lt;/p&gt;`,
+<h2>Walker Methods</h2>
+<p><strong>start_lvl():</strong> Opens submenu wrapper. <strong>end_lvl():</strong> Closes submenu wrapper. <strong>start_el():</strong> Outputs individual menu item opening. <strong>end_el():</strong> Outputs individual menu item closing.</p>`,
     code: `// Basic custom Walker class
 class Custom_Nav_Walker extends Walker_Nav_Menu {
 
@@ -27008,7 +27008,7 @@ class Custom_Nav_Walker extends Walker_Nav_Menu {
         $classes = array('sub-menu', 'dropdown-menu');
         $class_names = implode(' ', $classes);
 
-        $output .= "\n{$indent}&lt;ul class=\"{$class_names}\"&gt;\n";
+        $output .= "\n{$indent}<ul class=\"{$class_names}\">\n";
     }
 
     // Start element (menu item)
@@ -27032,7 +27032,7 @@ class Custom_Nav_Walker extends Walker_Nav_Menu {
         $id = $id ? ' id="' . esc_attr($id) . '"' : '';
 
         // Output opening li
-        $output .= $indent . '&lt;li' . $id . $class_names . '&gt;';
+        $output .= $indent . '<li' . $id . $class_names . '>';
 
         // Build attributes
         $atts = array();
@@ -27065,12 +27065,12 @@ class Custom_Nav_Walker extends Walker_Nav_Menu {
         $title = apply_filters('nav_menu_item_title', $title, $item, $args, $depth);
 
         // Add icon if specified in menu description
-        $icon = !empty($item->description) ? '&lt;i class="' . esc_attr($item->description) . '"&gt;&lt;/i&gt; ' : '';
+        $icon = !empty($item->description) ? '<i class="' . esc_attr($item->description) . '"></i> ' : '';
 
         $item_output = $args->before;
-        $item_output .= '&lt;a' . $attributes . '&gt;';
+        $item_output .= '<a' . $attributes . '>';
         $item_output .= $args->link_before . $icon . $title . $args->link_after;
-        $item_output .= '&lt;/a&gt;';
+        $item_output .= '</a>';
         $item_output .= $args->after;
 
         $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
@@ -27088,7 +27088,7 @@ class Bootstrap_Nav_Walker extends Walker_Nav_Menu {
 
     function start_lvl(&$output, $depth = 0, $args = null) {
         $indent = str_repeat("\t", $depth);
-        $output .= "\n{$indent}&lt;ul class=\"dropdown-menu\"&gt;\n";
+        $output .= "\n{$indent}<ul class=\"dropdown-menu\">\n";
     }
 
     function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
@@ -27108,7 +27108,7 @@ class Bootstrap_Nav_Walker extends Walker_Nav_Menu {
         $class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args, $depth));
         $class_names = ' class="' . esc_attr($class_names) . '"';
 
-        $output .= $indent . '&lt;li' . $class_names . '&gt;';
+        $output .= $indent . '<li' . $class_names . '>';
 
         $atts = array();
         $atts['title'] = !empty($item->attr_title) ? $item->attr_title : '';
@@ -27136,9 +27136,9 @@ class Bootstrap_Nav_Walker extends Walker_Nav_Menu {
         $title = apply_filters('the_title', $item->title, $item->ID);
 
         $item_output = $args->before;
-        $item_output .= '&lt;a' . $attributes . '&gt;';
+        $item_output .= '<a' . $attributes . '>';
         $item_output .= $args->link_before . $title . $args->link_after;
-        $item_output .= '&lt;/a&gt;';
+        $item_output .= '</a>';
         $item_output .= $args->after;
 
         $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);

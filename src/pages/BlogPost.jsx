@@ -2,7 +2,6 @@ import React, { useEffect, useMemo } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { blogPosts } from '../data/blogPosts'
 import { wpCodeSnippets } from '../data/wpCodeSnippets'
-import { wpSnippetsData } from '../data/wpSnippetsData'
 import '../App.css'
 
 function BlogPost() {
@@ -11,7 +10,7 @@ function BlogPost() {
 
   // Combine all data sources
   const allPosts = useMemo(() => {
-    return [...blogPosts, ...wpCodeSnippets, ...wpSnippetsData]
+    return [...blogPosts, ...wpCodeSnippets]
   }, [])
 
   // Find post by slug across all data sources

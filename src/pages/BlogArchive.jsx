@@ -2,7 +2,6 @@ import React, { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { blogPosts, faqs } from '../data/blogPosts'
 import { wpCodeSnippets } from '../data/wpCodeSnippets'
-import { wpSnippetsData } from '../data/wpSnippetsData'
 import '../App.css'
 
 function BlogArchive() {
@@ -28,7 +27,7 @@ function BlogArchive() {
 
   // Combine all data sources into one array
   const allPosts = useMemo(() => {
-    return [...blogPosts, ...wpCodeSnippets, ...wpSnippetsData]
+    return [...blogPosts, ...wpCodeSnippets]
   }, [])
 
   // Get all unique categories from all data sources

@@ -1,14 +1,13 @@
 // Generate sitemap.xml for SEO
 import { blogPosts } from './src/data/blogPosts.js'
 import { wpCodeSnippets } from './src/data/wpCodeSnippets.js'
-import { wpSnippetsData } from './src/data/wpSnippetsData.js'
 import fs from 'fs'
 import path from 'path'
 
 const DOMAIN = 'https://shahmir.dev'
 
 // Combine all posts
-const allPosts = [...blogPosts, ...wpCodeSnippets, ...wpSnippetsData]
+const allPosts = [...blogPosts, ...wpCodeSnippets]
 
 // Generate sitemap
 const generateSitemap = () => {

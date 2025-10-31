@@ -4,13 +4,12 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import { blogPosts } from './src/data/blogPosts.js'
 import { wpCodeSnippets } from './src/data/wpCodeSnippets.js'
-import { wpSnippetsData } from './src/data/wpSnippetsData.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // Combine all posts
-const allPosts = [...blogPosts, ...wpCodeSnippets, ...wpSnippetsData]
+const allPosts = [...blogPosts, ...wpCodeSnippets]
 
 // Routes to pre-render
 const routes = [
