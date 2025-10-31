@@ -18825,6 +18825,4427 @@ add_filter('woocommerce_quantity_input_args', 'role_based_quantity', 10, 2);</co
     ]
   },
   {
+    id: 58,
+    slug: 'add-custom-checkout-field',
+    title: 'Add Custom Checkout Fields in WooCommerce',
+    excerpt: 'Learn how to add custom fields to WooCommerce checkout page, save the data, and display it in order details and emails.',
+    content: `
+      <h2>Why Add Custom Checkout Fields?</h2>
+      <p>Custom checkout fields allow you to collect additional information from customers during checkout, such as delivery instructions, gift messages, or business-specific data.</p>
+
+      <h3>The Code Snippet</h3>
+      <pre><code class="language-php">// Add custom field to checkout
+add_action('woocommerce_after_order_notes', 'custom_checkout_field');
+function custom_checkout_field($checkout) {
+    echo '&lt;div id="custom_checkout_field"&gt;&lt;h3&gt;' . __('Additional Information') . '&lt;/h3&gt;';
+
+    woocommerce_form_field('delivery_instructions', array(
+        'type' => 'textarea',
+        'class' => array('delivery-instructions form-row-wide'),
+        'label' => __('Delivery Instructions'),
+        'placeholder' => __('Any specific delivery instructions?'),
+        'required' => false,
+    ), $checkout->get_value('delivery_instructions'));
+
+    echo '&lt;/div&gt;';
+}
+
+// Save custom field data
+add_action('woocommerce_checkout_update_order_meta', 'save_custom_checkout_field');
+function save_custom_checkout_field($order_id) {
+    if (!empty($_POST['delivery_instructions'])) {
+        update_post_meta($order_id, 'delivery_instructions',
+            sanitize_text_field($_POST['delivery_instructions']));
+    }
+}
+
+// Display custom field in order details
+add_action('woocommerce_admin_order_data_after_billing_address', 'display_custom_field_in_admin');
+function display_custom_field_in_admin($order) {
+    $delivery_instructions = get_post_meta($order->get_id(), 'delivery_instructions', true);
+    if ($delivery_instructions) {
+        echo '&lt;p&gt;&lt;strong&gt;' . __('Delivery Instructions') . ':&lt;/strong&gt; ' .
+             esc_html($delivery_instructions) . '&lt;/p&gt;';
+    }
+}
+
+// Add custom field to order emails
+add_filter('woocommerce_email_order_meta_fields', 'add_custom_field_to_emails', 10, 3);
+function add_custom_field_to_emails($fields, $sent_to_admin, $order) {
+    $fields['delivery_instructions'] = array(
+        'label' => __('Delivery Instructions'),
+        'value' => get_post_meta($order->get_id(), 'delivery_instructions', true),
+    );
+    return $fields;
+}</code></pre>
+
+      <h3>Implementation Steps</h3>
+      <ol>
+        <li>Add the code to your theme's functions.php or custom plugin</li>
+        <li>Test the checkout page to ensure the field appears</li>
+        <li>Complete a test order to verify data is saved</li>
+        <li>Check order details in admin panel</li>
+        <li>Review order confirmation email</li>
+      </ol>
+
+      <h3>Field Types Available</h3>
+      <ul>
+        <li><strong>text</strong> - Single line text input</li>
+        <li><strong>textarea</strong> - Multi-line text area</li>
+        <li><strong>select</strong> - Dropdown selection</li>
+        <li><strong>checkbox</strong> - Checkbox field</li>
+        <li><strong>radio</strong> - Radio buttons</li>
+      </ul>
+
+      <h3>Adding Required Validation</h3>
+      <pre><code class="language-php">add_action('woocommerce_checkout_process', 'validate_custom_checkout_field');
+function validate_custom_checkout_field() {
+    if (empty($_POST['delivery_instructions'])) {
+        wc_add_notice(__('Please provide delivery instructions.'), 'error');
+    }
+}</code></pre>
+
+      <h3>Advanced: Multiple Custom Fields</h3>
+      <pre><code class="language-php">$custom_fields = array(
+    'delivery_instructions' => array(
+        'type' => 'textarea',
+        'label' => 'Delivery Instructions',
+        'required' => false
+    ),
+    'gift_message' => array(
+        'type' => 'textarea',
+        'label' => 'Gift Message',
+        'required' => false
+    ),
+    'preferred_delivery_date' => array(
+        'type' => 'date',
+        'label' => 'Preferred Delivery Date',
+        'required' => false
+    )
+);
+
+foreach ($custom_fields as $key => $field) {
+    woocommerce_form_field($key, $field, $checkout->get_value($key));
+}</code></pre>
+    `,
+    code: `add_action('woocommerce_after_order_notes', 'custom_checkout_field');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '6 min read',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Checkout', 'Custom Fields', 'Order Management', 'Forms'],
+    difficulty: 'Advanced',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Add Custom Checkout Fields WooCommerce (Complete Guide 2025)',
+      metaDescription: 'Complete code snippet to add custom fields to WooCommerce checkout, save data, and display in orders and emails. No plugin required.',
+      keywords: ['woocommerce custom checkout fields', 'woocommerce add field checkout', 'custom checkout woocommerce', 'woocommerce checkout customization', 'woocommerce order fields'],
+      canonical: '/blog/add-custom-checkout-field',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Add Custom Checkout Fields in WooCommerce",
+        "description": "Learn how to add custom fields to WooCommerce checkout page, save the data, and display it in order details and emails.",
+        "proficiencyLevel": "Advanced",
+        "dependencies": 'WooCommerce 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Where should I add custom checkout fields in WooCommerce?",
+        answer: "Use hooks like woocommerce_before_order_notes, woocommerce_after_order_notes, woocommerce_before_checkout_billing_form, or woocommerce_after_checkout_billing_form depending on where you want the fields to appear. The after_order_notes hook is most common as it places fields in a logical position."
+      },
+      {
+        question: "How do I make a custom checkout field required?",
+        answer: "Set 'required' => true in the field array and add validation using the woocommerce_checkout_process hook. In validation, check if the field is empty and use wc_add_notice() to display an error message that prevents checkout completion."
+      },
+      {
+        question: "Will custom checkout fields appear in order emails?",
+        answer: "Not automatically. You must use the woocommerce_email_order_meta_fields filter to add custom fields to order emails. Return an array with your field label and value from order meta to display it in customer and admin notification emails."
+      },
+      {
+        question: "How do I add a dropdown select field to WooCommerce checkout?",
+        answer: "Use type => 'select' and add an 'options' array with key-value pairs. For example: 'options' => array('' => 'Select option', 'option1' => 'Option 1', 'option2' => 'Option 2'). The first empty option serves as a placeholder."
+      },
+      {
+        question: "Can I add custom fields to specific products only?",
+        answer: "Yes, check the cart contents in your field display function. Use WC()->cart->get_cart() to loop through items and check product IDs or categories. Only call woocommerce_form_field() if specific products are in the cart."
+      }
+    ]
+  },
+  {
+    id: 59,
+    slug: 'product-badge-sale',
+    title: 'Create Custom Sale Badge in WooCommerce',
+    excerpt: 'Replace the default WooCommerce sale badge with custom text, percentage discounts, or styled badges that stand out.',
+    content: `
+      <h2>Why Customize Sale Badges?</h2>
+      <p>Custom sale badges can show exact discount percentages, use compelling text, match your branding, and improve conversion rates by making deals more obvious to customers.</p>
+
+      <h3>The Code Snippet - Percentage Badge</h3>
+      <pre><code class="language-php">// Replace sale badge with percentage discount
+add_filter('woocommerce_sale_flash', 'custom_sale_badge', 10, 3);
+function custom_sale_badge($html, $post, $product) {
+    if ($product->is_on_sale()) {
+        if ($product->is_type('variable')) {
+            $percentages = array();
+            $prices = $product->get_variation_prices();
+
+            foreach ($prices['price'] as $key => $price) {
+                if ($prices['regular_price'][$key] !== $price) {
+                    $percentages[] = round(100 - ($prices['sale_price'][$key] /
+                                    $prices['regular_price'][$key] * 100));
+                }
+            }
+            $percentage = max($percentages);
+        } else {
+            $regular_price = $product->get_regular_price();
+            $sale_price = $product->get_sale_price();
+            $percentage = round(100 - ($sale_price / $regular_price * 100));
+        }
+
+        return '&lt;span class="onsale"&gt;-' . $percentage . '%&lt;/span&gt;';
+    }
+    return $html;
+}</code></pre>
+
+      <h3>Custom Text Badge</h3>
+      <pre><code class="language-php">add_filter('woocommerce_sale_flash', 'custom_sale_text');
+function custom_sale_text($html) {
+    return str_replace(__('Sale!', 'woocommerce'), __('Hot Deal!', 'woocommerce'), $html);
+}</code></pre>
+
+      <h3>Styled Badge with Savings Amount</h3>
+      <pre><code class="language-php">add_filter('woocommerce_sale_flash', 'show_savings_amount', 10, 3);
+function show_savings_amount($html, $post, $product) {
+    if ($product->is_on_sale()) {
+        $regular_price = $product->get_regular_price();
+        $sale_price = $product->get_sale_price();
+        $savings = $regular_price - $sale_price;
+
+        $html = '&lt;span class="onsale"&gt;Save ' .
+                wc_price($savings) . '&lt;/span&gt;';
+    }
+    return $html;
+}</code></pre>
+
+      <h3>CSS Styling for Custom Badges</h3>
+      <pre><code class="language-css">.onsale {
+    background: #ff0000;
+    color: #fff;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 50%;
+    font-size: 14px;
+    line-height: 1;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.onsale:before {
+    content: "🔥"; /* Fire emoji for hot deals */
+    margin-right: 5px;
+}</code></pre>
+
+      <h3>Multiple Badge Types</h3>
+      <pre><code class="language-php">add_filter('woocommerce_sale_flash', 'conditional_sale_badges', 10, 3);
+function conditional_sale_badges($html, $post, $product) {
+    if (!$product->is_on_sale()) return $html;
+
+    $percentage = calculate_discount_percentage($product);
+
+    if ($percentage >= 50) {
+        $badge_text = 'MEGA SALE';
+        $badge_class = 'mega-sale';
+    } elseif ($percentage >= 25) {
+        $badge_text = 'BIG SAVINGS';
+        $badge_class = 'big-sale';
+    } else {
+        $badge_text = 'SALE';
+        $badge_class = 'regular-sale';
+    }
+
+    return '&lt;span class="onsale ' . $badge_class . '"&gt;' .
+           $badge_text . '&lt;/span&gt;';
+}</code></pre>
+    `,
+    code: `add_filter('woocommerce_sale_flash', 'custom_sale_badge', 10, 3);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '4 min read',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Products', 'Sale Badge', 'UI Customization', 'Conversion'],
+    difficulty: 'Beginner',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Custom WooCommerce Sale Badge - Show Discount Percentage 2025',
+      metaDescription: 'Replace default WooCommerce sale badges with custom text, percentage discounts, or savings amounts. Complete code snippets and styling guide.',
+      keywords: ['woocommerce custom sale badge', 'woocommerce percentage discount badge', 'woocommerce sale flash', 'custom product badges', 'woocommerce discount display'],
+      canonical: '/blog/product-badge-sale',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Create Custom Sale Badge in WooCommerce",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "How do I show percentage discount on WooCommerce sale badges?",
+        answer: "Use the woocommerce_sale_flash filter to calculate the discount percentage from regular and sale prices. For variable products, calculate percentages for all variations and display the maximum discount to show the best available deal."
+      },
+      {
+        question: "Can I show different badges based on discount amount?",
+        answer: "Yes, calculate the discount percentage and use conditional logic to return different badge text or CSS classes. For example, show 'MEGA SALE' for 50%+ discounts, 'BIG SAVINGS' for 25-49%, and regular 'SALE' for smaller discounts."
+      },
+      {
+        question: "How do I remove the sale badge completely in WooCommerce?",
+        answer: "Return false or empty string from the woocommerce_sale_flash filter: add_filter('woocommerce_sale_flash', '__return_false'). Alternatively, hide it with CSS: .onsale { display: none; }."
+      },
+      {
+        question: "Why doesn't my custom sale badge show the correct percentage for variable products?",
+        answer: "Variable products need special handling. Use get_variation_prices() to get all variation prices, calculate discount for each variation, and display the maximum percentage. The code snippet handles this with the is_type('variable') check."
+      },
+      {
+        question: "Can I add custom badges for non-sale products (like 'New' or 'Popular')?",
+        answer: "Yes, use the woocommerce_get_product_tags hook or add custom meta fields to products. Display badges using woocommerce_before_shop_loop_item_title or woocommerce_before_single_product_summary hooks, checking for your custom conditions or tags."
+      }
+    ]
+  },
+  {
+    id: 60,
+    slug: 'remove-related-products',
+    title: 'Hide Related Products in WooCommerce',
+    excerpt: 'Remove or customize the related products section on WooCommerce product pages with simple code snippets.',
+    content: `
+      <h2>Why Remove Related Products?</h2>
+      <p>Related products can distract customers from completing purchases, clutter your product pages, or show inappropriate product combinations. Removing them can improve focus and conversions.</p>
+
+      <h3>The Code Snippet - Complete Removal</h3>
+      <pre><code class="language-php">// Remove related products completely
+remove_action('woocommerce_after_single_product_summary',
+              'woocommerce_output_related_products', 20);
+</code></pre>
+
+      <h3>Alternative Method</h3>
+      <pre><code class="language-php">add_filter('woocommerce_related_products', '__return_empty_array', 10);
+</code></pre>
+
+      <h3>Customize Number of Related Products</h3>
+      <pre><code class="language-php">// Change number of related products shown
+add_filter('woocommerce_output_related_products_args', 'custom_related_products_args');
+function custom_related_products_args($args) {
+    $args['posts_per_page'] = 3; // Change to desired number
+    $args['columns'] = 3; // Number of columns
+    return $args;
+}
+</code></pre>
+
+      <h3>Show Related Products Only for Specific Categories</h3>
+      <pre><code class="language-php">add_action('wp', 'conditional_remove_related_products');
+function conditional_remove_related_products() {
+    if (is_product()) {
+        global $post;
+        $product = wc_get_product($post->ID);
+        $categories = $product->get_category_ids();
+
+        // Remove if product is in category ID 15 (change as needed)
+        if (in_array(15, $categories)) {
+            remove_action('woocommerce_after_single_product_summary',
+                         'woocommerce_output_related_products', 20);
+        }
+    }
+}
+</code></pre>
+
+      <h3>Replace Related Products with Upsells</h3>
+      <pre><code class="language-php">// Remove related products and show upsells instead
+remove_action('woocommerce_after_single_product_summary',
+              'woocommerce_output_related_products', 20);
+
+add_action('woocommerce_after_single_product_summary',
+           'woocommerce_upsell_display', 20);
+</code></pre>
+
+      <h3>Change Related Products Title</h3>
+      <pre><code class="language-php">add_filter('woocommerce_product_related_products_heading', 'custom_related_products_title');
+function custom_related_products_title($heading) {
+    return 'You May Also Like';
+}
+</code></pre>
+
+      <h3>CSS Method to Hide</h3>
+      <pre><code class="language-css">/* Hide related products with CSS */
+.related.products {
+    display: none !important;
+}
+</code></pre>
+    `,
+    code: `remove_action('woocommerce_after_single_product_summary', 'woocommerce_output_related_products', 20);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '3 min read',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Products', 'Related Products', 'Customization', 'Product Pages'],
+    difficulty: 'Beginner',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Remove Related Products WooCommerce - Complete Guide 2025',
+      metaDescription: 'Learn how to remove or customize related products in WooCommerce product pages. Simple code snippets to hide, limit, or conditionally show related items.',
+      keywords: ['remove related products woocommerce', 'hide related products woocommerce', 'woocommerce disable related products', 'customize related products', 'woocommerce product page'],
+      canonical: '/blog/remove-related-products',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Hide Related Products in WooCommerce",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between remove_action and __return_empty_array for hiding related products?",
+        answer: "remove_action prevents WooCommerce from displaying the related products section entirely, while __return_empty_array still runs the query but returns no results. remove_action is more efficient as it completely stops the functionality."
+      },
+      {
+        question: "Will removing related products affect my SEO?",
+        answer: "Removing related products has minimal SEO impact. However, related products can improve internal linking and user engagement. Consider replacing them with manually curated upsells or cross-sells that are more relevant to improve both UX and SEO."
+      },
+      {
+        question: "Can I show related products only for certain product categories?",
+        answer: "Yes, use conditional logic in the wp hook to check product categories with get_category_ids(). Remove the related products action only when the product belongs to specific categories you want to exclude."
+      },
+      {
+        question: "How do I change the number of related products shown instead of removing them?",
+        answer: "Use the woocommerce_output_related_products_args filter to modify posts_per_page and columns parameters. For example, set posts_per_page to 3 to show only 3 related products instead of the default number."
+      },
+      {
+        question: "Why do I still see related products after adding the remove code?",
+        answer: "Your theme might override the default WooCommerce template. Check if your theme has a custom single-product.php template. You may need to edit the template directly or use !important in CSS as a fallback solution."
+      }
+    ]
+  },
+  {
+    id: 61,
+    slug: 'change-products-per-page',
+    title: 'Change Products Per Page in WooCommerce',
+    excerpt: 'Customize how many products display on WooCommerce shop pages with simple code snippets. Improve pagination and user experience.',
+    content: `
+      <h2>Why Change Products Per Page?</h2>
+      <p>The default WooCommerce setting shows 12-16 products per page. Adjusting this can improve page load times, reduce scrolling, or show more products based on your catalog size and customer preferences.</p>
+
+      <h3>The Code Snippet</h3>
+      <pre><code class="language-php">// Change products per page to 24
+add_filter('loop_shop_per_page', 'custom_products_per_page', 20);
+function custom_products_per_page($cols) {
+    return 24;
+}
+</code></pre>
+
+      <h3>Let Users Choose Products Per Page</h3>
+      <pre><code class="language-php">// Add products per page dropdown
+add_action('woocommerce_before_shop_loop', 'products_per_page_dropdown', 25);
+function products_per_page_dropdown() {
+    if (!is_shop() && !is_product_category() && !is_product_tag()) return;
+
+    $per_page_options = array(12, 24, 36, 48);
+    $current = isset($_GET['per_page']) ? $_GET['per_page'] : 12;
+
+    echo '&lt;div class="products-per-page"&gt;';
+    echo '&lt;label&gt;Show:&lt;/label&gt;';
+    echo '&lt;select onchange="window.location.href=this.value"&gt;';
+
+    foreach ($per_page_options as $option) {
+        $selected = ($current == $option) ? 'selected' : '';
+        $link = add_query_arg('per_page', $option);
+        echo '&lt;option value="' . $link . '" ' . $selected . '&gt;' .
+             $option . '&lt;/option&gt;';
+    }
+
+    echo '&lt;/select&gt;&lt;/div&gt;';
+}
+
+// Apply user selection
+add_filter('loop_shop_per_page', 'apply_products_per_page');
+function apply_products_per_page($per_page) {
+    if (isset($_GET['per_page'])) {
+        return intval($_GET['per_page']);
+    }
+    return $per_page;
+}
+</code></pre>
+
+      <h3>Different Counts for Different Pages</h3>
+      <pre><code class="language-php">add_filter('loop_shop_per_page', 'custom_products_per_page_by_page', 20);
+function custom_products_per_page_by_page($cols) {
+    if (is_shop()) {
+        return 24; // Shop page shows 24
+    } elseif (is_product_category()) {
+        return 36; // Category pages show 36
+    } elseif (is_product_tag()) {
+        return 12; // Tag pages show 12
+    }
+    return $cols;
+}
+</code></pre>
+
+      <h3>Show All Products (No Pagination)</h3>
+      <pre><code class="language-php">add_filter('loop_shop_per_page', 'show_all_products');
+function show_all_products($per_page) {
+    return 9999; // Show all products
+}
+</code></pre>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li><strong>Performance:</strong> Don't show too many products (50+) as it impacts load times</li>
+        <li><strong>Mobile:</strong> Consider showing fewer products on mobile devices</li>
+        <li><strong>Divisibility:</strong> Choose numbers divisible by your column count (e.g., 24 for 4 columns)</li>
+        <li><strong>User Choice:</strong> Let users select their preference for better UX</li>
+      </ul>
+
+      <h3>Mobile-Responsive Count</h3>
+      <pre><code class="language-php">add_filter('loop_shop_per_page', 'responsive_products_per_page', 20);
+function responsive_products_per_page($cols) {
+    if (wp_is_mobile()) {
+        return 12; // Show fewer products on mobile
+    }
+    return 24; // Show more on desktop
+}
+</code></pre>
+    `,
+    code: `add_filter('loop_shop_per_page', 'custom_products_per_page', 20);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '4 min read',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Shop Page', 'Pagination', 'Performance', 'User Experience'],
+    difficulty: 'Beginner',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Change Products Per Page WooCommerce - Complete Guide 2025',
+      metaDescription: 'Learn how to change the number of products displayed per page in WooCommerce. Code snippets for custom pagination and user selection options.',
+      keywords: ['woocommerce products per page', 'change products per page woocommerce', 'woocommerce pagination', 'loop shop per page', 'woocommerce shop customization'],
+      canonical: '/blog/change-products-per-page',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Change Products Per Page in WooCommerce",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the optimal number of products to show per page in WooCommerce?",
+        answer: "The optimal number depends on your catalog and customer behavior. 24-36 products is common for most stores. Consider page load performance, mobile experience, and ensure the number is divisible by your column count for clean layout."
+      },
+      {
+        question: "How do I let customers choose how many products to view?",
+        answer: "Add a dropdown using the woocommerce_before_shop_loop hook with per_page URL parameter. Combine this with the loop_shop_per_page filter to read the parameter and adjust the products shown. The code snippet provides a complete implementation."
+      },
+      {
+        question: "Will showing too many products per page hurt site performance?",
+        answer: "Yes, showing 50+ products can significantly impact load times, especially with product images. This hurts user experience and SEO. If you need to show many products, implement lazy loading for images and consider AJAX pagination."
+      },
+      {
+        question: "Can I show different product counts on shop page vs category pages?",
+        answer: "Yes, use conditional checks in the loop_shop_per_page filter. Check is_shop() for main shop page, is_product_category() for category pages, and is_product_tag() for tag archives. Return different numbers for each."
+      },
+      {
+        question: "How do I show all products without pagination?",
+        answer: "Set loop_shop_per_page to a very high number like 9999. However, this is not recommended for large catalogs due to performance issues. Instead, increase the number moderately or use 'Load More' functionality with AJAX."
+      }
+    ]
+  },
+  {
+    id: 62,
+    slug: 'custom-email-subject',
+    title: 'Customize WooCommerce Order Email Subject Lines',
+    excerpt: 'Personalize WooCommerce email subject lines with custom text, order details, and dynamic content to improve open rates.',
+    content: `
+      <h2>Why Customize Email Subjects?</h2>
+      <p>Custom email subjects can increase open rates, reduce confusion, add personalization with customer names or order numbers, and improve brand recognition.</p>
+
+      <h3>The Code Snippet - New Order Email</h3>
+      <pre><code class="language-php">// Customize new order email subject
+add_filter('woocommerce_email_subject_new_order', 'custom_new_order_email_subject', 10, 2);
+function custom_new_order_email_subject($subject, $order) {
+    $order_id = $order->get_order_number();
+    $subject = sprintf('[New Order #%s] Received from %s',
+                      $order_id,
+                      $order->get_billing_first_name());
+    return $subject;
+}
+</code></pre>
+
+      <h3>Customer Order Confirmation Subject</h3>
+      <pre><code class="language-php">// Customize customer order confirmation subject
+add_filter('woocommerce_email_subject_customer_processing_order',
+           'custom_processing_order_subject', 10, 2);
+function custom_processing_order_subject($subject, $order) {
+    $customer_name = $order->get_billing_first_name();
+    $order_total = $order->get_formatted_order_total();
+
+    $subject = sprintf('Thank you %s! Your order of %s is being processed',
+                      $customer_name,
+                      $order_total);
+    return $subject;
+}
+</code></pre>
+
+      <h3>All Email Subjects at Once</h3>
+      <pre><code class="language-php">// Customize multiple email subjects
+add_filter('woocommerce_email_subject_customer_completed_order',
+           'custom_email_subjects', 10, 2);
+add_filter('woocommerce_email_subject_customer_processing_order',
+           'custom_email_subjects', 10, 2);
+add_filter('woocommerce_email_subject_customer_on_hold_order',
+           'custom_email_subjects', 10, 2);
+
+function custom_email_subjects($subject, $order) {
+    $blogname = get_bloginfo('name');
+    $order_number = $order->get_order_number();
+    $customer_name = $order->get_billing_first_name();
+
+    // Detect which email type
+    $current_filter = current_filter();
+
+    if (strpos($current_filter, 'completed') !== false) {
+        $subject = sprintf('[%s] Order #%s Completed - Thank you %s!',
+                          $blogname, $order_number, $customer_name);
+    } elseif (strpos($current_filter, 'processing') !== false) {
+        $subject = sprintf('[%s] Order #%s Confirmed',
+                          $blogname, $order_number);
+    } elseif (strpos($current_filter, 'on_hold') !== false) {
+        $subject = sprintf('[%s] Order #%s On Hold',
+                          $blogname, $order_number);
+    }
+
+    return $subject;
+}
+</code></pre>
+
+      <h3>Available Email Hooks</h3>
+      <ul>
+        <li><code>woocommerce_email_subject_new_order</code> - Admin new order notification</li>
+        <li><code>woocommerce_email_subject_customer_processing_order</code> - Order confirmation</li>
+        <li><code>woocommerce_email_subject_customer_completed_order</code> - Order completed</li>
+        <li><code>woocommerce_email_subject_customer_on_hold_order</code> - Order on hold</li>
+        <li><code>woocommerce_email_subject_customer_refunded_order</code> - Order refunded</li>
+        <li><code>woocommerce_email_subject_customer_invoice</code> - Customer invoice</li>
+      </ul>
+
+      <h3>Add Product Names to Subject</h3>
+      <pre><code class="language-php">add_filter('woocommerce_email_subject_customer_processing_order',
+           'add_products_to_subject', 10, 2);
+function add_products_to_subject($subject, $order) {
+    $items = $order->get_items();
+    $product_names = array();
+
+    foreach ($items as $item) {
+        $product_names[] = $item->get_name();
+    }
+
+    $products_list = implode(', ', array_slice($product_names, 0, 2));
+    $subject = sprintf('Your order for %s is confirmed!', $products_list);
+
+    return $subject;
+}
+</code></pre>
+
+      <h3>Include Shipping Method</h3>
+      <pre><code class="language-php">add_filter('woocommerce_email_subject_customer_completed_order',
+           'add_shipping_to_subject', 10, 2);
+function add_shipping_to_subject($subject, $order) {
+    $shipping_method = $order->get_shipping_method();
+    $subject = sprintf('Your order is ready! Shipped via %s', $shipping_method);
+    return $subject;
+}
+</code></pre>
+    `,
+    code: `add_filter('woocommerce_email_subject_new_order', 'custom_new_order_email_subject', 10, 2);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '5 min read',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Emails', 'Email Marketing', 'Customization', 'Order Management'],
+    difficulty: 'Intermediate',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Customize WooCommerce Email Subject Lines - Complete Guide 2025',
+      metaDescription: 'Personalize WooCommerce email subjects with order details, customer names, and custom text. Improve open rates with these code snippets.',
+      keywords: ['woocommerce custom email subject', 'woocommerce email customization', 'personalize woocommerce emails', 'woocommerce order emails', 'email subject lines'],
+      canonical: '/blog/custom-email-subject',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Customize WooCommerce Order Email Subject Lines",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "Which WooCommerce email subject should I customize first?",
+        answer: "Start with customer_processing_order (order confirmation) as it has the highest open rate. This email is sent immediately after purchase when customers are most engaged. Personalizing this subject can improve brand perception and reduce support inquiries."
+      },
+      {
+        question: "Can I add emojis to WooCommerce email subject lines?",
+        answer: "Yes, you can add emojis directly in the subject string, like '✅ Order Confirmed!'. However, test across different email clients as some may not render emojis properly. Use sparingly as they can trigger spam filters if overused."
+      },
+      {
+        question: "How do I add the order number to email subjects?",
+        answer: "Use $order->get_order_number() to retrieve the order number and include it in your custom subject with sprintf() or string concatenation. The order object is passed as the second parameter to all email subject filters."
+      },
+      {
+        question: "Will customizing email subjects affect deliverability?",
+        answer: "Generally no, but avoid spam trigger words like 'FREE', excessive caps, or too many special characters. Keep subjects clear and relevant. Including order numbers and store name can actually improve deliverability by looking more professional."
+      },
+      {
+        question: "Can I use different subjects based on order total or products?",
+        answer: "Yes, access order data with $order->get_total(), $order->get_items(), or $order->get_billing_country(). Use conditional logic to return different subjects based on these values, such as VIP treatment for high-value orders."
+      }
+    ]
+  },
+  {
+    id: 63,
+    slug: 'auto-complete-orders',
+    title: 'Auto Complete Virtual Orders in WooCommerce',
+    excerpt: 'Automatically complete WooCommerce orders for virtual and downloadable products without manual intervention.',
+    content: `
+      <h2>Why Auto Complete Orders?</h2>
+      <p>Virtual and downloadable products don't require shipping, so orders can be completed automatically. This improves customer experience by providing instant access and reduces admin workload.</p>
+
+      <h3>The Code Snippet - Virtual Products</h3>
+      <pre><code class="language-php">// Auto complete virtual orders
+add_action('woocommerce_thankyou', 'auto_complete_virtual_orders');
+function auto_complete_virtual_orders($order_id) {
+    if (!$order_id) return;
+
+    $order = wc_get_order($order_id);
+
+    // Check if order contains only virtual products
+    $has_virtual = false;
+    $has_physical = false;
+
+    foreach ($order->get_items() as $item) {
+        $product = $item->get_product();
+        if ($product->is_virtual()) {
+            $has_virtual = true;
+        } else {
+            $has_physical = true;
+        }
+    }
+
+    // Auto complete if all products are virtual
+    if ($has_virtual && !$has_physical) {
+        $order->update_status('completed');
+    }
+}
+</code></pre>
+
+      <h3>Downloadable Products Only</h3>
+      <pre><code class="language-php">add_action('woocommerce_thankyou', 'auto_complete_downloadable_orders');
+function auto_complete_downloadable_orders($order_id) {
+    if (!$order_id) return;
+
+    $order = wc_get_order($order_id);
+    $all_downloadable = true;
+
+    foreach ($order->get_items() as $item) {
+        $product = $item->get_product();
+        if (!$product->is_downloadable()) {
+            $all_downloadable = false;
+            break;
+        }
+    }
+
+    if ($all_downloadable && $order->has_status('processing')) {
+        $order->update_status('completed');
+    }
+}
+</code></pre>
+
+      <h3>Combined Virtual and Downloadable</h3>
+      <pre><code class="language-php">add_action('woocommerce_thankyou', 'auto_complete_digital_orders');
+function auto_complete_digital_orders($order_id) {
+    if (!$order_id) return;
+
+    $order = wc_get_order($order_id);
+
+    // Skip if already completed
+    if ($order->has_status('completed')) return;
+
+    // Check all items
+    $contains_physical = false;
+
+    foreach ($order->get_items() as $item) {
+        $product = $item->get_product();
+
+        // If product is not virtual OR downloadable, it's physical
+        if (!$product->is_virtual() && !$product->is_downloadable()) {
+            $contains_physical = true;
+            break;
+        }
+    }
+
+    // Complete order if no physical products
+    if (!$contains_physical) {
+        $order->update_status('completed');
+    }
+}
+</code></pre>
+
+      <h3>Only for Specific Payment Methods</h3>
+      <pre><code class="language-php">add_action('woocommerce_thankyou', 'auto_complete_paid_digital_orders');
+function auto_complete_paid_digital_orders($order_id) {
+    if (!$order_id) return;
+
+    $order = wc_get_order($order_id);
+    $payment_method = $order->get_payment_method();
+
+    // Only auto-complete for specific payment methods
+    $allowed_methods = array('stripe', 'paypal', 'bacs'); // Add your payment method IDs
+
+    if (!in_array($payment_method, $allowed_methods)) return;
+
+    // Check if all products are virtual/downloadable
+    $all_digital = true;
+    foreach ($order->get_items() as $item) {
+        $product = $item->get_product();
+        if (!$product->is_virtual() && !$product->is_downloadable()) {
+            $all_digital = false;
+            break;
+        }
+    }
+
+    if ($all_digital && $order->has_status('processing')) {
+        $order->update_status('completed');
+    }
+}
+</code></pre>
+
+      <h3>Add Custom Order Note</h3>
+      <pre><code class="language-php">add_action('woocommerce_thankyou', 'auto_complete_with_note');
+function auto_complete_with_note($order_id) {
+    if (!$order_id) return;
+
+    $order = wc_get_order($order_id);
+
+    // Your auto-complete logic here...
+    $all_virtual = true;
+    foreach ($order->get_items() as $item) {
+        if (!$item->get_product()->is_virtual()) {
+            $all_virtual = false;
+            break;
+        }
+    }
+
+    if ($all_virtual) {
+        $order->update_status('completed');
+        $order->add_order_note('Order auto-completed (virtual products only).');
+    }
+}
+</code></pre>
+
+      <h3>Important Considerations</h3>
+      <ul>
+        <li><strong>Payment Verification:</strong> Ensure payment is received before auto-completing</li>
+        <li><strong>Fraud Prevention:</strong> Consider manual review for high-value orders</li>
+        <li><strong>Download Access:</strong> Completed orders immediately grant download access</li>
+        <li><strong>Email Timing:</strong> Completion triggers "order completed" email to customer</li>
+      </ul>
+    `,
+    code: `add_action('woocommerce_thankyou', 'auto_complete_virtual_orders');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '5 min read',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Orders', 'Automation', 'Virtual Products', 'Downloadable'],
+    difficulty: 'Intermediate',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Auto Complete WooCommerce Virtual Orders - Complete Guide 2025',
+      metaDescription: 'Automatically complete WooCommerce orders for virtual and downloadable products. Improve customer experience with instant order completion.',
+      keywords: ['woocommerce auto complete orders', 'auto complete virtual products', 'woocommerce downloadable products', 'automatic order completion', 'woocommerce automation'],
+      canonical: '/blog/auto-complete-orders',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Auto Complete Virtual Orders in WooCommerce",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between virtual and downloadable products in WooCommerce?",
+        answer: "Virtual products don't require shipping (like services or memberships). Downloadable products provide files for customers to download. A product can be both virtual and downloadable. Check both conditions to handle all digital products correctly."
+      },
+      {
+        question: "Will auto-completing orders affect payment processing?",
+        answer: "No, the woocommerce_thankyou hook fires after payment is processed and verified. However, for payment methods with delayed confirmation (like bank transfers), consider using woocommerce_payment_complete hook instead to ensure funds are received first."
+      },
+      {
+        question: "Can I auto-complete orders with mixed virtual and physical products?",
+        answer: "It's not recommended because physical products need shipping. The code examples check for this scenario and only auto-complete when ALL products are virtual/downloadable. Mixed orders should remain in 'processing' status until shipped."
+      },
+      {
+        question: "What happens to download permissions when an order is auto-completed?",
+        answer: "WooCommerce automatically grants download access when an order status changes to 'completed'. Auto-completing ensures customers get immediate access to downloadable files without manual intervention."
+      },
+      {
+        question: "Should I auto-complete orders for all payment methods?",
+        answer: "Not necessarily. For payment methods with fraud risk (like COD or check), you may want manual review. Use payment method conditions to auto-complete only for trusted payment gateways like Stripe or PayPal."
+      }
+    ]
+  },
+  {
+    id: 64,
+    slug: 'disable-guest-checkout',
+    title: 'Disable Guest Checkout in WooCommerce',
+    excerpt: 'Force customers to create accounts before checkout in WooCommerce to build your customer database and improve retention.',
+    content: `
+      <h2>Why Disable Guest Checkout?</h2>
+      <p>Requiring account creation helps build your customer database, enables customer order history tracking, improves retention through email marketing, and reduces fraudulent orders.</p>
+
+      <h3>The Code Snippet</h3>
+      <pre><code class="language-php">// Disable guest checkout
+add_filter('woocommerce_checkout_registration_enabled', '__return_true');
+add_filter('woocommerce_enable_guest_checkout', '__return_false');
+</code></pre>
+
+      <h3>Redirect to Login for Non-Logged Users</h3>
+      <pre><code class="language-php">// Redirect guests to login page when accessing checkout
+add_action('template_redirect', 'redirect_guests_from_checkout');
+function redirect_guests_from_checkout() {
+    if (is_checkout() && !is_user_logged_in()) {
+        wp_redirect(wp_login_url(get_permalink(wc_get_page_id('checkout'))));
+        exit;
+    }
+}
+</code></pre>
+
+      <h3>Custom Message on Checkout Page</h3>
+      <pre><code class="language-php">// Show custom message requiring account creation
+add_action('woocommerce_before_checkout_form', 'custom_checkout_login_message');
+function custom_checkout_login_message() {
+    if (!is_user_logged_in()) {
+        wc_print_notice(
+            'Please log in or create an account to complete your purchase.
+            This allows you to track your orders and manage your account.',
+            'notice'
+        );
+    }
+}
+</code></pre>
+
+      <h3>Add Benefits Message</h3>
+      <pre><code class="language-php">add_action('woocommerce_before_checkout_form', 'account_benefits_message');
+function account_benefits_message() {
+    if (!is_user_logged_in()) {
+        echo '&lt;div class="woocommerce-info"&gt;';
+        echo '&lt;h3&gt;Create an account and enjoy these benefits:&lt;/h3&gt;';
+        echo '&lt;ul&gt;';
+        echo '&lt;li&gt;✓ Track your orders&lt;/li&gt;';
+        echo '&lt;li&gt;✓ View order history&lt;/li&gt;';
+        echo '&lt;li&gt;✓ Faster checkout next time&lt;/li&gt;';
+        echo '&lt;li&gt;✓ Exclusive member discounts&lt;/li&gt;';
+        echo '&lt;/ul&gt;';
+        echo '&lt;/div&gt;';
+    }
+}
+</code></pre>
+
+      <h3>Disable Guest Checkout for Specific Products</h3>
+      <pre><code class="language-php">// Require login only for specific products
+add_filter('woocommerce_enable_guest_checkout', 'conditional_guest_checkout');
+function conditional_guest_checkout($guest_checkout) {
+    // Product IDs that require login
+    $require_login_products = array(123, 456, 789);
+
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        if (in_array($cart_item['product_id'], $require_login_products)) {
+            return false; // Disable guest checkout
+        }
+    }
+
+    return $guest_checkout; // Allow guest checkout otherwise
+}
+</code></pre>
+
+      <h3>Disable for Specific Product Categories</h3>
+      <pre><code class="language-php">add_filter('woocommerce_enable_guest_checkout', 'disable_guest_for_categories');
+function disable_guest_for_categories($guest_checkout) {
+    // Category slugs that require login
+    $require_login_categories = array('premium', 'membership', 'subscription');
+
+    foreach (WC()->cart->get_cart() as $cart_item) {
+        $product_id = $cart_item['product_id'];
+        $terms = get_the_terms($product_id, 'product_cat');
+
+        if ($terms) {
+            foreach ($terms as $term) {
+                if (in_array($term->slug, $require_login_categories)) {
+                    return false;
+                }
+            }
+        }
+    }
+
+    return $guest_checkout;
+}
+</code></pre>
+
+      <h3>Add to Cart Restriction</h3>
+      <pre><code class="language-php">// Prevent adding to cart if not logged in
+add_filter('woocommerce_add_to_cart_validation', 'require_login_to_add_cart', 10, 2);
+function require_login_to_add_cart($passed, $product_id) {
+    if (!is_user_logged_in()) {
+        wc_add_notice('Please log in to add products to your cart.', 'error');
+        return false;
+    }
+    return $passed;
+}
+</code></pre>
+
+      <h3>Pro Tips</h3>
+      <ul>
+        <li>Enable social login for easier registration</li>
+        <li>Offer incentives for account creation (discounts, free shipping)</li>
+        <li>Make registration form short and simple</li>
+        <li>Explain benefits clearly to reduce cart abandonment</li>
+        <li>Consider impact on conversion rates before implementing</li>
+      </ul>
+    `,
+    code: `add_filter('woocommerce_enable_guest_checkout', '__return_false');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '5 min read',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Checkout', 'User Accounts', 'Registration', 'Security'],
+    difficulty: 'Beginner',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Disable Guest Checkout WooCommerce - Force Account Creation 2025',
+      metaDescription: 'Learn how to disable guest checkout in WooCommerce and require customer accounts. Build your database and improve retention with code snippets.',
+      keywords: ['disable guest checkout woocommerce', 'woocommerce require account', 'force login woocommerce', 'woocommerce registration required', 'disable guest purchase'],
+      canonical: '/blog/disable-guest-checkout',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Disable Guest Checkout in WooCommerce",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "Will disabling guest checkout reduce my conversion rate?",
+        answer: "Potentially yes. Forcing registration adds friction to the checkout process. However, it builds your customer database and improves long-term retention. Consider offering incentives like first-time discounts or free shipping to offset any conversion loss."
+      },
+      {
+        question: "Can I disable guest checkout for specific products only?",
+        answer: "Yes, check the cart contents in the woocommerce_enable_guest_checkout filter and return false only when specific products or categories are in the cart. This allows guest checkout for regular products while requiring login for premium items."
+      },
+      {
+        question: "How do I make the registration process less annoying for customers?",
+        answer: "Use social login options, minimize required fields (email and password only), enable 'Create account on checkout' option, pre-fill shipping information, and clearly communicate benefits like order tracking and exclusive discounts."
+      },
+      {
+        question: "What's the difference between the two filters for disabling guest checkout?",
+        answer: "woocommerce_checkout_registration_enabled shows the registration form on checkout, while woocommerce_enable_guest_checkout controls whether the 'Create an account?' checkbox appears. Use both filters together to fully disable guest checkout."
+      },
+      {
+        question: "Should I redirect guests away from checkout or show the login form?",
+        answer: "Showing the login form on the checkout page is better UX - it keeps users in the checkout flow. Redirecting to a separate login page adds extra steps. Use inline login/registration forms with clear benefit messaging for best results."
+      }
+    ]
+  },
+  {
+    id: 65,
+    slug: 'add-custom-payment-method',
+    title: 'Create Custom Payment Gateway in WooCommerce',
+    excerpt: 'Build a custom payment gateway for WooCommerce to integrate unique payment methods or regional payment providers.',
+    content: `
+      <h2>Why Create Custom Payment Gateway?</h2>
+      <p>Custom payment gateways allow you to integrate regional payment providers, implement custom payment logic, support unique payment methods, or add specialized payment processing for your business needs.</p>
+
+      <h3>The Code Snippet - Basic Gateway</h3>
+      <pre><code class="language-php">// Add custom payment gateway
+add_action('plugins_loaded', 'init_custom_payment_gateway');
+function init_custom_payment_gateway() {
+    class WC_Custom_Payment_Gateway extends WC_Payment_Gateway {
+
+        public function __construct() {
+            $this->id = 'custom_payment';
+            $this->method_title = 'Custom Payment';
+            $this->method_description = 'Custom payment gateway description';
+            $this->has_fields = true;
+
+            // Load settings
+            $this->init_form_fields();
+            $this->init_settings();
+
+            // Define user settings
+            $this->title = $this->get_option('title');
+            $this->description = $this->get_option('description');
+            $this->instructions = $this->get_option('instructions');
+            $this->enabled = $this->get_option('enabled');
+
+            // Actions
+            add_action('woocommerce_update_options_payment_gateways_' . $this->id,
+                      array($this, 'process_admin_options'));
+            add_action('woocommerce_thankyou_' . $this->id,
+                      array($this, 'thankyou_page'));
+        }
+
+        public function init_form_fields() {
+            $this->form_fields = array(
+                'enabled' => array(
+                    'title' => 'Enable/Disable',
+                    'type' => 'checkbox',
+                    'label' => 'Enable Custom Payment',
+                    'default' => 'no'
+                ),
+                'title' => array(
+                    'title' => 'Title',
+                    'type' => 'text',
+                    'description' => 'Payment title shown to customers',
+                    'default' => 'Custom Payment',
+                    'desc_tip' => true
+                ),
+                'description' => array(
+                    'title' => 'Description',
+                    'type' => 'textarea',
+                    'description' => 'Payment description shown to customers',
+                    'default' => 'Pay using our custom payment method.'
+                ),
+                'instructions' => array(
+                    'title' => 'Instructions',
+                    'type' => 'textarea',
+                    'description' => 'Instructions shown on thank you page',
+                    'default' => 'Thank you for your order.'
+                )
+            );
+        }
+
+        public function payment_fields() {
+            if ($this->description) {
+                echo wpautop(wptexturize($this->description));
+            }
+
+            // Add custom fields here
+            echo '&lt;div class="custom-payment-fields"&gt;';
+            echo '&lt;p class="form-row form-row-wide"&gt;';
+            echo '&lt;label&gt;Transaction ID &lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;';
+            echo '&lt;input type="text" name="transaction_id" required&gt;';
+            echo '&lt;/p&gt;';
+            echo '&lt;/div&gt;';
+        }
+
+        public function process_payment($order_id) {
+            $order = wc_get_order($order_id);
+
+            // Get transaction ID from POST
+            $transaction_id = sanitize_text_field($_POST['transaction_id']);
+
+            // Validate transaction ID
+            if (empty($transaction_id)) {
+                wc_add_notice('Please enter transaction ID', 'error');
+                return;
+            }
+
+            // Store transaction ID
+            $order->update_meta_data('transaction_id', $transaction_id);
+            $order->save();
+
+            // Mark order as processing or completed
+            $order->payment_complete($transaction_id);
+
+            // Add order note
+            $order->add_order_note('Payment received. Transaction ID: ' . $transaction_id);
+
+            // Empty cart
+            WC()->cart->empty_cart();
+
+            // Redirect to thank you page
+            return array(
+                'result' => 'success',
+                'redirect' => $this->get_return_url($order)
+            );
+        }
+
+        public function thankyou_page($order_id) {
+            if ($this->instructions) {
+                echo wpautop(wptexturize($this->instructions));
+            }
+        }
+    }
+}
+
+// Register the gateway
+add_filter('woocommerce_payment_gateways', 'add_custom_payment_gateway');
+function add_custom_payment_gateway($gateways) {
+    $gateways[] = 'WC_Custom_Payment_Gateway';
+    return $gateways;
+}</code></pre>
+
+      <h3>Advanced: With External API Integration</h3>
+      <pre><code class="language-php">public function process_payment($order_id) {
+    $order = wc_get_order($order_id);
+
+    // Prepare API request
+    $api_url = 'https://payment-provider.com/api/charge';
+    $api_key = $this->get_option('api_key');
+
+    $request_data = array(
+        'amount' => $order->get_total(),
+        'currency' => $order->get_currency(),
+        'order_id' => $order->get_order_number(),
+        'customer_email' => $order->get_billing_email()
+    );
+
+    $response = wp_remote_post($api_url, array(
+        'headers' => array(
+            'Authorization' => 'Bearer ' . $api_key,
+            'Content-Type' => 'application/json'
+        ),
+        'body' => json_encode($request_data),
+        'timeout' => 30
+    ));
+
+    if (is_wp_error($response)) {
+        wc_add_notice('Payment error: ' . $response->get_error_message(), 'error');
+        return;
+    }
+
+    $body = json_decode(wp_remote_retrieve_body($response));
+
+    if ($body->status === 'success') {
+        $order->payment_complete($body->transaction_id);
+        return array(
+            'result' => 'success',
+            'redirect' => $this->get_return_url($order)
+        );
+    } else {
+        wc_add_notice('Payment failed: ' . $body->message, 'error');
+        return;
+    }
+}</code></pre>
+
+      <h3>Add Admin Settings</h3>
+      <pre><code class="language-php">public function init_form_fields() {
+    $this->form_fields = array(
+        'enabled' => array(/*...*/),
+        'title' => array(/*...*/),
+        'api_key' => array(
+            'title' => 'API Key',
+            'type' => 'password',
+            'description' => 'Your payment provider API key'
+        ),
+        'test_mode' => array(
+            'title' => 'Test Mode',
+            'type' => 'checkbox',
+            'label' => 'Enable test mode',
+            'default' => 'yes'
+        )
+    );
+}</code></pre>
+
+      <h3>Key Components</h3>
+      <ul>
+        <li><strong>$this->id</strong> - Unique gateway ID</li>
+        <li><strong>payment_fields()</strong> - Display checkout fields</li>
+        <li><strong>process_payment()</strong> - Handle payment processing</li>
+        <li><strong>init_form_fields()</strong> - Admin settings configuration</li>
+        <li><strong>validate_fields()</strong> - Validate customer input</li>
+      </ul>
+    `,
+    code: `add_action('plugins_loaded', 'init_custom_payment_gateway');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '8 min read',
+    category: 'WooCommerce',
+    tags: ['WooCommerce', 'Payment Gateway', 'Development', 'Custom Integration', 'Advanced'],
+    difficulty: 'Advanced',
+    compatibility: 'WooCommerce 3.0+',
+    seo: {
+      metaTitle: 'Create Custom Payment Gateway WooCommerce - Complete Guide 2025',
+      metaDescription: 'Build a custom payment gateway for WooCommerce. Complete code tutorial for integrating custom payment methods and regional payment providers.',
+      keywords: ['woocommerce custom payment gateway', 'create payment gateway woocommerce', 'custom payment method woocommerce', 'woocommerce payment integration', 'payment gateway development'],
+      canonical: '/blog/add-custom-payment-method',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Create Custom Payment Gateway in WooCommerce",
+        "proficiencyLevel": "Advanced"
+      }
+    },
+    faqs: [
+      {
+        question: "What's required to create a custom WooCommerce payment gateway?",
+        answer: "Extend the WC_Payment_Gateway class, define unique gateway ID, implement payment_fields() for checkout form, process_payment() for payment handling, and init_form_fields() for admin settings. Register the gateway with woocommerce_payment_gateways filter."
+      },
+      {
+        question: "How do I integrate an external payment API in my custom gateway?",
+        answer: "Use wp_remote_post() in the process_payment() method to send payment data to the API. Include authentication headers, handle the API response, validate the transaction, and call $order->payment_complete() on success or return error messages on failure."
+      },
+      {
+        question: "Should I create a plugin or add code to functions.php?",
+        answer: "Always create a separate plugin for custom payment gateways. This ensures the code persists across theme changes, makes updates easier, allows proper dependency management, and follows WordPress best practices for extensibility."
+      },
+      {
+        question: "How do I handle payment validation and security?",
+        answer: "Sanitize all user inputs with sanitize_text_field(), validate required fields in validate_fields() method, verify API responses, use nonce verification for AJAX requests, and implement proper error handling with wc_add_notice() for user feedback."
+      },
+      {
+        question: "Can I add custom fields to the checkout for my payment method?",
+        answer: "Yes, use the payment_fields() method to output custom HTML form fields. These fields will only appear when your gateway is selected. Access submitted values in process_payment() via $_POST array and store them as order meta data."
+      }
+    ]
+  },
+  {
+    id: 66,
+    slug: 'add-schema-markup',
+    title: 'Add Schema Markup to WordPress Posts',
+    excerpt: 'Implement JSON-LD schema markup for articles, blogs, and custom post types to improve SEO and rich snippets in search results.',
+    content: `
+      <h2>Why Add Schema Markup?</h2>
+      <p>Schema markup helps search engines understand your content better, enables rich snippets in search results, improves click-through rates, and provides better SEO rankings through structured data.</p>
+
+      <h3>The Code Snippet - Article Schema</h3>
+      <pre><code class="language-php">// Add Article Schema to blog posts
+add_action('wp_head', 'add_article_schema_markup');
+function add_article_schema_markup() {
+    if (is_single() && get_post_type() === 'post') {
+        global $post;
+
+        $schema = array(
+            '@context' => 'https://schema.org',
+            '@type' => 'Article',
+            'headline' => get_the_title(),
+            'description' => get_the_excerpt(),
+            'image' => get_the_post_thumbnail_url($post->ID, 'full'),
+            'author' => array(
+                '@type' => 'Person',
+                'name' => get_the_author()
+            ),
+            'publisher' => array(
+                '@type' => 'Organization',
+                'name' => get_bloginfo('name'),
+                'logo' => array(
+                    '@type' => 'ImageObject',
+                    'url' => get_site_icon_url()
+                )
+            ),
+            'datePublished' => get_the_date('c'),
+            'dateModified' => get_the_modified_date('c')
+        );
+
+        echo '&lt;script type="application/ld+json"&gt;';
+        echo json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+        echo '&lt;/script&gt;';
+    }
+}</code></pre>
+
+      <h3>BlogPosting Schema</h3>
+      <pre><code class="language-php">function add_blog_posting_schema() {
+    if (!is_single()) return;
+
+    $schema = array(
+        '@context' => 'https://schema.org',
+        '@type' => 'BlogPosting',
+        'mainEntityOfPage' => array(
+            '@type' => 'WebPage',
+            '@id' => get_permalink()
+        ),
+        'headline' => get_the_title(),
+        'description' => wp_strip_all_tags(get_the_excerpt()),
+        'image' => array(
+            '@type' => 'ImageObject',
+            'url' => get_the_post_thumbnail_url(get_the_ID(), 'full'),
+            'width' => 1200,
+            'height' => 630
+        ),
+        'author' => array(
+            '@type' => 'Person',
+            'name' => get_the_author(),
+            'url' => get_author_posts_url(get_the_author_meta('ID'))
+        ),
+        'publisher' => array(
+            '@type' => 'Organization',
+            'name' => get_bloginfo('name'),
+            'logo' => array(
+                '@type' => 'ImageObject',
+                'url' => get_site_icon_url()
+            )
+        ),
+        'datePublished' => get_the_date('c'),
+        'dateModified' => get_the_modified_date('c'),
+        'wordCount' => str_word_count(strip_tags(get_the_content()))
+    );
+
+    echo '&lt;script type="application/ld+json"&gt;' .
+         json_encode($schema, JSON_UNESCAPED_SLASHES) .
+         '&lt;/script&gt;';
+}
+add_action('wp_head', 'add_blog_posting_schema');</code></pre>
+
+      <h3>Organization Schema</h3>
+      <pre><code class="language-php">// Add Organization schema to homepage
+add_action('wp_head', 'add_organization_schema');
+function add_organization_schema() {
+    if (!is_front_page()) return;
+
+    $schema = array(
+        '@context' => 'https://schema.org',
+        '@type' => 'Organization',
+        'name' => get_bloginfo('name'),
+        'url' => home_url(),
+        'logo' => get_site_icon_url(),
+        'description' => get_bloginfo('description')
+    );
+
+    echo '&lt;script type="application/ld+json"&gt;' .
+         json_encode($schema) .
+         '&lt;/script&gt;';
+}</code></pre>
+
+      <h3>Testing Schema Markup</h3>
+      <ul>
+        <li>Use Google's Rich Results Test</li>
+        <li>Schema.org validator</li>
+        <li>Check Google Search Console</li>
+        <li>Test with structured data testing tool</li>
+      </ul>
+    `,
+    code: `add_action('wp_head', 'add_article_schema_markup');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '7 min read',
+    category: 'WordPress SEO',
+    tags: ['SEO', 'Schema Markup', 'Structured Data', 'JSON-LD', 'Rich Snippets'],
+    difficulty: 'Advanced',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Add Schema Markup to WordPress Posts - Complete Guide 2025',
+      metaDescription: 'Implement JSON-LD schema markup for WordPress articles and posts. Improve SEO with structured data and rich snippets.',
+      keywords: ['wordpress schema markup', 'add schema to wordpress', 'json-ld wordpress', 'structured data wordpress', 'article schema markup'],
+      canonical: '/blog/add-schema-markup',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Add Schema Markup to WordPress Posts",
+        "proficiencyLevel": "Advanced"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between Article and BlogPosting schema?",
+        answer: "Article is broader for news and journalistic content. BlogPosting is specific for blog posts with additional properties like wordCount. Use BlogPosting for blog content and Article for general articles."
+      },
+      {
+        question: "Should I add schema markup manually or use a plugin?",
+        answer: "Manual implementation gives complete control and avoids plugin bloat. Plugins like Yoast are easier for beginners. For custom needs, manual coding provides more flexibility."
+      },
+      {
+        question: "How do I test if my schema markup is working?",
+        answer: "Use Google's Rich Results Test at search.google.com/test/rich-results. Also check Google Search Console for structured data errors and use Schema.org validator."
+      },
+      {
+        question: "Will schema markup immediately improve search rankings?",
+        answer: "Schema doesn't directly improve rankings but helps search engines understand content, leading to rich snippets. Rich snippets improve CTR, which indirectly benefits SEO."
+      },
+      {
+        question: "Can I add multiple schema types to the same page?",
+        answer: "Yes, output separate JSON-LD script tags for each schema type like Article + Breadcrumb + Organization. Ensure they're all valid and don't conflict."
+      }
+    ]
+  },
+  {
+    id: 67,
+    slug: 'add-canonical-url',
+    title: 'Add Canonical URLs in WordPress',
+    excerpt: 'Implement canonical URLs to prevent duplicate content issues, consolidate link equity, and improve SEO rankings.',
+    content: `
+      <h2>Why Use Canonical URLs?</h2>
+      <p>Canonical URLs tell search engines which version of a page is the primary one, preventing duplicate content penalties, consolidating page authority, and improving SEO performance.</p>
+
+      <h3>The Code Snippet</h3>
+      <pre><code class="language-php">// Add canonical URL to head
+add_action('wp_head', 'add_canonical_url');
+function add_canonical_url() {
+    if (is_singular()) {
+        $canonical_url = get_permalink();
+        echo '&lt;link rel="canonical" href="' . esc_url($canonical_url) . '" /&gt;' . "\n";
+    } elseif (is_category()) {
+        $canonical_url = get_category_link(get_queried_object_id());
+        echo '&lt;link rel="canonical" href="' . esc_url($canonical_url) . '" /&gt;' . "\n";
+    } elseif (is_tag()) {
+        $canonical_url = get_tag_link(get_queried_object_id());
+        echo '&lt;link rel="canonical" href="' . esc_url($canonical_url) . '" /&gt;' . "\n";
+    } elseif (is_home() || is_front_page()) {
+        echo '&lt;link rel="canonical" href="' . esc_url(home_url('/')) . '" /&gt;' . "\n";
+    }
+}</code></pre>
+
+      <h3>Handle Paginated Pages</h3>
+      <pre><code class="language-php">add_action('wp_head', 'add_canonical_with_pagination');
+function add_canonical_with_pagination() {
+    if (!is_singular()) return;
+
+    global $wp_query;
+    $paged = get_query_var('paged') ? get_query_var('paged') : 1;
+
+    if ($paged > 1) {
+        $canonical_url = get_permalink() . 'page/' . $paged . '/';
+    } else {
+        $canonical_url = get_permalink();
+    }
+
+    echo '&lt;link rel="canonical" href="' . esc_url($canonical_url) . '" /&gt;';
+}</code></pre>
+
+      <h3>Custom Post Types</h3>
+      <pre><code class="language-php">add_action('wp_head', 'add_canonical_custom_post_types');
+function add_canonical_custom_post_types() {
+    if (is_singular(array('post', 'page', 'product', 'portfolio'))) {
+        $canonical_url = get_permalink();
+
+        // Remove query strings
+        $canonical_url = strtok($canonical_url, '?');
+
+        echo '&lt;link rel="canonical" href="' . esc_url($canonical_url) . '" /&gt;';
+    }
+}</code></pre>
+
+      <h3>Handle URL Parameters</h3>
+      <pre><code class="language-php">function get_clean_canonical_url() {
+    $canonical_url = get_permalink();
+
+    // Remove tracking parameters
+    $params_to_remove = array('utm_source', 'utm_medium', 'utm_campaign', 'ref', 'fbclid');
+
+    $url_parts = parse_url($canonical_url);
+    if (isset($url_parts['query'])) {
+        parse_str($url_parts['query'], $query_params);
+
+        foreach ($params_to_remove as $param) {
+            unset($query_params[$param]);
+        }
+
+        if (!empty($query_params)) {
+            $canonical_url = $url_parts['scheme'] . '://' . $url_parts['host'] .
+                           $url_parts['path'] . '?' . http_build_query($query_params);
+        } else {
+            $canonical_url = $url_parts['scheme'] . '://' . $url_parts['host'] .
+                           $url_parts['path'];
+        }
+    }
+
+    return $canonical_url;
+}</code></pre>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Always use absolute URLs</li>
+        <li>Self-reference canonical on original pages</li>
+        <li>Remove session IDs and tracking parameters</li>
+        <li>Handle pagination correctly</li>
+        <li>Use consistent protocol (HTTP/HTTPS)</li>
+      </ul>
+    `,
+    code: `add_action('wp_head', 'add_canonical_url');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '5 min read',
+    category: 'WordPress SEO',
+    tags: ['SEO', 'Canonical URLs', 'Duplicate Content', 'Link Equity', 'Search Optimization'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Add Canonical URLs WordPress - Prevent Duplicate Content 2025',
+      metaDescription: 'Implement canonical URLs in WordPress to prevent duplicate content issues. Complete guide with code snippets for better SEO.',
+      keywords: ['wordpress canonical url', 'add canonical tag wordpress', 'prevent duplicate content', 'canonical link wordpress', 'seo canonical urls'],
+      canonical: '/blog/add-canonical-url',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Add Canonical URLs in WordPress",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What is a canonical URL and why is it important?",
+        answer: "A canonical URL is the preferred version of a web page when multiple URLs show similar content. It tells search engines which version to index, preventing duplicate content issues and consolidating page authority to improve SEO."
+      },
+      {
+        question: "Should canonical URLs be absolute or relative?",
+        answer: "Always use absolute URLs (https://example.com/page/) not relative (/page/). Absolute URLs prevent confusion for search engines and ensure the canonical reference is unambiguous across different contexts."
+      },
+      {
+        question: "Does WordPress add canonical URLs automatically?",
+        answer: "Modern WordPress (4.6+) adds basic canonical tags automatically. However, they may not handle all cases like custom post types, pagination, or URL parameters. Custom implementation gives you complete control."
+      },
+      {
+        question: "How do I handle canonical URLs for paginated content?",
+        answer: "For paginated archives, each page should have a self-referencing canonical URL (page 2 canonicals to page 2). For paginated single posts, point all pages to the first page or use rel=prev/next tags."
+      },
+      {
+        question: "Should I remove UTM parameters from canonical URLs?",
+        answer: "Yes, remove tracking parameters (utm_*, fbclid, ref, etc.) from canonical URLs. These don't change content but create duplicate URLs. Your canonical should point to the clean URL without tracking parameters."
+      }
+    ]
+  },
+  {
+    id: 68,
+    slug: 'custom-meta-descriptions',
+    title: 'Add Custom Meta Descriptions in WordPress',
+    excerpt: 'Create custom meta descriptions for posts and pages to improve click-through rates and search engine optimization.',
+    content: `
+      <h2>Why Custom Meta Descriptions Matter?</h2>
+      <p>Meta descriptions appear in search results below your title, influencing click-through rates. Custom descriptions can improve CTR, provide relevant summaries, and boost SEO performance.</p>
+
+      <h3>The Code Snippet</h3>
+      <pre><code class="language-php">// Add custom meta description field
+add_action('add_meta_boxes', 'add_meta_description_box');
+function add_meta_description_box() {
+    add_meta_box(
+        'meta_description_box',
+        'SEO Meta Description',
+        'render_meta_description_box',
+        array('post', 'page'),
+        'normal',
+        'high'
+    );
+}
+
+function render_meta_description_box($post) {
+    $meta_description = get_post_meta($post->ID, '_meta_description', true);
+    wp_nonce_field('save_meta_description', 'meta_description_nonce');
+    ?&gt;
+    &lt;textarea name="meta_description" rows="3" style="width:100%;"
+              maxlength="160" placeholder="Enter meta description (max 160 characters)"&gt;&lt;?php
+        echo esc_attr($meta_description);
+    ?&gt;&lt;/textarea&gt;
+    &lt;p&gt;&lt;small&gt;Character count: &lt;span id="char_count"&gt;0&lt;/span&gt;/160&lt;/small&gt;&lt;/p&gt;
+    &lt;script&gt;
+    jQuery(document).ready(function($) {
+        var textarea = $('textarea[name="meta_description"]');
+        var counter = $('#char_count');
+        counter.text(textarea.val().length);
+        textarea.on('input', function() {
+            counter.text($(this).val().length);
+        });
+    });
+    &lt;/script&gt;
+    &lt;?php
+}
+
+// Save meta description
+add_action('save_post', 'save_meta_description');
+function save_meta_description($post_id) {
+    if (!isset($_POST['meta_description_nonce'])) return;
+    if (!wp_verify_nonce($_POST['meta_description_nonce'], 'save_meta_description')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (!current_user_can('edit_post', $post_id)) return;
+
+    if (isset($_POST['meta_description'])) {
+        $meta_description = sanitize_text_field($_POST['meta_description']);
+        update_post_meta($post_id, '_meta_description', $meta_description);
+    }
+}
+
+// Output meta description in head
+add_action('wp_head', 'output_meta_description');
+function output_meta_description() {
+    if (is_singular()) {
+        $meta_description = get_post_meta(get_the_ID(), '_meta_description', true);
+
+        if (empty($meta_description)) {
+            // Fallback to excerpt
+            $meta_description = get_the_excerpt();
+            $meta_description = wp_strip_all_tags($meta_description);
+            $meta_description = substr($meta_description, 0, 160);
+        }
+
+        if (!empty($meta_description)) {
+            echo '&lt;meta name="description" content="' .
+                 esc_attr($meta_description) . '" /&gt;' . "\n";
+        }
+    } elseif (is_home() || is_front_page()) {
+        $description = get_bloginfo('description');
+        echo '&lt;meta name="description" content="' .
+             esc_attr($description) . '" /&gt;' . "\n";
+    } elseif (is_category()) {
+        $description = category_description();
+        $description = wp_strip_all_tags($description);
+        if (!empty($description)) {
+            echo '&lt;meta name="description" content="' .
+                 esc_attr($description) . '" /&gt;' . "\n";
+        }
+    }
+}</code></pre>
+
+      <h3>Auto-Generate from Content</h3>
+      <pre><code class="language-php">function auto_generate_meta_description($post_id) {
+    $existing = get_post_meta($post_id, '_meta_description', true);
+    if (!empty($existing)) return; // Don't override existing
+
+    $post = get_post($post_id);
+    $content = $post->post_content;
+
+    // Strip shortcodes and HTML
+    $content = strip_shortcodes($content);
+    $content = wp_strip_all_tags($content);
+
+    // Get first 160 characters
+    $meta_description = substr($content, 0, 157) . '...';
+
+    update_post_meta($post_id, '_meta_description', $meta_description);
+}
+add_action('publish_post', 'auto_generate_meta_description');</code></pre>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Keep between 150-160 characters</li>
+        <li>Include target keywords naturally</li>
+        <li>Make it compelling and action-oriented</li>
+        <li>Avoid duplicate descriptions</li>
+        <li>Accurately summarize page content</li>
+      </ul>
+    `,
+    code: `add_action('wp_head', 'output_meta_description');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '6 min read',
+    category: 'WordPress SEO',
+    tags: ['SEO', 'Meta Descriptions', 'Click-Through Rate', 'Search Optimization', 'Custom Fields'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Add Custom Meta Descriptions WordPress - Improve CTR 2025',
+      metaDescription: 'Create custom meta descriptions for WordPress posts and pages. Improve search click-through rates with targeted descriptions.',
+      keywords: ['wordpress meta description', 'custom meta description wordpress', 'add meta description wordpress', 'seo meta tags wordpress', 'improve ctr wordpress'],
+      canonical: '/blog/custom-meta-descriptions',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Add Custom Meta Descriptions in WordPress",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What is the ideal length for meta descriptions?",
+        answer: "Meta descriptions should be between 150-160 characters. Google typically displays up to 160 characters on desktop and slightly less on mobile. Longer descriptions get truncated with '...' in search results."
+      },
+      {
+        question: "Do meta descriptions directly affect SEO rankings?",
+        answer: "No, meta descriptions are not a direct ranking factor. However, they significantly impact click-through rates (CTR) from search results, and higher CTR can indirectly improve rankings by signaling relevance to search engines."
+      },
+      {
+        question: "What happens if I don't add a meta description?",
+        answer: "Google will auto-generate one from page content, often pulling text from the beginning of the article. Auto-generated descriptions may not be optimized or compelling, potentially reducing CTR."
+      },
+      {
+        question: "Should I include keywords in meta descriptions?",
+        answer: "Yes, include your target keyword naturally. While not a ranking factor, Google bolds matching keywords in search results, making your listing more noticeable and relevant to searchers."
+      },
+      {
+        question: "Can I use the same meta description for multiple pages?",
+        answer: "No, avoid duplicate meta descriptions. Each page should have a unique description that accurately reflects its specific content. Duplicate descriptions waste opportunities to attract clicks for different search queries."
+      }
+    ]
+  },
+  {
+    id: 69,
+    slug: 'add-open-graph-tags',
+    title: 'Add Open Graph Meta Tags to WordPress',
+    excerpt: 'Implement Open Graph tags to control how your content appears when shared on social media platforms like Facebook and LinkedIn.',
+    content: `
+      <h2>Why Use Open Graph Tags?</h2>
+      <p>Open Graph tags control how your content displays on social media, ensuring proper titles, descriptions, and images appear when shared on Facebook, LinkedIn, Twitter, and other platforms.</p>
+
+      <h3>The Code Snippet</h3>
+      <pre><code class="language-php">// Add Open Graph meta tags
+add_action('wp_head', 'add_open_graph_tags');
+function add_open_graph_tags() {
+    if (!is_singular()) return;
+
+    global $post;
+    setup_postdata($post);
+
+    // Basic OG tags
+    echo '&lt;meta property="og:type" content="article" /&gt;' . "\n";
+    echo '&lt;meta property="og:title" content="' . esc_attr(get_the_title()) . '" /&gt;' . "\n";
+    echo '&lt;meta property="og:url" content="' . esc_url(get_permalink()) . '" /&gt;' . "\n";
+    echo '&lt;meta property="og:site_name" content="' . esc_attr(get_bloginfo('name')) . '" /&gt;' . "\n";
+
+    // Description
+    $description = get_the_excerpt();
+    $description = wp_strip_all_tags($description);
+    if (!empty($description)) {
+        echo '&lt;meta property="og:description" content="' . esc_attr($description) . '" /&gt;' . "\n";
+    }
+
+    // Image
+    if (has_post_thumbnail()) {
+        $thumbnail_url = get_the_post_thumbnail_url($post->ID, 'large');
+        echo '&lt;meta property="og:image" content="' . esc_url($thumbnail_url) . '" /&gt;' . "\n";
+
+        // Image dimensions
+        $thumbnail_id = get_post_thumbnail_id($post->ID);
+        $image_meta = wp_get_attachment_metadata($thumbnail_id);
+        if ($image_meta) {
+            echo '&lt;meta property="og:image:width" content="' . $image_meta['width'] . '" /&gt;' . "\n";
+            echo '&lt;meta property="og:image:height" content="' . $image_meta['height'] . '" /&gt;' . "\n";
+        }
+    }
+
+    // Article metadata
+    echo '&lt;meta property="article:published_time" content="' .
+         get_the_date('c') . '" /&gt;' . "\n";
+    echo '&lt;meta property="article:modified_time" content="' .
+         get_the_modified_date('c') . '" /&gt;' . "\n";
+
+    // Author
+    echo '&lt;meta property="article:author" content="' .
+         esc_attr(get_the_author()) . '" /&gt;' . "\n";
+
+    wp_reset_postdata();
+}</code></pre>
+
+      <h3>Enhanced Version with FB App ID</h3>
+      <pre><code class="language-php">function add_enhanced_open_graph_tags() {
+    if (!is_singular()) return;
+
+    // Facebook App ID (optional but recommended)
+    $fb_app_id = '1234567890'; // Replace with your FB App ID
+    if ($fb_app_id) {
+        echo '&lt;meta property="fb:app_id" content="' . $fb_app_id . '" /&gt;' . "\n";
+    }
+
+    echo '&lt;meta property="og:locale" content="' . get_locale() . '" /&gt;' . "\n";
+    echo '&lt;meta property="og:type" content="article" /&gt;' . "\n";
+    echo '&lt;meta property="og:title" content="' . esc_attr(get_the_title()) . '" /&gt;' . "\n";
+    echo '&lt;meta property="og:url" content="' . esc_url(get_permalink()) . '" /&gt;' . "\n";
+    echo '&lt;meta property="og:site_name" content="' .
+         esc_attr(get_bloginfo('name')) . '" /&gt;' . "\n";
+
+    // Custom excerpt or meta description
+    $description = get_post_meta(get_the_ID(), '_meta_description', true);
+    if (empty($description)) {
+        $description = get_the_excerpt();
+    }
+    echo '&lt;meta property="og:description" content="' .
+         esc_attr(wp_strip_all_tags($description)) . '" /&gt;' . "\n";
+
+    // Featured image
+    if (has_post_thumbnail()) {
+        $image_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
+        echo '&lt;meta property="og:image" content="' . esc_url($image_url) . '" /&gt;' . "\n";
+        echo '&lt;meta property="og:image:secure_url" content="' .
+             esc_url(str_replace('http:', 'https:', $image_url)) . '" /&gt;' . "\n";
+    }
+
+    // Categories as tags
+    $categories = get_the_category();
+    foreach ($categories as $category) {
+        echo '&lt;meta property="article:section" content="' .
+             esc_attr($category->name) . '" /&gt;' . "\n";
+    }
+
+    // Tags
+    $tags = get_the_tags();
+    if ($tags) {
+        foreach ($tags as $tag) {
+            echo '&lt;meta property="article:tag" content="' .
+                 esc_attr($tag->name) . '" /&gt;' . "\n";
+        }
+    }
+}
+add_action('wp_head', 'add_enhanced_open_graph_tags');</code></pre>
+
+      <h3>Homepage Open Graph</h3>
+      <pre><code class="language-php">add_action('wp_head', 'add_homepage_og_tags');
+function add_homepage_og_tags() {
+    if (!is_front_page()) return;
+
+    echo '&lt;meta property="og:type" content="website" /&gt;' . "\n";
+    echo '&lt;meta property="og:title" content="' .
+         esc_attr(get_bloginfo('name')) . '" /&gt;' . "\n";
+    echo '&lt;meta property="og:description" content="' .
+         esc_attr(get_bloginfo('description')) . '" /&gt;' . "\n";
+    echo '&lt;meta property="og:url" content="' . esc_url(home_url('/')) . '" /&gt;' . "\n";
+
+    // Site logo or custom image
+    $logo_url = get_site_icon_url(512);
+    if ($logo_url) {
+        echo '&lt;meta property="og:image" content="' . esc_url($logo_url) . '" /&gt;' . "\n";
+    }
+}</code></pre>
+
+      <h3>Image Requirements</h3>
+      <ul>
+        <li><strong>Minimum size:</strong> 200x200 pixels</li>
+        <li><strong>Recommended:</strong> 1200x630 pixels</li>
+        <li><strong>Aspect ratio:</strong> 1.91:1</li>
+        <li><strong>Format:</strong> JPG or PNG</li>
+        <li><strong>Max file size:</strong> 8MB</li>
+      </ul>
+    `,
+    code: `add_action('wp_head', 'add_open_graph_tags');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '6 min read',
+    category: 'WordPress SEO',
+    tags: ['SEO', 'Open Graph', 'Social Media', 'Facebook', 'Meta Tags'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Add Open Graph Tags WordPress - Social Media Optimization 2025',
+      metaDescription: 'Implement Open Graph meta tags in WordPress to control social media sharing appearance on Facebook, LinkedIn, and other platforms.',
+      keywords: ['wordpress open graph', 'add og tags wordpress', 'facebook meta tags wordpress', 'social media wordpress', 'open graph protocol'],
+      canonical: '/blog/add-open-graph-tags',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Add Open Graph Meta Tags to WordPress",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What are Open Graph tags and why do I need them?",
+        answer: "Open Graph tags are meta tags that control how your content appears when shared on social media platforms like Facebook, LinkedIn, and others. They ensure proper titles, descriptions, and images display, improving engagement and click-through rates from social shares."
+      },
+      {
+        question: "What's the recommended image size for Open Graph?",
+        answer: "Facebook recommends 1200x630 pixels (1.91:1 aspect ratio) for optimal display on all devices. Minimum is 200x200 pixels, but larger images ensure better quality across desktop and mobile platforms."
+      },
+      {
+        question: "Do I need Open Graph tags if I already have Twitter Cards?",
+        answer: "Twitter falls back to Open Graph tags if Twitter Card tags aren't present, but it's best practice to include both. Each platform has specific tag prefixes (og: for Open Graph, twitter: for Twitter Cards) for optimal control."
+      },
+      {
+        question: "How can I test my Open Graph tags?",
+        answer: "Use Facebook's Sharing Debugger (developers.facebook.com/tools/debug/) to test and clear cache. LinkedIn Post Inspector and other social platform debugging tools also validate OG tags and show preview appearances."
+      },
+      {
+        question: "Why doesn't my updated image appear when sharing?",
+        answer: "Social platforms cache Open Graph data. Use Facebook's Sharing Debugger to scrape and refresh the cache. After updating OG tags, always use debugging tools to clear cached data and see updated previews."
+      }
+    ]
+  },
+  {
+    id: 70,
+    slug: 'generate-xml-sitemap',
+    title: 'Generate XML Sitemap in WordPress',
+    excerpt: 'Create a dynamic XML sitemap to help search engines discover and index your WordPress content more efficiently.',
+    content: `
+      <h2>Why Generate an XML Sitemap?</h2>
+      <p>XML sitemaps help search engines discover all your pages, improve indexing efficiency, prioritize important content, and keep search engines updated when you publish new content.</p>
+
+      <h3>The Code Snippet - Basic Sitemap</h3>
+      <pre><code class="language-php">// Generate XML Sitemap
+add_action('init', 'register_sitemap_rewrite');
+function register_sitemap_rewrite() {
+    add_rewrite_rule('^sitemap\.xml$', 'index.php?custom_sitemap=1', 'top');
+}
+
+add_filter('query_vars', 'add_sitemap_query_var');
+function add_sitemap_query_var($vars) {
+    $vars[] = 'custom_sitemap';
+    return $vars;
+}
+
+add_action('template_redirect', 'generate_xml_sitemap');
+function generate_xml_sitemap() {
+    if (!get_query_var('custom_sitemap')) return;
+
+    header('Content-Type: application/xml; charset=utf-8');
+    echo '&lt;?xml version="1.0" encoding="UTF-8"?&gt;';
+    echo '&lt;urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"&gt;';
+
+    // Homepage
+    echo '&lt;url&gt;';
+    echo '&lt;loc&gt;' . esc_url(home_url('/')) . '&lt;/loc&gt;';
+    echo '&lt;lastmod&gt;' . date('c') . '&lt;/lastmod&gt;';
+    echo '&lt;changefreq&gt;daily&lt;/changefreq&gt;';
+    echo '&lt;priority&gt;1.0&lt;/priority&gt;';
+    echo '&lt;/url&gt;';
+
+    // Posts
+    $posts = get_posts(array(
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'posts_per_page' => -1,
+        'orderby' => 'modified',
+        'order' => 'DESC'
+    ));
+
+    foreach ($posts as $post) {
+        echo '&lt;url&gt;';
+        echo '&lt;loc&gt;' . esc_url(get_permalink($post->ID)) . '&lt;/loc&gt;';
+        echo '&lt;lastmod&gt;' . date('c', strtotime($post->post_modified)) . '&lt;/lastmod&gt;';
+        echo '&lt;changefreq&gt;weekly&lt;/changefreq&gt;';
+        echo '&lt;priority&gt;0.8&lt;/priority&gt;';
+        echo '&lt;/url&gt;';
+    }
+
+    // Pages
+    $pages = get_posts(array(
+        'post_type' => 'page',
+        'post_status' => 'publish',
+        'posts_per_page' => -1
+    ));
+
+    foreach ($pages as $page) {
+        echo '&lt;url&gt;';
+        echo '&lt;loc&gt;' . esc_url(get_permalink($page->ID)) . '&lt;/loc&gt;';
+        echo '&lt;lastmod&gt;' . date('c', strtotime($page->post_modified)) . '&lt;/lastmod&gt;';
+        echo '&lt;changefreq&gt;monthly&lt;/changefreq&gt;';
+        echo '&lt;priority&gt;0.6&lt;/priority&gt;';
+        echo '&lt;/url&gt;';
+    }
+
+    echo '&lt;/urlset&gt;';
+    exit;
+}
+
+// Flush rewrite rules on activation
+register_activation_hook(__FILE__, 'flush_rewrite_rules');</code></pre>
+
+      <h3>Include Custom Post Types</h3>
+      <pre><code class="language-php">// Add custom post types to sitemap
+$custom_post_types = array('portfolio', 'testimonials', 'products');
+
+foreach ($custom_post_types as $post_type) {
+    $cpt_posts = get_posts(array(
+        'post_type' => $post_type,
+        'post_status' => 'publish',
+        'posts_per_page' => -1
+    ));
+
+    foreach ($cpt_posts as $cpt) {
+        echo '&lt;url&gt;';
+        echo '&lt;loc&gt;' . esc_url(get_permalink($cpt->ID)) . '&lt;/loc&gt;';
+        echo '&lt;lastmod&gt;' . date('c', strtotime($cpt->post_modified)) . '&lt;/lastmod&gt;';
+        echo '&lt;priority&gt;0.7&lt;/priority&gt;';
+        echo '&lt;/url&gt;';
+    }
+}</code></pre>
+
+      <h3>Add Taxonomies</h3>
+      <pre><code class="language-php">// Add categories to sitemap
+$categories = get_categories(array('hide_empty' => true));
+foreach ($categories as $category) {
+    echo '&lt;url&gt;';
+    echo '&lt;loc&gt;' . esc_url(get_category_link($category->term_id)) . '&lt;/loc&gt;';
+    echo '&lt;changefreq&gt;weekly&lt;/changefreq&gt;';
+    echo '&lt;priority&gt;0.5&lt;/priority&gt;';
+    echo '&lt;/url&gt;';
+}
+
+// Add tags
+$tags = get_tags(array('hide_empty' => true));
+foreach ($tags as $tag) {
+    echo '&lt;url&gt;';
+    echo '&lt;loc&gt;' . esc_url(get_tag_link($tag->term_id)) . '&lt;/loc&gt;';
+    echo '&lt;changefreq&gt;weekly&lt;/changefreq&gt;';
+    echo '&lt;priority&gt;0.4&lt;/priority&gt;';
+    echo '&lt;/url&gt;';
+}</code></pre>
+
+      <h3>Priority Guidelines</h3>
+      <ul>
+        <li><strong>1.0</strong> - Homepage</li>
+        <li><strong>0.8-0.9</strong> - Important pages, recent posts</li>
+        <li><strong>0.6-0.7</strong> - Regular pages, custom post types</li>
+        <li><strong>0.4-0.5</strong> - Categories, tags, archives</li>
+      </ul>
+
+      <h3>Submit to Search Engines</h3>
+      <p>After generating your sitemap at yourdomain.com/sitemap.xml:</p>
+      <ol>
+        <li>Submit to Google Search Console</li>
+        <li>Submit to Bing Webmaster Tools</li>
+        <li>Add sitemap URL to robots.txt</li>
+        <li>Monitor indexing status regularly</li>
+      </ol>
+    `,
+    code: `add_action('template_redirect', 'generate_xml_sitemap');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '7 min read',
+    category: 'WordPress SEO',
+    tags: ['SEO', 'XML Sitemap', 'Search Engines', 'Indexing', 'Site Structure'],
+    difficulty: 'Advanced',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Generate XML Sitemap WordPress - Improve Indexing 2025',
+      metaDescription: 'Create a dynamic XML sitemap in WordPress to help search engines discover and index your content efficiently. Complete code guide.',
+      keywords: ['wordpress xml sitemap', 'generate sitemap wordpress', 'create xml sitemap', 'wordpress seo sitemap', 'sitemap generator code'],
+      canonical: '/blog/generate-xml-sitemap',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Generate XML Sitemap in WordPress",
+        "proficiencyLevel": "Advanced"
+      }
+    },
+    faqs: [
+      {
+        question: "Does WordPress generate sitemaps automatically?",
+        answer: "WordPress 5.5+ includes basic XML sitemaps at /wp-sitemap.xml. However, custom sitemaps offer more control over priorities, change frequencies, excluded content, and custom post types not included in default sitemaps."
+      },
+      {
+        question: "What's the difference between priority and changefreq in sitemaps?",
+        answer: "Priority (0.0-1.0) indicates relative importance of pages on your site. Changefreq suggests how often pages update (daily, weekly, monthly). Both are hints to search engines, not guarantees of crawl frequency or ranking."
+      },
+      {
+        question: "Should I include all pages in my sitemap?",
+        answer: "No, exclude low-value pages like thank-you pages, admin pages, duplicate content, or paginated archives. Focus on high-quality, indexable content you want search engines to prioritize."
+      },
+      {
+        question: "How often should sitemaps be updated?",
+        answer: "Dynamic sitemaps (like this code) update automatically. Submit updated sitemaps to Search Console when making major site changes. Search engines typically re-crawl sitemaps based on update frequency observed over time."
+      },
+      {
+        question: "Can I have multiple sitemaps?",
+        answer: "Yes, use a sitemap index file for large sites (50,000+ URLs). Create separate sitemaps for posts, pages, categories, and products, then reference them in a sitemap index at /sitemap_index.xml."
+      }
+    ]
+  },
+  {
+    id: 71,
+    slug: 'add-nofollow-external-links',
+    title: 'Add Nofollow to External Links in WordPress',
+    excerpt: 'Automatically add rel="nofollow" attributes to external links to control link equity and comply with Google guidelines.',
+    content: `
+      <h2>Why Use Nofollow on External Links?</h2>
+      <p>Nofollow attributes tell search engines not to pass link equity to external sites, helping preserve your site's authority, comply with sponsored content guidelines, and control link flow.</p>
+
+      <h3>The Code Snippet</h3>
+      <pre><code class="language-php">// Add nofollow to all external links
+add_filter('the_content', 'add_nofollow_to_external_links');
+function add_nofollow_to_external_links($content) {
+    $regexp = '&lt;a\s[^&gt;]*href=("??)([^" &gt;]*?)\\1[^&gt;]*&gt;';
+
+    if (preg_match_all("/$regexp/siU", $content, $matches, PREG_SET_ORDER)) {
+        if (!empty($matches)) {
+            $site_url = get_option('siteurl');
+
+            for ($i = 0; $i &lt; count($matches); $i++) {
+                $tag = $matches[$i][0];
+                $url = $matches[$i][2];
+
+                // Check if external link
+                if (strpos($url, $site_url) === false &&
+                    strpos($url, 'http') === 0) {
+
+                    // Check if already has rel attribute
+                    if (preg_match('/rel\s*=/', $tag)) {
+                        // Add to existing rel
+                        $new_tag = preg_replace('/rel="([^"]*)"/',
+                                               'rel="$1 nofollow"', $tag);
+                    } else {
+                        // Add new rel attribute
+                        $new_tag = str_replace('&gt;', ' rel="nofollow"&gt;', $tag);
+                    }
+
+                    $content = str_replace($tag, $new_tag, $content);
+                }
+            }
+        }
+    }
+
+    return $content;
+}</code></pre>
+
+      <h3>Add Nofollow with Target Blank</h3>
+      <pre><code class="language-php">add_filter('the_content', 'add_nofollow_and_target_blank');
+function add_nofollow_and_target_blank($content) {
+    $internal_host = parse_url(home_url(), PHP_URL_HOST);
+
+    $dom = new DOMDocument();
+    @$dom->loadHTML(mb_convert_encoding($content, 'HTML-ENTITIES', 'UTF-8'),
+                    LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+    $links = $dom->getElementsByTagName('a');
+
+    foreach ($links as $link) {
+        $href = $link->getAttribute('href');
+        $link_host = parse_url($href, PHP_URL_HOST);
+
+        // Check if external
+        if ($link_host && $link_host !== $internal_host) {
+            // Add nofollow
+            $rel = $link->getAttribute('rel');
+            if ($rel && strpos($rel, 'nofollow') === false) {
+                $link->setAttribute('rel', $rel . ' nofollow');
+            } else if (!$rel) {
+                $link->setAttribute('rel', 'nofollow');
+            }
+
+            // Add target blank
+            if (!$link->getAttribute('target')) {
+                $link->setAttribute('target', '_blank');
+            }
+
+            // Add noreferrer for security
+            $rel = $link->getAttribute('rel');
+            if (strpos($rel, 'noreferrer') === false) {
+                $link->setAttribute('rel', $rel . ' noreferrer');
+            }
+        }
+    }
+
+    return $dom->saveHTML();
+}</code></pre>
+
+      <h3>Exclude Specific Domains</h3>
+      <pre><code class="language-php">function add_nofollow_except_trusted($content) {
+    // Trusted domains that should not get nofollow
+    $trusted_domains = array(
+        'youtube.com',
+        'wikipedia.org',
+        'github.com'
+    );
+
+    $internal_host = parse_url(home_url(), PHP_URL_HOST);
+
+    $dom = new DOMDocument();
+    @$dom->loadHTML($content, LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+
+    foreach ($dom->getElementsByTagName('a') as $link) {
+        $href = $link->getAttribute('href');
+        $link_host = parse_url($href, PHP_URL_HOST);
+
+        if ($link_host && $link_host !== $internal_host) {
+            $is_trusted = false;
+
+            foreach ($trusted_domains as $domain) {
+                if (strpos($link_host, $domain) !== false) {
+                    $is_trusted = true;
+                    break;
+                }
+            }
+
+            if (!$is_trusted) {
+                $rel = $link->getAttribute('rel');
+                $link->setAttribute('rel', trim($rel . ' nofollow'));
+            }
+        }
+    }
+
+    return $dom->saveHTML();
+}
+add_filter('the_content', 'add_nofollow_except_trusted');</code></pre>
+
+      <h3>When to Use Nofollow</h3>
+      <ul>
+        <li><strong>Sponsored/Paid Links:</strong> Required by Google</li>
+        <li><strong>User-Generated Content:</strong> Comments, forum posts</li>
+        <li><strong>Untrusted Content:</strong> Links you don't fully endorse</li>
+        <li><strong>Login/Registration Pages:</strong> No need to pass link equity</li>
+      </ul>
+
+      <h3>When NOT to Use Nofollow</h3>
+      <ul>
+        <li>Links to your own content (internal links)</li>
+        <li>Editorial links to quality sources</li>
+        <li>Links that add value to readers</li>
+        <li>Trusted partner sites</li>
+      </ul>
+    `,
+    code: `add_filter('the_content', 'add_nofollow_to_external_links');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '6 min read',
+    category: 'WordPress SEO',
+    tags: ['SEO', 'External Links', 'Nofollow', 'Link Equity', 'PageRank'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Add Nofollow to External Links WordPress - SEO Guide 2025',
+      metaDescription: 'Automatically add rel="nofollow" to external links in WordPress. Control link equity and comply with Google guidelines with code snippets.',
+      keywords: ['wordpress nofollow external links', 'add nofollow wordpress', 'nofollow attribute wordpress', 'external links seo', 'rel nofollow wordpress'],
+      canonical: '/blog/add-nofollow-external-links',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Add Nofollow to External Links in WordPress",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What does the nofollow attribute do?",
+        answer: "Nofollow tells search engines not to follow the link or pass PageRank/link equity to the destination. It's used for untrusted content, paid links, or when you don't want to vouch for the linked site."
+      },
+      {
+        question: "Should I nofollow all external links?",
+        answer: "No, only nofollow external links when necessary (sponsored, untrusted, or user-generated content). Natural editorial links to quality sources are valuable for users and generally don't need nofollow."
+      },
+      {
+        question: "What's the difference between nofollow and ugc?",
+        answer: "Nofollow is general 'don't follow'. UGC (user-generated content) is specific for comments/forums. Sponsored is for paid/affiliate links. Use the most specific attribute - Google treats them similarly but they provide better context."
+      },
+      {
+        question: "Does nofollow hurt my SEO?",
+        answer: "No, using nofollow on external links doesn't hurt your SEO. It's a best practice for certain link types. However, over-using nofollow on editorial links can make your site seem less trustworthy and reduce its usefulness."
+      },
+      {
+        question: "Should I add nofollow to internal links?",
+        answer: "Never add nofollow to internal links unless you specifically don't want a page indexed (like thank-you pages). Internal links pass authority to important pages and help search engines understand site structure."
+      }
+    ]
+  },
+  {
+    id: 72,
+    slug: 'redirect-attachment-pages',
+    title: 'Redirect Attachment Pages to Parent Post',
+    excerpt: 'Redirect WordPress attachment pages to parent posts or media files to improve SEO and user experience.',
+    content: `
+      <h2>Why Redirect Attachment Pages?</h2>
+      <p>WordPress creates dedicated pages for media attachments, which offer little value to users and can create thin content issues. Redirecting them improves SEO and provides better user experience.</p>
+
+      <h3>The Code Snippet - Redirect to Parent</h3>
+      <pre><code class="language-php">// Redirect attachment pages to parent post
+add_action('template_redirect', 'redirect_attachment_to_parent');
+function redirect_attachment_to_parent() {
+    if (is_attachment()) {
+        global $post;
+
+        if ($post->post_parent) {
+            // Redirect to parent post
+            $parent_url = get_permalink($post->post_parent);
+            wp_redirect($parent_url, 301);
+            exit;
+        } else {
+            // No parent, redirect to homepage
+            wp_redirect(home_url(), 301);
+            exit;
+        }
+    }
+}</code></pre>
+
+      <h3>Redirect to Media File</h3>
+      <pre><code class="language-php">// Redirect to actual media file
+add_action('template_redirect', 'redirect_attachment_to_file');
+function redirect_attachment_to_file() {
+    if (is_attachment()) {
+        global $post;
+
+        $attachment_url = wp_get_attachment_url($post->ID);
+
+        if ($attachment_url) {
+            wp_redirect($attachment_url, 301);
+            exit;
+        }
+    }
+}</code></pre>
+
+      <h3>Smart Redirect Logic</h3>
+      <pre><code class="language-php">add_action('template_redirect', 'smart_attachment_redirect');
+function smart_attachment_redirect() {
+    if (!is_attachment()) return;
+
+    global $post;
+
+    // Priority 1: Redirect to parent post
+    if ($post->post_parent) {
+        $parent_url = get_permalink($post->post_parent);
+        wp_redirect($parent_url, 301);
+        exit;
+    }
+
+    // Priority 2: Redirect to media file (for images, PDFs)
+    $mime_type = get_post_mime_type($post->ID);
+    $viewable_types = array('image/', 'application/pdf', 'video/', 'audio/');
+
+    foreach ($viewable_types as $type) {
+        if (strpos($mime_type, $type) === 0) {
+            $attachment_url = wp_get_attachment_url($post->ID);
+            if ($attachment_url) {
+                wp_redirect($attachment_url, 301);
+                exit;
+            }
+        }
+    }
+
+    // Priority 3: Redirect to homepage
+    wp_redirect(home_url(), 301);
+    exit;
+}</code></pre>
+
+      <h3>Exclude Specific Attachments</h3>
+      <pre><code class="language-php">add_action('template_redirect', 'conditional_attachment_redirect');
+function conditional_attachment_redirect() {
+    if (!is_attachment()) return;
+
+    global $post;
+
+    // Don't redirect if attachment has custom field "keep_page"
+    if (get_post_meta($post->ID, 'keep_attachment_page', true)) {
+        return;
+    }
+
+    // Don't redirect PDFs or downloadable files
+    $mime_type = get_post_mime_type($post->ID);
+    if (strpos($mime_type, 'application/') === 0) {
+        return;
+    }
+
+    // Redirect images to parent
+    if ($post->post_parent) {
+        wp_redirect(get_permalink($post->post_parent), 301);
+        exit;
+    }
+}</code></pre>
+
+      <h3>Remove Attachment Pages from Sitemap</h3>
+      <pre><code class="language-php">// Prevent attachment pages from appearing in sitemap
+add_filter('wp_sitemaps_post_types', 'remove_attachments_from_sitemap');
+function remove_attachments_from_sitemap($post_types) {
+    unset($post_types['attachment']);
+    return $post_types;
+}</code></pre>
+
+      <h3>SEO Benefits</h3>
+      <ul>
+        <li>Eliminates thin content pages</li>
+        <li>Improves crawl efficiency</li>
+        <li>Better user experience</li>
+        <li>Prevents duplicate content issues</li>
+        <li>Consolidates link equity</li>
+      </ul>
+    `,
+    code: `add_action('template_redirect', 'redirect_attachment_to_parent');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '4 min read',
+    category: 'WordPress SEO',
+    tags: ['SEO', 'Redirects', 'Attachment Pages', 'Media', 'User Experience'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Redirect WordPress Attachment Pages - Fix Thin Content 2025',
+      metaDescription: 'Redirect WordPress attachment pages to parent posts or media files. Eliminate thin content and improve SEO with simple code snippets.',
+      keywords: ['wordpress attachment redirect', 'redirect attachment pages', 'wordpress media pages', 'attachment seo wordpress', 'disable attachment pages'],
+      canonical: '/blog/redirect-attachment-pages',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Redirect Attachment Pages to Parent Post",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "What are WordPress attachment pages and why are they problematic?",
+        answer: "WordPress creates individual pages for uploaded media files (images, PDFs, etc.). These pages often have minimal content, creating thin content issues for SEO. Users also rarely want to land on an image attachment page rather than the actual post."
+      },
+      {
+        question: "Should I redirect to parent post or media file?",
+        answer: "Redirect to parent post when the media is part of blog content, providing context for the user. Redirect to the file itself for standalone media like wallpapers or downloads. Choose based on how users would want to access the media."
+      },
+      {
+        question: "Will redirecting attachment pages break image SEO?",
+        answer: "No, image SEO relies on the actual image file, alt text, filename, and surrounding content - not the attachment page. Redirecting attachment pages doesn't affect how images appear in Google Image Search."
+      },
+      {
+        question: "What redirect status code should I use?",
+        answer: "Use 301 (permanent redirect) for attachment pages. This tells search engines the attachment page is permanently moved, consolidates any existing link equity, and prevents re-indexing of attachment pages."
+      },
+      {
+        question: "Can I keep attachment pages for certain media types?",
+        answer: "Yes, use conditional logic to keep attachment pages for specific mime types (like PDFs or videos) where a dedicated page provides value, while redirecting image attachment pages."
+      }
+    ]
+  },
+  {
+    id: 73,
+    slug: 'remove-category-from-url',
+    title: 'Remove Category from WordPress URLs',
+    excerpt: 'Remove the /category/ slug from WordPress category URLs for cleaner permalinks and better SEO.',
+    content: `
+      <h2>Why Remove Category Slug?</h2>
+      <p>By default, WordPress adds /category/ to category URLs. Removing it creates shorter, cleaner URLs, improves user experience, and can help with SEO by making URLs more concise.</p>
+
+      <h3>The Code Snippet</h3>
+      <pre><code class="language-php">// Remove /category/ from URLs
+add_action('init', 'remove_category_url');
+function remove_category_url() {
+    global $wp_rewrite;
+    $wp_rewrite->extra_permastructs['category']['struct'] = '/%category%';
+}
+
+add_filter('category_link', 'remove_category_from_url', 10, 2);
+function remove_category_from_url($catlink, $category_id) {
+    $category = get_category($category_id);
+    $category_nicename = $category->slug;
+
+    if (substr($catlink, -1) === '/') {
+        $catlink = substr($catlink, 0, -1);
+    }
+
+    $catlink = str_replace('/category/', '/', $catlink);
+
+    return trailingslashit($catlink);
+}
+
+// Redirect old category URLs
+add_action('template_redirect', 'redirect_old_category_urls');
+function redirect_old_category_urls() {
+    if (strpos($_SERVER['REQUEST_URI'], '/category/') !== false) {
+        $redirect_url = str_replace('/category/', '/', $_SERVER['REQUEST_URI']);
+        wp_redirect(home_url($redirect_url), 301);
+        exit;
+    }
+}
+
+// Prevent conflicts with pages
+add_filter('parse_request', 'prevent_category_page_conflicts');
+function prevent_category_page_conflicts($query) {
+    if (!$query->is_main_query()) return $query;
+
+    if (isset($query->query_vars['name'])) {
+        $slug = $query->query_vars['name'];
+
+        // Check if a page exists with this slug
+        $page = get_page_by_path($slug);
+        if ($page) {
+            $query->query_vars['page'] = '';
+            $query->query_vars['pagename'] = $slug;
+        }
+    }
+
+    return $query;
+}
+
+// Flush rewrite rules (run once)
+register_activation_hook(__FILE__, 'flush_rewrite_rules');</code></pre>
+
+      <h3>Alternative Method</h3>
+      <pre><code class="language-php">// Simpler approach using filter
+add_filter('request', 'change_category_request', 1, 1);
+function change_category_request($query) {
+    if (isset($query['category_name'])) {
+        // Already a category
+        return $query;
+    }
+
+    // Check if this could be a category
+    if (isset($query['name'])) {
+        $category = get_category_by_slug($query['name']);
+        if ($category) {
+            $query['category_name'] = $query['name'];
+            unset($query['name']);
+        }
+    }
+
+    return $query;
+}
+
+add_filter('category_link', 'remove_category_slug', 10, 2);
+function remove_category_slug($link, $category_id) {
+    return str_replace('/category/', '/', $link);
+}</code></pre>
+
+      <h3>Handle Subcategories</h3>
+      <pre><code class="language-php">add_filter('category_link', 'custom_category_permalink', 10, 2);
+function custom_category_permalink($catlink, $category_id) {
+    $category = get_category($category_id);
+
+    // Build the full category hierarchy
+    $category_slug = '';
+    if ($category->parent != 0) {
+        $parent_slugs = array();
+        $parent_cat = $category;
+
+        while ($parent_cat->parent != 0) {
+            $parent_cat = get_category($parent_cat->parent);
+            $parent_slugs[] = $parent_cat->slug;
+        }
+
+        $parent_slugs = array_reverse($parent_slugs);
+        $category_slug = implode('/', $parent_slugs) . '/';
+    }
+
+    $category_slug .= $category->slug;
+
+    // Remove /category/ and use custom structure
+    $catlink = trailingslashit(home_url($category_slug));
+
+    return $catlink;
+}</code></pre>
+
+      <h3>Important Considerations</h3>
+      <ul>
+        <li><strong>Flush Rules:</strong> Visit Settings → Permalinks after implementing</li>
+        <li><strong>Check Conflicts:</strong> Ensure no pages have same slug as categories</li>
+        <li><strong>301 Redirects:</strong> Redirect old URLs to prevent 404 errors</li>
+        <li><strong>Sitemap Update:</strong> Regenerate sitemap with new URLs</li>
+        <li><strong>Search Console:</strong> Update Google about URL changes</li>
+      </ul>
+
+      <h3>Troubleshooting</h3>
+      <ul>
+        <li>If getting 404 errors, flush permalinks</li>
+        <li>Check for conflicting plugins</li>
+        <li>Verify .htaccess is writable</li>
+        <li>Test with default WordPress theme</li>
+      </ul>
+    `,
+    code: `add_action('init', 'remove_category_url');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '6 min read',
+    category: 'WordPress SEO',
+    tags: ['SEO', 'URLs', 'Permalinks', 'Categories', 'Clean URLs'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Remove Category from WordPress URLs - Clean Permalinks 2025',
+      metaDescription: 'Remove /category/ slug from WordPress URLs for cleaner permalinks. Complete guide with code snippets and redirect handling.',
+      keywords: ['remove category wordpress url', 'wordpress category slug', 'clean category urls wordpress', 'remove category base', 'wordpress permalinks'],
+      canonical: '/blog/remove-category-from-url',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Remove Category from WordPress URLs",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "Is it safe to remove the category base from URLs?",
+        answer: "Yes, but requires careful implementation. You must prevent conflicts between category slugs and page/post slugs, implement 301 redirects for old URLs, and flush permalinks after making changes."
+      },
+      {
+        question: "Will removing /category/ hurt my SEO?",
+        answer: "No, it won't hurt SEO if done correctly with 301 redirects. Cleaner URLs can actually improve CTR. However, improper implementation causing 404 errors or redirect chains will hurt SEO."
+      },
+      {
+        question: "What happens if a page and category have the same slug?",
+        answer: "This creates conflicts. WordPress will prioritize one over the other, usually pages. Use the conflict prevention code provided, or ensure unique slugs across pages, posts, and categories."
+      },
+      {
+        question: "Do I need to update Google after removing category base?",
+        answer: "Yes, submit updated sitemap to Google Search Console, set up 301 redirects from old URLs, and update internal links. Google will eventually recognize the change, but proper migration speeds up the process."
+      },
+      {
+        question: "Why am I getting 404 errors after implementing this?",
+        answer: "Most common cause: permalinks not flushed. Go to Settings → Permalinks and click Save. If that doesn't work, check for plugin conflicts, verify .htaccess is writable, and ensure code is in the right location."
+      }
+    ]
+  },
+  {
+    id: 74,
+    slug: 'add-alt-text-images',
+    title: 'Auto Add Alt Text to Images in WordPress',
+    excerpt: 'Automatically generate and add alt text to images for better SEO and accessibility compliance.',
+    content: `
+      <h2>Why Alt Text Matters?</h2>
+      <p>Alt text improves accessibility for screen readers, helps search engines understand images, provides context when images fail to load, and is crucial for image SEO optimization.</p>
+
+      <h3>The Code Snippet - Auto Generate from Filename</h3>
+      <pre><code class="language-php">// Auto-generate alt text on image upload
+add_action('add_attachment', 'auto_add_alt_text_to_images');
+function auto_add_alt_text_to_images($attachment_id) {
+    // Only process images
+    if (!wp_attachment_is_image($attachment_id)) return;
+
+    // Check if alt text already exists
+    $existing_alt = get_post_meta($attachment_id, '_wp_attachment_image_alt', true);
+    if ($existing_alt) return;
+
+    // Get image title
+    $attachment = get_post($attachment_id);
+    $title = $attachment->post_title;
+
+    // Clean up filename
+    $alt_text = str_replace(array('-', '_'), ' ', $title);
+    $alt_text = ucwords($alt_text);
+
+    // Save as alt text
+    update_post_meta($attachment_id, '_wp_attachment_image_alt', $alt_text);
+}</code></pre>
+
+      <h3>Generate from Post Title</h3>
+      <pre><code class="language-php">add_filter('wp_get_attachment_image_attributes', 'add_alt_from_post_title', 10, 2);
+function add_alt_from_post_title($attr, $attachment) {
+    // If alt already exists, use it
+    if (isset($attr['alt']) && !empty($attr['alt'])) {
+        return $attr;
+    }
+
+    // Get post where image is used
+    global $post;
+    if ($post) {
+        $attr['alt'] = get_the_title($post->ID);
+    } else {
+        // Fallback to image title
+        $attachment_post = get_post($attachment->ID);
+        $attr['alt'] = $attachment_post->post_title;
+    }
+
+    return $attr;
+}</code></pre>
+
+      <h3>Use Image Caption as Alt Text</h3>
+      <pre><code class="language-php">add_filter('wp_get_attachment_image_attributes', 'use_caption_as_alt', 10, 2);
+function use_caption_as_alt($attr, $attachment) {
+    if (isset($attr['alt']) && !empty($attr['alt'])) {
+        return $attr;
+    }
+
+    // Try to use caption
+    $caption = wp_get_attachment_caption($attachment->ID);
+    if ($caption) {
+        $attr['alt'] = wp_strip_all_tags($caption);
+    } else {
+        // Fallback to title
+        $attr['alt'] = get_the_title($attachment->ID);
+    }
+
+    return $attr;
+}</code></pre>
+
+      <h3>Bulk Add Alt Text to Existing Images</h3>
+      <pre><code class="language-php">// Bulk update alt text for existing images (run once)
+function bulk_add_alt_text_to_existing_images() {
+    $args = array(
+        'post_type' => 'attachment',
+        'post_mime_type' => 'image',
+        'post_status' => 'inherit',
+        'posts_per_page' => -1,
+        'meta_query' => array(
+            'relation' => 'OR',
+            array(
+                'key' => '_wp_attachment_image_alt',
+                'compare' => 'NOT EXISTS'
+            ),
+            array(
+                'key' => '_wp_attachment_image_alt',
+                'value' => '',
+                'compare' => '='
+            )
+        )
+    );
+
+    $images = get_posts($args);
+
+    foreach ($images as $image) {
+        // Generate alt text from title
+        $alt_text = $image->post_title;
+        $alt_text = str_replace(array('-', '_'), ' ', $alt_text);
+        $alt_text = ucwords($alt_text);
+
+        // Update alt text
+        update_post_meta($image->ID, '_wp_attachment_image_alt', $alt_text);
+    }
+
+    echo 'Updated ' . count($images) . ' images';
+}
+// Run once via admin page or WP-CLI</code></pre>
+
+      <h3>Add Alt Text Admin Column</h3>
+      <pre><code class="language-php">// Show alt text in media library
+add_filter('manage_media_columns', 'add_alt_text_column');
+function add_alt_text_column($columns) {
+    $columns['alt_text'] = 'Alt Text';
+    return $columns;
+}
+
+add_action('manage_media_custom_column', 'display_alt_text_column', 10, 2);
+function display_alt_text_column($column_name, $post_id) {
+    if ($column_name === 'alt_text') {
+        $alt_text = get_post_meta($post_id, '_wp_attachment_image_alt', true);
+        echo $alt_text ? esc_html($alt_text) : '&lt;span style="color:red;"&gt;Missing&lt;/span&gt;';
+    }
+}</code></pre>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Describe the image content specifically</li>
+        <li>Keep alt text under 125 characters</li>
+        <li>Don't start with "image of" or "picture of"</li>
+        <li>Include keywords naturally, not spammy</li>
+        <li>Leave alt empty for decorative images</li>
+      </ul>
+    `,
+    code: `add_action('add_attachment', 'auto_add_alt_text_to_images');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '5 min read',
+    category: 'WordPress SEO',
+    tags: ['SEO', 'Accessibility', 'Images', 'Alt Text', 'Image Optimization'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Auto Add Alt Text to WordPress Images - SEO & Accessibility 2025',
+      metaDescription: 'Automatically generate and add alt text to WordPress images. Improve SEO and accessibility with these code snippets.',
+      keywords: ['wordpress alt text', 'add alt text images wordpress', 'image seo wordpress', 'alt attribute wordpress', 'accessibility wordpress'],
+      canonical: '/blog/add-alt-text-images',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Auto Add Alt Text to Images in WordPress",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What is alt text and why is it important?",
+        answer: "Alt text (alternative text) describes images for screen readers and appears when images fail to load. It's crucial for accessibility (helping visually impaired users) and SEO (helping search engines understand image content)."
+      },
+      {
+        question: "Does alt text affect image SEO?",
+        answer: "Yes, alt text is a ranking factor for Google Image Search. It helps search engines understand what the image depicts, improves chances of ranking for relevant image queries, and provides context for how the image relates to page content."
+      },
+      {
+        question: "Should I use keywords in alt text?",
+        answer: "Include keywords naturally if they accurately describe the image. Never keyword stuff alt text - it hurts accessibility, violates WCAG guidelines, and can result in SEO penalties. Prioritize accurate description over SEO."
+      },
+      {
+        question: "What's the difference between alt text and image title?",
+        answer: "Alt text is for accessibility and SEO (read by screen readers). Image title appears on hover and provides additional context. Alt text is required for accessibility; title is optional and less important."
+      },
+      {
+        question: "Can I bulk add alt text to existing images?",
+        answer: "Yes, use the bulk update function provided. However, auto-generated alt text from filenames may not be optimal. Ideally, manually review and improve alt text for important images to ensure accuracy and relevance."
+      }
+    ]
+  },
+  {
+    id: 75,
+    slug: 'add-twitter-cards',
+    title: 'Add Twitter Card Meta Tags to WordPress',
+    excerpt: 'Implement Twitter Card tags to control how your content appears when shared on Twitter with rich media previews.',
+    content: `
+      <h2>Why Use Twitter Cards?</h2>
+      <p>Twitter Cards create rich media previews when your content is shared on Twitter, increasing engagement, click-through rates, and providing better control over how your content appears.</p>
+
+      <h3>The Code Snippet - Summary Card</h3>
+      <pre><code class="language-php">// Add Twitter Card meta tags
+add_action('wp_head', 'add_twitter_card_tags');
+function add_twitter_card_tags() {
+    if (!is_singular()) return;
+
+    // Card type
+    echo '&lt;meta name="twitter:card" content="summary_large_image" /&gt;' . "\n";
+
+    // Twitter handle
+    $twitter_site = '@yourusername'; // Replace with your Twitter handle
+    echo '&lt;meta name="twitter:site" content="' . esc_attr($twitter_site) . '" /&gt;' . "\n";
+
+    // Title
+    echo '&lt;meta name="twitter:title" content="' . esc_attr(get_the_title()) . '" /&gt;' . "\n";
+
+    // Description
+    $description = get_the_excerpt();
+    $description = wp_strip_all_tags($description);
+    if (!empty($description)) {
+        echo '&lt;meta name="twitter:description" content="' .
+             esc_attr($description) . '" /&gt;' . "\n";
+    }
+
+    // Image
+    if (has_post_thumbnail()) {
+        $image_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
+        echo '&lt;meta name="twitter:image" content="' . esc_url($image_url) . '" /&gt;' . "\n";
+
+        // Image alt text
+        $thumbnail_id = get_post_thumbnail_id(get_the_ID());
+        $image_alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
+        if ($image_alt) {
+            echo '&lt;meta name="twitter:image:alt" content="' .
+                 esc_attr($image_alt) . '" /&gt;' . "\n";
+        }
+    }
+
+    // Author Twitter handle (if available)
+    $author_twitter = get_the_author_meta('twitter');
+    if ($author_twitter) {
+        echo '&lt;meta name="twitter:creator" content="@' .
+             esc_attr($author_twitter) . '" /&gt;' . "\n";
+    }
+}</code></pre>
+
+      <h3>Enhanced with Custom Meta Description</h3>
+      <pre><code class="language-php">add_action('wp_head', 'add_enhanced_twitter_cards');
+function add_enhanced_twitter_cards() {
+    if (!is_singular()) return;
+
+    // Determine card type based on content
+    $card_type = has_post_thumbnail() ? 'summary_large_image' : 'summary';
+    echo '&lt;meta name="twitter:card" content="' . $card_type . '" /&gt;' . "\n";
+
+    echo '&lt;meta name="twitter:site" content="@yourusername" /&gt;' . "\n";
+    echo '&lt;meta name="twitter:title" content="' .
+         esc_attr(get_the_title()) . '" /&gt;' . "\n";
+
+    // Try custom meta description first
+    $description = get_post_meta(get_the_ID(), '_meta_description', true);
+    if (empty($description)) {
+        $description = get_the_excerpt();
+    }
+    $description = wp_strip_all_tags($description);
+    $description = substr($description, 0, 200); // Twitter limit
+
+    echo '&lt;meta name="twitter:description" content="' .
+         esc_attr($description) . '" /&gt;' . "\n";
+
+    if (has_post_thumbnail()) {
+        $image_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+        echo '&lt;meta name="twitter:image" content="' . esc_url($image_url) . '" /&gt;' . "\n";
+    }
+}</code></pre>
+
+      <h3>Add Author Twitter Field</h3>
+      <pre><code class="language-php">// Add Twitter field to user profile
+add_action('show_user_profile', 'add_twitter_profile_field');
+add_action('edit_user_profile', 'add_twitter_profile_field');
+function add_twitter_profile_field($user) {
+    ?&gt;
+    &lt;h3&gt;Social Media&lt;/h3&gt;
+    &lt;table class="form-table"&gt;
+        &lt;tr&gt;
+            &lt;th&gt;&lt;label for="twitter"&gt;Twitter Handle&lt;/label&gt;&lt;/th&gt;
+            &lt;td&gt;
+                &lt;input type="text" name="twitter" id="twitter"
+                       value="&lt;?php echo esc_attr(get_user_meta($user->ID, 'twitter', true)); ?&gt;"
+                       class="regular-text" placeholder="yourusername" /&gt;
+                &lt;p class="description"&gt;Your Twitter username without @&lt;/p&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt;
+    &lt;?php
+}
+
+// Save Twitter field
+add_action('personal_options_update', 'save_twitter_profile_field');
+add_action('edit_user_profile_update', 'save_twitter_profile_field');
+function save_twitter_profile_field($user_id) {
+    if (!current_user_can('edit_user', $user_id)) return;
+
+    if (isset($_POST['twitter'])) {
+        update_user_meta($user_id, 'twitter', sanitize_text_field($_POST['twitter']));
+    }
+}</code></pre>
+
+      <h3>Card Types</h3>
+      <ul>
+        <li><strong>summary:</strong> Title, description, thumbnail (minimum 120x120px)</li>
+        <li><strong>summary_large_image:</strong> Prominent image (minimum 300x157px, recommended 1200x628px)</li>
+        <li><strong>app:</strong> For mobile apps</li>
+        <li><strong>player:</strong> For video/audio content</li>
+      </ul>
+
+      <h3>Image Requirements</h3>
+      <ul>
+        <li><strong>File size:</strong> Less than 5MB</li>
+        <li><strong>Format:</strong> JPG, PNG, WEBP, GIF</li>
+        <li><strong>Aspect ratio:</strong> 2:1 (1200x600) or 1:1 (600x600)</li>
+        <li><strong>Recommended:</strong> 1200x628 pixels</li>
+      </ul>
+
+      <h3>Testing Twitter Cards</h3>
+      <p>Use Twitter's Card Validator: cards-dev.twitter.com/validator</p>
+    `,
+    code: `add_action('wp_head', 'add_twitter_card_tags');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '6 min read',
+    category: 'WordPress SEO',
+    tags: ['SEO', 'Twitter Cards', 'Social Media', 'Meta Tags', 'Social Sharing'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Add Twitter Card Tags WordPress - Social Media Optimization 2025',
+      metaDescription: 'Implement Twitter Card meta tags in WordPress for rich media previews. Improve engagement with proper social sharing setup.',
+      keywords: ['wordpress twitter cards', 'add twitter meta tags wordpress', 'twitter card wordpress', 'social media wordpress', 'twitter preview'],
+      canonical: '/blog/add-twitter-cards',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Add Twitter Card Meta Tags to WordPress",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between Twitter Cards and Open Graph?",
+        answer: "Twitter Cards are Twitter-specific, while Open Graph is Facebook's standard. Twitter falls back to Open Graph if Twitter Card tags aren't present, but Twitter Cards provide better control over Twitter-specific display."
+      },
+      {
+        question: "Do I need both Twitter Cards and Open Graph tags?",
+        answer: "Yes, implement both. Twitter Cards for Twitter, Open Graph for Facebook/LinkedIn. Some tags overlap, but having both ensures optimal display across all social platforms."
+      },
+      {
+        question: "What's the difference between summary and summary_large_image cards?",
+        answer: "Summary displays a small thumbnail beside text. Summary_large_image shows a prominent banner image above text, taking up more space and attracting more attention. Use summary_large_image for visual content."
+      },
+      {
+        question: "Why doesn't my Twitter Card image show up?",
+        answer: "Common issues: image too small (minimum 300x157px), file size over 5MB, incorrect URL, or cached old data. Use Twitter's Card Validator to test and clear cache after updating images."
+      },
+      {
+        question: "Do I need to apply for Twitter Card approval?",
+        answer: "No, Twitter removed the approval requirement. Just add the meta tags and validate with the Card Validator. Your cards will work immediately once Twitter crawls your page."
+      }
+    ]
+  },
+  {
+    id: 76,
+    slug: 'custom-admin-logo',
+    title: 'Change WordPress Login Logo',
+    excerpt: 'Replace the default WordPress logo on the login page with your own custom branding.',
+    content: `&lt;h2&gt;Why Customize the WordPress Login Logo?&lt;/h2&gt;
+&lt;p&gt;The WordPress login page displays the WordPress logo by default. Customizing it with your own logo creates a more professional, branded experience for users logging into your site.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Add this code to your theme's functions.php file&lt;/li&gt;
+  &lt;li&gt;Upload your custom logo to your theme folder&lt;/li&gt;
+  &lt;li&gt;Update the logo URL in the code&lt;/li&gt;
+  &lt;li&gt;Adjust dimensions as needed&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Logo Specifications&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Recommended size: 320×80 pixels&lt;/li&gt;
+  &lt;li&gt;Format: PNG with transparency&lt;/li&gt;
+  &lt;li&gt;Maximum width: 320px (scales down automatically)&lt;/li&gt;
+  &lt;li&gt;Keep file size under 100KB for fast loading&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Use high-quality images that look good on retina displays&lt;/li&gt;
+  &lt;li&gt;Test on different screen sizes&lt;/li&gt;
+  &lt;li&gt;Ensure the logo link points to your homepage&lt;/li&gt;
+  &lt;li&gt;Consider using SVG for better scaling&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Advanced Customization&lt;/h2&gt;
+&lt;p&gt;You can also customize the login page colors, background, and form styling using custom CSS in your theme or a custom login plugin.&lt;/p&gt;`,
+    code: `// Change login logo
+function custom_login_logo() {
+    echo '&lt;style type="text/css"&gt;
+        #login h1 a {
+            background-image: url(' . get_stylesheet_directory_uri() . '/images/custom-logo.png);
+            background-size: contain;
+            width: 320px;
+            height: 80px;
+        }
+    &lt;/style&gt;';
+}
+add_action('login_enqueue_scripts', 'custom_login_logo');
+
+// Change login logo URL
+function custom_login_logo_url() {
+    return home_url();
+}
+add_filter('login_headerurl', 'custom_login_logo_url');
+
+// Change login logo title
+function custom_login_logo_url_title() {
+    return get_bloginfo('name');
+}
+add_filter('login_headertext', 'custom_login_logo_url_title');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-20',
+    readTime: '4 min',
+    category: 'Admin Customization',
+    tags: ['admin', 'branding', 'login', 'logo', 'customization'],
+    difficulty: 'beginner',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Change WordPress Login Logo - Custom Branding Tutorial',
+      metaDescription: 'Learn how to replace the default WordPress login logo with your own custom branding. Step-by-step guide with code examples.',
+      keywords: ['wordpress login logo', 'custom login page', 'wordpress branding', 'change wp logo', 'login customization'],
+      canonical: 'https://shahmir.dev/snippets/custom-admin-logo',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Change WordPress Login Logo',
+        description: 'Replace the default WordPress logo on the login page with your own custom branding.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-20',
+        proficiencyLevel: 'Beginner'
+      }
+    },
+    faqs: [
+      {
+        question: "What size should my custom login logo be?",
+        answer: "The recommended size is 320×80 pixels. The login page will automatically scale larger images down to fit, but starting with the correct dimensions ensures better quality and faster loading."
+      },
+      {
+        question: "Can I use an SVG file for the login logo?",
+        answer: "Yes, SVG files work great for login logos as they scale perfectly on all screen sizes including retina displays. Just update the file extension in the code from .png to .svg."
+      },
+      {
+        question: "Will this work with custom login page plugins?",
+        answer: "Most custom login plugins have their own logo settings. This code works best with the default WordPress login page. Check your plugin's settings before adding custom code."
+      },
+      {
+        question: "How do I change where the logo links to?",
+        answer: "The code includes a filter for 'login_headerurl' that sets it to your homepage. You can change home_url() to any URL you want the logo to link to."
+      },
+      {
+        question: "Can I add CSS to further customize the login page?",
+        answer: "Absolutely! You can add more CSS within the &lt;style&gt; tags to customize background colors, form styling, button colors, and more. Just target the #login selector and its child elements."
+      }
+    ]
+  },
+  {
+    id: 77,
+    slug: 'custom-dashboard-widgets',
+    title: 'Add Custom Dashboard Widgets',
+    excerpt: 'Create custom widgets for the WordPress admin dashboard to display important information and quick access tools.',
+    content: `&lt;h2&gt;Why Add Custom Dashboard Widgets?&lt;/h2&gt;
+&lt;p&gt;Custom dashboard widgets allow you to display important information, quick statistics, helpful links, or custom tools right on the WordPress admin dashboard where users see them first.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Add the widget registration code to functions.php&lt;/li&gt;
+  &lt;li&gt;Create the callback function for widget content&lt;/li&gt;
+  &lt;li&gt;Customize the content and styling&lt;/li&gt;
+  &lt;li&gt;Test the widget appears on the dashboard&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Widget Content Ideas&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Site statistics and analytics overview&lt;/li&gt;
+  &lt;li&gt;Quick links to important pages&lt;/li&gt;
+  &lt;li&gt;Recent activity or notifications&lt;/li&gt;
+  &lt;li&gt;Support contact information&lt;/li&gt;
+  &lt;li&gt;Custom tools or calculators&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Keep widgets concise and focused on one purpose&lt;/li&gt;
+  &lt;li&gt;Use appropriate WordPress admin styling&lt;/li&gt;
+  &lt;li&gt;Consider user roles when displaying sensitive data&lt;/li&gt;
+  &lt;li&gt;Allow users to hide/show widgets if not critical&lt;/li&gt;
+  &lt;li&gt;Optimize database queries to avoid slowing down the dashboard&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Advanced Features&lt;/h2&gt;
+&lt;p&gt;You can add AJAX functionality to update widget content without page reload, include charts using JavaScript libraries, or create interactive forms within widgets.&lt;/p&gt;`,
+    code: `// Add custom dashboard widget
+function add_custom_dashboard_widget() {
+    wp_add_dashboard_widget(
+        'custom_dashboard_widget',
+        'Welcome to Your Site',
+        'custom_dashboard_widget_content'
+    );
+}
+add_action('wp_dashboard_setup', 'add_custom_dashboard_widget');
+
+// Widget content callback
+function custom_dashboard_widget_content() {
+    $current_user = wp_get_current_user();
+    echo '&lt;div class="custom-widget-content"&gt;';
+    echo '&lt;h3&gt;Hello, ' . esc_html($current_user-&gt;display_name) . '!&lt;/h3&gt;';
+    echo '&lt;p&gt;Welcome to your WordPress dashboard.&lt;/p&gt;';
+
+    // Quick stats
+    $post_count = wp_count_posts('post')-&gt;publish;
+    $page_count = wp_count_posts('page')-&gt;publish;
+
+    echo '&lt;ul&gt;';
+    echo '&lt;li&gt;Published Posts: ' . $post_count . '&lt;/li&gt;';
+    echo '&lt;li&gt;Published Pages: ' . $page_count . '&lt;/li&gt;';
+    echo '&lt;/ul&gt;';
+
+    // Quick links
+    echo '&lt;h4&gt;Quick Links&lt;/h4&gt;';
+    echo '&lt;ul&gt;';
+    echo '&lt;li&gt;&lt;a href="' . admin_url('post-new.php') . '"&gt;Create New Post&lt;/a&gt;&lt;/li&gt;';
+    echo '&lt;li&gt;&lt;a href="' . admin_url('edit.php') . '"&gt;View All Posts&lt;/a&gt;&lt;/li&gt;';
+    echo '&lt;/ul&gt;';
+    echo '&lt;/div&gt;';
+}
+
+// Optional: Add custom styles
+function custom_dashboard_widget_styles() {
+    echo '&lt;style&gt;
+        .custom-widget-content h3 {
+            color: #0073aa;
+        }
+        .custom-widget-content ul {
+            margin-left: 20px;
+        }
+    &lt;/style&gt;';
+}
+add_action('admin_head', 'custom_dashboard_widget_styles');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-20',
+    readTime: '5 min',
+    category: 'Admin Customization',
+    tags: ['admin', 'dashboard', 'widgets', 'customization', 'user-interface'],
+    difficulty: 'beginner',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Add Custom Dashboard Widgets in WordPress - Complete Guide',
+      metaDescription: 'Learn how to create custom WordPress dashboard widgets to display important information and tools. Includes code examples and best practices.',
+      keywords: ['wordpress dashboard widgets', 'custom admin widgets', 'wp_add_dashboard_widget', 'dashboard customization', 'admin interface'],
+      canonical: 'https://shahmir.dev/snippets/custom-dashboard-widgets',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Add Custom Dashboard Widgets',
+        description: 'Create custom widgets for the WordPress admin dashboard to display important information and quick access tools.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-20',
+        proficiencyLevel: 'Beginner'
+      }
+    },
+    faqs: [
+      {
+        question: "Can I control which users see my custom dashboard widget?",
+        answer: "Yes, you can add capability checks within your widget registration function. Use current_user_can() to check for specific capabilities before calling wp_add_dashboard_widget()."
+      },
+      {
+        question: "How do I remove default WordPress dashboard widgets?",
+        answer: "Use remove_meta_box() function hooked to 'wp_dashboard_setup'. For example: remove_meta_box('dashboard_quick_press', 'dashboard', 'side'); removes the Quick Draft widget."
+      },
+      {
+        question: "Can dashboard widgets include forms?",
+        answer: "Absolutely! You can include HTML forms in your widget content. Just make sure to handle form submission properly using WordPress nonces and appropriate security checks."
+      },
+      {
+        question: "How do I make my widget appear in a specific location?",
+        answer: "WordPress places widgets automatically, but you can use the 'normal' or 'side' context parameter in wp_add_dashboard_widget(), and adjust priority. Users can also drag widgets to rearrange them."
+      },
+      {
+        question: "Can I add AJAX functionality to dashboard widgets?",
+        answer: "Yes! You can use wp_localize_script() to pass AJAX URL and nonces to your JavaScript, then use jQuery to update widget content dynamically. This is great for real-time stats or live feeds."
+      }
+    ]
+  },
+  {
+    id: 78,
+    slug: 'remove-admin-menu-items',
+    title: 'Remove Admin Menu Items',
+    excerpt: 'Simplify the WordPress admin by removing unnecessary menu items based on user roles and site requirements.',
+    content: `&lt;h2&gt;Why Remove Admin Menu Items?&lt;/h2&gt;
+&lt;p&gt;Removing unnecessary admin menu items creates a cleaner, more focused admin interface. This is especially useful for client sites or when you want to prevent users from accessing certain areas.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Identify menu items you want to remove&lt;/li&gt;
+  &lt;li&gt;Add the code to functions.php&lt;/li&gt;
+  &lt;li&gt;Customize based on user roles if needed&lt;/li&gt;
+  &lt;li&gt;Test with different user accounts&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Common Menu Items to Remove&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Posts (if running a static site)&lt;/li&gt;
+  &lt;li&gt;Comments (if disabled)&lt;/li&gt;
+  &lt;li&gt;Tools (for basic users)&lt;/li&gt;
+  &lt;li&gt;Plugins (for non-admins)&lt;/li&gt;
+  &lt;li&gt;Themes (for editors)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Only remove items users don't need access to&lt;/li&gt;
+  &lt;li&gt;Don't remove items you might need later&lt;/li&gt;
+  &lt;li&gt;Use role-based conditions for better control&lt;/li&gt;
+  &lt;li&gt;Document which items you've removed&lt;/li&gt;
+  &lt;li&gt;Test thoroughly with different user roles&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Menu Slug Reference&lt;/h2&gt;
+&lt;p&gt;Common menu slugs: 'index.php' (Dashboard), 'edit.php' (Posts), 'upload.php' (Media), 'edit.php?post_type=page' (Pages), 'edit-comments.php' (Comments), 'themes.php' (Appearance), 'plugins.php' (Plugins), 'users.php' (Users), 'tools.php' (Tools), 'options-general.php' (Settings).&lt;/p&gt;`,
+    code: `// Remove admin menu items
+function remove_admin_menu_items() {
+    // Remove for all users
+    remove_menu_page('edit-comments.php');  // Comments
+    remove_menu_page('tools.php');           // Tools
+
+    // Remove for non-admins only
+    if (!current_user_can('manage_options')) {
+        remove_menu_page('plugins.php');     // Plugins
+        remove_menu_page('themes.php');      // Appearance
+        remove_menu_page('users.php');       // Users
+        remove_menu_page('options-general.php'); // Settings
+    }
+}
+add_action('admin_menu', 'remove_admin_menu_items', 999);
+
+// Remove submenu items
+function remove_admin_submenu_items() {
+    // Remove specific submenu items
+    remove_submenu_page('themes.php', 'theme-editor.php'); // Theme Editor
+    remove_submenu_page('plugins.php', 'plugin-editor.php'); // Plugin Editor
+
+    // Remove for non-admins
+    if (!current_user_can('manage_options')) {
+        remove_submenu_page('options-general.php', 'options-permalink.php'); // Permalinks
+    }
+}
+add_action('admin_menu', 'remove_admin_submenu_items', 999);
+
+// Hide menu items with CSS (alternative method)
+function hide_admin_menu_items_css() {
+    if (!current_user_can('manage_options')) {
+        echo '&lt;style&gt;
+            #menu-tools,
+            #menu-comments {
+                display: none !important;
+            }
+        &lt;/style&gt;';
+    }
+}
+add_action('admin_head', 'hide_admin_menu_items_css');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-20',
+    readTime: '4 min',
+    category: 'Admin Customization',
+    tags: ['admin', 'menu', 'user-roles', 'permissions', 'interface'],
+    difficulty: 'beginner',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Remove WordPress Admin Menu Items - Simplify Admin Interface',
+      metaDescription: 'Learn how to remove unnecessary WordPress admin menu items to create a cleaner interface. Role-based customization included.',
+      keywords: ['remove wordpress menu', 'hide admin menu', 'remove_menu_page', 'admin customization', 'user roles'],
+      canonical: 'https://shahmir.dev/snippets/remove-admin-menu-items',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Remove Admin Menu Items',
+        description: 'Simplify the WordPress admin by removing unnecessary menu items based on user roles and site requirements.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-20',
+        proficiencyLevel: 'Beginner'
+      }
+    },
+    faqs: [
+      {
+        question: "Will removing menu items affect site functionality?",
+        answer: "No, removing menu items only hides the admin interface links. The actual functionality remains intact. Users just won't see those options in the menu."
+      },
+      {
+        question: "Can users still access removed pages by direct URL?",
+        answer: "Yes, hiding menu items doesn't restrict access. If you need to prevent access entirely, you should also implement capability checks or use a user role management plugin."
+      },
+      {
+        question: "What's the difference between remove_menu_page() and CSS hiding?",
+        answer: "remove_menu_page() completely removes the menu item from WordPress, while CSS just hides it visually. remove_menu_page() is the proper method, but CSS can be useful for quick testing."
+      },
+      {
+        question: "How do I find the slug for a custom post type menu?",
+        answer: "Custom post type menu slugs follow the pattern 'edit.php?post_type=your_post_type'. For example, 'edit.php?post_type=product' for WooCommerce products."
+      },
+      {
+        question: "Can I restore removed menu items later?",
+        answer: "Yes, simply remove or comment out the code that removes the menu items. WordPress will immediately show them again. No permanent changes are made to the database."
+      }
+    ]
+  },
+  {
+    id: 79,
+    slug: 'custom-admin-footer',
+    title: 'Change Admin Footer Text',
+    excerpt: 'Replace the default WordPress admin footer text with custom branding, support information, or helpful links.',
+    content: `&lt;h2&gt;Why Change Admin Footer Text?&lt;/h2&gt;
+&lt;p&gt;The WordPress admin footer displays "Thank you for creating with WordPress" by default. Customizing this text allows you to add your branding, support links, version information, or helpful messages for your team.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Add the filter code to functions.php&lt;/li&gt;
+  &lt;li&gt;Customize the text content&lt;/li&gt;
+  &lt;li&gt;Optionally add HTML and links&lt;/li&gt;
+  &lt;li&gt;Test appearance on different admin pages&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Footer Content Ideas&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Company name and copyright&lt;/li&gt;
+  &lt;li&gt;Support contact information&lt;/li&gt;
+  &lt;li&gt;Link to documentation or help desk&lt;/li&gt;
+  &lt;li&gt;Developer credits&lt;/li&gt;
+  &lt;li&gt;Version or last updated date&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Keep text concise and readable&lt;/li&gt;
+  &lt;li&gt;Include helpful links that make sense for your users&lt;/li&gt;
+  &lt;li&gt;Use proper HTML escaping for security&lt;/li&gt;
+  &lt;li&gt;Test on mobile devices as footer wraps on small screens&lt;/li&gt;
+  &lt;li&gt;Consider adding both left and right footer text&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Styling Options&lt;/h2&gt;
+&lt;p&gt;You can add custom CSS to style the footer text, change colors, or add icons. The footer uses the #wpfooter selector for styling.&lt;/p&gt;`,
+    code: `// Change left admin footer text
+function custom_admin_footer_text() {
+    $text = '&lt;span id="footer-thankyou"&gt;';
+    $text .= 'Developed by &lt;a href="https://shahmir.dev" target="_blank"&gt;Shahmir Khaliq&lt;/a&gt; | ';
+    $text .= '&lt;a href="mailto:support@example.com"&gt;Support&lt;/a&gt; | ';
+    $text .= '&lt;a href="https://docs.example.com" target="_blank"&gt;Documentation&lt;/a&gt;';
+    $text .= '&lt;/span&gt;';
+    return $text;
+}
+add_filter('admin_footer_text', 'custom_admin_footer_text');
+
+// Change right admin footer text (WordPress version)
+function custom_admin_footer_version() {
+    return 'Version 2.0 | Last Updated: ' . date('F Y');
+}
+add_filter('update_footer', 'custom_admin_footer_version', 11);
+
+// Conditional footer based on user role
+function role_based_admin_footer() {
+    $current_user = wp_get_current_user();
+
+    if (current_user_can('manage_options')) {
+        return 'Admin View | &lt;a href="' . home_url() . '" target="_blank"&gt;View Site&lt;/a&gt;';
+    } else {
+        return 'Need help? Contact &lt;a href="mailto:support@example.com"&gt;support@example.com&lt;/a&gt;';
+    }
+}
+add_filter('admin_footer_text', 'role_based_admin_footer');
+
+// Add custom styling to footer
+function custom_admin_footer_styles() {
+    echo '&lt;style&gt;
+        #wpfooter {
+            background: #f0f0f1;
+            padding: 10px;
+        }
+        #footer-thankyou a {
+            color: #2271b1;
+            font-weight: 600;
+        }
+    &lt;/style&gt;';
+}
+add_action('admin_head', 'custom_admin_footer_styles');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-20',
+    readTime: '3 min',
+    category: 'Admin Customization',
+    tags: ['admin', 'footer', 'branding', 'customization', 'interface'],
+    difficulty: 'beginner',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Change WordPress Admin Footer Text - Custom Branding Guide',
+      metaDescription: 'Learn how to customize WordPress admin footer text with your own branding, support links, and helpful information.',
+      keywords: ['wordpress admin footer', 'admin_footer_text', 'custom admin footer', 'wordpress branding', 'admin customization'],
+      canonical: 'https://shahmir.dev/snippets/custom-admin-footer',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Change Admin Footer Text',
+        description: 'Replace the default WordPress admin footer text with custom branding, support information, or helpful links.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-20',
+        proficiencyLevel: 'Beginner'
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between admin_footer_text and update_footer filters?",
+        answer: "admin_footer_text controls the left side of the admin footer (where 'Thank you for creating with WordPress' appears), while update_footer controls the right side (where the WordPress version is displayed)."
+      },
+      {
+        question: "Can I use HTML in the custom footer text?",
+        answer: "Yes, you can use HTML including links, spans, and basic formatting. Just make sure to properly escape any dynamic content for security using esc_html(), esc_url(), etc."
+      },
+      {
+        question: "Will custom footer text appear on all admin pages?",
+        answer: "Yes, the custom footer text appears on all admin pages. If you want different text on different pages, you can check the current screen using get_current_screen() within your function."
+      },
+      {
+        question: "Can I completely remove the admin footer?",
+        answer: "While you can return an empty string to hide the text, it's not recommended as the footer provides useful information. However, you can hide it with CSS: #wpfooter { display: none; }"
+      },
+      {
+        question: "How do I show different footer text for different user roles?",
+        answer: "Use current_user_can() within your filter function to check capabilities and return different text based on the user's role. The example code includes a role-based footer function."
+      }
+    ]
+  },
+  {
+    id: 80,
+    slug: 'add-admin-notice',
+    title: 'Display Admin Notices',
+    excerpt: 'Show custom notification messages in the WordPress admin area for important updates, warnings, or information.',
+    content: `&lt;h2&gt;Why Display Admin Notices?&lt;/h2&gt;
+&lt;p&gt;Admin notices are great for alerting users about important information like pending tasks, configuration requirements, updates, or warnings. They appear at the top of admin pages and grab attention.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Add the notice function to functions.php&lt;/li&gt;
+  &lt;li&gt;Choose the appropriate notice type&lt;/li&gt;
+  &lt;li&gt;Add conditions for when to show the notice&lt;/li&gt;
+  &lt;li&gt;Optionally make notices dismissible&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Notice Types&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;success:&lt;/strong&gt; Green - for successful operations&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;error:&lt;/strong&gt; Red - for errors and critical issues&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;warning:&lt;/strong&gt; Yellow/Orange - for warnings&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;info:&lt;/strong&gt; Blue - for general information&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Use appropriate notice types for the message severity&lt;/li&gt;
+  &lt;li&gt;Keep messages clear and actionable&lt;/li&gt;
+  &lt;li&gt;Make non-critical notices dismissible&lt;/li&gt;
+  &lt;li&gt;Don't show too many notices at once&lt;/li&gt;
+  &lt;li&gt;Store dismissed notice state in user meta&lt;/li&gt;
+  &lt;li&gt;Only show notices to users who need to see them&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Common Use Cases&lt;/h2&gt;
+&lt;p&gt;Display notices for plugin configuration requirements, pending updates, security warnings, feature announcements, data migration status, or action confirmations.&lt;/p&gt;`,
+    code: `// Basic admin notice
+function custom_admin_notice() {
+    echo '&lt;div class="notice notice-info is-dismissible"&gt;';
+    echo '&lt;p&gt;Welcome! Please complete your site setup.&lt;/p&gt;';
+    echo '&lt;/div&gt;';
+}
+add_action('admin_notices', 'custom_admin_notice');
+
+// Success notice
+function success_admin_notice() {
+    if (isset($_GET['settings-updated']) &amp;&amp; $_GET['settings-updated']) {
+        echo '&lt;div class="notice notice-success is-dismissible"&gt;';
+        echo '&lt;p&gt;&lt;strong&gt;Settings saved successfully!&lt;/strong&gt;&lt;/p&gt;';
+        echo '&lt;/div&gt;';
+    }
+}
+add_action('admin_notices', 'success_admin_notice');
+
+// Error notice
+function error_admin_notice() {
+    if (!function_exists('required_plugin_function')) {
+        echo '&lt;div class="notice notice-error"&gt;';
+        echo '&lt;p&gt;&lt;strong&gt;Error:&lt;/strong&gt; Required plugin is not active. ';
+        echo '&lt;a href="' . admin_url('plugins.php') . '"&gt;Activate now&lt;/a&gt;&lt;/p&gt;';
+        echo '&lt;/div&gt;';
+    }
+}
+add_action('admin_notices', 'error_admin_notice');
+
+// Dismissible notice with user meta
+function dismissible_admin_notice() {
+    $user_id = get_current_user_id();
+
+    // Check if user has dismissed this notice
+    if (get_user_meta($user_id, 'dismissed_welcome_notice', true)) {
+        return;
+    }
+
+    echo '&lt;div class="notice notice-warning is-dismissible" data-notice="welcome"&gt;';
+    echo '&lt;p&gt;Important: Please review your &lt;a href="' . admin_url('options-general.php') . '"&gt;site settings&lt;/a&gt;.&lt;/p&gt;';
+    echo '&lt;/div&gt;';
+}
+add_action('admin_notices', 'dismissible_admin_notice');
+
+// Handle notice dismissal via AJAX
+function dismiss_admin_notice() {
+    $user_id = get_current_user_id();
+    update_user_meta($user_id, 'dismissed_welcome_notice', true);
+    wp_die();
+}
+add_action('wp_ajax_dismiss_notice', 'dismiss_admin_notice');
+
+// Show notice only to admins
+function admin_only_notice() {
+    if (current_user_can('manage_options')) {
+        echo '&lt;div class="notice notice-info"&gt;';
+        echo '&lt;p&gt;Admin only: Server backup scheduled for tonight.&lt;/p&gt;';
+        echo '&lt;/div&gt;';
+    }
+}
+add_action('admin_notices', 'admin_only_notice');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-20',
+    readTime: '5 min',
+    category: 'Admin Customization',
+    tags: ['admin', 'notices', 'notifications', 'alerts', 'user-interface'],
+    difficulty: 'beginner',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Display WordPress Admin Notices - Complete Tutorial',
+      metaDescription: 'Learn how to create custom admin notices in WordPress for alerts, warnings, and information. Includes dismissible notices and best practices.',
+      keywords: ['wordpress admin notices', 'admin_notices hook', 'dismissible notices', 'wordpress alerts', 'admin notifications'],
+      canonical: 'https://shahmir.dev/snippets/add-admin-notice',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Display Admin Notices',
+        description: 'Show custom notification messages in the WordPress admin area for important updates, warnings, or information.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-20',
+        proficiencyLevel: 'Beginner'
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between dismissible and non-dismissible notices?",
+        answer: "Dismissible notices have an X button that users can click to hide them. Use dismissible for informational messages and non-dismissible for critical errors that require action."
+      },
+      {
+        question: "How do I make a notice stay dismissed permanently?",
+        answer: "Store the dismissed state in user meta using update_user_meta(). Check this meta value before displaying the notice. The example code shows how to implement this with AJAX."
+      },
+      {
+        question: "Can I show notices only on specific admin pages?",
+        answer: "Yes, use get_current_screen() to check which admin page is currently displayed. For example: if (get_current_screen()-&gt;id === 'dashboard') { /* show notice */ }"
+      },
+      {
+        question: "What's the difference between admin_notices and all_admin_notices hooks?",
+        answer: "admin_notices runs on most admin pages, while all_admin_notices runs on every admin page including those without UI. Use admin_notices for most cases."
+      },
+      {
+        question: "How do I add custom styling to admin notices?",
+        answer: "You can add custom CSS classes to your notice div and style them with custom CSS. Use admin_head hook to add your styles, or enqueue a custom admin stylesheet."
+      }
+    ]
+  },
+  {
+    id: 81,
+    slug: 'custom-post-columns',
+    title: 'Add Custom Admin Columns',
+    excerpt: 'Add custom columns to post, page, and custom post type listings in the WordPress admin for better content management.',
+    content: `&lt;h2&gt;Why Add Custom Admin Columns?&lt;/h2&gt;
+&lt;p&gt;Custom admin columns help you see important information at a glance in post listings. Display custom fields, taxonomies, featured images, word counts, or any meta data without opening each post.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Define new columns with the manage_posts_columns filter&lt;/li&gt;
+  &lt;li&gt;Populate column data with manage_posts_custom_column action&lt;/li&gt;
+  &lt;li&gt;Optionally make columns sortable&lt;/li&gt;
+  &lt;li&gt;Test the columns appear correctly&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Column Content Ideas&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Featured image thumbnails&lt;/li&gt;
+  &lt;li&gt;Custom field values&lt;/li&gt;
+  &lt;li&gt;Word count or character count&lt;/li&gt;
+  &lt;li&gt;Post status or visibility&lt;/li&gt;
+  &lt;li&gt;Custom taxonomy terms&lt;/li&gt;
+  &lt;li&gt;Last modified date&lt;/li&gt;
+  &lt;li&gt;View count or analytics&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Keep column content concise and scannable&lt;/li&gt;
+  &lt;li&gt;Use appropriate column widths with CSS&lt;/li&gt;
+  &lt;li&gt;Make data-heavy columns sortable for easier management&lt;/li&gt;
+  &lt;li&gt;Consider mobile responsiveness&lt;/li&gt;
+  &lt;li&gt;Add helpful tooltips for complex data&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Advanced Features&lt;/h2&gt;
+&lt;p&gt;You can make columns sortable by implementing the manage_edit-{post_type}_sortable_columns filter and modifying the WP_Query with pre_get_posts to handle the sorting logic.&lt;/p&gt;`,
+    code: `// Add custom columns for posts
+function add_custom_post_columns($columns) {
+    // Remove date column
+    unset($columns['date']);
+
+    // Add custom columns
+    $columns['featured_image'] = 'Featured Image';
+    $columns['word_count'] = 'Word Count';
+    $columns['last_modified'] = 'Last Modified';
+
+    // Re-add date at the end
+    $columns['date'] = 'Published';
+
+    return $columns;
+}
+add_filter('manage_posts_columns', 'add_custom_post_columns');
+
+// Populate custom column data
+function populate_custom_post_columns($column, $post_id) {
+    switch ($column) {
+        case 'featured_image':
+            if (has_post_thumbnail($post_id)) {
+                echo get_the_post_thumbnail($post_id, array(50, 50));
+            } else {
+                echo '—';
+            }
+            break;
+
+        case 'word_count':
+            $content = get_post_field('post_content', $post_id);
+            $word_count = str_word_count(strip_tags($content));
+            echo number_format($word_count) . ' words';
+            break;
+
+        case 'last_modified':
+            $modified = get_post_modified_time('F j, Y', false, $post_id);
+            echo $modified;
+            break;
+    }
+}
+add_action('manage_posts_custom_column', 'populate_custom_post_columns', 10, 2);
+
+// Make columns sortable
+function make_columns_sortable($columns) {
+    $columns['word_count'] = 'word_count';
+    $columns['last_modified'] = 'modified';
+    return $columns;
+}
+add_filter('manage_edit-post_sortable_columns', 'make_columns_sortable');
+
+// Handle custom column sorting
+function custom_column_orderby($query) {
+    if (!is_admin() || !$query-&gt;is_main_query()) {
+        return;
+    }
+
+    $orderby = $query-&gt;get('orderby');
+
+    if ('word_count' === $orderby) {
+        $query-&gt;set('meta_key', 'word_count');
+        $query-&gt;set('orderby', 'meta_value_num');
+    }
+}
+add_action('pre_get_posts', 'custom_column_orderby');
+
+// Add custom columns for custom post types
+function add_product_columns($columns) {
+    $columns['product_price'] = 'Price';
+    $columns['product_stock'] = 'Stock';
+    return $columns;
+}
+add_filter('manage_product_posts_columns', 'add_product_columns');
+
+// Style custom columns
+function style_custom_columns() {
+    echo '&lt;style&gt;
+        .column-featured_image { width: 60px; }
+        .column-word_count { width: 100px; }
+        .column-last_modified { width: 150px; }
+    &lt;/style&gt;';
+}
+add_action('admin_head', 'style_custom_columns');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-20',
+    readTime: '6 min',
+    category: 'Admin Customization',
+    tags: ['admin', 'columns', 'post-listing', 'custom-fields', 'interface'],
+    difficulty: 'intermediate',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Add Custom WordPress Admin Columns - Complete Guide',
+      metaDescription: 'Learn how to add custom columns to WordPress admin post listings. Display thumbnails, custom fields, word counts, and more.',
+      keywords: ['wordpress admin columns', 'manage_posts_columns', 'custom post columns', 'sortable columns', 'admin interface'],
+      canonical: 'https://shahmir.dev/snippets/custom-post-columns',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Add Custom Admin Columns',
+        description: 'Add custom columns to post, page, and custom post type listings in the WordPress admin for better content management.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-20',
+        proficiencyLevel: 'Intermediate'
+      }
+    },
+    faqs: [
+      {
+        question: "How do I add columns to a specific custom post type?",
+        answer: "Replace 'posts' with your post type slug in the filter name. For example, use 'manage_product_posts_columns' for a post type called 'product'. The action follows the same pattern: 'manage_product_posts_custom_column'."
+      },
+      {
+        question: "Can I reorder existing default columns?",
+        answer: "Yes, when you add your custom columns array, you control the order. Unset and re-add default columns in the position you want. The example code shows how to move the date column."
+      },
+      {
+        question: "How do I make a column sortable by custom field values?",
+        answer: "Add the column to the sortable_columns filter, then use pre_get_posts to set meta_key and orderby parameters. For numeric values, use 'meta_value_num' instead of 'meta_value'."
+      },
+      {
+        question: "What's the best way to display thumbnails in columns?",
+        answer: "Use get_the_post_thumbnail() with a small size array like array(50, 50). This ensures consistent thumbnail sizes and good performance. Add CSS to control column width."
+      },
+      {
+        question: "Can I add columns to the media library?",
+        answer: "Yes! Use 'manage_media_columns' filter and 'manage_media_custom_column' action. This is useful for displaying image dimensions, file sizes, or custom attachment metadata."
+      }
+    ]
+  },
+  {
+    id: 82,
+    slug: 'hide-update-notices',
+    title: 'Hide Update Notifications',
+    excerpt: 'Remove WordPress core, plugin, and theme update notifications from the admin for specific user roles.',
+    content: `&lt;h2&gt;Why Hide Update Notifications?&lt;/h2&gt;
+&lt;p&gt;Update notifications can be distracting for non-admin users who don't handle site maintenance. Hiding them creates a cleaner admin interface for editors, authors, and other contributors while keeping admins informed.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Add the code to functions.php&lt;/li&gt;
+  &lt;li&gt;Choose which updates to hide (core, plugins, themes)&lt;/li&gt;
+  &lt;li&gt;Set appropriate user role conditions&lt;/li&gt;
+  &lt;li&gt;Test with different user accounts&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Types of Update Notices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Core Updates:&lt;/strong&gt; WordPress version updates&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Plugin Updates:&lt;/strong&gt; Available plugin updates&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Theme Updates:&lt;/strong&gt; Available theme updates&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Update Nags:&lt;/strong&gt; Persistent update reminders&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Only hide for non-admin users, never for site administrators&lt;/li&gt;
+  &lt;li&gt;Keep admins informed about all available updates&lt;/li&gt;
+  &lt;li&gt;Document which roles see update notifications&lt;/li&gt;
+  &lt;li&gt;Consider security implications of delayed updates&lt;/li&gt;
+  &lt;li&gt;Implement a regular update schedule&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Security Considerations&lt;/h2&gt;
+&lt;p&gt;Hiding update notifications doesn't prevent updates—it just hides the notices. Ensure someone with admin access regularly checks for and applies important security updates. Never completely disable updates on production sites.&lt;/p&gt;`,
+    code: `// Hide update notices for non-admins
+function hide_update_notices() {
+    if (!current_user_can('update_core')) {
+        remove_action('admin_notices', 'update_nag', 3);
+    }
+}
+add_action('admin_head', 'hide_update_notices', 1);
+
+// Remove update nag for non-admins
+function remove_core_updates() {
+    if (!current_user_can('update_core')) {
+        remove_action('load-update-core.php', 'wp_update_plugins');
+        add_filter('pre_site_transient_update_core', '__return_null');
+    }
+}
+add_action('admin_init', 'remove_core_updates');
+
+// Hide plugin update notifications
+function hide_plugin_updates() {
+    if (!current_user_can('update_plugins')) {
+        remove_action('load-update-core.php', 'wp_update_plugins');
+        add_filter('pre_site_transient_update_plugins', '__return_null');
+    }
+}
+add_action('admin_init', 'hide_plugin_updates');
+
+// Hide theme update notifications
+function hide_theme_updates() {
+    if (!current_user_can('update_themes')) {
+        remove_action('load-update-core.php', 'wp_update_themes');
+        add_filter('pre_site_transient_update_themes', '__return_null');
+    }
+}
+add_action('admin_init', 'hide_theme_updates');
+
+// Remove update menu badge counts
+function remove_update_menu_counts() {
+    if (!current_user_can('update_core')) {
+        global $menu, $submenu;
+
+        // Remove counts from Dashboard menu
+        if (isset($menu[2][0])) {
+            $menu[2][0] = 'Dashboard';
+        }
+
+        // Remove counts from Updates menu
+        remove_submenu_page('index.php', 'update-core.php');
+    }
+}
+add_action('admin_menu', 'remove_update_menu_counts');
+
+// Hide admin footer version for non-admins
+function hide_admin_version() {
+    if (!current_user_can('update_core')) {
+        remove_filter('update_footer', 'core_update_footer');
+    }
+}
+add_action('admin_menu', 'hide_admin_version');
+
+// Completely hide updates page for non-admins
+function hide_updates_page() {
+    if (!current_user_can('update_core')) {
+        remove_submenu_page('index.php', 'update-core.php');
+    }
+}
+add_action('admin_menu', 'hide_updates_page');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-20',
+    readTime: '4 min',
+    category: 'Admin Customization',
+    tags: ['admin', 'updates', 'notifications', 'user-roles', 'interface'],
+    difficulty: 'beginner',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Hide WordPress Update Notifications - Clean Admin Interface',
+      metaDescription: 'Learn how to hide WordPress update notifications from non-admin users while keeping admins informed about available updates.',
+      keywords: ['hide wordpress updates', 'remove update notices', 'admin notifications', 'update_nag', 'wordpress admin'],
+      canonical: 'https://shahmir.dev/snippets/hide-update-notices',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Hide Update Notifications',
+        description: 'Remove WordPress core, plugin, and theme update notifications from the admin for specific user roles.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-20',
+        proficiencyLevel: 'Beginner'
+      }
+    },
+    faqs: [
+      {
+        question: "Is it safe to hide update notifications?",
+        answer: "It's safe as long as administrators still see updates and apply them regularly. Never hide updates from admins, and ensure someone is responsible for monitoring and applying security updates promptly."
+      },
+      {
+        question: "Will hiding notifications prevent automatic updates?",
+        answer: "No, hiding notifications only affects the admin interface. WordPress automatic background updates (for security releases) will still run unless explicitly disabled."
+      },
+      {
+        question: "Can I hide updates for specific plugins only?",
+        answer: "Yes, but it requires more advanced code. You can filter the update_plugins transient and remove specific plugins from the update list before it's displayed."
+      },
+      {
+        question: "What's the difference between hiding notices and disabling updates?",
+        answer: "Hiding notices just removes the visual indicators in the admin. Disabling updates prevents WordPress from checking for or applying updates at all, which is not recommended for security reasons."
+      },
+      {
+        question: "How do I show updates to editors but not authors?",
+        answer: "Use current_user_can() with different capabilities. For example, check for 'edit_others_posts' (editors) vs 'edit_posts' (authors) to control who sees update notifications."
+      }
+    ]
+  },
+  {
+    id: 83,
+    slug: 'change-admin-color-scheme',
+    title: 'Set Default Admin Color Scheme',
+    excerpt: 'Automatically set a default color scheme for the WordPress admin interface for all users or specific roles.',
+    content: `&lt;h2&gt;Why Set a Default Admin Color Scheme?&lt;/h2&gt;
+&lt;p&gt;WordPress offers several admin color schemes, but users start with the default blue. Setting a custom default creates brand consistency, improves readability, or matches your site's design from day one.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Choose from available WordPress color schemes&lt;/li&gt;
+  &lt;li&gt;Add the code to functions.php&lt;/li&gt;
+  &lt;li&gt;Optionally lock the scheme to prevent user changes&lt;/li&gt;
+  &lt;li&gt;Test with different user roles&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Available Color Schemes&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;fresh:&lt;/strong&gt; Default blue scheme&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;light:&lt;/strong&gt; Light gray scheme&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;modern:&lt;/strong&gt; Purple and white&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;blue:&lt;/strong&gt; Blue and white&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;midnight:&lt;/strong&gt; Dark blue&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;sunrise:&lt;/strong&gt; Orange and yellow&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;ectoplasm:&lt;/strong&gt; Green and purple&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;ocean:&lt;/strong&gt; Teal and gray&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;coffee:&lt;/strong&gt; Brown tones&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Choose schemes that provide good contrast for readability&lt;/li&gt;
+  &lt;li&gt;Consider accessibility for users with vision impairments&lt;/li&gt;
+  &lt;li&gt;Allow users to change schemes unless required for branding&lt;/li&gt;
+  &lt;li&gt;Test the scheme with all admin pages you use&lt;/li&gt;
+  &lt;li&gt;Dark schemes may reduce eye strain for some users&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Custom Color Schemes&lt;/h2&gt;
+&lt;p&gt;You can also create completely custom admin color schemes using the wp_admin_css_color() function to register new color combinations with your own CSS files.&lt;/p&gt;`,
+    code: `// Set default admin color scheme for all users
+function set_default_admin_color($user_id) {
+    $args = array(
+        'ID' =&gt; $user_id,
+        'admin_color' =&gt; 'midnight'
+    );
+    wp_update_user($args);
+}
+add_action('user_register', 'set_default_admin_color');
+
+// Set color scheme for existing users on first login
+function set_existing_user_color() {
+    $user_id = get_current_user_id();
+
+    if (!get_user_meta($user_id, 'admin_color_set', true)) {
+        update_user_meta($user_id, 'admin_color', 'midnight');
+        update_user_meta($user_id, 'admin_color_set', true);
+    }
+}
+add_action('admin_init', 'set_existing_user_color');
+
+// Remove color scheme picker to lock scheme
+function remove_color_scheme_picker() {
+    remove_action('admin_color_scheme_picker', 'admin_color_scheme_picker');
+}
+add_action('admin_init', 'remove_color_scheme_picker');
+
+// Hide color scheme selector from profile page
+function hide_color_scheme_selector() {
+    if (!current_user_can('manage_options')) {
+        echo '&lt;style&gt;
+            .user-admin-color-wrap {
+                display: none;
+            }
+        &lt;/style&gt;';
+    }
+}
+add_action('admin_head-profile.php', 'hide_color_scheme_selector');
+
+// Set different schemes for different roles
+function role_based_admin_colors($user_id) {
+    $user = get_userdata($user_id);
+
+    if (in_array('administrator', $user-&gt;roles)) {
+        update_user_meta($user_id, 'admin_color', 'midnight');
+    } elseif (in_array('editor', $user-&gt;roles)) {
+        update_user_meta($user_id, 'admin_color', 'modern');
+    } else {
+        update_user_meta($user_id, 'admin_color', 'light');
+    }
+}
+add_action('user_register', 'role_based_admin_colors');
+add_action('set_user_role', 'role_based_admin_colors');
+
+// Force specific color scheme (overrides user preference)
+function force_admin_color_scheme() {
+    global $_wp_admin_css_colors;
+    $_wp_admin_css_colors = array('midnight' =&gt; $_wp_admin_css_colors['midnight']);
+}
+add_action('admin_init', 'force_admin_color_scheme');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-20',
+    readTime: '4 min',
+    category: 'Admin Customization',
+    tags: ['admin', 'color-scheme', 'branding', 'interface', 'accessibility'],
+    difficulty: 'beginner',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Set WordPress Default Admin Color Scheme - Customization Guide',
+      metaDescription: 'Learn how to set a default admin color scheme in WordPress for better branding and user experience. Includes role-based options.',
+      keywords: ['wordpress admin colors', 'admin color scheme', 'admin_color', 'wordpress branding', 'admin interface'],
+      canonical: 'https://shahmir.dev/snippets/change-admin-color-scheme',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Set Default Admin Color Scheme',
+        description: 'Automatically set a default color scheme for the WordPress admin interface for all users or specific roles.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-20',
+        proficiencyLevel: 'Beginner'
+      }
+    },
+    faqs: [
+      {
+        question: "Which admin color scheme is best for accessibility?",
+        answer: "The 'light' and 'modern' schemes generally provide the best contrast. However, individual needs vary—some users prefer dark schemes. Consider allowing users to choose rather than forcing a single option."
+      },
+      {
+        question: "Will changing the color scheme affect plugin interfaces?",
+        answer: "Well-coded plugins should adapt to all WordPress color schemes. However, some poorly designed plugins may have hard-coded colors that don't work well with all schemes."
+      },
+      {
+        question: "Can I create a completely custom color scheme?",
+        answer: "Yes, use wp_admin_css_color() to register a custom scheme with your own CSS file. This requires creating a stylesheet that defines all the admin interface colors."
+      },
+      {
+        question: "How do I let users choose but set a default for new users?",
+        answer: "Use the user_register hook to set the default only for new users, and don't remove the color scheme picker. This way new users start with your choice but can change it in their profile."
+      },
+      {
+        question: "Does the color scheme affect the front-end of the site?",
+        answer: "No, admin color schemes only affect the WordPress admin dashboard. They have no impact on how your site appears to visitors on the front-end."
+      }
+    ]
+  },
+  {
+    id: 84,
+    slug: 'custom-help-tabs',
+    title: 'Add Custom Help Tabs',
+    excerpt: 'Add contextual help tabs to WordPress admin pages to provide guidance and documentation for users.',
+    content: `&lt;h2&gt;Why Add Custom Help Tabs?&lt;/h2&gt;
+&lt;p&gt;Help tabs appear in the top-right corner of admin pages when you click "Help". Adding custom help content provides contextual guidance for your users, documents custom features, and reduces support requests.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Hook into admin page load&lt;/li&gt;
+  &lt;li&gt;Get the current screen object&lt;/li&gt;
+  &lt;li&gt;Add help tabs with add_help_tab()&lt;/li&gt;
+  &lt;li&gt;Optionally add a help sidebar&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Help Content Ideas&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Feature documentation and usage instructions&lt;/li&gt;
+  &lt;li&gt;Troubleshooting tips and FAQs&lt;/li&gt;
+  &lt;li&gt;Links to video tutorials or external docs&lt;/li&gt;
+  &lt;li&gt;Keyboard shortcuts and quick tips&lt;/li&gt;
+  &lt;li&gt;Support contact information&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Keep help text concise and scannable&lt;/li&gt;
+  &lt;li&gt;Use clear headings and bullet points&lt;/li&gt;
+  &lt;li&gt;Add help tabs only to relevant admin pages&lt;/li&gt;
+  &lt;li&gt;Include practical examples and screenshots when helpful&lt;/li&gt;
+  &lt;li&gt;Update help content when features change&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Advanced Usage&lt;/h2&gt;
+&lt;p&gt;You can add multiple help tabs per page, each with its own content. The help sidebar can contain quick links to external documentation or support resources that appear on all tabs.&lt;/p&gt;`,
+    code: `// Add custom help tab to dashboard
+function add_custom_help_tab() {
+    $screen = get_current_screen();
+
+    // Only add to dashboard
+    if ($screen-&gt;id !== 'dashboard') {
+        return;
+    }
+
+    // Add help tab
+    $screen-&gt;add_help_tab(array(
+        'id' =&gt; 'custom_help_tab',
+        'title' =&gt; 'Getting Started',
+        'content' =&gt; '&lt;h3&gt;Welcome to Your Dashboard&lt;/h3&gt;
+            &lt;p&gt;Here are some quick tips to get you started:&lt;/p&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;strong&gt;Create Content:&lt;/strong&gt; Use Posts for blog articles and Pages for static content.&lt;/li&gt;
+                &lt;li&gt;&lt;strong&gt;Customize Appearance:&lt;/strong&gt; Visit Appearance &amp;gt; Customize to change your site design.&lt;/li&gt;
+                &lt;li&gt;&lt;strong&gt;Manage Users:&lt;/strong&gt; Add team members in Users &amp;gt; Add New.&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;p&gt;Need more help? Check our &lt;a href="https://docs.example.com" target="_blank"&gt;documentation&lt;/a&gt;.&lt;/p&gt;'
+    ));
+
+    // Add another help tab
+    $screen-&gt;add_help_tab(array(
+        'id' =&gt; 'troubleshooting_tab',
+        'title' =&gt; 'Troubleshooting',
+        'content' =&gt; '&lt;h3&gt;Common Issues&lt;/h3&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;strong&gt;Can\'t upload images?&lt;/strong&gt; Check file size limits and permissions.&lt;/li&gt;
+                &lt;li&gt;&lt;strong&gt;Page not updating?&lt;/strong&gt; Clear browser cache and try again.&lt;/li&gt;
+                &lt;li&gt;&lt;strong&gt;Plugin conflicts?&lt;/strong&gt; Deactivate plugins one by one to identify the issue.&lt;/li&gt;
+            &lt;/ul&gt;
+            &lt;p&gt;Still stuck? &lt;a href="mailto:support@example.com"&gt;Contact Support&lt;/a&gt;&lt;/p&gt;'
+    ));
+
+    // Set help sidebar
+    $screen-&gt;set_help_sidebar(
+        '&lt;h4&gt;Resources&lt;/h4&gt;
+        &lt;p&gt;&lt;a href="https://docs.example.com" target="_blank"&gt;Documentation&lt;/a&gt;&lt;/p&gt;
+        &lt;p&gt;&lt;a href="https://support.example.com" target="_blank"&gt;Support Forum&lt;/a&gt;&lt;/p&gt;
+        &lt;p&gt;&lt;a href="mailto:support@example.com"&gt;Email Support&lt;/a&gt;&lt;/p&gt;'
+    );
+}
+add_action('load-index.php', 'add_custom_help_tab');
+
+// Add help tab to custom post type pages
+function add_cpt_help_tab() {
+    $screen = get_current_screen();
+
+    if ($screen-&gt;post_type !== 'product') {
+        return;
+    }
+
+    $screen-&gt;add_help_tab(array(
+        'id' =&gt; 'product_help',
+        'title' =&gt; 'Product Help',
+        'content' =&gt; '&lt;h3&gt;Creating Products&lt;/h3&gt;
+            &lt;p&gt;Follow these steps to create a product:&lt;/p&gt;
+            &lt;ol&gt;
+                &lt;li&gt;Add a descriptive product title&lt;/li&gt;
+                &lt;li&gt;Write detailed product description&lt;/li&gt;
+                &lt;li&gt;Set price and inventory information&lt;/li&gt;
+                &lt;li&gt;Upload high-quality product images&lt;/li&gt;
+                &lt;li&gt;Assign categories and tags&lt;/li&gt;
+            &lt;/ol&gt;'
+    ));
+}
+add_action('load-post.php', 'add_cpt_help_tab');
+add_action('load-post-new.php', 'add_cpt_help_tab');
+
+// Add help tab to plugin settings page
+function add_settings_help_tab() {
+    $screen = get_current_screen();
+
+    if ($screen-&gt;id !== 'settings_page_my-plugin') {
+        return;
+    }
+
+    $screen-&gt;add_help_tab(array(
+        'id' =&gt; 'settings_help',
+        'title' =&gt; 'Settings Overview',
+        'content' =&gt; '&lt;h3&gt;Plugin Settings&lt;/h3&gt;
+            &lt;p&gt;Configure your plugin settings:&lt;/p&gt;
+            &lt;ul&gt;
+                &lt;li&gt;&lt;strong&gt;API Key:&lt;/strong&gt; Enter your API key from the provider dashboard&lt;/li&gt;
+                &lt;li&gt;&lt;strong&gt;Cache Duration:&lt;/strong&gt; Set how long to cache API responses&lt;/li&gt;
+                &lt;li&gt;&lt;strong&gt;Debug Mode:&lt;/strong&gt; Enable for troubleshooting (disable on production)&lt;/li&gt;
+            &lt;/ul&gt;'
+    ));
+}
+add_action('load-settings_page_my-plugin', 'add_settings_help_tab');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-20',
+    readTime: '5 min',
+    category: 'Admin Customization',
+    tags: ['admin', 'help', 'documentation', 'user-experience', 'interface'],
+    difficulty: 'beginner',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Add Custom WordPress Help Tabs - Contextual Help Guide',
+      metaDescription: 'Learn how to add custom help tabs to WordPress admin pages. Provide contextual guidance and documentation for users.',
+      keywords: ['wordpress help tabs', 'add_help_tab', 'contextual help', 'admin documentation', 'user guidance'],
+      canonical: 'https://shahmir.dev/snippets/custom-help-tabs',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Add Custom Help Tabs',
+        description: 'Add contextual help tabs to WordPress admin pages to provide guidance and documentation for users.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-20',
+        proficiencyLevel: 'Beginner'
+      }
+    },
+    faqs: [
+      {
+        question: "How do I add help tabs to a specific custom admin page?",
+        answer: "Use the load-{page_hook} action where {page_hook} is your custom page hook returned by add_menu_page() or add_submenu_page(). Get the screen with get_current_screen() and add your tabs."
+      },
+      {
+        question: "Can I remove default WordPress help tabs?",
+        answer: "Yes, use $screen-&gt;remove_help_tab('tab_id') to remove specific tabs. You can get existing tab IDs by inspecting $screen-&gt;get_help_tabs(). This is useful when you want to replace default help with custom content."
+      },
+      {
+        question: "What's the difference between help tabs and help sidebar?",
+        answer: "Help tabs contain the main content and appear as clickable tabs. The help sidebar appears on the right side of all tabs and typically contains quick links to external resources or consistent information."
+      },
+      {
+        question: "Can I include HTML and formatting in help content?",
+        answer: "Yes, you can use HTML in the content parameter. This includes paragraphs, lists, links, headings, and basic formatting. Avoid complex JavaScript or forms in help tabs."
+      },
+      {
+        question: "How do users access the help tabs?",
+        answer: "Users click the 'Help' button in the top-right corner of admin pages (next to 'Screen Options'). The help content slides down from the top. Make sure to inform users about this feature."
+      }
+    ]
+  },
+  {
+    id: 85,
+    slug: 'remove-screen-options',
+    title: 'Remove Screen Options Tab',
+    excerpt: 'Hide or remove the Screen Options tab from WordPress admin pages to simplify the interface.',
+    content: `&lt;h2&gt;Why Remove Screen Options?&lt;/h2&gt;
+&lt;p&gt;The Screen Options tab allows users to customize what appears on admin pages. For client sites or simplified interfaces, removing it prevents confusion and maintains a consistent layout across all users.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Identify which pages need Screen Options hidden&lt;/li&gt;
+  &lt;li&gt;Add the filter code to functions.php&lt;/li&gt;
+  &lt;li&gt;Test across different admin pages&lt;/li&gt;
+  &lt;li&gt;Verify desired layout is maintained&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;What Screen Options Controls&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Number of items displayed per page&lt;/li&gt;
+  &lt;li&gt;Which columns appear in lists&lt;/li&gt;
+  &lt;li&gt;Dashboard widget visibility&lt;/li&gt;
+  &lt;li&gt;Post editor meta boxes&lt;/li&gt;
+  &lt;li&gt;Page layout (1 or 2 columns)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Only remove for non-admin users when appropriate&lt;/li&gt;
+  &lt;li&gt;Consider if users benefit from customization options&lt;/li&gt;
+  &lt;li&gt;Document the decision to remove Screen Options&lt;/li&gt;
+  &lt;li&gt;Set sensible defaults when removing user control&lt;/li&gt;
+  &lt;li&gt;Test thoroughly to ensure nothing breaks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;When to Keep Screen Options&lt;/h2&gt;
+&lt;p&gt;Screen Options are useful for power users who manage content regularly. Consider keeping them for administrators and editors who benefit from customizing their workflow. Only remove when simplification truly benefits the user.&lt;/p&gt;`,
+    code: `// Remove Screen Options tab for non-admins
+function remove_screen_options() {
+    if (!current_user_can('manage_options')) {
+        return false;
+    }
+    return true;
+}
+add_filter('screen_options_show_screen', 'remove_screen_options');
+
+// Remove Screen Options from specific pages
+function remove_screen_options_selectively($show, $screen) {
+    // Remove from dashboard
+    if ($screen-&gt;id === 'dashboard') {
+        return false;
+    }
+
+    // Remove from post listing pages
+    if ($screen-&gt;id === 'edit-post' || $screen-&gt;id === 'edit-page') {
+        if (!current_user_can('manage_options')) {
+            return false;
+        }
+    }
+
+    return $show;
+}
+add_filter('screen_options_show_screen', 'remove_screen_options_selectively', 10, 2);
+
+// Remove Screen Options with CSS (alternative method)
+function hide_screen_options_css() {
+    if (!current_user_can('manage_options')) {
+        echo '&lt;style&gt;
+            #screen-options-link-wrap,
+            #screen-options-wrap {
+                display: none !important;
+            }
+        &lt;/style&gt;';
+    }
+}
+add_action('admin_head', 'hide_screen_options_css');
+
+// Remove Screen Options from custom post types
+function remove_cpt_screen_options($show, $screen) {
+    // Remove for specific custom post types
+    $hide_for_types = array('product', 'portfolio', 'testimonial');
+
+    if (in_array($screen-&gt;post_type, $hide_for_types)) {
+        return false;
+    }
+
+    return $show;
+}
+add_filter('screen_options_show_screen', 'remove_cpt_screen_options', 10, 2);
+
+// Remove Screen Options and set default values
+function set_default_screen_options() {
+    // Set default posts per page
+    add_filter('edit_posts_per_page', function() {
+        return 25;
+    });
+
+    // Set default columns for post listing
+    add_filter('manage_posts_columns', function($columns) {
+        // Remove author and comments columns by default
+        unset($columns['author']);
+        unset($columns['comments']);
+        return $columns;
+    });
+}
+add_action('admin_init', 'set_default_screen_options');
+
+// Remove Screen Options from plugins page
+function remove_plugins_screen_options($show, $screen) {
+    if ($screen-&gt;id === 'plugins') {
+        if (!current_user_can('install_plugins')) {
+            return false;
+        }
+    }
+    return $show;
+}
+add_filter('screen_options_show_screen', 'remove_plugins_screen_options', 10, 2);
+
+// Remove both Screen Options and Help tabs
+function remove_screen_options_and_help() {
+    if (!current_user_can('manage_options')) {
+        add_filter('screen_options_show_screen', '__return_false');
+        add_filter('contextual_help', '__return_empty_string', 999);
+    }
+}
+add_action('admin_head', 'remove_screen_options_and_help');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-20',
+    readTime: '4 min',
+    category: 'Admin Customization',
+    tags: ['admin', 'screen-options', 'interface', 'simplification', 'user-experience'],
+    difficulty: 'beginner',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Remove WordPress Screen Options Tab - Simplify Admin Interface',
+      metaDescription: 'Learn how to hide or remove the Screen Options tab from WordPress admin pages for a cleaner, simplified interface.',
+      keywords: ['remove screen options', 'hide screen options', 'screen_options_show_screen', 'admin interface', 'wordpress customization'],
+      canonical: 'https://shahmir.dev/snippets/remove-screen-options',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Remove Screen Options Tab',
+        description: 'Hide or remove the Screen Options tab from WordPress admin pages to simplify the interface.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-20',
+        proficiencyLevel: 'Beginner'
+      }
+    },
+    faqs: [
+      {
+        question: "What happens if I remove Screen Options but don't set defaults?",
+        answer: "WordPress will use its built-in defaults. Users won't be able to customize the view, but everything will still function normally with standard settings like 20 items per page."
+      },
+      {
+        question: "Can I remove Screen Options from only certain admin pages?",
+        answer: "Yes, the screen_options_show_screen filter provides a $screen parameter. Check $screen-&gt;id or $screen-&gt;post_type to conditionally remove Screen Options from specific pages only."
+      },
+      {
+        question: "Is it better to use the filter or CSS to hide Screen Options?",
+        answer: "Use the screen_options_show_screen filter as it's the proper WordPress way. CSS hiding is a quick workaround but doesn't actually disable the functionality, just hides it visually."
+      },
+      {
+        question: "Will removing Screen Options affect plugin functionality?",
+        answer: "Some plugins add their own options to the Screen Options tab. Removing it won't break functionality but may hide settings users need. Test plugins after implementing this change."
+      },
+      {
+        question: "Can users still customize without Screen Options?",
+        answer: "No, Screen Options is the primary interface for per-user admin customization. If you remove it, consider setting reasonable defaults that work for all users rather than forcing a one-size-fits-all approach."
+      }
+    ]
+  },
+  {
     id: 86,
     slug: 'custom-search-query',
     title: 'Customize WordPress Search Query for Better Results',
@@ -20684,6 +25105,2097 @@ add_action('wp_enqueue_scripts', 'enqueue_shortcode_assets');</code></pre>
       {
         question: "Why should shortcode functions return content instead of echo?",
         answer: "Shortcodes must return content because WordPress replaces the shortcode tag with the returned value in the content flow. If you echo instead of return, the content appears at the top of the page (before headers) and the shortcode position remains empty. Always use return, never echo, in shortcode callbacks."
+      }
+    ]
+  },
+  {
+    id: 91,
+    slug: 'database-optimization',
+    title: 'Optimize WordPress Database',
+    excerpt: 'Clean up and optimize your WordPress database for better performance by removing unnecessary data and optimizing tables.',
+    content: `&lt;h2&gt;Why Optimize the WordPress Database?&lt;/h2&gt;
+&lt;p&gt;Over time, WordPress databases accumulate post revisions, spam comments, transients, and other data that slows down queries. Regular optimization improves site speed and reduces server load.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Backup your database before making any changes&lt;/li&gt;
+  &lt;li&gt;Add optimization code to functions.php or use via cron&lt;/li&gt;
+  &lt;li&gt;Review what's being deleted before running&lt;/li&gt;
+  &lt;li&gt;Monitor database size and query performance&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;What Gets Cleaned&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Post revisions (old versions of posts/pages)&lt;/li&gt;
+  &lt;li&gt;Auto-draft posts&lt;/li&gt;
+  &lt;li&gt;Trashed posts and comments&lt;/li&gt;
+  &lt;li&gt;Spam and deleted comments&lt;/li&gt;
+  &lt;li&gt;Expired transients&lt;/li&gt;
+  &lt;li&gt;Orphaned post meta&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Always backup before optimization&lt;/li&gt;
+  &lt;li&gt;Schedule optimizations during low-traffic periods&lt;/li&gt;
+  &lt;li&gt;Limit post revisions to prevent future bloat&lt;/li&gt;
+  &lt;li&gt;Use indices on large custom tables&lt;/li&gt;
+  &lt;li&gt;Monitor database size regularly&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Safety Considerations&lt;/h2&gt;
+&lt;p&gt;Never run database optimization on a live site without testing first. Some operations are irreversible. Consider using plugins like WP-Optimize or Advanced Database Cleaner for safer automated optimization.&lt;/p&gt;`,
+    code: `// Clean post revisions
+function clean_post_revisions() {
+    global $wpdb;
+
+    // Delete all post revisions
+    $wpdb->query("DELETE FROM $wpdb->posts WHERE post_type = 'revision'");
+
+    // Clean up orphaned post meta
+    $wpdb->query("DELETE pm FROM $wpdb->postmeta pm LEFT JOIN $wpdb->posts wp ON wp.ID = pm.post_id WHERE wp.ID IS NULL");
+}
+
+// Clean auto-drafts
+function clean_auto_drafts() {
+    global $wpdb;
+    $wpdb->query("DELETE FROM $wpdb->posts WHERE post_status = 'auto-draft'");
+}
+
+// Clean trashed posts
+function clean_trashed_posts() {
+    global $wpdb;
+    $wpdb->query("DELETE FROM $wpdb->posts WHERE post_status = 'trash'");
+}
+
+// Clean spam and trashed comments
+function clean_spam_comments() {
+    global $wpdb;
+    $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam' OR comment_approved = 'trash'");
+
+    // Clean orphaned comment meta
+    $wpdb->query("DELETE FROM $wpdb->commentmeta WHERE comment_id NOT IN (SELECT comment_id FROM $wpdb->comments)");
+}
+
+// Clean expired transients
+function clean_expired_transients() {
+    global $wpdb;
+
+    $time = time();
+    $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_timeout_%' AND option_value < $time");
+    $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE '_transient_%' AND option_name NOT LIKE '_transient_timeout_%' AND option_name NOT IN (SELECT REPLACE(option_name, '_timeout', '') FROM $wpdb->options WHERE option_name LIKE '_transient_timeout_%')");
+}
+
+// Optimize database tables
+function optimize_database_tables() {
+    global $wpdb;
+
+    // Get all tables
+    $tables = $wpdb->get_results("SHOW TABLES", ARRAY_N);
+
+    foreach ($tables as $table) {
+        $wpdb->query("OPTIMIZE TABLE {$table[0]}");
+    }
+}
+
+// Complete database optimization function
+function complete_database_optimization() {
+    // Run all cleanup functions
+    clean_post_revisions();
+    clean_auto_drafts();
+    clean_trashed_posts();
+    clean_spam_comments();
+    clean_expired_transients();
+    optimize_database_tables();
+
+    // Log the optimization
+    error_log('WordPress Database Optimized: ' . date('Y-m-d H:i:s'));
+}
+
+// Schedule weekly optimization
+function schedule_database_optimization() {
+    if (!wp_next_scheduled('weekly_database_optimization')) {
+        wp_schedule_event(time(), 'weekly', 'weekly_database_optimization');
+    }
+}
+add_action('wp', 'schedule_database_optimization');
+add_action('weekly_database_optimization', 'complete_database_optimization');
+
+// Limit post revisions (add to wp-config.php instead)
+// define('WP_POST_REVISIONS', 3);
+
+// Manually trigger optimization (use with caution)
+// complete_database_optimization();`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-21',
+    readTime: '7 min',
+    category: 'WordPress Advanced',
+    tags: ['database', 'performance', 'optimization', 'maintenance', 'cleanup'],
+    difficulty: 'advanced',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Optimize WordPress Database - Complete Cleanup Guide',
+      metaDescription: 'Learn how to optimize your WordPress database by cleaning post revisions, transients, and spam. Improve site performance with database optimization.',
+      keywords: ['wordpress database optimization', 'clean wordpress database', 'database cleanup', 'optimize wp tables', 'remove revisions'],
+      canonical: 'https://shahmir.dev/snippets/database-optimization',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Optimize WordPress Database',
+        description: 'Clean up and optimize your WordPress database for better performance by removing unnecessary data and optimizing tables.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-21',
+        proficiencyLevel: 'Advanced'
+      }
+    },
+    faqs: [
+      {
+        question: "How often should I optimize my WordPress database?",
+        answer: "For most sites, monthly optimization is sufficient. High-traffic sites with frequent content updates may benefit from weekly optimization. The code example includes automated weekly scheduling."
+      },
+      {
+        question: "Will database optimization delete important data?",
+        answer: "The optimization removes only unnecessary data like post revisions, auto-drafts, spam comments, and expired transients. However, always backup before optimization in case you need to recover something."
+      },
+      {
+        question: "Can database optimization break my site?",
+        answer: "If done correctly, no. However, poorly written optimization queries or running without backups can cause issues. Always test on staging first and keep recent backups."
+      },
+      {
+        question: "Should I use a plugin or custom code for database optimization?",
+        answer: "Plugins like WP-Optimize are safer for beginners as they include safety checks and backup options. Custom code gives more control but requires careful testing. Choose based on your technical comfort level."
+      },
+      {
+        question: "How much space can database optimization save?",
+        answer: "Savings vary greatly depending on site age and activity. Sites with years of revisions can reduce database size by 30-50%. New sites may only save a few megabytes. Check your database size before and after to measure impact."
+      }
+    ]
+  },
+  {
+    id: 92,
+    slug: 'multisite-network-setup',
+    title: 'Enable WordPress Multisite',
+    excerpt: 'Set up a WordPress Multisite network to manage multiple sites from a single installation with shared themes and plugins.',
+    content: `&lt;h2&gt;Why Use WordPress Multisite?&lt;/h2&gt;
+&lt;p&gt;Multisite allows you to run multiple WordPress websites from one installation, sharing themes, plugins, and users. Perfect for managing company divisions, franchises, or educational institutions.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Backup your WordPress installation completely&lt;/li&gt;
+  &lt;li&gt;Deactivate all plugins&lt;/li&gt;
+  &lt;li&gt;Add multisite constants to wp-config.php&lt;/li&gt;
+  &lt;li&gt;Run the network setup from WordPress admin&lt;/li&gt;
+  &lt;li&gt;Update .htaccess and wp-config.php with provided code&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Multisite Types&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Subdomain:&lt;/strong&gt; site1.example.com, site2.example.com&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Subdirectory:&lt;/strong&gt; example.com/site1, example.com/site2&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Domain Mapping:&lt;/strong&gt; Custom domains for each site&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Plan your network structure before enabling multisite&lt;/li&gt;
+  &lt;li&gt;Use subdomain setup for better flexibility&lt;/li&gt;
+  &lt;li&gt;Test multisite on staging before production&lt;/li&gt;
+  &lt;li&gt;Configure wildcard DNS for subdomain networks&lt;/li&gt;
+  &lt;li&gt;Consider dedicated hosting for large networks&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Requirements&lt;/h2&gt;
+&lt;p&gt;WordPress must be installed in the root directory (not a subdirectory). You need access to wp-config.php and .htaccess files. For subdomain setup, wildcard DNS must be configured (*.example.com points to your server).&lt;/p&gt;`,
+    code: `/* Step 1: Add to wp-config.php (above "That's all, stop editing!") */
+
+// Enable Multisite
+define('WP_ALLOW_MULTISITE', true);
+
+/* Step 2: After running Network Setup, add these to wp-config.php */
+
+define('MULTISITE', true);
+define('SUBDOMAIN_INSTALL', true); // Set to false for subdirectory install
+define('DOMAIN_CURRENT_SITE', 'example.com');
+define('PATH_CURRENT_SITE', '/');
+define('SITE_ID_CURRENT_SITE', 1);
+define('BLOG_ID_CURRENT_SITE', 1);
+
+/* Step 3: Update .htaccess (for subdirectory installs) */
+
+// RewriteEngine On
+// RewriteBase /
+// RewriteRule ^index\.php$ - [L]
+//
+// # add a trailing slash to /wp-admin
+// RewriteRule ^([_0-9a-zA-Z-]+/)?wp-admin$ $1wp-admin/ [R=301,L]
+//
+// RewriteCond %{REQUEST_FILENAME} -f [OR]
+// RewriteCond %{REQUEST_FILENAME} -d
+// RewriteRule ^ - [L]
+// RewriteRule ^([_0-9a-zA-Z-]+/)?(wp-(content|admin|includes).*) $2 [L]
+// RewriteRule ^([_0-9a-zA-Z-]+/)?(.*\.php)$ $2 [L]
+// RewriteRule . index.php [L]
+
+/* Useful Multisite Functions */
+
+// Get current site ID
+function get_current_site_id() {
+    return get_current_blog_id();
+}
+
+// Switch between sites programmatically
+function do_something_on_another_site($site_id) {
+    switch_to_blog($site_id);
+
+    // Do your operations here
+    $posts = get_posts();
+
+    // Always restore to current site
+    restore_current_blog();
+}
+
+// Network-wide plugin activation
+function my_plugin_network_activate() {
+    global $wpdb;
+
+    $blog_ids = $wpdb->get_col("SELECT blog_id FROM $wpdb->blogs");
+
+    foreach ($blog_ids as $blog_id) {
+        switch_to_blog($blog_id);
+        // Perform activation tasks
+        restore_current_blog();
+    }
+}
+
+// Check if current site is the main site
+if (is_main_site()) {
+    // Code for main site only
+}
+
+// Get all sites in network
+function get_all_network_sites() {
+    return get_sites(array(
+        'number' => 1000,
+        'orderby' => 'registered',
+        'order' => 'DESC'
+    ));
+}
+
+// Create new site programmatically
+function create_new_subsite($domain, $path, $title, $user_id) {
+    $site_id = wpmu_create_blog(
+        $domain,
+        $path,
+        $title,
+        $user_id,
+        array('public' => 1)
+    );
+
+    return $site_id;
+}`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-21',
+    readTime: '8 min',
+    category: 'WordPress Advanced',
+    tags: ['multisite', 'network', 'configuration', 'advanced', 'setup'],
+    difficulty: 'advanced',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Enable WordPress Multisite - Complete Network Setup Guide',
+      metaDescription: 'Learn how to enable and configure WordPress Multisite to manage multiple sites from one installation. Step-by-step setup instructions included.',
+      keywords: ['wordpress multisite', 'wp network setup', 'multisite configuration', 'subdomain multisite', 'wordpress network'],
+      canonical: 'https://shahmir.dev/snippets/multisite-network-setup',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Enable WordPress Multisite',
+        description: 'Set up a WordPress Multisite network to manage multiple sites from a single installation with shared themes and plugins.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-21',
+        proficiencyLevel: 'Advanced'
+      }
+    },
+    faqs: [
+      {
+        question: "Can I convert an existing WordPress site to Multisite?",
+        answer: "Yes, but it requires careful planning. Backup everything first, as the process is irreversible without restoring from backup. Your current site becomes the main site in the network. Test on staging first."
+      },
+      {
+        question: "Should I use subdomain or subdirectory multisite?",
+        answer: "Subdomain (site1.example.com) offers more flexibility and better isolation between sites. Subdirectory (example.com/site1) is simpler to set up but can cause plugin conflicts. Most networks use subdomains."
+      },
+      {
+        question: "Can each site in the network have its own theme and plugins?",
+        answer: "Themes and plugins are installed network-wide, but network admins can activate them per-site. Individual site admins can only activate what's been enabled for their site by the network admin."
+      },
+      {
+        question: "What are the hosting requirements for WordPress Multisite?",
+        answer: "You need more resources than single-site WordPress. Look for hosts with multisite support, wildcard SSL for subdomain networks, and sufficient PHP memory (256MB+). Some shared hosts don't allow multisite."
+      },
+      {
+        question: "Can I use different domains for different sites in the network?",
+        answer: "Yes, using domain mapping. Install a domain mapping plugin and configure custom domains for each site. You'll need to point each domain's DNS to your server and may need a wildcard SSL certificate."
+      }
+    ]
+  },
+  {
+    id: 93,
+    slug: 'custom-post-status',
+    title: 'Register Custom Post Statuses',
+    excerpt: 'Create custom post statuses beyond draft and published to build editorial workflows and content approval processes.',
+    content: `&lt;h2&gt;Why Use Custom Post Statuses?&lt;/h2&gt;
+&lt;p&gt;Custom post statuses enable editorial workflows by adding states like "Pending Review," "Approved," or "Scheduled." Great for content teams with approval processes or publications with multiple stages.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Register your custom status with register_post_status()&lt;/li&gt;
+  &lt;li&gt;Add the status to the post editor dropdown&lt;/li&gt;
+  &lt;li&gt;Display the status in admin columns&lt;/li&gt;
+  &lt;li&gt;Set up notifications for status changes&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Common Custom Statuses&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Pending Review:&lt;/strong&gt; Awaiting editor approval&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Approved:&lt;/strong&gt; Approved but not published&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;In Progress:&lt;/strong&gt; Currently being written&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Scheduled:&lt;/strong&gt; Custom scheduling status&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Archived:&lt;/strong&gt; Published but archived&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Keep status names short and descriptive&lt;/li&gt;
+  &lt;li&gt;Document your workflow for team members&lt;/li&gt;
+  &lt;li&gt;Set appropriate capabilities for each status&lt;/li&gt;
+  &lt;li&gt;Add email notifications for status changes&lt;/li&gt;
+  &lt;li&gt;Show status counts in admin menu&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Workflow Integration&lt;/h2&gt;
+&lt;p&gt;Custom post statuses integrate with user roles and capabilities. Use them to create approval workflows where authors submit, editors review, and publishers schedule content. Combine with custom notifications for complete editorial control.&lt;/p&gt;`,
+    code: `// Register custom post status
+function register_custom_post_statuses() {
+    // Pending Review status
+    register_post_status('pending_review', array(
+        'label' => 'Pending Review',
+        'public' => false,
+        'exclude_from_search' => true,
+        'show_in_admin_all_list' => true,
+        'show_in_admin_status_list' => true,
+        'label_count' => _n_noop(
+            'Pending Review &lt;span class="count"&gt;(%s)&lt;/span&gt;',
+            'Pending Review &lt;span class="count"&gt;(%s)&lt;/span&gt;'
+        )
+    ));
+
+    // Approved status
+    register_post_status('approved', array(
+        'label' => 'Approved',
+        'public' => false,
+        'exclude_from_search' => true,
+        'show_in_admin_all_list' => true,
+        'show_in_admin_status_list' => true,
+        'label_count' => _n_noop(
+            'Approved &lt;span class="count"&gt;(%s)&lt;/span&gt;',
+            'Approved &lt;span class="count"&gt;(%s)&lt;/span&gt;'
+        )
+    ));
+
+    // In Progress status
+    register_post_status('in_progress', array(
+        'label' => 'In Progress',
+        'public' => false,
+        'exclude_from_search' => true,
+        'show_in_admin_all_list' => true,
+        'show_in_admin_status_list' => true,
+        'label_count' => _n_noop(
+            'In Progress &lt;span class="count"&gt;(%s)&lt;/span&gt;',
+            'In Progress &lt;span class="count"&gt;(%s)&lt;/span&gt;'
+        )
+    ));
+}
+add_action('init', 'register_custom_post_statuses');
+
+// Add custom statuses to post editor dropdown
+function add_custom_statuses_to_dropdown() {
+    global $post;
+
+    if (!$post) return;
+
+    $status = $post->post_status;
+    $statuses = array(
+        'pending_review' => 'Pending Review',
+        'approved' => 'Approved',
+        'in_progress' => 'In Progress'
+    );
+
+    echo '&lt;script&gt;
+    jQuery(document).ready(function($) {
+        ';
+
+    foreach ($statuses as $value => $label) {
+        echo '$("#post-status-select").append("&lt;option value=\'' . $value . '\' " + ';
+        echo '("' . $status . '" === "' . $value . '" ? "selected" : "") + ';
+        echo '"&gt;' . $label . '&lt;/option&gt;");';
+    }
+
+    echo '
+    });
+    &lt;/script&gt;';
+}
+add_action('admin_footer-post.php', 'add_custom_statuses_to_dropdown');
+add_action('admin_footer-post-new.php', 'add_custom_statuses_to_dropdown');
+
+// Display custom status in post listing
+function display_custom_status_in_list($statuses) {
+    global $post;
+
+    $status_labels = array(
+        'pending_review' => 'Pending Review',
+        'approved' => 'Approved',
+        'in_progress' => 'In Progress'
+    );
+
+    if (isset($status_labels[$post->post_status])) {
+        return $status_labels[$post->post_status];
+    }
+
+    return $statuses;
+}
+add_filter('display_post_states', 'display_custom_status_in_list');
+
+// Send notification when post status changes
+function notify_on_status_change($new_status, $old_status, $post) {
+    // Only send for custom statuses
+    $custom_statuses = array('pending_review', 'approved', 'in_progress');
+
+    if (!in_array($new_status, $custom_statuses)) {
+        return;
+    }
+
+    // Get editors to notify
+    $editors = get_users(array('role' => 'editor'));
+
+    foreach ($editors as $editor) {
+        $subject = 'Post Status Changed: ' . $post->post_title;
+        $message = sprintf(
+            'Post "%s" status changed from %s to %s.\n\nEdit post: %s',
+            $post->post_title,
+            $old_status,
+            $new_status,
+            admin_url('post.php?post=' . $post->ID . '&action=edit')
+        );
+
+        wp_mail($editor->user_email, $subject, $message);
+    }
+}
+add_action('transition_post_status', 'notify_on_status_change', 10, 3);
+
+// Add status count to admin menu
+function add_status_count_to_menu() {
+    global $menu, $wpdb;
+
+    $count = $wpdb->get_var(
+        "SELECT COUNT(*) FROM $wpdb->posts WHERE post_status = 'pending_review' AND post_type = 'post'"
+    );
+
+    if ($count > 0) {
+        foreach ($menu as $key => $value) {
+            if ($menu[$key][2] == 'edit.php') {
+                $menu[$key][0] .= ' &lt;span class="update-plugins count-' . $count . '"&gt;&lt;span class="update-count"&gt;' . $count . '&lt;/span&gt;&lt;/span&gt;';
+                break;
+            }
+        }
+    }
+}
+add_action('admin_menu', 'add_status_count_to_menu');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-21',
+    readTime: '6 min',
+    category: 'WordPress Advanced',
+    tags: ['post-status', 'workflow', 'development', 'editorial', 'custom'],
+    difficulty: 'advanced',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Register Custom Post Statuses in WordPress - Editorial Workflow',
+      metaDescription: 'Learn how to create custom post statuses in WordPress for editorial workflows and content approval processes. Complete code examples included.',
+      keywords: ['wordpress custom post status', 'register_post_status', 'editorial workflow', 'content approval', 'post workflow'],
+      canonical: 'https://shahmir.dev/snippets/custom-post-status',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Register Custom Post Statuses',
+        description: 'Create custom post statuses beyond draft and published to build editorial workflows and content approval processes.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-21',
+        proficiencyLevel: 'Advanced'
+      }
+    },
+    faqs: [
+      {
+        question: "How do custom post statuses differ from post categories?",
+        answer: "Post statuses define the publication state of content (draft, published, etc.) while categories organize content by topic. Statuses affect visibility and are part of editorial workflow, not content organization."
+      },
+      {
+        question: "Can I restrict who can use certain custom statuses?",
+        answer: "Yes, by checking user capabilities in your code. For example, only allow editors to mark posts as 'approved'. Combine with user role checks like current_user_can('edit_others_posts') to enforce restrictions."
+      },
+      {
+        question: "Will custom statuses appear in WordPress REST API?",
+        answer: "Custom statuses with 'show_in_rest' => true will appear in the REST API. Set this when registering the status if you need Block Editor or Gutenberg support."
+      },
+      {
+        question: "Can I have different custom statuses for different post types?",
+        answer: "Yes, check the post type in your status registration or admin hooks. Use get_post_type() to conditionally show statuses only for specific post types like 'post', 'page', or custom types."
+      },
+      {
+        question: "How do I query posts with custom statuses?",
+        answer: "Use WP_Query with the 'post_status' parameter: new WP_Query(array('post_status' => 'pending_review')). Multiple statuses: array('post_status' => array('approved', 'pending_review'))."
+      }
+    ]
+  },
+  {
+    id: 94,
+    slug: 'white-label-wordpress',
+    title: 'White Label WordPress Admin',
+    excerpt: 'Rebrand the WordPress admin area by replacing WordPress branding with your own for client sites and custom installations.',
+    content: `&lt;h2&gt;Why White Label WordPress?&lt;/h2&gt;
+&lt;p&gt;White labeling removes WordPress branding from the admin area, replacing it with your agency or client's brand. Creates a professional, custom experience and reinforces your brand identity.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Change the login logo and URL&lt;/li&gt;
+  &lt;li&gt;Customize admin footer text&lt;/li&gt;
+  &lt;li&gt;Replace dashboard widgets&lt;/li&gt;
+  &lt;li&gt;Modify the admin bar&lt;/li&gt;
+  &lt;li&gt;Customize email templates&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Elements to White Label&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Login page logo and styling&lt;/li&gt;
+  &lt;li&gt;Admin footer credits&lt;/li&gt;
+  &lt;li&gt;Dashboard welcome panel&lt;/li&gt;
+  &lt;li&gt;Admin bar WordPress logo&lt;/li&gt;
+  &lt;li&gt;Email from name and address&lt;/li&gt;
+  &lt;li&gt;Admin color scheme&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Maintain WordPress credits somewhere (license requirement)&lt;/li&gt;
+  &lt;li&gt;Keep branding consistent across all elements&lt;/li&gt;
+  &lt;li&gt;Test with different user roles&lt;/li&gt;
+  &lt;li&gt;Provide custom documentation with your branding&lt;/li&gt;
+  &lt;li&gt;Consider using a white label plugin for easier management&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Legal Considerations&lt;/h2&gt;
+&lt;p&gt;WordPress is GPL licensed. You can modify and rebrand it, but cannot remove copyright notices from code or claim WordPress as your own product. Keep license files intact and acknowledge WordPress somewhere in your documentation.&lt;/p&gt;`,
+    code: `// Change login logo
+function custom_login_logo() {
+    echo '&lt;style type="text/css"&gt;
+        #login h1 a {
+            background-image: url(' . get_stylesheet_directory_uri() . '/images/custom-logo.png);
+            background-size: contain;
+            width: 320px;
+            height: 80px;
+        }
+        body.login {
+            background: #f0f0f0;
+        }
+        .login form {
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    &lt;/style&gt;';
+}
+add_action('login_enqueue_scripts', 'custom_login_logo');
+
+// Change login logo URL and title
+function custom_login_url() {
+    return home_url();
+}
+add_filter('login_headerurl', 'custom_login_url');
+
+function custom_login_title() {
+    return get_bloginfo('name');
+}
+add_filter('login_headertext', 'custom_login_title');
+
+// Customize admin footer
+function custom_admin_footer() {
+    echo 'Powered by &lt;a href="https://youragency.com"&gt;Your Agency&lt;/a&gt; | Built with WordPress';
+}
+add_filter('admin_footer_text', 'custom_admin_footer');
+
+// Change admin footer version
+function remove_footer_version() {
+    return 'Version 1.0';
+}
+add_filter('update_footer', 'remove_footer_version', 11);
+
+// Remove WordPress logo from admin bar
+function remove_wp_logo($wp_admin_bar) {
+    $wp_admin_bar->remove_node('wp-logo');
+}
+add_action('admin_bar_menu', 'remove_wp_logo', 999);
+
+// Add custom admin bar menu
+function add_custom_admin_bar_logo($wp_admin_bar) {
+    $args = array(
+        'id' => 'custom_logo',
+        'title' => '&lt;span class="ab-icon"&gt;&lt;img src="' . get_stylesheet_directory_uri() . '/images/admin-icon.png" style="height: 20px; margin-top: 6px;"&gt;&lt;/span&gt;',
+        'href' => 'https://youragency.com',
+        'meta' => array(
+            'target' => '_blank',
+            'title' => 'Your Agency'
+        )
+    );
+    $wp_admin_bar->add_node($args);
+}
+add_action('admin_bar_menu', 'add_custom_admin_bar_logo', 1);
+
+// Remove default dashboard widgets
+function remove_dashboard_widgets() {
+    remove_meta_box('dashboard_primary', 'dashboard', 'side');
+    remove_meta_box('dashboard_quick_press', 'dashboard', 'side');
+    remove_meta_box('dashboard_activity', 'dashboard', 'normal');
+}
+add_action('wp_dashboard_setup', 'remove_dashboard_widgets');
+
+// Add custom dashboard widget
+function add_custom_dashboard_widget() {
+    wp_add_dashboard_widget(
+        'custom_dashboard_widget',
+        'Welcome to Your Site',
+        'custom_dashboard_content'
+    );
+}
+add_action('wp_dashboard_setup', 'add_custom_dashboard_widget');
+
+function custom_dashboard_content() {
+    echo '&lt;div style="text-align: center;"&gt;';
+    echo '&lt;img src="' . get_stylesheet_directory_uri() . '/images/dashboard-logo.png" style="max-width: 200px; margin: 20px 0;"&gt;';
+    echo '&lt;h3&gt;Welcome to Your Website Dashboard&lt;/h3&gt;';
+    echo '&lt;p&gt;Need help? &lt;a href="https://youragency.com/support"&gt;Contact Support&lt;/a&gt;&lt;/p&gt;';
+    echo '&lt;/div&gt;';
+}
+
+// Change email from name and address
+function custom_email_from_name($name) {
+    return 'Your Company Name';
+}
+add_filter('wp_mail_from_name', 'custom_email_from_name');
+
+function custom_email_from_address($email) {
+    return 'noreply@yourdomain.com';
+}
+add_filter('wp_mail_from', 'custom_email_from_address');
+
+// Remove WordPress version from various places
+remove_action('wp_head', 'wp_generator');
+add_filter('the_generator', '__return_empty_string');
+
+// Custom admin CSS
+function custom_admin_css() {
+    echo '&lt;style&gt;
+        #wpadminbar .ab-icon:before {
+            content: "" !important;
+        }
+        #wp-admin-bar-wp-logo {
+            display: none;
+        }
+    &lt;/style&gt;';
+}
+add_action('admin_head', 'custom_admin_css');
+add_action('wp_head', 'custom_admin_css');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-21',
+    readTime: '6 min',
+    category: 'WordPress Advanced',
+    tags: ['branding', 'admin', 'client-sites', 'white-label', 'customization'],
+    difficulty: 'intermediate',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'White Label WordPress Admin - Complete Rebranding Guide',
+      metaDescription: 'Learn how to white label WordPress by replacing default branding with your own. Perfect for agencies and custom client installations.',
+      keywords: ['white label wordpress', 'rebrand wordpress', 'custom wordpress admin', 'wordpress branding', 'agency wordpress'],
+      canonical: 'https://shahmir.dev/snippets/white-label-wordpress',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'White Label WordPress Admin',
+        description: 'Rebrand the WordPress admin area by replacing WordPress branding with your own for client sites and custom installations.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-21',
+        proficiencyLevel: 'Intermediate'
+      }
+    },
+    faqs: [
+      {
+        question: "Is it legal to remove WordPress branding?",
+        answer: "Yes, WordPress is GPL licensed which allows modification and rebranding. However, you must keep license files in the code and cannot claim WordPress itself as your product. Acknowledging WordPress somewhere is good practice."
+      },
+      {
+        question: "Will white labeling affect WordPress updates?",
+        answer: "No, white labeling only changes the appearance and branding. WordPress core updates, plugin updates, and all functionality continue to work normally."
+      },
+      {
+        question: "Should I use a plugin or custom code for white labeling?",
+        answer: "Plugins like White Label CMS or Ultimate Branding are easier for non-developers and offer more options. Custom code gives you complete control and doesn't add plugin overhead. Choose based on your needs and technical skill."
+      },
+      {
+        question: "Can I white label the WordPress REST API responses?",
+        answer: "Yes, you can filter REST API responses to remove or change WordPress identifiers. Use rest_prepare_{post_type} filters to modify output. However, this may break clients that expect standard WordPress responses."
+      },
+      {
+        question: "How do I white label WordPress emails?",
+        answer: "Change the from name and email using wp_mail_from and wp_mail_from_name filters. For complete email customization, consider email template plugins or custom email functions with your branding."
+      }
+    ]
+  },
+  {
+    id: 95,
+    slug: 'custom-email-sender',
+    title: 'Change WordPress Email From Address',
+    excerpt: 'Customize the sender name and email address for all WordPress system emails to match your brand.',
+    content: `&lt;h2&gt;Why Change Email From Address?&lt;/h2&gt;
+&lt;p&gt;By default, WordPress sends emails from "wordpress@yourdomain.com" which often gets flagged as spam. Changing to a professional address like "noreply@yourdomain.com" with your company name improves deliverability and brand recognition.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Set up a valid email address on your domain&lt;/li&gt;
+  &lt;li&gt;Add the filter code to functions.php&lt;/li&gt;
+  &lt;li&gt;Test email delivery&lt;/li&gt;
+  &lt;li&gt;Check spam folder if emails don't arrive&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Email Types Affected&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;New user registration emails&lt;/li&gt;
+  &lt;li&gt;Password reset emails&lt;/li&gt;
+  &lt;li&gt;Comment notification emails&lt;/li&gt;
+  &lt;li&gt;Admin notification emails&lt;/li&gt;
+  &lt;li&gt;Plugin and form emails (most)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Use a real, monitored email address&lt;/li&gt;
+  &lt;li&gt;Configure SPF and DKIM records for better deliverability&lt;/li&gt;
+  &lt;li&gt;Consider using an SMTP plugin for improved reliability&lt;/li&gt;
+  &lt;li&gt;Test emails after changing settings&lt;/li&gt;
+  &lt;li&gt;Use a professional sender name (not "Admin" or "WordPress")&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Improving Deliverability&lt;/h2&gt;
+&lt;p&gt;For better email delivery, use an SMTP service like SendGrid, Mailgun, or Amazon SES instead of PHP mail(). Configure SPF, DKIM, and DMARC records. Use a transactional email service for important messages.&lt;/p&gt;`,
+    code: `// Change email from address
+function custom_email_from_address($email) {
+    return 'noreply@yourdomain.com'; // Replace with your email
+}
+add_filter('wp_mail_from', 'custom_email_from_address');
+
+// Change email from name
+function custom_email_from_name($name) {
+    return 'Your Company Name'; // Replace with your name
+}
+add_filter('wp_mail_from_name', 'custom_email_from_name');
+
+// Alternative: Use site name as from name
+function site_name_email_from($name) {
+    return get_bloginfo('name');
+}
+add_filter('wp_mail_from_name', 'site_name_email_from');
+
+// Different sender for different email types
+function conditional_email_from($email) {
+    // Get the current email being sent
+    $backtrace = debug_backtrace();
+
+    // Check if it's a password reset email
+    if (isset($backtrace[4]['function']) && $backtrace[4]['function'] == 'retrieve_password') {
+        return 'support@yourdomain.com';
+    }
+
+    // Check if it's a new user email
+    if (isset($backtrace[4]['function']) && $backtrace[4]['function'] == 'wp_new_user_notification') {
+        return 'welcome@yourdomain.com';
+    }
+
+    // Default
+    return 'noreply@yourdomain.com';
+}
+add_filter('wp_mail_from', 'conditional_email_from');
+
+// Customize email content type (HTML emails)
+function set_html_email_content_type() {
+    return 'text/html';
+}
+add_filter('wp_mail_content_type', 'set_html_email_content_type');
+
+// Reset content type after sending (important!)
+function reset_email_content_type() {
+    remove_filter('wp_mail_content_type', 'set_html_email_content_type');
+}
+add_action('wp_mail_succeeded', 'reset_email_content_type');
+add_action('wp_mail_failed', 'reset_email_content_type');
+
+// Custom email headers for better deliverability
+function custom_email_headers($headers) {
+    $headers[] = 'Reply-To: support@yourdomain.com';
+    $headers[] = 'X-Mailer: WordPress/' . get_bloginfo('version');
+    return $headers;
+}
+add_filter('wp_mail_headers', 'custom_email_headers');
+
+// Test email function (call manually)
+function test_custom_email() {
+    $to = 'your-email@example.com';
+    $subject = 'Test Email from WordPress';
+    $message = 'This is a test email to verify custom email settings.';
+
+    $sent = wp_mail($to, $subject, $message);
+
+    if ($sent) {
+        echo 'Email sent successfully!';
+    } else {
+        echo 'Email failed to send.';
+    }
+}
+// Uncomment to test: add_action('init', 'test_custom_email');
+
+// Log email sending for debugging
+function log_email_sending($result) {
+    error_log('Email sent: ' . ($result ? 'Success' : 'Failed'));
+    return $result;
+}
+add_filter('wp_mail', 'log_email_sending');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-21',
+    readTime: '4 min',
+    category: 'WordPress Advanced',
+    tags: ['email', 'smtp', 'configuration', 'deliverability', 'branding'],
+    difficulty: 'beginner',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Change WordPress Email From Address - Complete Guide',
+      metaDescription: 'Learn how to customize WordPress email sender name and address for better deliverability and professional branding.',
+      keywords: ['wordpress email from', 'wp_mail_from', 'change email sender', 'wordpress smtp', 'email deliverability'],
+      canonical: 'https://shahmir.dev/snippets/custom-email-sender',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Change WordPress Email From Address',
+        description: 'Customize the sender name and email address for all WordPress system emails to match your brand.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-21',
+        proficiencyLevel: 'Beginner'
+      }
+    },
+    faqs: [
+      {
+        question: "Why are my WordPress emails going to spam?",
+        answer: "Common reasons include: using a fake from address, missing SPF/DKIM records, shared hosting with poor reputation, or using PHP mail() instead of SMTP. Configure proper DNS records and consider using an SMTP service."
+      },
+      {
+        question: "Should I use a real email address or noreply@?",
+        answer: "Use a real, monitored address for important transactional emails (password resets, purchases). For notifications users shouldn't reply to, noreply@ is acceptable but may hurt deliverability slightly. best practice: use a real address that forwards to your support team."
+      },
+      {
+        question: "Do I need an SMTP plugin to change the from address?",
+        answer: "No, the filters above work without plugins. However, SMTP plugins improve reliability significantly. They use authenticated SMTP servers instead of PHP mail(), which often gets blocked or flagged as spam."
+      },
+      {
+        question: "Will this affect plugin emails like WooCommerce or Contact Form 7?",
+        answer: "Most plugins respect the wp_mail_from filter, so yes. However, some plugins have their own email settings that override these filters. Check each plugin's email configuration."
+      },
+      {
+        question: "How do I test if my email settings are working?",
+        answer: "Use the test_custom_email() function provided in the code, or send a test password reset email to yourself. Check your spam folder if emails don't arrive in 5-10 minutes."
+      }
+    ]
+  },
+  {
+    id: 96,
+    slug: 'add-maintenance-mode',
+    title: 'Enable Maintenance Mode',
+    excerpt: 'Display a custom maintenance page to visitors while you update your site, with options for admin bypass.',
+    content: `&lt;h2&gt;Why Use Maintenance Mode?&lt;/h2&gt;
+&lt;p&gt;Maintenance mode shows a temporary "coming soon" or "under maintenance" page to visitors while you perform updates, redesigns, or troubleshooting. Admins can still access the site normally.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Create a maintenance page template&lt;/li&gt;
+  &lt;li&gt;Add the maintenance mode code to functions.php&lt;/li&gt;
+  &lt;li&gt;Test that admins can bypass maintenance mode&lt;/li&gt;
+  &lt;li&gt;Disable when work is complete&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Maintenance Page Elements&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Clear message about the situation&lt;/li&gt;
+  &lt;li&gt;Estimated return time (if known)&lt;/li&gt;
+  &lt;li&gt;Company logo and branding&lt;/li&gt;
+  &lt;li&gt;Contact information for urgent matters&lt;/li&gt;
+  &lt;li&gt;Social media links&lt;/li&gt;
+  &lt;li&gt;Countdown timer (optional)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Return 503 status code (Service Temporarily Unavailable)&lt;/li&gt;
+  &lt;li&gt;Include Retry-After header for search engines&lt;/li&gt;
+  &lt;li&gt;Allow admins to bypass maintenance mode&lt;/li&gt;
+  &lt;li&gt;Keep the page simple and fast-loading&lt;/li&gt;
+  &lt;li&gt;Test before activating on live site&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;SEO Considerations&lt;/h2&gt;
+&lt;p&gt;The 503 status code tells search engines this is temporary. Don't use maintenance mode for extended periods (weeks) as it may affect rankings. For longer outages, consider showing limited content or use a staging site for major work.&lt;/p&gt;`,
+    code: `// Enable maintenance mode
+function enable_maintenance_mode() {
+    // Allow admins to bypass
+    if (current_user_can('manage_options') || is_admin()) {
+        return;
+    }
+
+    // Allow access to login page
+    if (stristr($_SERVER['REQUEST_URI'], 'wp-login.php')) {
+        return;
+    }
+
+    // Set proper HTTP status
+    header('HTTP/1.1 503 Service Temporarily Unavailable');
+    header('Status: 503 Service Temporarily Unavailable');
+    header('Retry-After: 3600'); // 1 hour
+
+    // Display maintenance page
+    wp_die(get_maintenance_page(), 'Maintenance Mode', array('response' => 503));
+}
+add_action('get_header', 'enable_maintenance_mode');
+
+// Custom maintenance page HTML
+function get_maintenance_page() {
+    $html = '
+    &lt;!DOCTYPE html&gt;
+    &lt;html lang="en"&gt;
+    &lt;head&gt;
+        &lt;meta charset="UTF-8"&gt;
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+        &lt;title&gt;Site Under Maintenance&lt;/title&gt;
+        &lt;style&gt;
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+                margin: 0;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+            }
+            .container {
+                text-align: center;
+                padding: 40px;
+                max-width: 600px;
+            }
+            h1 {
+                font-size: 48px;
+                margin-bottom: 20px;
+            }
+            p {
+                font-size: 18px;
+                line-height: 1.6;
+                margin-bottom: 30px;
+            }
+            .icon {
+                font-size: 80px;
+                margin-bottom: 20px;
+            }
+        &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;div class="container"&gt;
+            &lt;div class="icon"&gt;🔧&lt;/div&gt;
+            &lt;h1&gt;Under Maintenance&lt;/h1&gt;
+            &lt;p&gt;We\'re currently performing scheduled maintenance to improve your experience.&lt;/p&gt;
+            &lt;p&gt;We\'ll be back shortly. Thank you for your patience!&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+    ';
+
+    return $html;
+}
+
+// Alternative: Load maintenance page from template file
+function load_maintenance_template() {
+    if (current_user_can('manage_options') || is_admin()) {
+        return;
+    }
+
+    if (stristr($_SERVER['REQUEST_URI'], 'wp-login.php')) {
+        return;
+    }
+
+    $template_file = get_stylesheet_directory() . '/maintenance.php';
+
+    if (file_exists($template_file)) {
+        header('HTTP/1.1 503 Service Temporarily Unavailable');
+        include($template_file);
+        exit();
+    }
+}
+// add_action('get_header', 'load_maintenance_template');
+
+// Maintenance mode with countdown timer
+function maintenance_with_countdown() {
+    $end_time = strtotime('2024-12-31 00:00:00'); // Set your end time
+    $current_time = time();
+
+    if ($current_time >= $end_time || current_user_can('manage_options') || is_admin()) {
+        return;
+    }
+
+    $html = '
+    &lt;!DOCTYPE html&gt;
+    &lt;html&gt;
+    &lt;head&gt;
+        &lt;title&gt;Coming Soon&lt;/title&gt;
+        &lt;style&gt;
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                padding: 50px;
+                background: #2c3e50;
+                color: white;
+            }
+            #countdown {
+                font-size: 48px;
+                margin: 30px 0;
+            }
+        &lt;/style&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;h1&gt;Coming Soon!&lt;/h1&gt;
+        &lt;div id="countdown"&gt;&lt;/div&gt;
+        &lt;script&gt;
+            var endTime = ' . $end_time . ' * 1000;
+            var countdown = setInterval(function() {
+                var now = new Date().getTime();
+                var distance = endTime - now;
+
+                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("countdown").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+
+                if (distance < 0) {
+                    clearInterval(countdown);
+                    location.reload();
+                }
+            }, 1000);
+        &lt;/script&gt;
+    &lt;/body&gt;
+    &lt;/html&gt;
+    ';
+
+    header('HTTP/1.1 503 Service Temporarily Unavailable');
+    die($html);
+}
+// add_action('get_header', 'maintenance_with_countdown');
+
+// Easy toggle via option
+function toggle_maintenance_mode() {
+    // Set to '1' to enable, '0' to disable
+    update_option('site_maintenance_mode', '0');
+}
+
+function check_maintenance_option() {
+    if (get_option('site_maintenance_mode') == '1') {
+        enable_maintenance_mode();
+    }
+}
+add_action('get_header', 'check_maintenance_option');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-21',
+    readTime: '5 min',
+    category: 'WordPress Advanced',
+    tags: ['maintenance', 'coming-soon', 'development', 'downtime', 'updates'],
+    difficulty: 'intermediate',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Enable WordPress Maintenance Mode - Custom Coming Soon Page',
+      metaDescription: 'Learn how to enable maintenance mode in WordPress with a custom page, admin bypass, and proper HTTP status codes for SEO.',
+      keywords: ['wordpress maintenance mode', 'coming soon page', 'under maintenance', 'wp maintenance', 'site downtime'],
+      canonical: 'https://shahmir.dev/snippets/add-maintenance-mode',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Enable Maintenance Mode',
+        description: 'Display a custom maintenance page to visitors while you update your site, with options for admin bypass.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-21',
+        proficiencyLevel: 'Intermediate'
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between 503 and 404 status codes?",
+        answer: "503 (Service Temporarily Unavailable) tells search engines this is temporary and to check back later. 404 (Not Found) indicates the page is gone permanently, which can hurt SEO. Always use 503 for maintenance mode."
+      },
+      {
+        question: "How do I access wp-admin during maintenance mode?",
+        answer: "The code examples include checks to bypass maintenance for logged-in admins and wp-login.php access. Navigate directly to /wp-admin and log in as usual."
+      },
+      {
+        question: "Can I whitelist specific IP addresses?",
+        answer: "Yes, add an IP check before displaying maintenance: if (in_array($_SERVER['REMOTE_ADDR'], array('your-ip', 'another-ip'))) { return; }. This allows testing from specific locations."
+      },
+      {
+        question: "Will maintenance mode affect my SEO?",
+        answer: "Short-term maintenance (hours to a few days) with proper 503 status won't harm SEO. Extended maintenance (weeks) may cause issues. Google understands temporary maintenance when properly configured."
+      },
+      {
+        question: "Should I use a plugin or custom code for maintenance mode?",
+        answer: `Plugins like WP Maintenance Mode offer more features (email collection, social feeds, etc.). Custom code is lighter and gives you full control. For simple maintenance, custom code is sufficient. For marketing/"coming soon" pages, plugins offer more.`
+      }
+    ]
+  },
+  {
+    id: 97,
+    slug: 'custom-upload-mime-types',
+    title: 'Allow Custom File Upload Types',
+    excerpt: 'Enable uploading of additional file types beyond WordPress defaults like SVG, WebP, JSON, or custom document formats.',
+    content: `&lt;h2&gt;Why Allow Custom MIME Types?&lt;/h2&gt;
+&lt;p&gt;WordPress restricts file uploads to common formats for security. However, you may need to upload SVG files, WebP images, font files, or other specialized formats that are blocked by default.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Identify the MIME type of the file format you need&lt;/li&gt;
+  &lt;li&gt;Add the upload_mimes filter to functions.php&lt;/li&gt;
+  &lt;li&gt;Test file uploads in the media library&lt;/li&gt;
+  &lt;li&gt;Consider security implications of each file type&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Common File Types to Enable&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;SVG:&lt;/strong&gt; Scalable vector graphics (image/svg+xml)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;WebP:&lt;/strong&gt; Modern image format (image/webp)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;JSON:&lt;/strong&gt; Data files (application/json)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;WEBM:&lt;/strong&gt; Video format (video/webm)&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Fonts:&lt;/strong&gt; WOFF, WOFF2, TTF files&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Only enable file types you actually need&lt;/li&gt;
+  &lt;li&gt;Be cautious with executable file types&lt;/li&gt;
+  &lt;li&gt;Sanitize SVG files to prevent XSS attacks&lt;/li&gt;
+  &lt;li&gt;Consider user role restrictions for sensitive formats&lt;/li&gt;
+  &lt;li&gt;Document which file types are allowed and why&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Security Warnings&lt;/h2&gt;
+&lt;p&gt;SVG files can contain JavaScript and pose XSS risks. Only allow SVG uploads for trusted users (admins). Never enable .php, .exe, .sh or other executable file types. Use plugins like Safe SVG for additional security when allowing SVG uploads.&lt;/p&gt;`,
+    code: `// Enable common custom file types
+function enable_custom_mime_types($mimes) {
+    // Images
+    $mimes['svg'] = 'image/svg+xml';
+    $mimes['svgz'] = 'image/svg+xml';
+    $mimes['webp'] = 'image/webp';
+    $mimes['ico'] = 'image/x-icon';
+
+    // Video
+    $mimes['webm'] = 'video/webm';
+
+    // Audio
+    $mimes['ogg'] = 'audio/ogg';
+    $mimes['flac'] = 'audio/flac';
+
+    // Documents
+    $mimes['json'] = 'application/json';
+    $mimes['jsonld'] = 'application/ld+json';
+    $mimes['epub'] = 'application/epub+zip';
+
+    // Fonts
+    $mimes['woff'] = 'font/woff';
+    $mimes['woff2'] = 'font/woff2';
+    $mimes['ttf'] = 'font/ttf';
+    $mimes['otf'] = 'font/otf';
+    $mimes['eot'] = 'application/vnd.ms-fontobject';
+
+    // Archives
+    $mimes['rar'] = 'application/x-rar-compressed';
+    $mimes['7z'] = 'application/x-7z-compressed';
+
+    return $mimes;
+}
+add_filter('upload_mimes', 'enable_custom_mime_types');
+
+// Enable SVG support with security check
+function enable_svg_upload($mimes) {
+    $mimes['svg'] = 'image/svg+xml';
+    return $mimes;
+}
+add_filter('upload_mimes', 'enable_svg_upload');
+
+// Fix SVG thumbnail display
+function fix_svg_display($response, $attachment, $meta) {
+    if ($response['mime'] == 'image/svg+xml' && empty($response['sizes'])) {
+        $svg_path = get_attached_file($attachment->ID);
+
+        if (file_exists($svg_path)) {
+            $dimensions = @getimagesize($svg_path);
+            if ($dimensions) {
+                $response['sizes'] = array(
+                    'full' => array(
+                        'url' => $response['url'],
+                        'width' => $dimensions[0],
+                        'height' => $dimensions[1],
+                        'orientation' => $dimensions[0] > $dimensions[1] ? 'landscape' : 'portrait'
+                    )
+                );
+            }
+        }
+    }
+
+    return $response;
+}
+add_filter('wp_prepare_attachment_for_js', 'fix_svg_display', 10, 3);
+
+// Sanitize SVG files on upload (basic sanitization)
+function sanitize_svg_upload($file) {
+    if ($file['type'] === 'image/svg+xml') {
+        $svg_content = file_get_contents($file['tmp_name']);
+
+        // Remove potentially dangerous tags
+        $dangerous_tags = array('script', 'iframe', 'object', 'embed', 'link');
+
+        foreach ($dangerous_tags as $tag) {
+            $svg_content = preg_replace('/<' . $tag . '[^>]*>.*?<\/' . $tag . '>/is', '', $svg_content);
+            $svg_content = preg_replace('/<' . $tag . '[^>]*\/>/is', '', $svg_content);
+        }
+
+        // Remove event handlers
+        $svg_content = preg_replace('/\s*on\w+\s*=\s*["\'][^"\']*["\']/i', '', $svg_content);
+
+        // Write sanitized content back
+        file_put_contents($file['tmp_name'], $svg_content);
+    }
+
+    return $file;
+}
+add_filter('wp_handle_upload_prefilter', 'sanitize_svg_upload');
+
+// Restrict custom MIME types to admins only
+function restrict_custom_mimes_to_admin($mimes) {
+    // Only allow SVG for administrators
+    if (current_user_can('manage_options')) {
+        $mimes['svg'] = 'image/svg+xml';
+        $mimes['json'] = 'application/json';
+    }
+
+    return $mimes;
+}
+add_filter('upload_mimes', 'restrict_custom_mimes_to_admin');
+
+// Check actual file type (more secure)
+function validate_file_type($file) {
+    $filetype = wp_check_filetype_and_ext(
+        $file['tmp_name'],
+        $file['name']
+    );
+
+    // Log mismatches for security monitoring
+    if ($filetype['ext'] != $filetype['type']) {
+        error_log('File type mismatch: ' . $file['name']);
+    }
+
+    return $file;
+}
+add_filter('wp_handle_upload_prefilter', 'validate_file_type');
+
+// Increase upload size limit for specific file types
+function increase_upload_size_for_videos($size) {
+    // 256 MB for video files
+    return 256 * 1024 * 1024;
+}
+add_filter('upload_size_limit', 'increase_upload_size_for_videos');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-21',
+    readTime: '6 min',
+    category: 'WordPress Advanced',
+    tags: ['media', 'uploads', 'mime-types', 'security', 'files'],
+    difficulty: 'intermediate',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Allow Custom File Upload Types in WordPress - MIME Types Guide',
+      metaDescription: 'Learn how to enable SVG, WebP, JSON, and other custom file types in WordPress uploads safely with proper security measures.',
+      keywords: ['wordpress mime types', 'enable svg upload', 'upload_mimes filter', 'custom file types', 'wordpress media'],
+      canonical: 'https://shahmir.dev/snippets/custom-upload-mime-types',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Allow Custom File Upload Types',
+        description: 'Enable uploading of additional file types beyond WordPress defaults like SVG, WebP, JSON, or custom document formats.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-21',
+        proficiencyLevel: 'Intermediate'
+      }
+    },
+    faqs: [
+      {
+        question: "Is it safe to enable SVG uploads in WordPress?",
+        answer: "SVG files can contain JavaScript, posing XSS risks. Only enable for trusted users (admins). Use the sanitization code provided or plugins like Safe SVG that strip dangerous code while preserving the image."
+      },
+      {
+        question: "Why can't I upload WebP images by default?",
+        answer: "WordPress added WebP support in version 5.8+, but older installations may not have it enabled. The code above explicitly enables WebP support for all WordPress versions."
+      },
+      {
+        question: "Will enabling custom MIME types affect site security?",
+        answer: "It depends on what you enable. Image formats (SVG, WebP) need sanitization. Never enable executable files (.php, .exe, .sh). Only add formats you need and restrict to trusted users when appropriate."
+      },
+      {
+        question: "How do I find the MIME type for a specific file format?",
+        answer: "Upload the file to a test site or use online MIME type databases. On Linux/Mac, use 'file --mime-type filename'. Common formats are listed at iana.org/assignments/media-types."
+      },
+      {
+        question: "Can I restrict custom file types to specific user roles?",
+        answer: "Yes! Use current_user_can() checks within the upload_mimes filter. The code example shows how to allow SVG only for administrators. This prevents less trusted users from uploading potentially dangerous files."
+      }
+    ]
+  },
+  {
+    id: 98,
+    slug: 'debug-mode-logging',
+    title: 'Enable Debug Mode and Logging',
+    excerpt: 'Enable WordPress debug mode to troubleshoot errors, log issues, and develop plugins and themes more effectively.',
+    content: `&lt;h2&gt;Why Enable Debug Mode?&lt;/h2&gt;
+&lt;p&gt;Debug mode reveals PHP errors, notices, and warnings that WordPress normally hides. Essential for development, troubleshooting plugin conflicts, and identifying issues before they affect users.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Access your wp-config.php file via FTP or hosting panel&lt;/li&gt;
+  &lt;li&gt;Add debug constants before "That's all, stop editing!"&lt;/li&gt;
+  &lt;li&gt;Check debug.log file in wp-content directory&lt;/li&gt;
+  &lt;li&gt;Disable debug mode on production sites&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Debug Mode Options&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;WP_DEBUG:&lt;/strong&gt; Enable error reporting&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;WP_DEBUG_LOG:&lt;/strong&gt; Log errors to debug.log&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;WP_DEBUG_DISPLAY:&lt;/strong&gt; Show errors on screen&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;SCRIPT_DEBUG:&lt;/strong&gt; Use unminified JS/CSS&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;SAVEQUERIES:&lt;/strong&gt; Log database queries&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Never enable WP_DEBUG_DISPLAY on production sites&lt;/li&gt;
+  &lt;li&gt;Use WP_DEBUG_LOG to save errors without displaying them&lt;/li&gt;
+  &lt;li&gt;Regularly check and clear debug.log file&lt;/li&gt;
+  &lt;li&gt;Enable debug mode on staging/development environments&lt;/li&gt;
+  &lt;li&gt;Use error_log() function for custom debugging&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Security Considerations&lt;/h2&gt;
+&lt;p&gt;Displaying errors publicly exposes sensitive information about your site structure, plugins, and potential vulnerabilities. Always disable WP_DEBUG_DISPLAY on live sites. Use WP_DEBUG_LOG instead to log errors privately.&lt;/p&gt;`,
+    code: `/* Add these constants to wp-config.php */
+
+// Enable WP_DEBUG mode (shows all PHP errors, notices, warnings)
+define('WP_DEBUG', true);
+
+// Enable debug logging to /wp-content/debug.log
+define('WP_DEBUG_LOG', true);
+
+// Disable display of errors on the website (important for production!)
+define('WP_DEBUG_DISPLAY', false);
+@ini_set('display_errors', 0);
+
+// Use development versions of core JS and CSS files
+define('SCRIPT_DEBUG', true);
+
+// Save database queries for analysis
+define('SAVEQUERIES', true);
+
+/* Production-Safe Debug Mode */
+// Only log errors, don't display them
+define('WP_DEBUG', true);
+define('WP_DEBUG_LOG', true);
+define('WP_DEBUG_DISPLAY', false);
+@ini_set('display_errors', 0);
+
+/* Custom Error Logging Functions */
+
+// Log custom messages to debug.log
+function custom_debug_log($message) {
+    if (WP_DEBUG === true) {
+        if (is_array($message) || is_object($message)) {
+            error_log(print_r($message, true));
+        } else {
+            error_log($message);
+        }
+    }
+}
+
+// Usage: custom_debug_log('My debug message');
+// Usage: custom_debug_log($array_or_object);
+
+// Log with context
+function contextual_debug_log($message, $context = '') {
+    if (WP_DEBUG === true) {
+        $log_message = $context ? "[$context] " : '';
+        $log_message .= is_array($message) ? print_r($message, true) : $message;
+        error_log($log_message);
+    }
+}
+
+// Usage: contextual_debug_log($data, 'My Plugin');
+
+// Display database queries (for development only!)
+function display_database_queries() {
+    if (!defined('SAVEQUERIES') || !SAVEQUERIES) {
+        return;
+    }
+
+    global $wpdb;
+    echo '&lt;pre&gt;';
+    echo 'Total Queries: ' . count($wpdb->queries) . "\n";
+    echo 'Total Time: ' . array_sum(array_column($wpdb->queries, 1)) . " seconds\n\n";
+
+    foreach ($wpdb->queries as $query) {
+        echo $query[0] . ' - ' . $query[1] . "s\n";
+    }
+    echo '&lt;/pre&gt;';
+}
+// Add to footer for testing: add_action('wp_footer', 'display_database_queries');
+
+// Log slow queries
+function log_slow_queries() {
+    global $wpdb;
+
+    if (!defined('SAVEQUERIES') || !SAVEQUERIES) {
+        return;
+    }
+
+    foreach ($wpdb->queries as $query) {
+        // Log queries slower than 0.05 seconds
+        if ($query[1] > 0.05) {
+            error_log('Slow Query (' . $query[1] . 's): ' . $query[0]);
+        }
+    }
+}
+add_action('shutdown', 'log_slow_queries');
+
+// Log memory usage
+function log_memory_usage() {
+    if (WP_DEBUG) {
+        error_log('Memory Usage: ' . round(memory_get_peak_usage() / 1024 / 1024, 2) . ' MB');
+    }
+}
+add_action('shutdown', 'log_memory_usage');
+
+// Conditional debug mode (enable for specific users)
+function conditional_debug_mode() {
+    $debug_users = array('admin', 'developer'); // Replace with actual usernames
+    $current_user = wp_get_current_user();
+
+    if (in_array($current_user->user_login, $debug_users)) {
+        define('WP_DEBUG', true);
+        define('WP_DEBUG_DISPLAY', true);
+        @ini_set('display_errors', 1);
+    }
+}
+// add_action('init', 'conditional_debug_mode');
+
+// Log to custom file
+function log_to_custom_file($message, $file = 'custom-log.txt') {
+    $log_file = WP_CONTENT_DIR . '/' . $file;
+    $timestamp = date('Y-m-d H:i:s');
+    $log_message = "[$timestamp] " . $message . "\n";
+    file_put_contents($log_file, $log_message, FILE_APPEND);
+}
+
+// Monitor plugin and theme errors
+function monitor_errors() {
+    set_error_handler(function($errno, $errstr, $errfile, $errline) {
+        error_log("Error [$errno]: $errstr in $errfile on line $errline");
+        return false; // Let WordPress handle it too
+    });
+}
+// add_action('plugins_loaded', 'monitor_errors');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-21',
+    readTime: '5 min',
+    category: 'WordPress Advanced',
+    tags: ['debug', 'development', 'troubleshooting', 'logging', 'errors'],
+    difficulty: 'intermediate',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Enable WordPress Debug Mode and Logging - Developer Guide',
+      metaDescription: 'Learn how to enable WordPress debug mode safely for development and troubleshooting. Includes custom logging functions and best practices.',
+      keywords: ['wordpress debug mode', 'WP_DEBUG', 'debug.log', 'wordpress errors', 'troubleshooting wordpress'],
+      canonical: 'https://shahmir.dev/snippets/debug-mode-logging',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Enable Debug Mode and Logging',
+        description: 'Enable WordPress debug mode to troubleshoot errors, log issues, and develop plugins and themes more effectively.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-21',
+        proficiencyLevel: 'Intermediate'
+      }
+    },
+    faqs: [
+      {
+        question: "Should I enable debug mode on my live production site?",
+        answer: "Enable WP_DEBUG and WP_DEBUG_LOG, but NEVER enable WP_DEBUG_DISPLAY on production. Displaying errors publicly exposes sensitive information. Log errors privately to debug.log and review them regularly."
+      },
+      {
+        question: "Where is the debug.log file located?",
+        answer: "By default, debug.log is created in the /wp-content/ directory. If it doesn't appear, check file permissions (needs to be writable by web server). You can customize the location with ini_set('error_log', '/path/to/custom.log')."
+      },
+      {
+        question: "What's the difference between WP_DEBUG and SCRIPT_DEBUG?",
+        answer: "WP_DEBUG enables PHP error reporting. SCRIPT_DEBUG forces WordPress to use development (unminified) versions of core CSS and JavaScript files, making it easier to debug JavaScript issues."
+      },
+      {
+        question: "How do I view database queries?",
+        answer: "Enable SAVEQUERIES in wp-config.php, then access queries via $wpdb->queries array. The code includes a function to display all queries and their execution time. Only use on development sites!"
+      },
+      {
+        question: "Can debug mode slow down my site?",
+        answer: "Yes, especially SAVEQUERIES which stores all database queries in memory. WP_DEBUG itself has minimal impact. Only enable what you need and disable everything on production sites after troubleshooting."
+      }
+    ]
+  },
+  {
+    id: 99,
+    slug: 'custom-comment-system',
+    title: 'Build Custom Comment System',
+    excerpt: 'Create a completely custom comment system with custom fields, validation, and display templates beyond WordPress defaults.',
+    content: `&lt;h2&gt;Why Build a Custom Comment System?&lt;/h2&gt;
+&lt;p&gt;While WordPress has a built-in comment system, you may need additional fields like ratings, custom validation, special formatting, or integration with external services. A custom system gives you complete control.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Add custom fields to the comment form&lt;/li&gt;
+  &lt;li&gt;Validate and save custom field data&lt;/li&gt;
+  &lt;li&gt;Create custom comment display templates&lt;/li&gt;
+  &lt;li&gt;Add AJAX submission (optional)&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Custom Comment Features&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Rating stars or custom scores&lt;/li&gt;
+  &lt;li&gt;Image uploads or file attachments&lt;/li&gt;
+  &lt;li&gt;Social media profile links&lt;/li&gt;
+  &lt;li&gt;Custom formatting and emoji support&lt;/li&gt;
+  &lt;li&gt;Voting/like system for comments&lt;/li&gt;
+  &lt;li&gt;Custom moderation workflows&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Sanitize and validate all user input&lt;/li&gt;
+  &lt;li&gt;Use WordPress nonces for security&lt;/li&gt;
+  &lt;li&gt;Store custom data in comment meta&lt;/li&gt;
+  &lt;li&gt;Maintain spam protection (Akismet compatibility)&lt;/li&gt;
+  &lt;li&gt;Make forms accessible and mobile-friendly&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Advanced Features&lt;/h2&gt;
+&lt;p&gt;Integrate with services like Gravatar for avatars, implement threading levels, add real-time updates via AJAX, or create approval workflows with email notifications. Consider pagination for sites with many comments.&lt;/p&gt;`,
+    code: `// Add custom field to comment form (star rating)
+function add_rating_field_to_comment_form($fields) {
+    $fields['rating'] = '&lt;div class="comment-form-rating"&gt;
+        &lt;label for="rating"&gt;Rating&lt;span class="required"&gt;*&lt;/span&gt;&lt;/label&gt;
+        &lt;select name="rating" id="rating" required&gt;
+            &lt;option value=""&gt;Select Rating&lt;/option&gt;
+            &lt;option value="5"&gt;5 Stars&lt;/option&gt;
+            &lt;option value="4"&gt;4 Stars&lt;/option&gt;
+            &lt;option value="3"&gt;3 Stars&lt;/option&gt;
+            &lt;option value="2"&gt;2 Stars&lt;/option&gt;
+            &lt;option value="1"&gt;1 Star&lt;/option&gt;
+        &lt;/select&gt;
+    &lt;/div&gt;';
+
+    return $fields;
+}
+add_filter('comment_form_default_fields', 'add_rating_field_to_comment_form');
+
+// Validate custom field
+function validate_comment_rating($commentdata) {
+    if (!isset($_POST['rating']) || empty($_POST['rating'])) {
+        wp_die(__('Error: Please select a rating.'));
+    }
+
+    $rating = intval($_POST['rating']);
+    if ($rating < 1 || $rating > 5) {
+        wp_die(__('Error: Invalid rating value.'));
+    }
+
+    return $commentdata;
+}
+add_filter('preprocess_comment', 'validate_comment_rating');
+
+// Save custom field to comment meta
+function save_comment_rating($comment_id) {
+    if (isset($_POST['rating']) && !empty($_POST['rating'])) {
+        $rating = intval($_POST['rating']);
+        add_comment_meta($comment_id, 'rating', $rating);
+    }
+}
+add_action('comment_post', 'save_comment_rating');
+
+// Display custom field in comment
+function display_comment_rating($comment_text, $comment) {
+    $rating = get_comment_meta($comment->comment_ID, 'rating', true);
+
+    if ($rating) {
+        $stars = str_repeat('★', $rating) . str_repeat('☆', 5 - $rating);
+        $comment_text = '&lt;div class="comment-rating"&gt;' . $stars . '&lt;/div&gt;' . $comment_text;
+    }
+
+    return $comment_text;
+}
+add_filter('comment_text', 'display_comment_rating', 10, 2);
+
+// Custom comment template
+function custom_comment_template($comment, $args, $depth) {
+    $rating = get_comment_meta($comment->comment_ID, 'rating', true);
+    ?>
+    &lt;li id="comment-&lt;?php comment_ID(); ?&gt;" &lt;?php comment_class(); ?&gt;&gt;
+        &lt;article class="comment-body"&gt;
+            &lt;div class="comment-author vcard"&gt;
+                &lt;?php echo get_avatar($comment, 60); ?&gt;
+                &lt;b class="fn"&gt;&lt;?php echo get_comment_author_link(); ?&gt;&lt;/b&gt;
+            &lt;/div&gt;
+
+            &lt;?php if ($rating): ?&gt;
+                &lt;div class="comment-rating"&gt;
+                    &lt;?php echo str_repeat('★', $rating) . str_repeat('☆', 5 - $rating); ?&gt;
+                &lt;/div&gt;
+            &lt;?php endif; ?&gt;
+
+            &lt;div class="comment-meta"&gt;
+                &lt;time&gt;&lt;?php echo get_comment_date(); ?&gt; at &lt;?php echo get_comment_time(); ?&gt;&lt;/time&gt;
+            &lt;/div&gt;
+
+            &lt;div class="comment-content"&gt;
+                &lt;?php comment_text(); ?&gt;
+            &lt;/div&gt;
+
+            &lt;div class="reply"&gt;
+                &lt;?php comment_reply_link(array_merge($args, array(
+                    'depth' => $depth,
+                    'max_depth' => $args['max_depth']
+                ))); ?&gt;
+            &lt;/div&gt;
+        &lt;/article&gt;
+    &lt;?php
+}
+
+// AJAX comment submission
+function ajax_comment_submission() {
+    // Verify nonce
+    check_ajax_referer('ajax_comment_nonce', 'nonce');
+
+    // Get form data
+    $comment_post_ID = isset($_POST['comment_post_ID']) ? intval($_POST['comment_post_ID']) : 0;
+    $author = isset($_POST['author']) ? sanitize_text_field($_POST['author']) : '';
+    $email = isset($_POST['email']) ? sanitize_email($_POST['email']) : '';
+    $comment = isset($_POST['comment']) ? sanitize_textarea_field($_POST['comment']) : '';
+    $rating = isset($_POST['rating']) ? intval($_POST['rating']) : 0;
+
+    // Validate
+    if (!$comment_post_ID || empty($author) || empty($email) || empty($comment)) {
+        wp_send_json_error('Please fill in all required fields.');
+        return;
+    }
+
+    // Insert comment
+    $commentdata = array(
+        'comment_post_ID' => $comment_post_ID,
+        'comment_author' => $author,
+        'comment_author_email' => $email,
+        'comment_content' => $comment,
+        'comment_type' => 'comment',
+        'comment_approved' => 0, // Moderate
+        'user_id' => get_current_user_id()
+    );
+
+    $comment_id = wp_insert_comment($commentdata);
+
+    if ($comment_id) {
+        // Save rating
+        if ($rating > 0) {
+            add_comment_meta($comment_id, 'rating', $rating);
+        }
+
+        wp_send_json_success('Comment submitted successfully!');
+    } else {
+        wp_send_json_error('Failed to submit comment.');
+    }
+}
+add_action('wp_ajax_submit_comment', 'ajax_comment_submission');
+add_action('wp_ajax_nopriv_submit_comment', 'ajax_comment_submission');
+
+// Enqueue AJAX script
+function enqueue_comment_ajax_script() {
+    if (is_single()) {
+        wp_enqueue_script('comment-ajax', get_template_directory_uri() . '/js/comment-ajax.js', array('jquery'), '1.0', true);
+        wp_localize_script('comment-ajax', 'commentAjax', array(
+            'ajaxurl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('ajax_comment_nonce')
+        ));
+    }
+}
+add_action('wp_enqueue_scripts', 'enqueue_comment_ajax_script');
+
+// Add voting system to comments
+function add_comment_voting() {
+    wp_enqueue_script('comment-voting', get_template_directory_uri() . '/js/comment-voting.js', array('jquery'));
+}
+add_action('wp_enqueue_scripts', 'add_comment_voting');
+
+function vote_comment() {
+    check_ajax_referer('vote_comment_nonce', 'nonce');
+
+    $comment_id = isset($_POST['comment_id']) ? intval($_POST['comment_id']) : 0;
+    $vote = isset($_POST['vote']) ? sanitize_text_field($_POST['vote']) : '';
+
+    if (!$comment_id || !in_array($vote, array('up', 'down'))) {
+        wp_send_json_error();
+        return;
+    }
+
+    $votes = get_comment_meta($comment_id, 'votes', true);
+    if (!is_array($votes)) {
+        $votes = array('up' => 0, 'down' => 0);
+    }
+
+    $votes[$vote]++;
+    update_comment_meta($comment_id, 'votes', $votes);
+
+    wp_send_json_success($votes);
+}
+add_action('wp_ajax_vote_comment', 'vote_comment');
+add_action('wp_ajax_nopriv_vote_comment', 'vote_comment');`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-21',
+    readTime: '8 min',
+    category: 'WordPress Advanced',
+    tags: ['comments', 'development', 'advanced', 'custom-fields', 'ajax'],
+    difficulty: 'advanced',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Build Custom WordPress Comment System - Advanced Tutorial',
+      metaDescription: 'Learn how to create a custom WordPress comment system with ratings, custom fields, AJAX submission, and advanced features.',
+      keywords: ['wordpress custom comments', 'comment system', 'comment meta', 'ajax comments', 'comment ratings'],
+      canonical: 'https://shahmir.dev/snippets/custom-comment-system',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Build Custom Comment System',
+        description: 'Create a completely custom comment system with custom fields, validation, and display templates beyond WordPress defaults.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-21',
+        proficiencyLevel: 'Advanced'
+      }
+    },
+    faqs: [
+      {
+        question: "Should I build a custom comment system or use a third-party service?",
+        answer: "Build custom if you need specific features WordPress doesn't offer and want complete control. Use services like Disqus or Facebook Comments for social integration, easier spam management, or if you don't want to maintain comment infrastructure."
+      },
+      {
+        question: "How do I add image uploads to comments?",
+        answer: "Add a file input field to the comment form, handle the upload with wp_handle_upload() during comment submission, and store the attachment ID in comment meta. Be sure to validate file types and sizes for security."
+      },
+      {
+        question: "Can custom comment fields work with Akismet spam protection?",
+        answer: "Yes, Akismet checks comment_author, comment_author_email, comment_author_url, and comment_content by default. Your custom fields won't affect spam detection unless you specifically send them to Akismet."
+      },
+      {
+        question: "How do I make comments load via AJAX without page refresh?",
+        answer: "Enqueue jQuery, create a JavaScript handler for form submission that sends data via AJAX to wp_ajax hooks, process the comment server-side, and return HTML to insert into the DOM. The code example includes basic AJAX setup."
+      },
+      {
+        question: "Should I store custom comment data in comment meta or custom tables?",
+        answer: "Use comment meta (add_comment_meta) for most custom fields—it's WordPress standard, works with existing functions, and scales well. Only create custom tables for complex relational data or if you have hundreds of comments per post."
+      }
+    ]
+  },
+  {
+    id: 100,
+    slug: 'custom-walker-class',
+    title: 'Create Custom Walker Class for Menus',
+    excerpt: 'Build a custom Walker class to completely control WordPress navigation menu output with custom HTML structure and CSS classes.',
+    content: `&lt;h2&gt;Why Create a Custom Walker?&lt;/h2&gt;
+&lt;p&gt;WordPress Walkers control how menus, taxonomies, and other hierarchical data are output. Creating a custom Walker gives you complete control over menu HTML, allowing you to add custom classes, data attributes, icons, or complex structures.&lt;/p&gt;
+
+&lt;h2&gt;Implementation Steps&lt;/h2&gt;
+&lt;ol&gt;
+  &lt;li&gt;Extend the Walker_Nav_Menu class&lt;/li&gt;
+  &lt;li&gt;Override start_lvl(), start_el(), end_el(), end_lvl() methods&lt;/li&gt;
+  &lt;li&gt;Register your walker in wp_nav_menu() call&lt;/li&gt;
+  &lt;li&gt;Test menu output and nested items&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Use Cases&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Add custom CSS frameworks (Bootstrap, Foundation)&lt;/li&gt;
+  &lt;li&gt;Include icons or images in menu items&lt;/li&gt;
+  &lt;li&gt;Add mega menu markup&lt;/li&gt;
+  &lt;li&gt;Custom mobile menu structures&lt;/li&gt;
+  &lt;li&gt;Add data attributes for JavaScript&lt;/li&gt;
+  &lt;li&gt;Accessibility improvements&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Best Practices&lt;/h2&gt;
+&lt;ul&gt;
+  &lt;li&gt;Extend Walker_Nav_Menu, don't modify core files&lt;/li&gt;
+  &lt;li&gt;Test with multiple menu levels (2-3 deep)&lt;/li&gt;
+  &lt;li&gt;Maintain accessibility (ARIA attributes)&lt;/li&gt;
+  &lt;li&gt;Use proper escaping for output&lt;/li&gt;
+  &lt;li&gt;Document custom classes for other developers&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;Walker Methods&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;start_lvl():&lt;/strong&gt; Opens submenu wrapper. &lt;strong&gt;end_lvl():&lt;/strong&gt; Closes submenu wrapper. &lt;strong&gt;start_el():&lt;/strong&gt; Outputs individual menu item opening. &lt;strong&gt;end_el():&lt;/strong&gt; Outputs individual menu item closing.&lt;/p&gt;`,
+    code: `// Basic custom Walker class
+class Custom_Nav_Walker extends Walker_Nav_Menu {
+
+    // Start level (submenu wrapper)
+    function start_lvl(&$output, $depth = 0, $args = null) {
+        $indent = str_repeat("\t", $depth);
+        $classes = array('sub-menu', 'dropdown-menu');
+        $class_names = implode(' ', $classes);
+
+        $output .= "\n{$indent}&lt;ul class=\"{$class_names}\"&gt;\n";
+    }
+
+    // Start element (menu item)
+    function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
+        $indent = ($depth) ? str_repeat("\t", $depth) : '';
+
+        // Build classes
+        $classes = empty($item->classes) ? array() : (array) $item->classes;
+        $classes[] = 'menu-item-' . $item->ID;
+
+        // Add custom class for items with children
+        if (in_array('menu-item-has-children', $classes)) {
+            $classes[] = 'has-dropdown';
+        }
+
+        $class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args, $depth));
+        $class_names = $class_names ? ' class="' . esc_attr($class_names) . '"' : '';
+
+        // Build ID
+        $id = apply_filters('nav_menu_item_id', 'menu-item-' . $item->ID, $item, $args, $depth);
+        $id = $id ? ' id="' . esc_attr($id) . '"' : '';
+
+        // Output opening li
+        $output .= $indent . '&lt;li' . $id . $class_names . '&gt;';
+
+        // Build attributes
+        $atts = array();
+        $atts['title'] = !empty($item->attr_title) ? $item->attr_title : '';
+        $atts['target'] = !empty($item->target) ? $item->target : '';
+        $atts['rel'] = !empty($item->xfn) ? $item->xfn : '';
+        $atts['href'] = !empty($item->url) ? $item->url : '';
+
+        // Add custom data attributes
+        $atts['data-id'] = $item->ID;
+
+        // Add aria attributes for accessibility
+        if (in_array('menu-item-has-children', $classes)) {
+            $atts['aria-haspopup'] = 'true';
+            $atts['aria-expanded'] = 'false';
+        }
+
+        $atts = apply_filters('nav_menu_link_attributes', $atts, $item, $args, $depth);
+
+        $attributes = '';
+        foreach ($atts as $attr => $value) {
+            if (!empty($value)) {
+                $value = ('href' === $attr) ? esc_url($value) : esc_attr($value);
+                $attributes .= ' ' . $attr . '="' . $value . '"';
+            }
+        }
+
+        // Build menu item content
+        $title = apply_filters('the_title', $item->title, $item->ID);
+        $title = apply_filters('nav_menu_item_title', $title, $item, $args, $depth);
+
+        // Add icon if specified in menu description
+        $icon = !empty($item->description) ? '&lt;i class="' . esc_attr($item->description) . '"&gt;&lt;/i&gt; ' : '';
+
+        $item_output = $args->before;
+        $item_output .= '&lt;a' . $attributes . '&gt;';
+        $item_output .= $args->link_before . $icon . $title . $args->link_after;
+        $item_output .= '&lt;/a&gt;';
+        $item_output .= $args->after;
+
+        $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
+    }
+}
+
+// Use the custom walker
+wp_nav_menu(array(
+    'theme_location' => 'primary',
+    'walker' => new Custom_Nav_Walker()
+));
+
+// Bootstrap 5 compatible Walker
+class Bootstrap_Nav_Walker extends Walker_Nav_Menu {
+
+    function start_lvl(&$output, $depth = 0, $args = null) {
+        $indent = str_repeat("\t", $depth);
+        $output .= "\n{$indent}&lt;ul class=\"dropdown-menu\"&gt;\n";
+    }
+
+    function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
+        $indent = ($depth) ? str_repeat("\t", $depth) : '';
+
+        $classes = empty($item->classes) ? array() : (array) $item->classes;
+        $classes[] = 'nav-item';
+
+        if (in_array('menu-item-has-children', $classes)) {
+            $classes[] = 'dropdown';
+        }
+
+        if ($item->current) {
+            $classes[] = 'active';
+        }
+
+        $class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args, $depth));
+        $class_names = ' class="' . esc_attr($class_names) . '"';
+
+        $output .= $indent . '&lt;li' . $class_names . '&gt;';
+
+        $atts = array();
+        $atts['title'] = !empty($item->attr_title) ? $item->attr_title : '';
+        $atts['target'] = !empty($item->target) ? $item->target : '';
+        $atts['rel'] = !empty($item->xfn) ? $item->xfn : '';
+        $atts['href'] = !empty($item->url) ? $item->url : '';
+        $atts['class'] = 'nav-link';
+
+        if (in_array('dropdown', $classes)) {
+            $atts['class'] .= ' dropdown-toggle';
+            $atts['data-bs-toggle'] = 'dropdown';
+            $atts['aria-expanded'] = 'false';
+        }
+
+        $atts = apply_filters('nav_menu_link_attributes', $atts, $item, $args, $depth);
+
+        $attributes = '';
+        foreach ($atts as $attr => $value) {
+            if (!empty($value)) {
+                $value = ('href' === $attr) ? esc_url($value) : esc_attr($value);
+                $attributes .= ' ' . $attr . '="' . $value . '"';
+            }
+        }
+
+        $title = apply_filters('the_title', $item->title, $item->ID);
+
+        $item_output = $args->before;
+        $item_output .= '&lt;a' . $attributes . '&gt;';
+        $item_output .= $args->link_before . $title . $args->link_after;
+        $item_output .= '&lt;/a&gt;';
+        $item_output .= $args->after;
+
+        $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
+    }
+}
+
+// Usage with Bootstrap Walker
+wp_nav_menu(array(
+    'theme_location' => 'primary',
+    'menu_class' => 'navbar-nav',
+    'walker' => new Bootstrap_Nav_Walker()
+));`,
+    author: 'Shahmir Khaliq',
+    date: '2024-01-21',
+    readTime: '7 min',
+    category: 'WordPress Advanced',
+    tags: ['menus', 'walker', 'advanced-development', 'navigation', 'custom'],
+    difficulty: 'advanced',
+    compatibility: ['WordPress 5.0+'],
+    seo: {
+      metaTitle: 'Create Custom WordPress Walker Class - Navigation Menu Guide',
+      metaDescription: 'Learn how to create custom Walker classes for WordPress navigation menus. Control HTML output, add Bootstrap support, and create mega menus.',
+      keywords: ['wordpress walker class', 'custom nav menu', 'Walker_Nav_Menu', 'bootstrap menu wordpress', 'custom menu html'],
+      canonical: 'https://shahmir.dev/snippets/custom-walker-class',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Create Custom Walker Class for Menus',
+        description: 'Build a custom Walker class to completely control WordPress navigation menu output with custom HTML structure and CSS classes.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Khaliq'
+        },
+        datePublished: '2024-01-21',
+        proficiencyLevel: 'Advanced'
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between Walker_Nav_Menu and Walker classes?",
+        answer: "Walker is the base class for traversing any hierarchical data. Walker_Nav_Menu extends Walker specifically for navigation menus. Always extend Walker_Nav_Menu (not Walker) for menu customization as it includes menu-specific methods."
+      },
+      {
+        question: "Do I need to override all Walker methods?",
+        answer: "No, only override the methods you need to change. If you only want to modify menu item output, override just start_el(). The parent class handles methods you don't override."
+      },
+      {
+        question: "Can I add custom fields to menu items for use in my Walker?",
+        answer: "Yes! Use add_menu_item_custom_fields hook to add fields in the menu editor, then access them via $item->your_field_name in your Walker. Store custom data using update_post_meta() with the menu item ID."
+      },
+      {
+        question: "How do I make my custom Walker work with mega menus?",
+        answer: "In start_el(), check menu item depth and specific classes to identify mega menu triggers. Output custom wrapper divs and styling. You may need to query child items manually using wp_get_nav_menu_items() for complex layouts."
+      },
+      {
+        question: "Is there a way to avoid creating a Walker class for simple changes?",
+        answer: "Yes! For minor changes use filters like nav_menu_css_class, nav_menu_link_attributes, or walker_nav_menu_start_el. Only create custom Walkers when you need significant HTML structure changes that filters can't achieve."
       }
     ]
   }
