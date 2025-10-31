@@ -152,17 +152,22 @@ function BlogPost() {
 
     // Update meta tags for SEO
     if (post) {
-      document.title = post.seo?.metaTitle || post.title || 'Blog Post'
+      const pageTitle = post.seo?.metaTitle || post.title || 'Blog Post'
+      const pageDescription = post.seo?.metaDescription || post.excerpt || ''
+      const pageUrl = `https://shahmir.dev/blog/${post.slug}`
+      const pageImage = post.seo?.ogImage || 'https://shahmir.dev/og-image.jpg'
+
+      document.title = pageTitle
 
       // Update or create meta description
-      if (post.seo?.metaDescription) {
+      if (pageDescription) {
         let metaDescription = document.querySelector('meta[name="description"]')
         if (metaDescription) {
-          metaDescription.setAttribute('content', post.seo.metaDescription)
+          metaDescription.setAttribute('content', pageDescription)
         } else {
           metaDescription = document.createElement('meta')
           metaDescription.name = 'description'
-          metaDescription.content = post.seo.metaDescription
+          metaDescription.content = pageDescription
           document.head.appendChild(metaDescription)
         }
       }
@@ -179,6 +184,58 @@ function BlogPost() {
           document.head.appendChild(metaKeywords)
         }
       }
+
+      // Update canonical URL
+      let canonical = document.querySelector('link[rel="canonical"]')
+      if (canonical) {
+        canonical.setAttribute('href', pageUrl)
+      } else {
+        canonical = document.createElement('link')
+        canonical.rel = 'canonical'
+        canonical.href = pageUrl
+        document.head.appendChild(canonical)
+      }
+
+      // Update Open Graph tags
+      const ogTags = {
+        'og:title': pageTitle,
+        'og:description': pageDescription,
+        'og:url': pageUrl,
+        'og:image': pageImage,
+        'og:type': 'article'
+      }
+
+      Object.entries(ogTags).forEach(([property, content]) => {
+        let tag = document.querySelector(`meta[property="${property}"]`)
+        if (tag) {
+          tag.setAttribute('content', content)
+        } else {
+          tag = document.createElement('meta')
+          tag.setAttribute('property', property)
+          tag.setAttribute('content', content)
+          document.head.appendChild(tag)
+        }
+      })
+
+      // Update Twitter Card tags
+      const twitterTags = {
+        'twitter:title': pageTitle,
+        'twitter:description': pageDescription,
+        'twitter:url': pageUrl,
+        'twitter:image': pageImage
+      }
+
+      Object.entries(twitterTags).forEach(([name, content]) => {
+        let tag = document.querySelector(`meta[name="${name}"]`)
+        if (tag) {
+          tag.setAttribute('content', content)
+        } else {
+          tag = document.createElement('meta')
+          tag.setAttribute('name', name)
+          tag.setAttribute('content', content)
+          document.head.appendChild(tag)
+        }
+      })
 
       // Add FAQ Schema markup if FAQs exist
       if (post.faqs && post.faqs.length > 0) {

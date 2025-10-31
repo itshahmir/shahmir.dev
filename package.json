@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "npm run generate:sitemap && vite build",
-    "build:seo": "npm run generate:sitemap && vite build && npm run prerender:run",
+    "build": "npm run generate:sitemap && vite build && npm run prerender:run",
+    "build:no-prerender": "npm run generate:sitemap && vite build",
     "prerender:run": "concurrently --kill-others --success first \"vite preview --port 4173\" \"wait-on http://localhost:4173 && node prerender.js\"",
     "generate:sitemap": "node generate-sitemap.js",
     "preview": "vite preview",
