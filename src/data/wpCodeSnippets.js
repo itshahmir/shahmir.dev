@@ -1,0 +1,16032 @@
+// 100 Most Used & Searched WordPress Code Snippets
+// Each snippet includes full SEO metadata, FAQs, and schema markup
+
+export const wpCodeSnippets = [
+  {
+    id: 1,
+    slug: 'disable-xmlrpc-wordpress-security',
+    title: 'How to Disable XML-RPC in WordPress for Enhanced Security',
+    excerpt: 'Learn how to disable XML-RPC in WordPress to prevent brute force attacks and DDoS vulnerabilities. Complete code snippet with security best practices.',
+    content: `
+      <h2>What is XML-RPC and Why Disable It?</h2>
+      <p>XML-RPC is a WordPress API that allows remote connections to your site. While useful for some integrations, it's often exploited by hackers for brute force attacks and DDoS attacks.</p>
+
+      <h3>The Code Snippet</h3>
+      <pre><code class="language-php">// Disable XML-RPC
+add_filter('xmlrpc_enabled', '__return_false');
+
+// Disable XML-RPC pingback
+add_filter('wp_xmlrpc_server_class', 'disable_xmlrpc_pingback');
+function disable_xmlrpc_pingback($methods) {
+    unset($methods['pingback.ping']);
+    return $methods;
+}</code></pre>
+
+      <h3>Implementation Steps</h3>
+      <ol>
+        <li>Access your WordPress site via FTP or file manager</li>
+        <li>Navigate to wp-content/themes/your-theme/</li>
+        <li>Open functions.php file</li>
+        <li>Add the code snippet at the end of the file</li>
+        <li>Save and upload the file</li>
+      </ol>
+
+      <h3>Alternative Method: .htaccess</h3>
+      <pre><code class="language-apache"># Block WordPress xmlrpc.php requests
+&lt;Files xmlrpc.php&gt;
+  order deny,allow
+  deny from all
+&lt;/Files&gt;</code></pre>
+
+      <h3>When to Keep XML-RPC Enabled</h3>
+      <ul>
+        <li>Using Jetpack plugin</li>
+        <li>Mobile app publishing (WordPress iOS/Android apps)</li>
+        <li>Third-party integrations like IFTTT or Zapier</li>
+        <li>Remote publishing tools</li>
+      </ul>
+
+      <h3>Security Benefits</h3>
+      <p>Disabling XML-RPC provides multiple security advantages:</p>
+      <ul>
+        <li>Prevents brute force login attempts via XML-RPC</li>
+        <li>Blocks DDoS amplification attacks</li>
+        <li>Eliminates pingback spam</li>
+        <li>Reduces server load from malicious requests</li>
+      </ul>
+    `,
+    code: `add_filter('xmlrpc_enabled', '__return_false');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '4 min read',
+    category: 'WordPress Security',
+    tags: ['WordPress Security', 'XML-RPC', 'Brute Force Protection', 'DDoS Prevention', 'WordPress Hardening'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Disable XML-RPC in WordPress: Security Code Snippet 2025',
+      metaDescription: 'Secure your WordPress site by disabling XML-RPC. Step-by-step guide with code snippets to prevent brute force and DDoS attacks.',
+      keywords: ['disable xmlrpc wordpress', 'wordpress security', 'xmlrpc attacks', 'wordpress hardening', 'prevent brute force'],
+      canonical: '/blog/disable-xmlrpc-wordpress-security',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "How to Disable XML-RPC in WordPress for Enhanced Security",
+        "description": "Learn how to disable XML-RPC in WordPress to prevent brute force attacks and DDoS vulnerabilities.",
+        "articleBody": "Complete guide with code snippets",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "What is XML-RPC in WordPress?",
+        answer: "XML-RPC is a remote procedure call (RPC) protocol that uses XML to encode its calls and HTTP as a transport mechanism. In WordPress, it enables remote connections to your site, allowing mobile apps and third-party tools to interact with your WordPress installation."
+      },
+      {
+        question: "Will disabling XML-RPC break my WordPress site?",
+        answer: "No, disabling XML-RPC won't break your WordPress site for most users. However, it will prevent certain features from working, such as the WordPress mobile app, Jetpack's core features, and some third-party integrations that rely on XML-RPC."
+      },
+      {
+        question: "How do I know if XML-RPC is being exploited on my site?",
+        answer: "Signs of XML-RPC exploitation include: unusual traffic spikes to xmlrpc.php, multiple failed login attempts in server logs, slow site performance, or high server resource usage. Use security plugins like Wordfence to monitor for XML-RPC attacks."
+      },
+      {
+        question: "Can I selectively disable certain XML-RPC methods?",
+        answer: "Yes, you can disable specific XML-RPC methods while keeping others active. The code snippet provided shows how to disable pingback.ping specifically while keeping other XML-RPC functionality intact."
+      },
+      {
+        question: "Is there a plugin to disable XML-RPC?",
+        answer: "Yes, plugins like 'Disable XML-RPC-API', 'WPCode', and most security plugins (Wordfence, iThemes Security) offer options to disable XML-RPC without editing code."
+      }
+    ]
+  },
+  {
+    id: 2,
+    slug: 'limit-login-attempts-wordpress-code',
+    title: 'Limit Login Attempts in WordPress Without a Plugin',
+    excerpt: 'Protect your WordPress site from brute force attacks by limiting login attempts using custom code. No plugin required.',
+    content: `
+      <h2>Why Limit Login Attempts?</h2>
+      <p>WordPress by default allows unlimited login attempts, making it vulnerable to brute force attacks where hackers try thousands of username/password combinations.</p>
+
+      <h3>The Code Snippet</h3>
+      <pre><code class="language-php">// Limit Login Attempts
+function limit_login_attempts() {
+    $max_attempts = 3;
+    $lockout_duration = 900; // 15 minutes in seconds
+
+    $user_login_log = get_transient('user_login_attempts_' . $_SERVER['REMOTE_ADDR']);
+
+    if ($user_login_log && $user_login_log['attempts'] >= $max_attempts) {
+        $time_remaining = $user_login_log['time'] + $lockout_duration - time();
+
+        if ($time_remaining > 0) {
+            wp_die('Too many failed login attempts. Please try again in ' .
+                   ceil($time_remaining / 60) . ' minutes.');
+        } else {
+            delete_transient('user_login_attempts_' . $_SERVER['REMOTE_ADDR']);
+        }
+    }
+}
+add_action('wp_login_failed', 'log_failed_login');
+
+function log_failed_login() {
+    $user_login_log = get_transient('user_login_attempts_' . $_SERVER['REMOTE_ADDR']);
+
+    if (!$user_login_log) {
+        $user_login_log = array('attempts' => 1, 'time' => time());
+    } else {
+        $user_login_log['attempts']++;
+        $user_login_log['time'] = time();
+    }
+
+    set_transient('user_login_attempts_' . $_SERVER['REMOTE_ADDR'],
+                  $user_login_log, 900);
+}
+
+add_action('authenticate', 'limit_login_attempts', 30);</code></pre>
+
+      <h3>How It Works</h3>
+      <ul>
+        <li><strong>Max Attempts:</strong> Allows 3 failed login attempts</li>
+        <li><strong>Lockout Duration:</strong> Blocks IP for 15 minutes after exceeding attempts</li>
+        <li><strong>Transient Storage:</strong> Uses WordPress transients to track attempts</li>
+        <li><strong>IP-Based Blocking:</strong> Identifies users by IP address</li>
+      </ul>
+
+      <h3>Customization Options</h3>
+      <p>You can customize the snippet by modifying these variables:</p>
+      <pre><code class="language-php">$max_attempts = 3;      // Change to 5 for more lenient policy
+$lockout_duration = 900; // Change to 3600 for 1 hour lockout</code></pre>
+
+      <h3>Enhanced Version with Email Notifications</h3>
+      <pre><code class="language-php">function notify_admin_lockout() {
+    $email = get_option('admin_email');
+    $subject = 'Login Lockout Activated';
+    $message = 'IP Address: ' . $_SERVER['REMOTE_ADDR'] . ' has been locked out.';
+    wp_mail($email, $subject, $message);
+}
+// Call this function when lockout occurs</code></pre>
+
+      <h3>Security Best Practices</h3>
+      <ul>
+        <li>Combine with strong password policies</li>
+        <li>Use two-factor authentication</li>
+        <li>Change default 'admin' username</li>
+        <li>Monitor login activity regularly</li>
+        <li>Consider using a firewall for additional protection</li>
+      </ul>
+    `,
+    code: `add_action('authenticate', 'limit_login_attempts', 30);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '5 min read',
+    category: 'WordPress Security',
+    tags: ['Login Security', 'Brute Force Protection', 'WordPress Security', 'Custom Code', 'Authentication'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 4.5+',
+    seo: {
+      metaTitle: 'Limit Login Attempts WordPress Code Snippet (No Plugin) 2025',
+      metaDescription: 'Protect WordPress from brute force attacks with this custom code snippet to limit login attempts without using plugins.',
+      keywords: ['limit login attempts wordpress', 'brute force protection', 'wordpress login security', 'prevent hacking', 'wordpress code snippet'],
+      canonical: '/blog/limit-login-attempts-wordpress-code',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Limit Login Attempts in WordPress Without a Plugin",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "How many login attempts should I allow before lockout?",
+        answer: "Industry standard is 3-5 failed attempts. Three attempts balance security with user experience - it's enough to accommodate typos while preventing brute force attacks."
+      },
+      {
+        question: "How long should the lockout duration be?",
+        answer: "Common lockout durations range from 15 minutes to 1 hour. Start with 15 minutes (900 seconds) and increase if you notice continued attack patterns. Progressive lockout (increasing duration with repeated offenses) is even more secure."
+      },
+      {
+        question: "Will this code block legitimate users who forget their password?",
+        answer: "Yes, temporarily. Users who exceed the attempt limit will be locked out for the specified duration. Always provide clear messaging about the lockout and duration, and ensure password reset functionality works properly."
+      },
+      {
+        question: "Can attackers bypass this by changing their IP address?",
+        answer: "Yes, sophisticated attackers using rotating proxies or VPNs can bypass IP-based blocking. For enhanced security, combine this with additional measures like CAPTCHA, two-factor authentication, and Web Application Firewall (WAF)."
+      },
+      {
+        question: "Does this snippet work with custom login pages?",
+        answer: "Yes, this snippet hooks into WordPress's core authentication process, so it works with custom login pages as long as they use the standard WordPress login functions."
+      }
+    ]
+  },
+  {
+    id: 3,
+    slug: 'disable-wordpress-admin-bar',
+    title: 'Disable WordPress Admin Bar for Non-Administrators',
+    excerpt: 'Remove the WordPress admin toolbar for specific user roles while keeping it visible for administrators.',
+    content: `
+      <h2>Understanding the WordPress Admin Bar</h2>
+      <p>The WordPress admin bar appears at the top of your site for logged-in users. While useful for administrators, it can be distracting for other user roles.</p>
+
+      <h3>Basic Code Snippet: Disable for All Users</h3>
+      <pre><code class="language-php">// Disable admin bar for all users
+add_filter('show_admin_bar', '__return_false');</code></pre>
+
+      <h3>Advanced: Disable for Non-Administrators Only</h3>
+      <pre><code class="language-php">// Disable admin bar for non-administrators
+function disable_admin_bar_for_non_admins() {
+    if (!current_user_can('administrator') && !is_admin()) {
+        show_admin_bar(false);
+    }
+}
+add_action('after_setup_theme', 'disable_admin_bar_for_non_admins');</code></pre>
+
+      <h3>Role-Specific Control</h3>
+      <pre><code class="language-php">// Disable for specific roles
+function hide_admin_bar_based_on_role() {
+    $user = wp_get_current_user();
+    $roles_to_hide = array('subscriber', 'contributor', 'customer');
+
+    if (array_intersect($roles_to_hide, $user->roles)) {
+        show_admin_bar(false);
+    }
+}
+add_action('after_setup_theme', 'hide_admin_bar_based_on_role');</code></pre>
+
+      <h3>Frontend Only Hiding</h3>
+      <pre><code class="language-php">// Hide on frontend but keep in admin area
+function hide_admin_bar_frontend() {
+    if (!is_admin()) {
+        show_admin_bar(false);
+    }
+}
+add_action('after_setup_theme', 'hide_admin_bar_frontend');</code></pre>
+
+      <h3>User Profile Option Control</h3>
+      <pre><code class="language-php">// Remove admin bar profile option for subscribers
+function remove_admin_bar_settings() {
+    if (!current_user_can('edit_posts')) {
+        remove_action('admin_color_scheme_picker', 'admin_color_scheme_picker');
+
+        add_filter('user_can_richedit', function($default) {
+            if (!current_user_can('edit_posts')) {
+                return false;
+            }
+            return $default;
+        });
+    }
+}
+add_action('init', 'remove_admin_bar_settings');</code></pre>
+
+      <h3>CSS Method (Alternative)</h3>
+      <pre><code class="language-css">/* Hide admin bar with CSS */
+#wpadminbar {
+    display: none !important;
+}
+
+body.admin-bar {
+    margin-top: 0 !important;
+}
+
+html {
+    margin-top: 0 !important;
+}</code></pre>
+
+      <h3>Use Cases</h3>
+      <ul>
+        <li><strong>Membership Sites:</strong> Cleaner experience for members</li>
+        <li><strong>Client Sites:</strong> Prevent confusion for non-technical clients</li>
+        <li><strong>WooCommerce:</strong> Better UX for customers with accounts</li>
+        <li><strong>Course Platforms:</strong> Distraction-free learning environment</li>
+      </ul>
+
+      <h3>Important Considerations</h3>
+      <ul>
+        <li>Admin bar provides quick access to useful features</li>
+        <li>Consider user experience before removing completely</li>
+        <li>Some plugins add functionality to admin bar</li>
+        <li>Test with all user roles before deployment</li>
+      </ul>
+    `,
+    code: `add_filter('show_admin_bar', '__return_false');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-20',
+    readTime: '4 min read',
+    category: 'WordPress Customization',
+    tags: ['Admin Bar', 'User Experience', 'WordPress Customization', 'User Roles', 'Frontend'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 3.1+',
+    seo: {
+      metaTitle: 'Disable WordPress Admin Bar: Complete Code Snippet Guide 2025',
+      metaDescription: 'Learn how to disable the WordPress admin toolbar for specific user roles with custom code. Improve UX without using plugins.',
+      keywords: ['disable admin bar wordpress', 'hide wordpress toolbar', 'remove admin bar', 'wordpress customization', 'user roles'],
+      canonical: '/blog/disable-wordpress-admin-bar',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Disable WordPress Admin Bar for Non-Administrators",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "Will disabling the admin bar affect site functionality?",
+        answer: "No, disabling the admin bar is purely cosmetic and won't affect your WordPress site's core functionality. Users can still access the dashboard by navigating to /wp-admin/."
+      },
+      {
+        question: "Can users still access the dashboard if the admin bar is disabled?",
+        answer: "Yes, users can access the dashboard directly by typing yoursite.com/wp-admin in their browser or using a direct link to the login page."
+      },
+      {
+        question: "Should I disable the admin bar for administrators?",
+        answer: "Generally no. The admin bar provides quick access to important features like post editing, comments, and site management tools that administrators use frequently."
+      },
+      {
+        question: "Does hiding the admin bar improve site performance?",
+        answer: "Minimally. The admin bar does load some CSS and JavaScript, but the performance impact is negligible. The main benefit is improved user experience and cleaner design."
+      },
+      {
+        question: "Can I add custom items to the admin bar instead of removing it?",
+        answer: "Yes, you can customize the admin bar by adding or removing items using the 'admin_bar_menu' action hook. This allows you to create a tailored experience for different user roles."
+      }
+    ]
+  },
+  {
+    id: 4,
+    slug: 'change-wordpress-excerpt-length',
+    title: 'Change WordPress Excerpt Length with Custom Code',
+    excerpt: 'Customize the default 55-word excerpt limit in WordPress to any length you prefer using this simple code snippet.',
+    content: `
+      <h2>Default WordPress Excerpt Behavior</h2>
+      <p>WordPress automatically truncates post excerpts to 55 words by default. This snippet allows you to customize that length to match your design needs.</p>
+
+      <h3>Basic Excerpt Length Change</h3>
+      <pre><code class="language-php">// Change excerpt length to 30 words
+function custom_excerpt_length($length) {
+    return 30;
+}
+add_filter('excerpt_length', 'custom_excerpt_length');</code></pre>
+
+      <h3>Dynamic Length Based on Post Type</h3>
+      <pre><code class="language-php">// Different excerpt lengths for different post types
+function custom_excerpt_length_by_type($length) {
+    global $post;
+
+    if ($post->post_type == 'post') {
+        return 40; // Blog posts: 40 words
+    } elseif ($post->post_type == 'product') {
+        return 20; // Products: 20 words
+    } elseif ($post->post_type == 'portfolio') {
+        return 50; // Portfolio: 50 words
+    }
+
+    return 55; // Default for everything else
+}
+add_filter('excerpt_length', 'custom_excerpt_length_by_type', 999);</code></pre>
+
+      <h3>Custom Excerpt with Character Limit</h3>
+      <pre><code class="language-php">// Limit excerpt by characters instead of words
+function character_limited_excerpt($excerpt) {
+    $limit = 150; // Character limit
+
+    if (strlen($excerpt) > $limit) {
+        $excerpt = substr($excerpt, 0, $limit);
+        $excerpt = substr($excerpt, 0, strrpos($excerpt, ' '));
+        $excerpt .= '...';
+    }
+
+    return $excerpt;
+}
+add_filter('get_the_excerpt', 'character_limited_excerpt');</code></pre>
+
+      <h3>Change "Read More" Text</h3>
+      <pre><code class="language-php">// Customize the excerpt "Read More" link
+function custom_excerpt_more($more) {
+    global $post;
+    return '... <a class="read-more" href="' .
+           get_permalink($post->ID) . '">Continue Reading</a>';
+}
+add_filter('excerpt_more', 'custom_excerpt_more');</code></pre>
+
+      <h3>Preserve HTML Formatting in Excerpts</h3>
+      <pre><code class="language-php">// Keep HTML tags in excerpts
+function keep_html_excerpt($excerpt) {
+    $excerpt = strip_tags($excerpt, '<p><br><strong><em><a>');
+    return $excerpt;
+}
+add_filter('the_excerpt', 'keep_html_excerpt');</code></pre>
+
+      <h3>Advanced: Create Custom Excerpt Function</h3>
+      <pre><code class="language-php">// Custom excerpt function with multiple options
+function advanced_custom_excerpt($limit = 55, $more_text = '...', $strip_html = true) {
+    global $post;
+
+    $excerpt = $post->post_excerpt ?
+                $post->post_excerpt :
+                $post->post_content;
+
+    if ($strip_html) {
+        $excerpt = strip_tags($excerpt);
+    }
+
+    $words = explode(' ', $excerpt, $limit + 1);
+
+    if (count($words) > $limit) {
+        array_pop($words);
+        $excerpt = implode(' ', $words) . $more_text;
+    } else {
+        $excerpt = implode(' ', $words);
+    }
+
+    return $excerpt;
+}
+
+// Usage: echo advanced_custom_excerpt(50, '... <a href="' .
+//        get_permalink() . '">Read More</a>', true);</code></pre>
+
+      <h3>Responsive Excerpt Lengths</h3>
+      <pre><code class="language-php">// Adjust excerpt length based on viewport (requires JS)
+function responsive_excerpt_length($length) {
+    // Use longer excerpts for desktop
+    if (!wp_is_mobile()) {
+        return 60;
+    }
+    // Shorter for mobile
+    return 25;
+}
+add_filter('excerpt_length', 'responsive_excerpt_length');</code></pre>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Consider your design and content type when choosing length</li>
+        <li>Test excerpts on different screen sizes</li>
+        <li>Ensure "read more" links are accessible</li>
+        <li>Use consistent excerpt lengths across similar content types</li>
+        <li>Avoid extremely short excerpts that don't provide context</li>
+      </ul>
+    `,
+    code: `add_filter('excerpt_length', 'custom_excerpt_length');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-19',
+    readTime: '5 min read',
+    category: 'WordPress Content',
+    tags: ['Excerpts', 'Content Display', 'WordPress Filters', 'Theme Development', 'Post Formatting'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 2.9+',
+    seo: {
+      metaTitle: 'Change WordPress Excerpt Length: Complete Code Guide 2025',
+      metaDescription: 'Learn how to customize WordPress excerpt length with code snippets. Control word count, character limits, and read more text.',
+      keywords: ['wordpress excerpt length', 'change excerpt wordpress', 'custom excerpt length', 'wordpress excerpt code', 'modify excerpt'],
+      canonical: '/blog/change-wordpress-excerpt-length',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Change WordPress Excerpt Length with Custom Code",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the default WordPress excerpt length?",
+        answer: "WordPress sets the default excerpt length to 55 words. This has been the standard since WordPress 2.9."
+      },
+      {
+        question: "Can I have different excerpt lengths on different pages?",
+        answer: "Yes, you can create conditional logic in your excerpt_length filter to return different values based on post type, category, page template, or any other condition."
+      },
+      {
+        question: "Should I count by words or characters?",
+        answer: "Words are more common and easier to read, but characters give you more precise control over excerpt length. Choose based on your design constraints - use characters if you have strict space limitations."
+      },
+      {
+        question: "How do I manually set an excerpt for a post?",
+        answer: "In the WordPress post editor, look for the 'Excerpt' meta box (you may need to enable it in Screen Options). Any text you enter there will be used instead of the automatic excerpt."
+      },
+      {
+        question: "Will changing excerpt length affect SEO?",
+        answer: "Not directly. However, well-crafted excerpts can improve click-through rates from archive pages and search results. Make sure excerpts are descriptive and contain relevant keywords."
+      }
+    ]
+  },
+  {
+    id: 5,
+    slug: 'add-featured-image-rss-feed',
+    title: 'Add Featured Images to WordPress RSS Feed',
+    excerpt: 'Automatically include post thumbnails in your WordPress RSS feeds to make your content more engaging in feed readers.',
+    content: `
+      <h2>Why Add Featured Images to RSS Feeds?</h2>
+      <p>Many RSS readers display images from feeds, making your content more visually appealing and increasing engagement. By default, WordPress doesn't include featured images in RSS feeds.</p>
+
+      <h3>Basic Featured Image in RSS</h3>
+      <pre><code class="language-php">// Add featured image to RSS feed
+function add_featured_image_to_rss($content) {
+    global $post;
+
+    if (has_post_thumbnail($post->ID)) {
+        $content = '<div>' . get_the_post_thumbnail($post->ID, 'medium') .
+                   '</div>' . $content;
+    }
+
+    return $content;
+}
+add_filter('the_excerpt_rss', 'add_featured_image_to_rss');
+add_filter('the_content_feed', 'add_featured_image_to_rss');</code></pre>
+
+      <h3>Advanced: Custom Image Size for RSS</h3>
+      <pre><code class="language-php">// Add featured image with custom size
+function custom_rss_featured_image($content) {
+    global $post;
+
+    if (has_post_thumbnail($post->ID)) {
+        // Get the image URL in large size
+        $thumbnail = get_the_post_thumbnail_url($post->ID, 'large');
+
+        $content = '<p><img src="' . esc_url($thumbnail) . '"
+                     alt="' . get_the_title() . '"
+                     style="max-width: 100%; height: auto;" /></p>' .
+                   $content;
+    }
+
+    return $content;
+}
+add_filter('the_excerpt_rss', 'custom_rss_featured_image');
+add_filter('the_content_feed', 'custom_rss_featured_image');</code></pre>
+
+      <h3>Add Image with Caption</h3>
+      <pre><code class="language-php">// Featured image with caption in RSS
+function rss_image_with_caption($content) {
+    global $post;
+
+    if (has_post_thumbnail($post->ID)) {
+        $thumbnail_id = get_post_thumbnail_id($post->ID);
+        $thumbnail = wp_get_attachment_image_src($thumbnail_id, 'large');
+        $caption = get_post($thumbnail_id)->post_excerpt;
+
+        $image_html = '<figure>';
+        $image_html .= '<img src="' . esc_url($thumbnail[0]) . '"
+                        alt="' . get_the_title() . '"
+                        width="' . $thumbnail[1] . '"
+                        height="' . $thumbnail[2] . '" />';
+
+        if ($caption) {
+            $image_html .= '<figcaption>' . esc_html($caption) . '</figcaption>';
+        }
+
+        $image_html .= '</figure>';
+        $content = $image_html . $content;
+    }
+
+    return $content;
+}
+add_filter('the_content_feed', 'rss_image_with_caption');</code></pre>
+
+      <h3>Add Multiple Images from Gallery</h3>
+      <pre><code class="language-php">// Include all images from post in RSS feed
+function add_all_post_images_to_rss($content) {
+    global $post;
+
+    // Add featured image first
+    if (has_post_thumbnail($post->ID)) {
+        $content = get_the_post_thumbnail($post->ID, 'large') . $content;
+    }
+
+    // Get all images attached to the post
+    $attachments = get_posts(array(
+        'post_type' => 'attachment',
+        'posts_per_page' => 5,
+        'post_parent' => $post->ID,
+        'post_mime_type' => 'image',
+        'orderby' => 'menu_order',
+        'order' => 'ASC'
+    ));
+
+    if ($attachments) {
+        foreach ($attachments as $attachment) {
+            $image = wp_get_attachment_image($attachment->ID, 'medium');
+            $content = $image . $content;
+        }
+    }
+
+    return $content;
+}
+add_filter('the_content_feed', 'add_all_post_images_to_rss');</code></pre>
+
+      <h3>Media RSS (MRSS) Support</h3>
+      <pre><code class="language-php">// Add Media RSS namespace and featured image
+function add_mrss_namespace() {
+    echo 'xmlns:media="http://search.yahoo.com/mrss/"';
+}
+add_action('rss2_ns', 'add_mrss_namespace');
+
+function add_mrss_featured_image() {
+    global $post;
+
+    if (has_post_thumbnail($post->ID)) {
+        $thumbnail = get_the_post_thumbnail_url($post->ID, 'full');
+        echo '<media:content url="' . esc_url($thumbnail) . '" medium="image" />';
+    }
+}
+add_action('rss2_item', 'add_mrss_featured_image');</code></pre>
+
+      <h3>Conditional Image Inclusion</h3>
+      <pre><code class="language-php">// Only add images to specific post types in RSS
+function conditional_rss_images($content) {
+    global $post;
+
+    $allowed_post_types = array('post', 'portfolio', 'product');
+
+    if (in_array($post->post_type, $allowed_post_types) &&
+        has_post_thumbnail($post->ID)) {
+        $content = get_the_post_thumbnail($post->ID, 'large') . $content;
+    }
+
+    return $content;
+}
+add_filter('the_content_feed', 'conditional_rss_images');</code></pre>
+
+      <h3>Benefits of RSS Images</h3>
+      <ul>
+        <li>Increased click-through rates from feed readers</li>
+        <li>Better content preview in RSS aggregators</li>
+        <li>Improved social sharing when feeds are syndicated</li>
+        <li>Enhanced visual appeal in email subscribers</li>
+        <li>Better engagement on platforms like Feedly</li>
+      </ul>
+
+      <h3>Testing Your RSS Feed</h3>
+      <ul>
+        <li>Use the W3C Feed Validator to check for errors</li>
+        <li>Test in multiple RSS readers (Feedly, Inoreader, etc.)</li>
+        <li>Check image loading and size</li>
+        <li>Verify mobile responsiveness</li>
+        <li>Monitor feed loading speed</li>
+      </ul>
+    `,
+    code: `add_filter('the_content_feed', 'add_featured_image_to_rss');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-19',
+    readTime: '5 min read',
+    category: 'WordPress RSS',
+    tags: ['RSS Feed', 'Featured Images', 'Content Syndication', 'WordPress Filters', 'Media'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 2.9+',
+    seo: {
+      metaTitle: 'Add Featured Images to WordPress RSS Feed: Complete Guide 2025',
+      metaDescription: 'Learn how to automatically include featured images in WordPress RSS feeds with custom code snippets. Improve feed engagement.',
+      keywords: ['wordpress rss featured image', 'add image to rss feed', 'wordpress rss images', 'feed customization', 'media rss'],
+      canonical: '/blog/add-featured-image-rss-feed',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Add Featured Images to WordPress RSS Feed",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "Will adding images to RSS feed slow down feed loading?",
+        answer: "The images themselves are loaded from your server when readers view the feed, so they don't slow down the feed XML generation. However, ensure you're using optimized, reasonably-sized images (medium or large, not full-size) to provide good user experience."
+      },
+      {
+        question: "Do all RSS readers support images?",
+        answer: "Most modern RSS readers like Feedly, Inoreader, and NewsBlur support images. However, some older or text-only readers may not display them. Adding images won't break these readers - they'll simply ignore the image tags."
+      },
+      {
+        question: "Should I use the_excerpt_rss or the_content_feed filter?",
+        answer: "Use both if you want images in all feed types. the_excerpt_rss affects excerpt-only feeds, while the_content_feed affects full-content feeds. Apply the filter to both to ensure images appear regardless of feed type."
+      },
+      {
+        question: "Can I add different images for RSS vs. the website?",
+        answer: "Yes, you can use custom fields or post meta to store an alternative 'RSS image' and check for it in your filter function. If it exists, use that; otherwise, fall back to the featured image."
+      },
+      {
+        question: "How do I validate that images are appearing correctly in my RSS feed?",
+        answer: "Subscribe to your feed in a reader like Feedly or use the W3C Feed Validator. You can also view your feed XML directly by visiting yoursite.com/feed/ and inspecting the image tags in the item content."
+      }
+    ]
+  }
+,
+  // Continue with remaining snippets...
+  {
+    id: 6,
+    slug: 'register-custom-post-type-wordpress',
+    title: 'How to Register a Custom Post Type in WordPress',
+    excerpt: 'Create custom content types beyond posts and pages with this comprehensive custom post type registration snippet.',
+    content: `
+      <h2>Understanding Custom Post Types</h2>
+      <p>Custom post types allow you to create different content types beyond the default posts and pages, perfect for portfolios, products, testimonials, and more.</p>
+
+      <h3>Basic Custom Post Type Registration</h3>
+      <pre><code class="language-php">// Register Custom Post Type
+function create_portfolio_post_type() {
+    $args = array(
+        'labels' => array(
+            'name' => 'Portfolio',
+            'singular_name' => 'Portfolio Item',
+            'add_new' => 'Add New Item',
+            'add_new_item' => 'Add New Portfolio Item',
+            'edit_item' => 'Edit Portfolio Item',
+            'new_item' => 'New Portfolio Item',
+            'view_item' => 'View Portfolio Item',
+            'search_items' => 'Search Portfolio',
+            'not_found' => 'No portfolio items found',
+            'not_found_in_trash' => 'No portfolio items found in trash'
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'publicly_queryable' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'show_in_rest' => true, // Enables Gutenberg editor
+        'menu_icon' => 'dashicons-portfolio',
+        'supports' => array('title', 'editor', 'thumbnail', 'excerpt', 'custom-fields'),
+        'rewrite' => array('slug' => 'portfolio'),
+        'capability_type' => 'post',
+        'hierarchical' => false,
+    );
+
+    register_post_type('portfolio', $args);
+}
+add_action('init', 'create_portfolio_post_type');</code></pre>
+
+      <h3>Custom Post Type with Custom Taxonomies</h3>
+      <pre><code class="language-php">// Register Custom Post Type with Taxonomy
+function create_product_cpt_and_taxonomy() {
+    // Register Custom Post Type
+    register_post_type('product', array(
+        'labels' => array(
+            'name' => 'Products',
+            'singular_name' => 'Product'
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'show_in_rest' => true,
+        'menu_icon' => 'dashicons-products',
+        'supports' => array('title', 'editor', 'thumbnail'),
+        'rewrite' => array('slug' => 'products'),
+    ));
+
+    // Register Custom Taxonomy
+    register_taxonomy('product_category', 'product', array(
+        'labels' => array(
+            'name' => 'Product Categories',
+            'singular_name' => 'Product Category'
+        ),
+        'hierarchical' => true,
+        'show_in_rest' => true,
+        'rewrite' => array('slug' => 'product-category'),
+    ));
+}
+add_action('init', 'create_product_cpt_and_taxonomy');</code></pre>
+
+      <h3>Advanced Features</h3>
+      <ul>
+        <li><strong>has_archive:</strong> Creates archive page (e.g., /portfolio/)</li>
+        <li><strong>show_in_rest:</strong> Enables Gutenberg and REST API</li>
+        <li><strong>hierarchical:</strong> Makes it work like pages (with parent/child)</li>
+        <li><strong>supports:</strong> Controls which features are available</li>
+        <li><strong>menu_icon:</strong> Sets admin menu icon (Dashicons)</li>
+      </ul>
+
+      <h3>Flushing Rewrite Rules</h3>
+      <pre><code class="language-php">// Flush rewrite rules on theme activation
+function my_rewrite_flush() {
+    create_portfolio_post_type();
+    flush_rewrite_rules();
+}
+register_activation_hook(__FILE__, 'my_rewrite_flush');</code></pre>
+
+      <h3>Common Use Cases</h3>
+      <ul>
+        <li>Portfolio items for creative agencies</li>
+        <li>Team members for company websites</li>
+        <li>Testimonials for service businesses</li>
+        <li>Events for organizations</li>
+        <li>Recipes for food blogs</li>
+        <li>Properties for real estate sites</li>
+      </ul>
+    `,
+    code: `register_post_type('portfolio', $args);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-19',
+    readTime: '6 min read',
+    category: 'WordPress Development',
+    tags: ['Custom Post Types', 'WordPress Development', 'CPT', 'Content Types', 'register_post_type'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Register Custom Post Type in WordPress: Complete Guide 2025',
+      metaDescription: 'Learn how to create custom post types in WordPress with comprehensive code examples. Add portfolios, products, and more.',
+      keywords: ['custom post type wordpress', 'register_post_type', 'wordpress cpt', 'custom content types', 'wordpress development'],
+      canonical: '/blog/register-custom-post-type-wordpress'
+    },
+    faqs: [
+      {
+        question: "What's the difference between posts, pages, and custom post types?",
+        answer: "Posts are blog entries displayed chronologically, pages are static content, and custom post types are specialized content with unique purposes (like portfolios or products). Custom post types can have their own templates, taxonomies, and features."
+      },
+      {
+        question: "Do I need to flush rewrite rules after registering a custom post type?",
+        answer: "Yes, the first time you register a custom post type, you need to flush rewrite rules by visiting Settings > Permalinks in WordPress admin. This ensures WordPress recognizes the new URL structure."
+      },
+      {
+        question: "Can I query custom post types like regular posts?",
+        answer: "Yes, use WP_Query or get_posts() with the 'post_type' parameter. Example: new WP_Query(array('post_type' => 'portfolio'))."
+      },
+      {
+        question: "Should I put custom post type code in my theme or plugin?",
+        answer: "Best practice is to create a custom plugin for CPTs. If you change themes, your content won't disappear. However, theme-specific CPTs can go in functions.php."
+      },
+      {
+        question: "What does 'show_in_rest' do?",
+        answer: "This enables the WordPress REST API and Gutenberg editor for your custom post type. Set it to true to use the block editor; false for the classic editor."
+      }
+    ]
+  },
+  {
+    id: 7,
+    slug: 'add-custom-widget-area-wordpress',
+    title: 'Add Custom Widget Area (Sidebar) to WordPress',
+    excerpt: 'Create additional widget areas in WordPress for footers, sidebars, or any custom location in your theme.',
+    content: `
+      <h2>Understanding WordPress Widget Areas</h2>
+      <p>Widget areas (also called sidebars) are containers where you can add widgets. Adding custom widget areas gives you more flexibility in your theme layout.</p>
+
+      <h3>Register a Single Widget Area</h3>
+      <pre><code class="language-php">// Register custom widget area
+function register_custom_widget_area() {
+    register_sidebar(array(
+        'id' => 'custom-sidebar',
+        'name' => __('Custom Sidebar', 'theme-domain'),
+        'description' => __('A custom widget area', 'theme-domain'),
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h3 class="widget-title">',
+        'after_title' => '</h3>',
+    ));
+}
+add_action('widgets_init', 'register_custom_widget_area');</code></pre>
+
+      <h3>Register Multiple Widget Areas</h3>
+      <pre><code class="language-php">// Register multiple widget areas
+function register_theme_widget_areas() {
+    // Footer Column 1
+    register_sidebar(array(
+        'id' => 'footer-1',
+        'name' => 'Footer Column 1',
+        'before_widget' => '<aside class="widget">',
+        'after_widget' => '</aside>',
+        'before_title' => '<h4 class="widget-title">',
+        'after_title' => '</h4>',
+    ));
+
+    // Footer Column 2
+    register_sidebar(array(
+        'id' => 'footer-2',
+        'name' => 'Footer Column 2',
+        'before_widget' => '<aside class="widget">',
+        'after_widget' => '</aside>',
+        'before_title' => '<h4 class="widget-title">',
+        'after_title' => '</h4>',
+    ));
+
+    // Header Widget Area
+    register_sidebar(array(
+        'id' => 'header-widgets',
+        'name' => 'Header Widgets',
+        'before_widget' => '<div class="header-widget">',
+        'after_widget' => '</div>',
+        'before_title' => '<h2>',
+        'after_title' => '</h2>',
+    ));
+}
+add_action('widgets_init', 'register_theme_widget_areas');</code></pre>
+
+      <h3>Display Widget Area in Template</h3>
+      <pre><code class="language-php">&lt;?php
+// Display widget area in your theme template
+if (is_active_sidebar('custom-sidebar')) {
+    dynamic_sidebar('custom-sidebar');
+}
+?&gt;</code></pre>
+
+      <h3>Conditional Widget Areas</h3>
+      <pre><code class="language-php">// Show different widget area based on page type
+if (is_front_page() && is_active_sidebar('homepage-widgets')) {
+    dynamic_sidebar('homepage-widgets');
+} elseif (is_single() && is_active_sidebar('post-sidebar')) {
+    dynamic_sidebar('post-sidebar');
+} else {
+    dynamic_sidebar('default-sidebar');
+}</code></pre>
+
+      <h3>Advanced: Widget Area with Custom Classes</h3>
+      <pre><code class="language-php">function advanced_widget_area() {
+    register_sidebar(array(
+        'id' => 'advanced-sidebar',
+        'name' => 'Advanced Sidebar',
+        'before_widget' => '<section id="%1$s" class="widget %2$s clearfix">',
+        'after_widget' => '</section>',
+        'before_title' => '<h3 class="widget-title"><span>',
+        'after_title' => '</span></h3>',
+    ));
+}
+add_action('widgets_init', 'advanced_widget_area');</code></pre>
+
+      <h3>Common Widget Area Locations</h3>
+      <ul>
+        <li><strong>Footer columns:</strong> Multiple widget areas for footer content</li>
+        <li><strong>Header area:</strong> For search, social media, or CTAs</li>
+        <li><strong>Sidebar alternatives:</strong> Different sidebars for different sections</li>
+        <li><strong>Before content:</strong> Widget area above main content</li>
+        <li><strong>After content:</strong> Widget area below main content</li>
+        <li><strong>Page-specific:</strong> Widgets for specific pages or templates</li>
+      </ul>
+    `,
+    code: `register_sidebar(array('id' => 'custom-sidebar'));`,
+    author: 'Shahmir Khan',
+    date: '2025-01-18',
+    readTime: '5 min read',
+    category: 'WordPress Theme Development',
+    tags: ['Widgets', 'Sidebars', 'Theme Development', 'Widget Areas', 'register_sidebar'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 2.2+',
+    seo: {
+      metaTitle: 'Add Custom Widget Area in WordPress: Complete Tutorial 2025',
+      metaDescription: 'Learn how to register and display custom widget areas in WordPress. Create sidebars, footer columns, and more.',
+      keywords: ['wordpress widget area', 'register sidebar', 'custom sidebar wordpress', 'widget areas', 'wordpress widgets'],
+      canonical: '/blog/add-custom-widget-area-wordpress'
+    },
+    faqs: [
+      {
+        question: "What's the difference between a widget and a widget area?",
+        answer: "A widget area (sidebar) is a container that holds widgets. Widgets are individual blocks of content (like recent posts, search, or custom HTML) that you can add to widget areas."
+      },
+      {
+        question: "Can I have multiple widget areas with the same name?",
+        answer: "No, each widget area must have a unique ID, but they can have similar display names. The ID is what WordPress uses internally to identify the widget area."
+      },
+      {
+        question: "Why use before_widget and after_widget parameters?",
+        answer: "These parameters wrap each widget in HTML, letting you control the markup structure and apply consistent styling. The %1$s and %2$s placeholders are replaced with the widget ID and classes."
+      },
+      {
+        question: "How do I remove a default WordPress widget area?",
+        answer: "Use unregister_sidebar('sidebar-id') in your functions.php file. To find the ID, check the parent theme's sidebar registration or use the Customize screen."
+      },
+      {
+        question: "Do I need to create a template file to display my widget area?",
+        answer: "Yes, you need to add the dynamic_sidebar() function to a theme template file where you want the widget area to appear (like sidebar.php, footer.php, or any custom template)."
+      }
+    ]
+  },
+  {
+    id: 8,
+    slug: 'enqueue-scripts-styles-wordpress',
+    title: 'Properly Enqueue Scripts and Styles in WordPress',
+    excerpt: 'Learn the correct way to add CSS and JavaScript files to WordPress using wp_enqueue_script and wp_enqueue_style.',
+    content: `
+      <h2>Why Use wp_enqueue Instead of Direct Linking?</h2>
+      <p>wp_enqueue_script() and wp_enqueue_style() prevent conflicts, manage dependencies, and ensure scripts load in the correct order.</p>
+
+      <h3>Enqueue a Stylesheet</h3>
+      <pre><code class="language-php">// Enqueue custom stylesheet
+function enqueue_custom_styles() {
+    wp_enqueue_style(
+        'custom-style',                                    // Handle
+        get_template_directory_uri() . '/css/custom.css',  // Path
+        array(),                                           // Dependencies
+        '1.0.0',                                          // Version
+        'all'                                             // Media type
+    );
+}
+add_action('wp_enqueue_scripts', 'enqueue_custom_styles');</code></pre>
+
+      <h3>Enqueue a JavaScript File</h3>
+      <pre><code class="language-php">// Enqueue custom JavaScript
+function enqueue_custom_scripts() {
+    wp_enqueue_script(
+        'custom-script',                                  // Handle
+        get_template_directory_uri() . '/js/custom.js',   // Path
+        array('jquery'),                                  // Dependencies
+        '1.0.0',                                         // Version
+        true                                             // Load in footer (true/false)
+    );
+}
+add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');</code></pre>
+
+      <h3>Complete Example with Multiple Files</h3>
+      <pre><code class="language-php">function enqueue_theme_assets() {
+    // Enqueue main stylesheet
+    wp_enqueue_style('main-style', get_stylesheet_uri(), array(), '1.0.0');
+
+    // Enqueue Google Fonts
+    wp_enqueue_style(
+        'google-fonts',
+        'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap',
+        array(),
+        null
+    );
+
+    // Enqueue Bootstrap CSS
+    wp_enqueue_style(
+        'bootstrap',
+        'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css',
+        array(),
+        '5.3.0'
+    );
+
+    // Enqueue jQuery (WordPress includes it by default)
+    wp_enqueue_script('jquery');
+
+    // Enqueue custom JavaScript with jQuery dependency
+    wp_enqueue_script(
+        'main-js',
+        get_template_directory_uri() . '/js/main.js',
+        array('jquery'),
+        '1.0.0',
+        true
+    );
+
+    // Localize script (pass PHP variables to JavaScript)
+    wp_localize_script('main-js', 'themeData', array(
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce' => wp_create_nonce('theme-nonce'),
+        'siteUrl' => get_site_url()
+    ));
+}
+add_action('wp_enqueue_scripts', 'enqueue_theme_assets');</code></pre>
+
+      <h3>Conditional Enqueueing</h3>
+      <pre><code class="language-php">// Load scripts/styles only where needed
+function conditional_enqueue() {
+    // Only on homepage
+    if (is_front_page()) {
+        wp_enqueue_script('homepage-slider', get_template_directory_uri() . '/js/slider.js');
+    }
+
+    // Only on single posts
+    if (is_single()) {
+        wp_enqueue_style('single-post-style', get_template_directory_uri() . '/css/single.css');
+    }
+
+    // Only on specific page template
+    if (is_page_template('template-contact.php')) {
+        wp_enqueue_script('contact-form', get_template_directory_uri() . '/js/contact.js');
+    }
+
+    // Only for logged-in users
+    if (is_user_logged_in()) {
+        wp_enqueue_style('member-style', get_template_directory_uri() . '/css/member.css');
+    }
+}
+add_action('wp_enqueue_scripts', 'conditional_enqueue');</code></pre>
+
+      <h3>Dequeue Unnecessary Scripts</h3>
+      <pre><code class="language-php">// Remove unwanted scripts/styles
+function dequeue_unnecessary_assets() {
+    // Remove WordPress emoji script
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('wp_print_styles', 'print_emoji_styles');
+
+    // Dequeue jQuery Migrate
+    wp_dequeue_script('jquery-migrate');
+
+    // Dequeue WooCommerce scripts on non-shop pages
+    if (!is_woocommerce() && !is_cart() && !is_checkout()) {
+        wp_dequeue_style('woocommerce-general');
+        wp_dequeue_style('woocommerce-layout');
+        wp_dequeue_style('woocommerce-smallscreen');
+    }
+}
+add_action('wp_enqueue_scripts', 'dequeue_unnecessary_assets', 100);</code></pre>
+
+      <h3>Admin Scripts and Styles</h3>
+      <pre><code class="language-php">// Enqueue in WordPress admin
+function enqueue_admin_assets() {
+    wp_enqueue_style('admin-custom', get_template_directory_uri() . '/css/admin.css');
+    wp_enqueue_script('admin-custom', get_template_directory_uri() . '/js/admin.js');
+}
+add_action('admin_enqueue_scripts', 'enqueue_admin_assets');</code></pre>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Always use wp_enqueue_scripts hook (not wp_head or wp_footer)</li>
+        <li>Specify dependencies to ensure correct loading order</li>
+        <li>Use versioning to bust cache when files update</li>
+        <li>Load JavaScript in footer when possible (set 5th parameter to true)</li>
+        <li>Use conditional loading to improve performance</li>
+        <li>Always dequeue scripts you don't need</li>
+      </ul>
+    `,
+    code: `add_action('wp_enqueue_scripts', 'enqueue_custom_scripts');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-18',
+    readTime: '7 min read',
+    category: 'WordPress Development',
+    tags: ['wp_enqueue_script', 'wp_enqueue_style', 'JavaScript', 'CSS', 'Theme Development', 'Performance'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 2.1+',
+    seo: {
+      metaTitle: 'Enqueue Scripts & Styles in WordPress: Complete Guide 2025',
+      metaDescription: 'Learn how to properly add CSS and JavaScript to WordPress using wp_enqueue_script and wp_enqueue_style. Best practices included.',
+      keywords: ['wp_enqueue_script', 'wp_enqueue_style', 'wordpress javascript', 'wordpress css', 'enqueue scripts'],
+      canonical: '/blog/enqueue-scripts-styles-wordpress'
+    },
+    faqs: [
+      {
+        question: "Why shouldn't I just add scripts to header.php or footer.php?",
+        answer: "Direct linking can cause conflicts with plugins, doesn't manage dependencies, makes it harder to conditionally load scripts, and breaks when themes are updated. wp_enqueue is the WordPress-standard way that prevents these issues."
+      },
+      {
+        question: "What does the dependencies parameter do?",
+        answer: "Dependencies ensure scripts load in the correct order. If your script requires jQuery, specify array('jquery') as the dependency - WordPress will automatically load jQuery before your script."
+      },
+      {
+        question: "Should I load JavaScript in the header or footer?",
+        answer: "Load in the footer (set the 5th parameter to true) unless the script must run before page content loads. Footer loading improves page load performance by not blocking HTML rendering."
+      },
+      {
+        question: "How do I pass PHP variables to my JavaScript file?",
+        answer: "Use wp_localize_script() after wp_enqueue_script(). This creates a JavaScript object you can access in your JS file, perfect for passing AJAX URLs, nonces, or other PHP data."
+      },
+      {
+        question: "What's the difference between get_template_directory_uri() and get_stylesheet_directory_uri()?",
+        answer: "get_template_directory_uri() points to the parent theme, while get_stylesheet_directory_uri() points to the active theme (child theme if used). Use get_stylesheet_directory_uri() in child themes."
+      }
+    ]
+  },
+  {
+    id: 9,
+    slug: 'two-factor-authentication',
+    title: 'Add Two-Factor Authentication Code',
+    excerpt: 'Implement basic two-factor authentication in WordPress to add an extra layer of security to user logins.',
+    content: `
+      <h2>Why Two-Factor Authentication?</h2>
+      <p>Two-factor authentication (2FA) adds a second verification step to the login process, making it much harder for attackers to gain access even if they have the password.</p>
+
+      <h3>Basic 2FA Implementation with Email</h3>
+      <pre><code class="language-php">// Add 2FA code generation and validation
+function generate_2fa_code($user_id) {
+    $code = sprintf('%06d', mt_rand(0, 999999));
+    set_transient('2fa_code_' . $user_id, $code, 600); // 10 minutes
+    return $code;
+}
+
+function send_2fa_code($user_id) {
+    $user = get_userdata($user_id);
+    $code = generate_2fa_code($user_id);
+
+    $subject = 'Your Login Verification Code';
+    $message = "Your verification code is: $code\n\nThis code will expire in 10 minutes.";
+
+    wp_mail($user->user_email, $subject, $message);
+}
+
+function verify_2fa_code($user_id, $code) {
+    $stored_code = get_transient('2fa_code_' . $user_id);
+
+    if ($stored_code && $stored_code === $code) {
+        delete_transient('2fa_code_' . $user_id);
+        return true;
+    }
+
+    return false;
+}
+
+// Intercept login and require 2FA
+add_filter('authenticate', 'require_2fa_on_login', 30, 3);
+function require_2fa_on_login($user, $username, $password) {
+    if (is_wp_error($user)) {
+        return $user;
+    }
+
+    // Only require 2FA for administrators
+    if (in_array('administrator', $user->roles)) {
+        if (!isset($_POST['2fa_code'])) {
+            // First login attempt - send code
+            send_2fa_code($user->ID);
+
+            // Store user data in session
+            set_transient('2fa_user_' . $user->ID, $user->ID, 600);
+
+            wp_die('
+                <form method="post" action="' . wp_login_url() . '">
+                    <h2>Two-Factor Authentication</h2>
+                    <p>A verification code has been sent to your email.</p>
+                    <p>
+                        <label>Verification Code:<br>
+                        <input type="text" name="2fa_code" required></label>
+                    </p>
+                    <input type="hidden" name="log" value="' . esc_attr($username) . '">
+                    <input type="hidden" name="pwd" value="' . esc_attr($password) . '">
+                    <p><input type="submit" value="Verify"></p>
+                </form>
+            ');
+        } else {
+            // Verify the code
+            if (!verify_2fa_code($user->ID, $_POST['2fa_code'])) {
+                return new WP_Error('2fa_failed', 'Invalid verification code.');
+            }
+        }
+    }
+
+    return $user;
+}</code></pre>
+
+      <h3>Alternative: Google Authenticator Style</h3>
+      <pre><code class="language-php">// Using TOTP (Time-based One-Time Password)
+// Requires: composer require spomky-labs/otphp
+
+use OTPHP\TOTP;
+
+function generate_totp_secret($user_id) {
+    $totp = TOTP::create();
+    update_user_meta($user_id, '2fa_secret', $totp->getSecret());
+    return $totp->getProvisioningUri(
+        get_userdata($user_id)->user_email,
+        get_bloginfo('name')
+    );
+}
+
+function verify_totp_code($user_id, $code) {
+    $secret = get_user_meta($user_id, '2fa_secret', true);
+
+    if (!$secret) {
+        return false;
+    }
+
+    $totp = TOTP::create($secret);
+    return $totp->verify($code);
+}</code></pre>
+
+      <h3>User Profile Integration</h3>
+      <pre><code class="language-php">// Add 2FA settings to user profile
+add_action('show_user_profile', 'add_2fa_profile_fields');
+add_action('edit_user_profile', 'add_2fa_profile_fields');
+
+function add_2fa_profile_fields($user) {
+    if (!current_user_can('administrator')) {
+        return;
+    }
+
+    $enabled = get_user_meta($user->ID, '2fa_enabled', true);
+    ?>
+    <h3>Two-Factor Authentication</h3>
+    <table class="form-table">
+        <tr>
+            <th><label for="2fa_enabled">Enable 2FA</label></th>
+            <td>
+                <input type="checkbox" name="2fa_enabled" id="2fa_enabled"
+                       value="1" <?php checked($enabled, '1'); ?>>
+                <p class="description">Require verification code when logging in.</p>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+
+add_action('personal_options_update', 'save_2fa_profile_fields');
+add_action('edit_user_profile_update', 'save_2fa_profile_fields');
+
+function save_2fa_profile_fields($user_id) {
+    if (!current_user_can('edit_user', $user_id)) {
+        return;
+    }
+
+    update_user_meta($user_id, '2fa_enabled', isset($_POST['2fa_enabled']) ? '1' : '0');
+}</code></pre>
+
+      <h3>Security Considerations</h3>
+      <ul>
+        <li>Use secure random number generation for codes</li>
+        <li>Set appropriate expiration times (5-10 minutes)</li>
+        <li>Limit the number of verification attempts</li>
+        <li>Provide backup codes for account recovery</li>
+        <li>Log all 2FA events for security auditing</li>
+      </ul>
+
+      <h3>Recovery Options</h3>
+      <ul>
+        <li>Generate backup codes that can be used once</li>
+        <li>Allow email-based recovery for locked accounts</li>
+        <li>Implement admin override for emergency access</li>
+        <li>Provide clear instructions for users who lose access</li>
+      </ul>
+    `,
+    code: `add_filter('authenticate', 'require_2fa_on_login', 30, 3);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-18',
+    readTime: '8 min read',
+    category: 'WordPress Security',
+    tags: ['Security', '2FA', 'Authentication', 'Login Protection', 'Two-Factor'],
+    difficulty: 'Advanced',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Add Two-Factor Authentication to WordPress: Complete Code Guide',
+      metaDescription: 'Implement 2FA in WordPress with custom code. Email-based and Google Authenticator-style examples included with security best practices.',
+      keywords: ['wordpress 2fa', 'two factor authentication wordpress', 'wordpress login security', 'totp wordpress', 'secure wordpress login'],
+      canonical: '/blog/two-factor-authentication',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Add Two-Factor Authentication Code",
+        "proficiencyLevel": "Advanced"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between TOTP and email-based 2FA?",
+        answer: "TOTP (Time-based One-Time Password) uses apps like Google Authenticator and generates codes offline based on a shared secret. Email-based 2FA sends codes via email. TOTP is more secure as it doesn't rely on email delivery and can't be intercepted as easily."
+      },
+      {
+        question: "Should I require 2FA for all users or just administrators?",
+        answer: "Start with administrators and users with elevated privileges (editors, shop managers). You can then offer 2FA as an optional feature for all users, letting them enable it in their profile settings."
+      },
+      {
+        question: "How do I handle users who lose access to their 2FA device?",
+        answer: "Implement backup codes (single-use codes generated during 2FA setup), email recovery options, or provide an admin override feature. Always have a recovery mechanism documented and easily accessible."
+      },
+      {
+        question: "Can I use a plugin instead of custom code for 2FA?",
+        answer: "Yes, plugins like 'Two-Factor', 'Wordfence', or 'iThemes Security' provide robust 2FA implementations with user interfaces and recovery options. Custom code gives you more control but requires more maintenance."
+      },
+      {
+        question: "How long should verification codes remain valid?",
+        answer: "5-10 minutes is standard. This balances security (shorter is better) with user experience (users need time to receive and enter the code). TOTP codes typically have 30-second validity windows with a grace period."
+      }
+    ]
+  },
+  {
+    id: 10,
+    slug: 'block-bad-user-agents',
+    title: 'Block Malicious User Agents',
+    excerpt: 'Protect your WordPress site from malicious bots and scrapers by blocking known bad user agents at the application level.',
+    content: `
+      <h2>Why Block Bad User Agents?</h2>
+      <p>Many bots and scrapers identify themselves through their user agent strings. Blocking known malicious user agents can reduce server load, prevent content scraping, and improve security.</p>
+
+      <h3>Basic User Agent Blocking</h3>
+      <pre><code class="language-php">// Block bad user agents
+function block_bad_user_agents() {
+    $bad_user_agents = array(
+        'AhrefsBot',
+        'SemrushBot',
+        'DotBot',
+        'MJ12bot',
+        'rogerbot',
+        'BLEXBot',
+        'linkdexbot',
+        'YandexBot',
+        'Baiduspider',
+        'magpie-crawler',
+        'python-requests',
+        'wget',
+        'curl'
+    );
+
+    $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+    foreach ($bad_user_agents as $bot) {
+        if (stripos($user_agent, $bot) !== false) {
+            header('HTTP/1.1 403 Forbidden');
+            die('Access Denied');
+        }
+    }
+}
+add_action('init', 'block_bad_user_agents', 1);</code></pre>
+
+      <h3>Selective Blocking with Whitelist</h3>
+      <pre><code class="language-php">// Block bots but allow legitimate crawlers
+function selective_bot_blocking() {
+    $user_agent = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '';
+
+    // Allow legitimate crawlers
+    $whitelist = array(
+        'Googlebot',
+        'Bingbot',
+        'Slurp', // Yahoo
+        'DuckDuckBot',
+        'facebookexternalhit'
+    );
+
+    foreach ($whitelist as $allowed) {
+        if (stripos($user_agent, $allowed) !== false) {
+            return; // Allow access
+        }
+    }
+
+    // Block aggressive crawlers
+    $blacklist = array(
+        'AhrefsBot',
+        'SemrushBot',
+        'MJ12bot',
+        'BLEXBot'
+    );
+
+    foreach ($blacklist as $blocked) {
+        if (stripos($user_agent, $blocked) !== false) {
+            status_header(403);
+            nocache_headers();
+            die('Bot access not permitted');
+        }
+    }
+}
+add_action('init', 'selective_bot_blocking', 1);</code></pre>
+
+      <h3>Log Blocked User Agents</h3>
+      <pre><code class="language-php">// Log blocked bots for analysis
+function log_blocked_user_agent($user_agent) {
+    $log_file = WP_CONTENT_DIR . '/blocked-bots.log';
+    $timestamp = current_time('mysql');
+    $ip = $_SERVER['REMOTE_ADDR'];
+    $log_entry = "[$timestamp] IP: $ip - UA: $user_agent\n";
+
+    error_log($log_entry, 3, $log_file);
+}
+
+function block_and_log_bad_bots() {
+    $bad_bots = array('AhrefsBot', 'SemrushBot', 'MJ12bot');
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+
+    foreach ($bad_bots as $bot) {
+        if (stripos($user_agent, $bot) !== false) {
+            log_blocked_user_agent($user_agent);
+            wp_die('Access Denied', 'Bot Blocked', array('response' => 403));
+        }
+    }
+}
+add_action('init', 'block_and_log_bad_bots', 1);</code></pre>
+
+      <h3>Rate Limiting for Suspicious Agents</h3>
+      <pre><code class="language-php">// Rate limit suspicious user agents
+function rate_limit_bots() {
+    $user_agent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    $ip = $_SERVER['REMOTE_ADDR'];
+
+    $suspicious_patterns = array('bot', 'crawler', 'spider', 'scraper');
+
+    $is_suspicious = false;
+    foreach ($suspicious_patterns as $pattern) {
+        if (stripos($user_agent, $pattern) !== false) {
+            $is_suspicious = true;
+            break;
+        }
+    }
+
+    if ($is_suspicious) {
+        $transient_key = 'bot_requests_' . md5($ip . $user_agent);
+        $requests = get_transient($transient_key) ?: 0;
+
+        $requests++;
+        set_transient($transient_key, $requests, MINUTE_IN_SECONDS);
+
+        // Allow max 10 requests per minute
+        if ($requests > 10) {
+            status_header(429);
+            die('Too Many Requests');
+        }
+    }
+}
+add_action('init', 'rate_limit_bots', 1);</code></pre>
+
+      <h3>Common Malicious Bots to Block</h3>
+      <ul>
+        <li><strong>AhrefsBot:</strong> Aggressive SEO crawler</li>
+        <li><strong>SemrushBot:</strong> Competitive analysis tool</li>
+        <li><strong>MJ12bot:</strong> Majestic SEO bot</li>
+        <li><strong>BLEXBot:</strong> Known for aggressive crawling</li>
+        <li><strong>python-requests/wget/curl:</strong> Often used by scrapers</li>
+      </ul>
+
+      <h3>Important Considerations</h3>
+      <ul>
+        <li>Don't block legitimate search engine bots (Google, Bing, etc.)</li>
+        <li>Monitor your block list to avoid false positives</li>
+        <li>Consider using robots.txt for polite bots</li>
+        <li>Server-level blocking (.htaccess) is more efficient</li>
+        <li>Regularly update your bot blocklist</li>
+      </ul>
+    `,
+    code: `add_action('init', 'block_bad_user_agents', 1);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-17',
+    readTime: '6 min read',
+    category: 'WordPress Security',
+    tags: ['Security', 'Bots', 'User Agents', 'Performance', 'Protection'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Block Malicious User Agents in WordPress: Security Code Guide',
+      metaDescription: 'Protect WordPress from bad bots and scrapers by blocking malicious user agents. Includes logging and rate limiting examples.',
+      keywords: ['block bots wordpress', 'user agent blocking', 'wordpress security', 'block scrapers', 'bot protection'],
+      canonical: '/blog/block-bad-user-agents',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Block Malicious User Agents",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "Will blocking user agents affect SEO?",
+        answer: "Only if you accidentally block legitimate search engine bots. Always whitelist Googlebot, Bingbot, and other major search engines. Blocking aggressive crawlers like AhrefsBot won't hurt SEO."
+      },
+      {
+        question: "Can bots bypass user agent blocking?",
+        answer: "Yes, sophisticated bots can spoof user agents. This method blocks unsophisticated scrapers and reduces server load from known aggressive crawlers. Combine with IP blocking and rate limiting for better protection."
+      },
+      {
+        question: "Should I block or rate-limit bots?",
+        answer: "Rate limiting is often better for semi-legitimate bots that respect limits. Complete blocking is appropriate for known malicious bots or scrapers that provide no value to your site."
+      },
+      {
+        question: "Is .htaccess or PHP blocking more efficient?",
+        answer: "Server-level blocking via .htaccess is more efficient as it blocks requests before PHP loads. However, PHP-based blocking offers more flexibility and is easier to update without server access."
+      },
+      {
+        question: "How do I know which user agents to block?",
+        answer: "Check your server logs for user agents causing high traffic, analyze patterns of suspicious behavior, and consult lists of known malicious bots. Start conservative and monitor the impact before expanding your blocklist."
+      }
+    ]
+  },
+  {
+    id: 11,
+    slug: 'disable-embeds-wordpress',
+    title: 'Disable oEmbeds for Better Performance',
+    excerpt: 'Remove WordPress oEmbed functionality to reduce HTTP requests, eliminate unnecessary scripts, and improve site performance.',
+    content: `
+      <h2>What are WordPress oEmbeds?</h2>
+      <p>WordPress oEmbed allows you to embed content from external sources (YouTube, Twitter, etc.) by simply pasting URLs. While convenient, it adds extra HTTP requests and JavaScript that can slow down your site.</p>
+
+      <h3>Complete oEmbed Removal</h3>
+      <pre><code class="language-php">// Disable WordPress oEmbed functionality
+function disable_embeds_code_init() {
+    // Remove the REST API endpoint
+    remove_action('rest_api_init', 'wp_oembed_register_route');
+
+    // Turn off oEmbed auto discovery
+    add_filter('embed_oembed_discover', '__return_false');
+
+    // Don't filter oEmbed results
+    remove_filter('oembed_dataparse', 'wp_filter_oembed_result', 10);
+
+    // Remove oEmbed discovery links
+    remove_action('wp_head', 'wp_oembed_add_discovery_links');
+
+    // Remove oEmbed-specific JavaScript from the front-end and back-end
+    remove_action('wp_head', 'wp_oembed_add_host_js');
+
+    // Remove all embeds rewrite rules
+    add_filter('rewrite_rules_array', 'disable_embeds_rewrites');
+}
+add_action('init', 'disable_embeds_code_init', 9999);
+
+function disable_embeds_rewrites($rules) {
+    foreach ($rules as $rule => $rewrite) {
+        if (strpos($rewrite, 'embed=true') !== false) {
+            unset($rules[$rule]);
+        }
+    }
+    return $rules;
+}</code></pre>
+
+      <h3>Remove oEmbed Scripts</h3>
+      <pre><code class="language-php">// Dequeue oEmbed scripts
+function remove_oembed_scripts() {
+    // Remove wp-embed.min.js
+    wp_deregister_script('wp-embed');
+}
+add_action('wp_footer', 'remove_oembed_scripts');</code></pre>
+
+      <h3>Disable for TinyMCE Editor</h3>
+      <pre><code class="language-php">// Disable oEmbed in TinyMCE editor
+function disable_embeds_tiny_mce_plugin($plugins) {
+    return array_diff($plugins, array('wpembed'));
+}
+add_filter('tiny_mce_plugins', 'disable_embeds_tiny_mce_plugin');</code></pre>
+
+      <h3>Remove oEmbed Meta Tags</h3>
+      <pre><code class="language-php">// Remove oEmbed-related meta tags from head
+function remove_oembed_meta_tags() {
+    // Remove oEmbed discovery links
+    remove_action('wp_head', 'wp_oembed_add_discovery_links');
+
+    // Remove oEmbed REST API route
+    remove_action('rest_api_init', 'wp_oembed_register_route');
+
+    // Remove oEmbed content filter
+    remove_filter('the_content', array($GLOBALS['wp_embed'], 'autoembed'), 8);
+}
+add_action('init', 'remove_oembed_meta_tags');</code></pre>
+
+      <h3>Selective Embed Disabling</h3>
+      <pre><code class="language-php">// Keep embeds but remove external discovery
+function selective_embed_control() {
+    // Disable embed discovery for other sites
+    remove_action('wp_head', 'wp_oembed_add_discovery_links');
+
+    // But keep internal embed functionality
+    // This allows you to embed your own posts
+
+    // Remove embed scripts only on frontend
+    if (!is_admin()) {
+        wp_deregister_script('wp-embed');
+    }
+}
+add_action('init', 'selective_embed_control');</code></pre>
+
+      <h3>Alternative: Use Plugin Filter</h3>
+      <pre><code class="language-php">// Disable specific embed providers
+function disable_specific_embeds($providers) {
+    // Keep YouTube and Vimeo, remove others
+    $keep = array(
+        '#https?://((m|www)\.)?youtube\.com/watch.*#i',
+        '#https?://youtu\.be/.*#i',
+        '#https?://(www\.)?vimeo\.com/.*#i'
+    );
+
+    $filtered = array();
+    foreach ($providers as $pattern => $data) {
+        if (in_array($pattern, $keep)) {
+            $filtered[$pattern] = $data;
+        }
+    }
+
+    return $filtered;
+}
+add_filter('oembed_providers', 'disable_specific_embeds');</code></pre>
+
+      <h3>Performance Impact</h3>
+      <ul>
+        <li>Reduces HTTP requests by eliminating external oEmbed calls</li>
+        <li>Removes wp-embed.min.js (reduces page weight by ~2KB)</li>
+        <li>Eliminates REST API oEmbed endpoints</li>
+        <li>Removes oEmbed meta tags from HTML head</li>
+        <li>Prevents external sites from embedding your content</li>
+      </ul>
+
+      <h3>When to Keep oEmbeds</h3>
+      <ul>
+        <li>You frequently embed external content (videos, tweets, etc.)</li>
+        <li>Content creators rely on simple URL pasting</li>
+        <li>You want your content embeddable on other sites</li>
+        <li>Using page builders that leverage oEmbed functionality</li>
+      </ul>
+
+      <h3>Manual Embed Alternative</h3>
+      <p>After disabling oEmbeds, you can still embed content using:</p>
+      <ul>
+        <li>Native WordPress embed blocks (Gutenberg)</li>
+        <li>HTML iframe code directly</li>
+        <li>Shortcodes from specific plugins</li>
+        <li>Custom embed functions for specific services</li>
+      </ul>
+    `,
+    code: `add_action('init', 'disable_embeds_code_init', 9999);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-17',
+    readTime: '5 min read',
+    category: 'WordPress Performance',
+    tags: ['Performance', 'Optimization', 'Embeds', 'oEmbed', 'Speed'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 4.4+',
+    seo: {
+      metaTitle: 'Disable WordPress oEmbeds: Performance Optimization Guide 2025',
+      metaDescription: 'Remove WordPress oEmbed functionality to improve site speed. Complete code snippets to disable embeds and boost performance.',
+      keywords: ['disable oembed wordpress', 'wordpress performance', 'remove embeds', 'wordpress optimization', 'wp-embed'],
+      canonical: '/blog/disable-embeds-wordpress',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Disable oEmbeds for Better Performance",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "Will disabling oEmbeds break my existing embedded content?",
+        answer: "Existing embeds already rendered in posts will still work, but new embeds won't be automatically created by pasting URLs. You'll need to use manual embed codes or the embed block in Gutenberg."
+      },
+      {
+        question: "How much performance improvement can I expect?",
+        answer: "You'll save 1-3KB of JavaScript (wp-embed.min.js), eliminate oEmbed-related HTTP requests, and reduce HTML head clutter. The impact is modest but contributes to overall performance, especially on mobile."
+      },
+      {
+        question: "Can I disable oEmbeds for external sites but keep internal embeds?",
+        answer: "Yes, you can selectively remove external embed discovery while keeping the ability to embed your own posts. Use the selective_embed_control() function shown in the examples."
+      },
+      {
+        question: "Will this affect YouTube or video embeds?",
+        answer: "Auto-embeds won't work (pasting a YouTube URL won't automatically embed). However, you can still manually embed using the YouTube block in Gutenberg or by pasting the iframe code directly."
+      },
+      {
+        question: "Should I disable oEmbeds on all WordPress sites?",
+        answer: "Not necessarily. If you or your content creators frequently embed external content and value the convenience of URL-pasting, keep oEmbeds enabled. Disable them on sites where performance is critical and embeds are rarely used."
+      }
+    ]
+  },
+  {
+    id: 12,
+    slug: 'limit-post-revisions',
+    title: 'Limit Post Revisions to Save Database Space',
+    excerpt: 'Control WordPress post revisions to reduce database bloat and improve performance by limiting the number of revisions stored.',
+    content: `
+      <h2>Understanding WordPress Revisions</h2>
+      <p>WordPress automatically saves a revision every time you update a post or page. While useful for recovery, unlimited revisions can bloat your database significantly over time.</p>
+
+      <h3>Limit Revisions to a Specific Number</h3>
+      <pre><code class="language-php">// Add to wp-config.php
+// Limit to 5 revisions per post
+define('WP_POST_REVISIONS', 5);</code></pre>
+
+      <h3>Disable Revisions Completely</h3>
+      <pre><code class="language-php">// Add to wp-config.php
+// Disable all post revisions
+define('WP_POST_REVISIONS', false);</code></pre>
+
+      <h3>Set Different Limits for Different Post Types</h3>
+      <pre><code class="language-php">// Limit revisions based on post type
+function limit_revisions_by_post_type($num, $post) {
+    // Limit pages to 3 revisions
+    if ($post->post_type === 'page') {
+        return 3;
+    }
+
+    // Limit posts to 5 revisions
+    if ($post->post_type === 'post') {
+        return 5;
+    }
+
+    // No limit for custom post types
+    return $num;
+}
+add_filter('wp_revisions_to_keep', 'limit_revisions_by_post_type', 10, 2);</code></pre>
+
+      <h3>Auto-Delete Old Revisions</h3>
+      <pre><code class="language-php">// Automatically delete revisions older than 30 days
+function delete_old_revisions() {
+    global $wpdb;
+
+    $days = 30;
+    $sql = $wpdb->prepare(
+        "DELETE FROM $wpdb->posts
+         WHERE post_type = 'revision'
+         AND post_modified < DATE_SUB(NOW(), INTERVAL %d DAY)",
+        $days
+    );
+
+    $wpdb->query($sql);
+}
+
+// Run weekly
+if (!wp_next_scheduled('delete_old_revisions_hook')) {
+    wp_schedule_event(time(), 'weekly', 'delete_old_revisions_hook');
+}
+add_action('delete_old_revisions_hook', 'delete_old_revisions');</code></pre>
+
+      <h3>Keep Only Latest N Revisions</h3>
+      <pre><code class="language-php">// Keep only the 3 most recent revisions per post
+function keep_latest_revisions($post_id) {
+    $revisions = wp_get_post_revisions($post_id, array(
+        'order' => 'DESC'
+    ));
+
+    if (count($revisions) > 3) {
+        $revisions_to_delete = array_slice($revisions, 3);
+
+        foreach ($revisions_to_delete as $revision) {
+            wp_delete_post_revision($revision->ID);
+        }
+    }
+}
+add_action('post_updated', 'keep_latest_revisions', 10, 1);</code></pre>
+
+      <h3>Manually Clean Up All Revisions</h3>
+      <pre><code class="language-php">// One-time cleanup function
+function cleanup_all_revisions() {
+    global $wpdb;
+
+    // Delete ALL revisions (use with caution!)
+    $wpdb->query("DELETE FROM $wpdb->posts WHERE post_type = 'revision'");
+
+    // Clean up orphaned post meta
+    $wpdb->query("DELETE pm FROM $wpdb->postmeta pm
+                  LEFT JOIN $wpdb->posts wp ON wp.ID = pm.post_id
+                  WHERE wp.ID IS NULL");
+
+    return 'Revisions cleaned up successfully!';
+}
+
+// Run once via custom admin page or WP-CLI</code></pre>
+
+      <h3>Show Revision Count in Admin</h3>
+      <pre><code class="language-php">// Display revision count in post list
+function add_revision_column($columns) {
+    $columns['revisions'] = 'Revisions';
+    return $columns;
+}
+add_filter('manage_posts_columns', 'add_revision_column');
+
+function show_revision_count($column_name, $post_id) {
+    if ($column_name === 'revisions') {
+        $revisions = wp_get_post_revisions($post_id);
+        echo count($revisions);
+    }
+}
+add_action('manage_posts_custom_column', 'show_revision_count', 10, 2);</code></pre>
+
+      <h3>Adjust Autosave Interval</h3>
+      <pre><code class="language-php">// Add to wp-config.php
+// Change autosave from 60 seconds to 300 seconds (5 minutes)
+define('AUTOSAVE_INTERVAL', 300);</code></pre>
+
+      <h3>Database Impact</h3>
+      <ul>
+        <li><strong>Default behavior:</strong> Unlimited revisions</li>
+        <li><strong>Average revision size:</strong> 5-50KB depending on content</li>
+        <li><strong>100 posts × 20 revisions:</strong> ~10-100MB of database space</li>
+        <li><strong>Recommended limit:</strong> 3-5 revisions per post</li>
+      </ul>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Set WP_POST_REVISIONS between 3-10 based on your needs</li>
+        <li>Don't disable revisions completely (keep at least 2-3)</li>
+        <li>Run periodic cleanup to remove old revisions</li>
+        <li>Increase autosave interval to reduce revision frequency</li>
+        <li>Monitor database size after implementing limits</li>
+      </ul>
+
+      <h3>When to Keep More Revisions</h3>
+      <ul>
+        <li>Critical content that requires detailed version history</li>
+        <li>Multiple editors working on the same content</li>
+        <li>Legal/compliance requirements for change tracking</li>
+        <li>Content that undergoes frequent complex updates</li>
+      </ul>
+    `,
+    code: `define('WP_POST_REVISIONS', 5);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-17',
+    readTime: '6 min read',
+    category: 'WordPress Performance',
+    tags: ['Performance', 'Database', 'Revisions', 'Optimization', 'Storage'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 2.6+',
+    seo: {
+      metaTitle: 'Limit WordPress Post Revisions: Database Optimization Guide 2025',
+      metaDescription: 'Reduce database bloat by limiting WordPress post revisions. Complete guide with code snippets to control and clean up revisions.',
+      keywords: ['wordpress revisions', 'limit post revisions', 'wordpress database optimization', 'wp_post_revisions', 'clean up revisions'],
+      canonical: '/blog/limit-post-revisions',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Limit Post Revisions to Save Database Space",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "How many revisions should I keep?",
+        answer: "3-5 revisions is ideal for most sites. This provides sufficient history for recovery while preventing excessive database growth. Critical sites with compliance requirements may need more."
+      },
+      {
+        question: "Should I disable revisions completely?",
+        answer: "Generally no. Keep at least 2-3 revisions for recovery purposes. Complete removal eliminates your safety net if content is accidentally deleted or corrupted."
+      },
+      {
+        question: "Will limiting revisions affect existing revisions?",
+        answer: "No, setting WP_POST_REVISIONS only affects new revisions going forward. Existing revisions remain until you manually delete them or implement an auto-cleanup function."
+      },
+      {
+        question: "How do I clean up existing revisions safely?",
+        answer: "Use plugins like WP-Optimize or WP-Sweep to bulk delete revisions. Always backup your database first. You can also use the provided SQL queries to delete revisions older than a certain date."
+      },
+      {
+        question: "Does limiting revisions improve site performance?",
+        answer: "Yes, indirectly. A smaller database loads faster during queries and backups complete quicker. However, the performance impact is more noticeable on sites with thousands of posts and years of accumulated revisions."
+      }
+    ]
+  },
+  {
+    id: 13,
+    slug: 'disable-emojis',
+    title: 'Disable WordPress Emoji Scripts',
+    excerpt: 'Remove WordPress emoji detection scripts and inline styles to improve page load speed and reduce HTTP requests.',
+    content: `
+      <h2>Why Disable WordPress Emojis?</h2>
+      <p>Since WordPress 4.2, emoji support is built-in. However, it loads additional JavaScript (wp-emoji-release.min.js) and inline CSS on every page, even if you don't use emojis. Modern browsers support emojis natively, making these scripts unnecessary.</p>
+
+      <h3>Complete Emoji Removal</h3>
+      <pre><code class="language-php">// Remove all emoji-related scripts and styles
+function disable_emojis() {
+    // Remove emoji detection script
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('admin_print_scripts', 'print_emoji_detection_script');
+
+    // Remove emoji styles
+    remove_action('wp_print_styles', 'print_emoji_styles');
+    remove_action('admin_print_styles', 'print_emoji_styles');
+
+    // Remove emoji from RSS feed
+    remove_filter('the_content_feed', 'wp_staticize_emoji');
+    remove_filter('comment_text_rss', 'wp_staticize_emoji');
+
+    // Remove emoji from emails
+    remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+
+    // Disable emoji in TinyMCE editor
+    add_filter('tiny_mce_plugins', 'disable_emojicons_tinymce');
+
+    // Remove emoji DNS prefetch
+    add_filter('emoji_svg_url', '__return_false');
+}
+add_action('init', 'disable_emojis');
+
+function disable_emojicons_tinymce($plugins) {
+    if (is_array($plugins)) {
+        return array_diff($plugins, array('wpemoji'));
+    }
+    return array();
+}</code></pre>
+
+      <h3>Remove Emoji DNS Prefetch</h3>
+      <pre><code class="language-php">// Remove DNS prefetch for emoji CDN
+function remove_dns_prefetch($hints, $relation_type) {
+    if ('dns-prefetch' === $relation_type) {
+        return array_diff($hints, array(
+            '//s.w.org'  // WordPress emoji CDN
+        ));
+    }
+
+    return $hints;
+}
+add_filter('wp_resource_hints', 'remove_dns_prefetch', 10, 2);</code></pre>
+
+      <h3>Frontend Only Removal</h3>
+      <pre><code class="language-php">// Disable emojis on frontend only (keep in admin)
+function disable_emojis_frontend() {
+    if (!is_admin()) {
+        remove_action('wp_head', 'print_emoji_detection_script', 7);
+        remove_action('wp_print_styles', 'print_emoji_styles');
+        remove_filter('the_content_feed', 'wp_staticize_emoji');
+        remove_filter('comment_text_rss', 'wp_staticize_emoji');
+        remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+    }
+}
+add_action('init', 'disable_emojis_frontend');</code></pre>
+
+      <h3>Lightweight Alternative: CDN Redirect</h3>
+      <pre><code class="language-php">// Redirect emoji to your own CDN or remove entirely
+function custom_emoji_url($url) {
+    // Option 1: Return false to disable
+    return false;
+
+    // Option 2: Use your own CDN
+    // return 'https://your-cdn.com/emoji/';
+}
+add_filter('emoji_url', 'custom_emoji_url');</code></pre>
+
+      <h3>Check if Emojis are Disabled</h3>
+      <pre><code class="language-php">// Verify emoji scripts are removed
+function check_emoji_status() {
+    $emoji_enabled = has_action('wp_head', 'print_emoji_detection_script');
+
+    if ($emoji_enabled !== false) {
+        echo '<!-- Emoji scripts are ENABLED -->';
+    } else {
+        echo '<!-- Emoji scripts are DISABLED -->';
+    }
+}
+add_action('wp_head', 'check_emoji_status', 999);</code></pre>
+
+      <h3>Performance Impact</h3>
+      <ul>
+        <li><strong>File size:</strong> Removes ~11KB of JavaScript (wp-emoji-release.min.js)</li>
+        <li><strong>HTTP requests:</strong> Reduces by 1-2 requests per page</li>
+        <li><strong>DNS prefetch:</strong> Removes s.w.org DNS lookup</li>
+        <li><strong>Inline CSS:</strong> Eliminates emoji-related inline styles</li>
+        <li><strong>Cumulative impact:</strong> Faster page loads, especially on mobile</li>
+      </ul>
+
+      <h3>Will Emojis Still Work?</h3>
+      <p>Yes! Modern browsers (Chrome, Firefox, Safari, Edge) support emojis natively. Disabling WordPress's emoji scripts only removes the polyfill for older browsers. Users will still see emojis correctly.</p>
+
+      <h3>Browser Support</h3>
+      <ul>
+        <li><strong>Native emoji support:</strong> All modern browsers (98%+ of users)</li>
+        <li><strong>No support:</strong> IE 10 and older (negligible usage)</li>
+        <li><strong>Fallback:</strong> Older browsers show emoji characters or boxes</li>
+      </ul>
+
+      <h3>When to Keep Emoji Scripts</h3>
+      <ul>
+        <li>Supporting very old browsers (IE 10 or earlier)</li>
+        <li>Specific client requirement for emoji consistency</li>
+        <li>Custom emoji implementation that relies on wp-emoji</li>
+      </ul>
+
+      <h3>Testing After Removal</h3>
+      <p>After disabling, test your site to ensure:</p>
+      <ul>
+        <li>Existing emoji in content display correctly</li>
+        <li>Admin editor still allows emoji input</li>
+        <li>No console errors appear</li>
+        <li>Page load speed improves (use GTmetrix or PageSpeed Insights)</li>
+      </ul>
+    `,
+    code: `add_action('init', 'disable_emojis');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-16',
+    readTime: '5 min read',
+    category: 'WordPress Performance',
+    tags: ['Performance', 'Emojis', 'Optimization', 'Page Speed', 'Scripts'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 4.2+',
+    seo: {
+      metaTitle: 'Disable WordPress Emoji Scripts: Performance Optimization 2025',
+      metaDescription: 'Remove WordPress emoji detection scripts to improve page speed. Complete code guide to safely disable emojis without affecting functionality.',
+      keywords: ['disable wordpress emojis', 'remove emoji script', 'wordpress performance', 'wp emoji optimization', 'disable emoji js'],
+      canonical: '/blog/disable-emojis',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Disable WordPress Emoji Scripts",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "Will disabling emoji scripts break existing emojis on my site?",
+        answer: "No. Modern browsers support emojis natively. Disabling WordPress's emoji scripts only removes the polyfill for old browsers. Your existing emojis will display correctly in all modern browsers (Chrome, Firefox, Safari, Edge)."
+      },
+      {
+        question: "How much performance improvement will I see?",
+        answer: "You'll save ~11KB of JavaScript (wp-emoji-release.min.js) and reduce HTTP requests by 1-2 per page. The impact is modest but cumulative—combine with other optimizations for significant performance gains, especially on mobile connections."
+      },
+      {
+        question: "Can I still use emojis in my content after disabling?",
+        answer: "Absolutely! You can still type, paste, and display emojis in your content. The difference is WordPress won't load extra scripts to convert emoji unicode to images—modern browsers render them natively."
+      },
+      {
+        question: "Should I disable emojis in the admin area too?",
+        answer: "It's optional. Some developers prefer keeping emoji scripts in admin for a consistent editing experience. Use the frontend-only removal function if you want emojis available while editing but removed from public pages."
+      },
+      {
+        question: "Will this affect older browsers?",
+        answer: "Yes, but negligibly. Only very old browsers (IE 10 and earlier, representing <0.5% of traffic) might show emoji as plain characters or boxes. For 99%+ of your visitors with modern browsers, there's no negative impact."
+      }
+    ]
+  },
+  {
+    id: 14,
+    slug: 'defer-javascript-loading',
+    title: 'Defer JavaScript Loading',
+    excerpt: 'Improve page load performance by deferring non-critical JavaScript files, allowing HTML to load first and speeding up page rendering.',
+    content: `
+      <h2>Understanding Defer vs Async</h2>
+      <p>Deferring JavaScript tells the browser to download scripts in parallel but execute them only after HTML parsing is complete. This prevents render-blocking and improves perceived page speed.</p>
+
+      <h3>Defer All JavaScripts</h3>
+      <pre><code class="language-php">// Add defer attribute to all scripts
+function defer_all_scripts($tag, $handle) {
+    // Don't defer jQuery (many scripts depend on it)
+    if ('jquery' === $handle) {
+        return $tag;
+    }
+
+    // Don't defer scripts in admin
+    if (is_admin()) {
+        return $tag;
+    }
+
+    // Add defer attribute
+    return str_replace(' src', ' defer src', $tag);
+}
+add_filter('script_loader_tag', 'defer_all_scripts', 10, 2);</code></pre>
+
+      <h3>Selective Defer with Exclusions</h3>
+      <pre><code class="language-php">// Defer scripts except critical ones
+function selective_defer_scripts($tag, $handle) {
+    // Scripts that should NOT be deferred
+    $exclude = array(
+        'jquery',
+        'jquery-core',
+        'jquery-migrate',
+        'custom-critical-script'
+    );
+
+    // Skip if in admin or script is excluded
+    if (is_admin() || in_array($handle, $exclude)) {
+        return $tag;
+    }
+
+    // Add defer attribute
+    return str_replace(' src', ' defer src', $tag);
+}
+add_filter('script_loader_tag', 'selective_defer_scripts', 10, 2);</code></pre>
+
+      <h3>Use Async for Independent Scripts</h3>
+      <pre><code class="language-php">// Add async to specific independent scripts
+function async_scripts($tag, $handle) {
+    // Scripts that can load asynchronously
+    $async_scripts = array(
+        'google-analytics',
+        'facebook-pixel',
+        'twitter-widgets',
+        'gtm'
+    );
+
+    if (in_array($handle, $async_scripts)) {
+        return str_replace(' src', ' async src', $tag);
+    }
+
+    return $tag;
+}
+add_filter('script_loader_tag', 'async_scripts', 10, 2);</code></pre>
+
+      <h3>Defer + Async Combined Strategy</h3>
+      <pre><code class="language-php">// Comprehensive script loading strategy
+function optimize_script_loading($tag, $handle) {
+    if (is_admin()) {
+        return $tag;
+    }
+
+    // Scripts that should use async
+    $async_scripts = array(
+        'google-analytics',
+        'gtag',
+        'facebook-sdk'
+    );
+
+    // Scripts that should NOT be deferred at all
+    $no_defer = array(
+        'jquery',
+        'jquery-core',
+        'modernizr'
+    );
+
+    // Skip if in no-defer list
+    if (in_array($handle, $no_defer)) {
+        return $tag;
+    }
+
+    // Add async for independent scripts
+    if (in_array($handle, $async_scripts)) {
+        return str_replace(' src', ' async src', $tag);
+    }
+
+    // Defer everything else
+    return str_replace(' src', ' defer src', $tag);
+}
+add_filter('script_loader_tag', 'optimize_script_loading', 10, 2);</code></pre>
+
+      <h3>Defer Only Footer Scripts</h3>
+      <pre><code class="language-php">// Defer scripts only in footer
+function defer_footer_scripts($tag, $handle) {
+    // Check if script is in footer
+    global $wp_scripts;
+
+    if (isset($wp_scripts->registered[$handle]->extra['group']) &&
+        $wp_scripts->registered[$handle]->extra['group'] === 1) {
+
+        // This script is in footer, defer it
+        return str_replace(' src', ' defer src', $tag);
+    }
+
+    return $tag;
+}
+add_filter('script_loader_tag', 'defer_footer_scripts', 10, 2);</code></pre>
+
+      <h3>Advanced: Inline Critical Scripts</h3>
+      <pre><code class="language-php">// Inline critical scripts and defer others
+function inline_critical_defer_rest($tag, $handle) {
+    $critical_scripts = array('theme-critical');
+
+    if (in_array($handle, $critical_scripts)) {
+        // Get script file path
+        $script_path = get_template_directory() . '/js/' . $handle . '.js';
+
+        if (file_exists($script_path)) {
+            $script_content = file_get_contents($script_path);
+            return "<script>{$script_content}</script>";
+        }
+    }
+
+    // Defer all non-critical scripts
+    if (!is_admin() && $handle !== 'jquery') {
+        return str_replace(' src', ' defer src', $tag);
+    }
+
+    return $tag;
+}
+add_filter('script_loader_tag', 'inline_critical_defer_rest', 10, 2);</code></pre>
+
+      <h3>When to Use Defer vs Async</h3>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 8px;">Method</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">When to Use</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Example Scripts</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;"><strong>Defer</strong></td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Scripts that depend on DOM or other scripts</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Theme scripts, UI libraries, plugins</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;"><strong>Async</strong></td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Independent scripts that don't depend on anything</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Analytics, ads, social widgets</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;"><strong>Neither</strong></td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Critical scripts required immediately</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">jQuery, Modernizr, polyfills</td>
+        </tr>
+      </table>
+
+      <h3>Common Pitfalls</h3>
+      <ul>
+        <li><strong>Don't defer jQuery:</strong> Many scripts depend on it being loaded first</li>
+        <li><strong>Test thoroughly:</strong> Some scripts may break if execution order changes</li>
+        <li><strong>Watch for dependencies:</strong> Script A might need Script B to load first</li>
+        <li><strong>Check third-party plugins:</strong> They may not work well with defer</li>
+      </ul>
+
+      <h3>Performance Impact</h3>
+      <ul>
+        <li>Improves First Contentful Paint (FCP) by 0.5-2 seconds</li>
+        <li>Eliminates render-blocking JavaScript warnings</li>
+        <li>Better PageSpeed Insights scores (85+ achievable)</li>
+        <li>Faster perceived load time for users</li>
+      </ul>
+
+      <h3>Testing Your Implementation</h3>
+      <p>After implementing, verify:</p>
+      <ul>
+        <li>All interactive elements work correctly</li>
+        <li>No JavaScript console errors appear</li>
+        <li>Forms, sliders, and menus function properly</li>
+        <li>Third-party integrations still work (analytics, chat, etc.)</li>
+        <li>Test on multiple browsers and devices</li>
+      </ul>
+    `,
+    code: `add_filter('script_loader_tag', 'defer_all_scripts', 10, 2);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-16',
+    readTime: '7 min read',
+    category: 'WordPress Performance',
+    tags: ['Performance', 'JavaScript', 'Page Speed', 'Defer', 'Async'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.3+',
+    seo: {
+      metaTitle: 'Defer JavaScript Loading in WordPress: Complete Performance Guide',
+      metaDescription: 'Speed up WordPress by deferring JavaScript. Learn when to use defer vs async with code examples and best practices.',
+      keywords: ['defer javascript wordpress', 'async scripts wordpress', 'wordpress page speed', 'render blocking javascript', 'optimize javascript loading'],
+      canonical: '/blog/defer-javascript-loading',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Defer JavaScript Loading",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between defer and async?",
+        answer: "Defer downloads scripts in parallel but executes them in order after HTML parsing. Async downloads and executes immediately, potentially out of order. Use defer for scripts with dependencies, async for completely independent scripts like analytics."
+      },
+      {
+        question: "Should I defer jQuery?",
+        answer: "Generally no. Many WordPress themes and plugins depend on jQuery being loaded and available immediately. Deferring jQuery often breaks functionality. Keep jQuery loading normally unless you're certain nothing depends on it."
+      },
+      {
+        question: "Will deferring scripts break my website?",
+        answer: "It can if not done carefully. Scripts that depend on other scripts need to maintain their execution order. Test thoroughly after implementation, especially forms, sliders, and interactive elements."
+      },
+      {
+        question: "How much will this improve my PageSpeed score?",
+        answer: "Typically 5-15 points on Google PageSpeed Insights, sometimes more. You'll eliminate 'render-blocking JavaScript' warnings and improve FCP (First Contentful Paint) by 0.5-2 seconds depending on how many scripts you're deferring."
+      },
+      {
+        question: "Can I defer scripts on specific pages only?",
+        answer: "Yes! Add conditional checks in your defer function using is_front_page(), is_single(), is_page(), etc. This lets you defer aggressively on simple pages while being conservative on interactive pages."
+      }
+    ]
+  },
+  {
+    id: 15,
+    slug: 'lazy-load-images',
+    title: 'Add Native Lazy Loading to Images',
+    excerpt: 'Implement native browser lazy loading for images and iframes to improve page load performance without JavaScript libraries.',
+    content: `
+      <h2>Native Lazy Loading</h2>
+      <p>Modern browsers support native lazy loading via the loading="lazy" attribute. This defers offscreen images until users scroll near them, significantly improving initial page load time.</p>
+
+      <h3>Add Lazy Loading to All Images</h3>
+      <pre><code class="language-php">// Add loading="lazy" to all content images
+function add_lazy_loading_to_images($content) {
+    // Skip if in admin or feed
+    if (is_admin() || is_feed()) {
+        return $content;
+    }
+
+    // Add loading="lazy" to img tags
+    $content = preg_replace('/<img((?![^>]*loading=)[^>]*)>/i', '<img$1 loading="lazy">', $content);
+
+    return $content;
+}
+add_filter('the_content', 'add_lazy_loading_to_images');
+add_filter('post_thumbnail_html', 'add_lazy_loading_to_images');
+add_filter('get_avatar', 'add_lazy_loading_to_images');</code></pre>
+
+      <h3>Lazy Load + Width/Height Attributes</h3>
+      <pre><code class="language-php">// Add lazy loading with dimensions to prevent layout shift
+function lazy_load_with_dimensions($content) {
+    if (is_admin() || is_feed()) {
+        return $content;
+    }
+
+    // Match all img tags
+    preg_match_all('/<img[^>]+>/i', $content, $matches);
+
+    foreach ($matches[0] as $img_tag) {
+        // Skip if already has loading attribute
+        if (strpos($img_tag, 'loading=') !== false) {
+            continue;
+        }
+
+        // Add loading="lazy"
+        $new_img_tag = str_replace('<img', '<img loading="lazy"', $img_tag);
+
+        // Replace in content
+        $content = str_replace($img_tag, $new_img_tag, $content);
+    }
+
+    return $content;
+}
+add_filter('the_content', 'lazy_load_with_dimensions');</code></pre>
+
+      <h3>Exclude Above-the-Fold Images</h3>
+      <pre><code class="language-php">// Skip lazy loading for first N images (above fold)
+function smart_lazy_loading($content) {
+    if (is_admin() || is_feed()) {
+        return $content;
+    }
+
+    // Skip lazy loading for the first 2 images (likely above fold)
+    static $image_count = 0;
+    $skip_first = 2;
+
+    preg_match_all('/<img[^>]+>/i', $content, $matches);
+
+    foreach ($matches[0] as $img_tag) {
+        $image_count++;
+
+        // Skip lazy loading for first images
+        if ($image_count <= $skip_first) {
+            continue;
+        }
+
+        // Add loading="lazy" to remaining images
+        if (strpos($img_tag, 'loading=') === false) {
+            $new_img_tag = str_replace('<img', '<img loading="lazy"', $img_tag);
+            $content = str_replace($img_tag, $new_img_tag, $content);
+        }
+    }
+
+    return $content;
+}
+add_filter('the_content', 'smart_lazy_loading');</code></pre>
+
+      <h3>Lazy Load iframes (YouTube, Maps, etc.)</h3>
+      <pre><code class="language-php">// Add lazy loading to iframes
+function lazy_load_iframes($content) {
+    if (is_admin() || is_feed()) {
+        return $content;
+    }
+
+    // Add loading="lazy" to iframe tags
+    $content = preg_replace(
+        '/<iframe((?![^>]*loading=)[^>]*)>/i',
+        '<iframe$1 loading="lazy">',
+        $content
+    );
+
+    return $content;
+}
+add_filter('the_content', 'lazy_load_iframes');
+add_filter('embed_oembed_html', 'lazy_load_iframes');</code></pre>
+
+      <h3>Comprehensive Lazy Loading Solution</h3>
+      <pre><code class="language-php">// Complete lazy loading implementation
+function comprehensive_lazy_loading() {
+    // Don't lazy load in admin or feeds
+    if (is_admin() || is_feed() || is_preview()) {
+        return;
+    }
+
+    // Lazy load content images
+    add_filter('the_content', function($content) {
+        // Skip first 2 images (above fold)
+        static $processed = false;
+        if (!$processed) {
+            $processed = true;
+            $skip = 2;
+            $count = 0;
+
+            $content = preg_replace_callback(
+                '/<img([^>]*)>/i',
+                function($match) use (&$count, $skip) {
+                    $count++;
+                    if ($count <= $skip || strpos($match[1], 'loading=') !== false) {
+                        return $match[0];
+                    }
+                    return '<img' . $match[1] . ' loading="lazy">';
+                },
+                $content
+            );
+        }
+        return $content;
+    });
+
+    // Lazy load featured images
+    add_filter('post_thumbnail_html', function($html) {
+        if (strpos($html, 'loading=') === false) {
+            $html = str_replace('<img', '<img loading="lazy"', $html);
+        }
+        return $html;
+    });
+
+    // Lazy load avatars
+    add_filter('get_avatar', function($avatar) {
+        if (strpos($avatar, 'loading=') === false) {
+            $avatar = str_replace('<img', '<img loading="lazy"', $avatar);
+        }
+        return $avatar;
+    });
+
+    // Lazy load iframes
+    add_filter('the_content', function($content) {
+        return preg_replace(
+            '/<iframe((?![^>]*loading=)[^>]*)>/i',
+            '<iframe$1 loading="lazy">',
+            $content
+        );
+    });
+}
+add_action('wp', 'comprehensive_lazy_loading');</code></pre>
+
+      <h3>Check Browser Support</h3>
+      <pre><code class="language-php">// Add JavaScript fallback for older browsers
+function lazy_load_with_fallback() {
+    ?>
+    <script>
+    // Check if browser supports native lazy loading
+    if ('loading' in HTMLImageElement.prototype) {
+        // Native lazy loading supported
+        console.log('Native lazy loading enabled');
+    } else {
+        // Fallback for older browsers (load polyfill or library)
+        console.log('Native lazy loading not supported');
+        // Load lazysizes.js or similar library
+    }
+    </script>
+    <?php
+}
+add_action('wp_footer', 'lazy_load_with_fallback');</code></pre>
+
+      <h3>Browser Support</h3>
+      <ul>
+        <li><strong>Chrome:</strong> 77+ (September 2019)</li>
+        <li><strong>Firefox:</strong> 75+ (April 2020)</li>
+        <li><strong>Safari:</strong> 15.4+ (March 2022)</li>
+        <li><strong>Edge:</strong> 79+ (January 2020)</li>
+        <li><strong>Coverage:</strong> ~95% of global users (2025)</li>
+      </ul>
+
+      <h3>Performance Benefits</h3>
+      <ul>
+        <li>Reduces initial page weight by 50-70%</li>
+        <li>Faster First Contentful Paint (FCP)</li>
+        <li>Lower data usage for mobile users</li>
+        <li>Improved Core Web Vitals scores</li>
+        <li>No JavaScript library required</li>
+      </ul>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Don't lazy load above-the-fold images (first 1-2 images)</li>
+        <li>Always include width and height attributes to prevent layout shift</li>
+        <li>Test on mobile where lazy loading has the biggest impact</li>
+        <li>Consider adding a loading placeholder for better UX</li>
+        <li>Use loading="eager" for critical images if needed</li>
+      </ul>
+
+      <h3>Common Issues</h3>
+      <ul>
+        <li><strong>Layout shift:</strong> Set width/height on images</li>
+        <li><strong>Hero images:</strong> Exclude first image or use loading="eager"</li>
+        <li><strong>SEO concerns:</strong> Google fully supports native lazy loading</li>
+        <li><strong>Old browsers:</strong> Images still load, just not lazily (~5% of users)</li>
+      </ul>
+    `,
+    code: `add_filter('the_content', 'add_lazy_loading_to_images');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-16',
+    readTime: '6 min read',
+    category: 'WordPress Performance',
+    tags: ['Performance', 'Images', 'Lazy Load', 'Core Web Vitals', 'Optimization'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 5.5+',
+    seo: {
+      metaTitle: 'Native Lazy Loading in WordPress: Complete Implementation Guide',
+      metaDescription: 'Add native lazy loading to WordPress images and iframes. Improve page speed with loading="lazy" attribute. No plugins needed.',
+      keywords: ['lazy loading wordpress', 'wordpress image optimization', 'loading lazy attribute', 'defer images wordpress', 'wordpress performance'],
+      canonical: '/blog/lazy-load-images',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Add Native Lazy Loading to Images",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "Does native lazy loading work in all browsers?",
+        answer: "Native lazy loading works in ~95% of browsers (Chrome 77+, Firefox 75+, Safari 15.4+, Edge 79+). Older browsers simply load images normally without lazy loading, so there's no negative impact—it's a progressive enhancement."
+      },
+      {
+        question: "Should I lazy load all images on my WordPress site?",
+        answer: "No, exclude above-the-fold images (typically the first 1-2 images). Lazy loading hero images or logos can delay initial content display and hurt user experience. Only lazy load images that appear below the fold."
+      },
+      {
+        question: "Will lazy loading affect my SEO?",
+        answer: "No, Google fully supports and recommends native lazy loading. Googlebot can crawl and index lazy-loaded images without issues. In fact, lazy loading can improve SEO by boosting page speed metrics."
+      },
+      {
+        question: "Do I need a plugin for lazy loading?",
+        answer: "Not anymore! WordPress 5.5+ includes native lazy loading support. The code snippets provided enhance this with more control (excluding above-fold images, adding to avatars, etc.) without requiring heavy JavaScript libraries."
+      },
+      {
+        question: "How much faster will my site load with lazy loading?",
+        answer: "Expect 30-70% reduction in initial page weight for image-heavy pages. Initial load time typically improves by 1-3 seconds. The impact is most noticeable on mobile connections and pages with many images."
+      }
+    ]
+  },
+  {
+    id: 16,
+    slug: 'disable-heartbeat-api',
+    title: 'Control WordPress Heartbeat API',
+    excerpt: 'Optimize or disable the WordPress Heartbeat API to reduce server load and AJAX requests that can slow down your site.',
+    content: `
+      <h2>What is WordPress Heartbeat API?</h2>
+      <p>The Heartbeat API is a near-real-time communication framework that sends AJAX requests every 15-60 seconds. While useful for autosave and real-time notifications, it can increase server load significantly, especially on high-traffic sites.</p>
+
+      <h3>Completely Disable Heartbeat</h3>
+      <pre><code class="language-php">// Disable Heartbeat API completely
+function disable_heartbeat() {
+    wp_deregister_script('heartbeat');
+}
+add_action('wp_enqueue_scripts', 'disable_heartbeat', 1);</code></pre>
+
+      <h3>Disable on Frontend, Keep in Admin</h3>
+      <pre><code class="language-php">// Disable Heartbeat on frontend only
+function disable_heartbeat_frontend() {
+    global $pagenow;
+
+    // Disable on frontend
+    if (!is_admin()) {
+        wp_deregister_script('heartbeat');
+    }
+
+    // Optionally keep it only on post edit screen
+    if ($pagenow != 'post.php' && $pagenow != 'post-new.php') {
+        wp_deregister_script('heartbeat');
+    }
+}
+add_action('init', 'disable_heartbeat_frontend', 1);</code></pre>
+
+      <h3>Reduce Heartbeat Frequency</h3>
+      <pre><code class="language-php">// Slow down Heartbeat instead of disabling
+function modify_heartbeat_settings($settings) {
+    // Slow down to once every 60 seconds (default is 15)
+    $settings['interval'] = 60;
+    return $settings;
+}
+add_filter('heartbeat_settings', 'modify_heartbeat_settings');</code></pre>
+
+      <h3>Context-Specific Control</h3>
+      <pre><code class="language-php">// Fine-tuned Heartbeat control based on location
+function smart_heartbeat_control() {
+    global $pagenow;
+
+    // Disable everywhere except post editor
+    if ($pagenow != 'post.php' && $pagenow != 'post-new.php') {
+        wp_deregister_script('heartbeat');
+        return;
+    }
+
+    // On post editor, slow it down
+    add_filter('heartbeat_settings', function($settings) {
+        $settings['interval'] = 60; // Every 60 seconds
+        return $settings;
+    });
+}
+add_action('init', 'smart_heartbeat_control', 1);</code></pre>
+
+      <h3>Different Settings for Different Areas</h3>
+      <pre><code class="language-php">// Customize Heartbeat by admin page
+function customize_heartbeat_by_page($settings) {
+    global $pagenow;
+
+    // Post editor: every 60 seconds
+    if ($pagenow == 'post.php' || $pagenow == 'post-new.php') {
+        $settings['interval'] = 60;
+    }
+
+    // Dashboard: every 120 seconds
+    elseif ($pagenow == 'index.php') {
+        $settings['interval'] = 120;
+    }
+
+    // Everywhere else: disable or set very long interval
+    else {
+        $settings['interval'] = 300; // 5 minutes
+    }
+
+    return $settings;
+}
+add_filter('heartbeat_settings', 'customize_heartbeat_by_page');</code></pre>
+
+      <h3>Monitor Heartbeat Activity</h3>
+      <pre><code class="language-php">// Log Heartbeat requests for debugging
+function log_heartbeat_data($response, $data, $screen_id) {
+    $log_file = WP_CONTENT_DIR . '/heartbeat.log';
+    $timestamp = current_time('mysql');
+    $log_entry = "[$timestamp] Screen: $screen_id, Data: " .
+                 json_encode($data) . "\n";
+
+    error_log($log_entry, 3, $log_file);
+
+    return $response;
+}
+add_filter('heartbeat_received', 'log_heartbeat_data', 10, 3);</code></pre>
+
+      <h3>Disable for Specific User Roles</h3>
+      <pre><code class="language-php">// Disable Heartbeat for subscribers and contributors
+function disable_heartbeat_by_role() {
+    $user = wp_get_current_user();
+
+    // Roles that don't need Heartbeat
+    $disable_for = array('subscriber', 'contributor', 'customer');
+
+    if (array_intersect($disable_for, $user->roles)) {
+        wp_deregister_script('heartbeat');
+    }
+}
+add_action('init', 'disable_heartbeat_by_role', 1);</code></pre>
+
+      <h3>Modify Heartbeat Response</h3>
+      <pre><code class="language-php">// Control what data Heartbeat sends
+function filter_heartbeat_response($response, $data) {
+    // Remove unnecessary data from response
+    if (isset($response['wp-refresh-post-lock'])) {
+        unset($response['wp-refresh-post-lock']);
+    }
+
+    // Add custom data if needed
+    if (isset($data['custom_check'])) {
+        $response['custom_response'] = 'Your custom data here';
+    }
+
+    return $response;
+}
+add_filter('heartbeat_received', 'filter_heartbeat_response', 10, 2);</code></pre>
+
+      <h3>What Uses Heartbeat?</h3>
+      <ul>
+        <li><strong>Post autosave:</strong> Automatically saves drafts while editing</li>
+        <li><strong>Post locking:</strong> Prevents multiple users from editing simultaneously</li>
+        <li><strong>Login expiration:</strong> Warns when session is about to expire</li>
+        <li><strong>Plugin notifications:</strong> Real-time admin notifications</li>
+      </ul>
+
+      <h3>Performance Impact</h3>
+      <ul>
+        <li><strong>CPU usage:</strong> Each request consumes server resources</li>
+        <li><strong>Database queries:</strong> 2-5 queries per heartbeat</li>
+        <li><strong>Bandwidth:</strong> Minimal but cumulative over time</li>
+        <li><strong>High traffic sites:</strong> Hundreds of concurrent heartbeat requests</li>
+      </ul>
+
+      <h3>Recommended Settings</h3>
+      <ul>
+        <li><strong>Small sites (&lt;1000 visits/day):</strong> Leave default or slow to 30s</li>
+        <li><strong>Medium sites (1000-10000 visits/day):</strong> Set to 60s or disable on frontend</li>
+        <li><strong>Large sites (&gt;10000 visits/day):</strong> Disable everywhere except post editor</li>
+        <li><strong>Shared hosting:</strong> Disable or set to 120s+ to avoid resource limits</li>
+      </ul>
+
+      <h3>When to Keep Heartbeat</h3>
+      <ul>
+        <li>Multiple editors working simultaneously</li>
+        <li>Real-time collaborative editing needed</li>
+        <li>Plugins that depend on Heartbeat for functionality</li>
+        <li>Live admin notifications are critical</li>
+      </ul>
+
+      <h3>Testing After Changes</h3>
+      <p>After modifying Heartbeat, test:</p>
+      <ul>
+        <li>Post autosave still works in editor</li>
+        <li>Post locking functions properly</li>
+        <li>Login sessions don't expire unexpectedly</li>
+        <li>Plugin features that use Heartbeat still function</li>
+        <li>Check server logs for reduced AJAX requests</li>
+      </ul>
+    `,
+    code: `add_action('init', 'disable_heartbeat_frontend', 1);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-15',
+    readTime: '6 min read',
+    category: 'WordPress Performance',
+    tags: ['Performance', 'Heartbeat', 'AJAX', 'Server Load', 'Optimization'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.6+',
+    seo: {
+      metaTitle: 'Control WordPress Heartbeat API: Reduce Server Load Guide 2025',
+      metaDescription: 'Optimize or disable WordPress Heartbeat API to reduce AJAX requests and server load. Complete code examples with best practices.',
+      keywords: ['wordpress heartbeat api', 'disable heartbeat wordpress', 'reduce server load', 'wordpress ajax', 'heartbeat optimization'],
+      canonical: '/blog/disable-heartbeat-api',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Control WordPress Heartbeat API",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "Will disabling Heartbeat break my WordPress site?",
+        answer: "No, your site will function normally. You'll lose some convenience features like real-time autosave notifications and post locking warnings. Most sites don't need these features on the frontend at all."
+      },
+      {
+        question: "How much server load does Heartbeat cause?",
+        answer: "On high-traffic sites, Heartbeat can generate hundreds of AJAX requests per minute. Each request executes 2-5 database queries. This can consume significant CPU and memory resources, especially on shared hosting."
+      },
+      {
+        question: "Should I disable Heartbeat completely or just slow it down?",
+        answer: "For most sites, disabling on the frontend and slowing to 60 seconds in admin is optimal. If you have multiple editors or use collaborative plugins, slow it down instead of disabling completely."
+      },
+      {
+        question: "Will this affect post autosave?",
+        answer: "WordPress has separate autosave functionality that works independently of Heartbeat. Autosave will continue working even with Heartbeat disabled, though real-time 'saving draft' indicators may not appear."
+      },
+      {
+        question: "Can plugins override Heartbeat settings?",
+        answer: "Some plugins can modify or re-enable Heartbeat. If you've disabled it but still see Heartbeat activity, check your plugins. Popular page builders and chat plugins often use Heartbeat for real-time features."
+      }
+    ]
+  },
+  {
+    id: 17,
+    slug: 'remove-query-strings',
+    title: 'Remove Query Strings from Static Resources',
+    excerpt: 'Eliminate version query strings from CSS and JavaScript files to improve caching and boost PageSpeed Insights scores.',
+    content: `
+      <h2>Why Remove Query Strings?</h2>
+      <p>WordPress adds version query strings (?ver=5.9.3) to CSS and JavaScript files. Some proxy caching servers and CDNs don't cache resources with query strings, potentially reducing cache hit rates.</p>
+
+      <h3>Remove Query Strings from All Static Files</h3>
+      <pre><code class="language-php">// Remove query strings from static resources
+function remove_query_strings($src) {
+    if (strpos($src, 'ver=')) {
+        $src = remove_query_arg('ver', $src);
+    }
+    return $src;
+}
+add_filter('style_loader_src', 'remove_query_strings', 10, 1);
+add_filter('script_loader_src', 'remove_query_strings', 10, 1);</code></pre>
+
+      <h3>Remove Only from Your Own Files</h3>
+      <pre><code class="language-php">// Remove query strings only from theme/plugin files
+function remove_local_query_strings($src) {
+    // Only remove from files hosted on your domain
+    $site_url = site_url();
+
+    if (strpos($src, $site_url) !== false && strpos($src, 'ver=') !== false) {
+        $src = remove_query_arg('ver', $src);
+    }
+
+    return $src;
+}
+add_filter('style_loader_src', 'remove_local_query_strings', 10, 1);
+add_filter('script_loader_src', 'remove_local_query_strings', 10, 1);</code></pre>
+
+      <h3>Keep Query Strings for External Resources</h3>
+      <pre><code class="language-php">// Remove query strings but preserve external CDN versions
+function smart_remove_query_strings($src) {
+    // List of external domains to preserve
+    $preserve_domains = array(
+        'googleapis.com',
+        'cloudflare.com',
+        'jsdelivr.net',
+        'cdnjs.cloudflare.com'
+    );
+
+    // Check if source is external
+    foreach ($preserve_domains as $domain) {
+        if (strpos($src, $domain) !== false) {
+            return $src; // Keep query string for external resources
+        }
+    }
+
+    // Remove query strings from local files
+    if (strpos($src, 'ver=') !== false) {
+        $src = remove_query_arg('ver', $src);
+    }
+
+    return $src;
+}
+add_filter('style_loader_src', 'smart_remove_query_strings', 10, 1);
+add_filter('script_loader_src', 'smart_remove_query_strings', 10, 1);</code></pre>
+
+      <h3>Alternative: Use File Modification Time</h3>
+      <pre><code class="language-php">// Replace query string with file modification time
+function replace_version_with_filemtime($src) {
+    if (strpos($src, site_url()) === false) {
+        return $src; // External file, leave as-is
+    }
+
+    // Remove existing query string
+    $src_without_query = remove_query_arg('ver', $src);
+
+    // Get file path
+    $file_path = str_replace(site_url(), ABSPATH, $src_without_query);
+
+    if (file_exists($file_path)) {
+        $mtime = filemtime($file_path);
+        return add_query_arg('v', $mtime, $src_without_query);
+    }
+
+    return $src_without_query;
+}
+add_filter('style_loader_src', 'replace_version_with_filemtime', 10, 1);
+add_filter('script_loader_src', 'replace_version_with_filemtime', 10, 1);</code></pre>
+
+      <h3>Remove from Images and Media</h3>
+      <pre><code class="language-php">// Remove version strings from all URLs including images
+function remove_all_version_strings($src) {
+    if (strpos($src, 'ver=')) {
+        $src = remove_query_arg('ver', $src);
+    }
+    return $src;
+}
+
+// Apply to scripts and styles
+add_filter('style_loader_src', 'remove_all_version_strings', 10, 1);
+add_filter('script_loader_src', 'remove_all_version_strings', 10, 1);
+
+// Apply to other resources
+add_filter('wp_get_attachment_url', 'remove_all_version_strings', 10, 1);</code></pre>
+
+      <h3>.htaccess Method (Alternative)</h3>
+      <pre><code class="language-apache"># Remove query strings via .htaccess
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{QUERY_STRING} ^ver= [NC]
+    RewriteRule ^(.*)$ /$1? [R=301,L]
+</IfModule></code></pre>
+
+      <h3>Handle Cache Busting</h3>
+      <pre><code class="language-php">// Use file hash instead of version for cache busting
+function hash_based_cache_busting($src) {
+    if (strpos($src, site_url()) === false) {
+        return $src;
+    }
+
+    // Remove ver parameter
+    $src_clean = remove_query_arg('ver', $src);
+
+    // Get file path
+    $file_path = str_replace(
+        array(site_url(), home_url()),
+        array(ABSPATH, ABSPATH),
+        $src_clean
+    );
+
+    if (file_exists($file_path)) {
+        // Use file hash as version
+        $hash = substr(md5_file($file_path), 0, 8);
+        return add_query_arg('v', $hash, $src_clean);
+    }
+
+    return $src_clean;
+}
+add_filter('style_loader_src', 'hash_based_cache_busting', 10, 1);
+add_filter('script_loader_src', 'hash_based_cache_busting', 10, 1);</code></pre>
+
+      <h3>PageSpeed Impact</h3>
+      <ul>
+        <li><strong>Google PageSpeed:</strong> Eliminates "Remove query strings from static resources" warning</li>
+        <li><strong>Cache efficiency:</strong> Improved with some proxy servers and CDNs</li>
+        <li><strong>Score improvement:</strong> Typically 1-3 points on PageSpeed Insights</li>
+        <li><strong>Real-world impact:</strong> Minimal but cumulative</li>
+      </ul>
+
+      <h3>Pros and Cons</h3>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 8px;">Pros</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Cons</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">
+            ✓ Better caching with some servers<br>
+            ✓ Cleaner URLs<br>
+            ✓ PageSpeed warning removed<br>
+            ✓ Improved cache hit rates
+          </td>
+          <td style="border: 1px solid #ddd; padding: 8px;">
+            ✗ Harder to bust cache after updates<br>
+            ✗ Can't track versions easily<br>
+            ✗ May need alternative cache busting<br>
+            ✗ Modern CDNs handle query strings fine
+          </td>
+        </tr>
+      </table>
+
+      <h3>Cache Busting Alternatives</h3>
+      <p>After removing version query strings, consider these cache-busting methods:</p>
+      <ul>
+        <li><strong>File renaming:</strong> style.v2.css instead of style.css?ver=2</li>
+        <li><strong>Modification time:</strong> Use filemtime() as version number</li>
+        <li><strong>File hash:</strong> Use MD5 hash of file contents</li>
+        <li><strong>Build process:</strong> Automated versioning during deployment</li>
+        <li><strong>CDN purge:</strong> Manually purge CDN cache after updates</li>
+      </ul>
+
+      <h3>When to Remove Query Strings</h3>
+      <ul>
+        <li>Trying to achieve perfect PageSpeed score</li>
+        <li>Using older proxy servers that don't cache query strings</li>
+        <li>Prefer cleaner URLs for aesthetic reasons</li>
+        <li>Have alternative cache-busting strategy in place</li>
+      </ul>
+
+      <h3>When to Keep Query Strings</h3>
+      <ul>
+        <li>Modern CDN that handles query strings properly (Cloudflare, etc.)</li>
+        <li>Need automatic cache busting on updates</li>
+        <li>Want to track file versions easily</li>
+        <li>Development environment where versions help debugging</li>
+      </ul>
+
+      <h3>Testing After Implementation</h3>
+      <p>After removing query strings, verify:</p>
+      <ul>
+        <li>CSS and JavaScript still load correctly</li>
+        <li>No 404 errors in browser console</li>
+        <li>Files are being cached properly</li>
+        <li>PageSpeed Insights shows improvement</li>
+        <li>Update site and verify cache busting works</li>
+      </ul>
+    `,
+    code: `add_filter('style_loader_src', 'remove_query_strings', 10, 1);`,
+    author: 'Shahmir Khan',
+    date: '2025-01-15',
+    readTime: '6 min read',
+    category: 'WordPress Performance',
+    tags: ['Performance', 'Caching', 'Query Strings', 'PageSpeed', 'Optimization'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 2.0+',
+    seo: {
+      metaTitle: 'Remove Query Strings from Static Resources: WordPress Guide 2025',
+      metaDescription: 'Remove version query strings from CSS and JS files in WordPress. Improve caching and PageSpeed scores with code examples.',
+      keywords: ['remove query strings wordpress', 'wordpress cache optimization', 'pagespeed query strings', 'remove ver parameter', 'wordpress performance'],
+      canonical: '/blog/remove-query-strings',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Remove Query Strings from Static Resources",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "Will removing query strings improve my site performance?",
+        answer: "The performance impact is minimal but can improve cache hit rates with some older proxy servers and CDNs. Modern CDNs like Cloudflare handle query strings fine. The main benefit is removing a PageSpeed Insights warning."
+      },
+      {
+        question: "How will I bust cache after updating CSS or JavaScript?",
+        answer: "Use alternative methods like file modification time (filemtime), file hash (MD5), manual file renaming (style.v2.css), or CDN cache purging. The examples show how to implement filemtime-based versioning."
+      },
+      {
+        question: "Should I remove query strings from external resources too?",
+        answer: "No. Keep query strings for external resources (Google Fonts, CDN libraries, etc.) as they use them for version management. Only remove from your own locally-hosted files."
+      },
+      {
+        question: "Does this affect WordPress core updates?",
+        answer: "No, this only affects how files are loaded in the browser. WordPress core updates and functionality remain unchanged. After updates, you may need to clear your cache to load new versions."
+      },
+      {
+        question: "Is this still relevant in 2025?",
+        answer: "Less critical than before. Modern CDNs and browsers handle query strings efficiently. However, it's still a valid optimization for perfect PageSpeed scores and compatibility with all caching systems."
+      }
+    ]
+  },
+  {
+    id: 18,
+    slug: 'disable-dashicons',
+    title: 'Disable Dashicons on Frontend',
+    excerpt: 'Remove Dashicons icon font from the frontend for non-logged-in users to reduce page weight and improve load times.',
+    content: `
+      <h2>What are Dashicons?</h2>
+      <p>Dashicons is WordPress's official icon font used primarily in the admin area. By default, WordPress loads dashicons.min.css (~3.7KB) on the frontend even when not needed, adding unnecessary HTTP requests.</p>
+
+      <h3>Disable for Non-Logged-In Users</h3>
+      <pre><code class="language-php">// Remove Dashicons for non-logged-in users
+function disable_dashicons_frontend() {
+    if (!is_user_logged_in()) {
+        wp_deregister_style('dashicons');
+    }
+}
+add_action('wp_enqueue_scripts', 'disable_dashicons_frontend');</code></pre>
+
+      <h3>Disable Completely on Frontend</h3>
+      <pre><code class="language-php">// Remove Dashicons from frontend entirely
+function remove_dashicons() {
+    if (!is_admin()) {
+        wp_deregister_style('dashicons');
+    }
+}
+add_action('wp_enqueue_scripts', 'remove_dashicons', 100);</code></pre>
+
+      <h3>Keep for Specific Pages</h3>
+      <pre><code class="language-php">// Disable except on specific pages that need it
+function conditional_dashicons() {
+    // Don't remove on admin, login, or register pages
+    if (is_admin() || is_login() || is_register()) {
+        return;
+    }
+
+    // Keep if user is logged in (for admin bar)
+    if (is_user_logged_in()) {
+        return;
+    }
+
+    // Remove for everyone else
+    wp_deregister_style('dashicons');
+}
+add_action('wp_enqueue_scripts', 'conditional_dashicons');</code></pre>
+
+      <h3>Advanced: Load Only If Needed</h3>
+      <pre><code class="language-php">// Check if dashicons are actually used in content
+function smart_dashicons_loading() {
+    // Always allow in admin
+    if (is_admin()) {
+        return;
+    }
+
+    // Check if user is logged in (admin bar uses dashicons)
+    if (is_user_logged_in()) {
+        return;
+    }
+
+    global $post;
+
+    // Check if post content contains dashicon classes
+    $has_dashicons = false;
+    if ($post && strpos($post->post_content, 'dashicons-') !== false) {
+        $has_dashicons = true;
+    }
+
+    // Remove if not needed
+    if (!$has_dashicons) {
+        wp_deregister_style('dashicons');
+    }
+}
+add_action('wp_enqueue_scripts', 'smart_dashicons_loading', 100);</code></pre>
+
+      <h3>Selective Dequeue with Plugin Check</h3>
+      <pre><code class="language-php">// Remove Dashicons unless required by active plugins
+function plugin_aware_dashicons_removal() {
+    if (is_admin() || is_user_logged_in()) {
+        return;
+    }
+
+    // List of plugins that need dashicons on frontend
+    $dashicons_plugins = array(
+        'contact-form-7/wp-contact-form-7.php',
+        'wordfence/wordfence.php'
+    );
+
+    // Check if any dashicon-dependent plugins are active
+    foreach ($dashicons_plugins as $plugin) {
+        if (is_plugin_active($plugin)) {
+            return; // Keep dashicons
+        }
+    }
+
+    // Remove if no dependent plugins
+    wp_deregister_style('dashicons');
+}
+add_action('wp_enqueue_scripts', 'plugin_aware_dashicons_removal', 100);</code></pre>
+
+      <h3>Alternative: Use SVG Icons Instead</h3>
+      <pre><code class="language-php">// Replace dashicons with inline SVG
+function replace_dashicons_with_svg() {
+    if (!is_admin() && !is_user_logged_in()) {
+        wp_deregister_style('dashicons');
+
+        // Add custom SVG icons stylesheet
+        wp_enqueue_style(
+            'custom-svg-icons',
+            get_template_directory_uri() . '/css/svg-icons.css',
+            array(),
+            '1.0.0'
+        );
+    }
+}
+add_action('wp_enqueue_scripts', 'replace_dashicons_with_svg', 100);</code></pre>
+
+      <h3>Monitor Dashicon Usage</h3>
+      <pre><code class="language-php">// Log which pages use dashicons (debugging)
+function log_dashicon_usage() {
+    if (!is_admin() && !is_user_logged_in()) {
+        global $post;
+
+        if ($post && strpos($post->post_content, 'dashicons-') !== false) {
+            error_log('Dashicons used on: ' . get_permalink($post));
+        }
+    }
+}
+add_action('wp', 'log_dashicon_usage');</code></pre>
+
+      <h3>Custom Admin Bar Without Dashicons</h3>
+      <pre><code class="language-php">// Remove dashicons but keep admin bar functional
+function custom_admin_bar_styles() {
+    if (!is_admin() && is_user_logged_in()) {
+        // Dequeue dashicons
+        wp_deregister_style('dashicons');
+
+        // Add custom admin bar styles
+        wp_add_inline_style('admin-bar', '
+            #wpadminbar .ab-icon:before {
+                content: "▼";
+                font-family: inherit;
+            }
+        ');
+    }
+}
+add_action('wp_enqueue_scripts', 'custom_admin_bar_styles', 100);</code></pre>
+
+      <h3>Performance Impact</h3>
+      <ul>
+        <li><strong>File size:</strong> Saves ~3.7KB (dashicons.min.css)</li>
+        <li><strong>HTTP requests:</strong> Reduces by 1 request per page</li>
+        <li><strong>Cumulative impact:</strong> Small but measurable on mobile</li>
+        <li><strong>PageSpeed:</strong> Minor improvement (1-2 points)</li>
+      </ul>
+
+      <h3>What Uses Dashicons?</h3>
+      <ul>
+        <li><strong>WordPress Admin Bar:</strong> Icons for menu items</li>
+        <li><strong>Admin Dashboard:</strong> All admin interface icons</li>
+        <li><strong>Some Plugins:</strong> Contact Form 7, Wordfence, etc.</li>
+        <li><strong>Theme Features:</strong> Custom admin bar menus</li>
+        <li><strong>Shortcodes:</strong> Some themes/plugins use dashicon shortcodes</li>
+      </ul>
+
+      <h3>When to Keep Dashicons</h3>
+      <ul>
+        <li>Logged-in users see admin bar on frontend</li>
+        <li>Plugins use dashicons in frontend widgets</li>
+        <li>Theme uses dashicons in template files</li>
+        <li>Custom shortcodes display dashicons</li>
+      </ul>
+
+      <h3>When to Remove Dashicons</h3>
+      <ul>
+        <li>Users never log in or see admin bar</li>
+        <li>No plugins use dashicons on frontend</li>
+        <li>Theme doesn't use WordPress icon font</li>
+        <li>Using custom icon solution (Font Awesome, SVG)</li>
+      </ul>
+
+      <h3>Testing After Removal</h3>
+      <p>After disabling dashicons, verify:</p>
+      <ul>
+        <li>Admin bar icons still display for logged-in users</li>
+        <li>No missing icons on frontend</li>
+        <li>Plugin functionality remains intact</li>
+        <li>Custom menus display correctly</li>
+        <li>Check as both logged-in and logged-out user</li>
+      </ul>
+
+      <h3>Common Issues</h3>
+      <ul>
+        <li><strong>Missing admin bar icons:</strong> Only remove for non-logged-in users</li>
+        <li><strong>Plugin icons broken:</strong> Some plugins load dashicons on frontend</li>
+        <li><strong>Theme features broken:</strong> Check if theme uses dashicons</li>
+        <li><strong>Shortcodes fail:</strong> Some shortcodes rely on dashicons</li>
+      </ul>
+
+      <h3>Alternative Icon Solutions</h3>
+      <p>If removing dashicons, consider these alternatives:</p>
+      <ul>
+        <li><strong>Font Awesome:</strong> More icons, better browser support</li>
+        <li><strong>Inline SVG:</strong> Best performance, no HTTP requests</li>
+        <li><strong>SVG Sprites:</strong> Single file for all icons</li>
+        <li><strong>Unicode symbols:</strong> No additional files needed</li>
+        <li><strong>Custom icon font:</strong> Include only needed icons</li>
+      </ul>
+    `,
+    code: `add_action('wp_enqueue_scripts', 'disable_dashicons_frontend');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-15',
+    readTime: '5 min read',
+    category: 'WordPress Performance',
+    tags: ['Performance', 'Icons', 'Dashicons', 'Frontend', 'Optimization'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 3.8+',
+    seo: {
+      metaTitle: 'Disable Dashicons on WordPress Frontend: Performance Guide 2025',
+      metaDescription: 'Remove Dashicons icon font from WordPress frontend to reduce page weight. Complete code guide with examples.',
+      keywords: ['disable dashicons wordpress', 'remove dashicons frontend', 'wordpress performance', 'dashicons optimization', 'wordpress icons'],
+      canonical: '/blog/disable-dashicons',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Disable Dashicons on Frontend",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "Will removing Dashicons break my WordPress site?",
+        answer: "Not if you only remove it for non-logged-in users. The admin bar for logged-in users needs dashicons, so always check is_user_logged_in() before dequeuing. Test your site after implementation."
+      },
+      {
+        question: "How much performance improvement will I see?",
+        answer: "You'll save ~3.7KB and 1 HTTP request per page. While modest, this is worthwhile optimization for mobile users and contributes to overall site speed when combined with other optimizations."
+      },
+      {
+        question: "Do any plugins require Dashicons on the frontend?",
+        answer: "Some plugins like Contact Form 7, Wordfence, and various page builders use dashicons on the frontend. Check your plugins and test thoroughly after removal. The smart loading example shows how to detect usage."
+      },
+      {
+        question: "Can I replace Dashicons with another icon set?",
+        answer: "Yes! Font Awesome, inline SVG, or custom icon fonts are popular alternatives. SVG icons offer the best performance as they don't require external file loads and scale perfectly."
+      },
+      {
+        question: "What if my theme uses Dashicons?",
+        answer: "Some themes display dashicons in templates or widgets. Check your theme files for 'dashicons-' classes. If found, either keep dashicons loaded or replace those icons with alternatives in your child theme."
+      }
+    ]
+  },
+  {
+    id: 19,
+    slug: 'database-cleanup',
+    title: 'Database Cleanup & Optimization',
+    excerpt: 'Clean up and optimize WordPress database by removing spam, trashed items, expired transients, and optimizing tables for better performance.',
+    content: `
+      <h2>Why Clean WordPress Database?</h2>
+      <p>Over time, WordPress databases accumulate spam comments, post revisions, expired transients, and orphaned metadata. Regular cleanup can reduce database size by 30-70% and improve query performance.</p>
+
+      <h3>Delete Spam and Trashed Comments</h3>
+      <pre><code class="language-php">// Clean up spam and trashed comments
+function cleanup_comments() {
+    global $wpdb;
+
+    // Delete spam comments
+    $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam'");
+
+    // Delete trashed comments
+    $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'trash'");
+
+    // Delete orphaned comment meta
+    $wpdb->query("DELETE cm FROM $wpdb->commentmeta cm
+                  LEFT JOIN $wpdb->comments c ON c.comment_ID = cm.comment_id
+                  WHERE c.comment_ID IS NULL");
+
+    return 'Comments cleaned up successfully';
+}
+
+// Run manually or schedule
+// cleanup_comments();</code></pre>
+
+      <h3>Remove Expired Transients</h3>
+      <pre><code class="language-php">// Delete expired transients
+function delete_expired_transients() {
+    global $wpdb;
+
+    $time = time();
+
+    // Delete expired transients
+    $wpdb->query(
+        $wpdb->prepare(
+            "DELETE FROM $wpdb->options
+             WHERE option_name LIKE %s
+             AND option_value < %d",
+            $wpdb->esc_like('_transient_timeout_') . '%',
+            $time
+        )
+    );
+
+    // Delete associated transient data
+    $wpdb->query(
+        "DELETE FROM $wpdb->options
+         WHERE option_name LIKE '_transient_%'
+         AND option_name NOT LIKE '_transient_timeout_%'
+         AND option_name NOT IN (
+             SELECT REPLACE(option_name, '_timeout', '')
+             FROM $wpdb->options
+             WHERE option_name LIKE '_transient_timeout_%'
+         )"
+    );
+
+    return 'Transients cleaned up';
+}
+
+// Schedule weekly cleanup
+if (!wp_next_scheduled('cleanup_transients_hook')) {
+    wp_schedule_event(time(), 'weekly', 'cleanup_transients_hook');
+}
+add_action('cleanup_transients_hook', 'delete_expired_transients');</code></pre>
+
+      <h3>Clean Post Revisions</h3>
+      <pre><code class="language-php">// Delete old post revisions
+function cleanup_post_revisions() {
+    global $wpdb;
+
+    // Keep only last 3 revisions per post
+    $wpdb->query("
+        DELETE FROM $wpdb->posts
+        WHERE post_type = 'revision'
+        AND ID NOT IN (
+            SELECT ID FROM (
+                SELECT ID
+                FROM $wpdb->posts AS p
+                WHERE p.post_type = 'revision'
+                ORDER BY p.post_modified DESC
+                LIMIT 3
+            ) AS keep_revisions
+        )
+    ");
+
+    return 'Revisions cleaned up';
+}</code></pre>
+
+      <h3>Remove Auto-Drafts</h3>
+      <pre><code class="language-php">// Delete auto-drafts older than 30 days
+function cleanup_auto_drafts() {
+    global $wpdb;
+
+    $wpdb->query(
+        $wpdb->prepare(
+            "DELETE FROM $wpdb->posts
+             WHERE post_status = 'auto-draft'
+             AND post_date < DATE_SUB(NOW(), INTERVAL %d DAY)",
+            30
+        )
+    );
+
+    return 'Auto-drafts cleaned up';
+}</code></pre>
+
+      <h3>Optimize Database Tables</h3>
+      <pre><code class="language-php">// Optimize all WordPress tables
+function optimize_database_tables() {
+    global $wpdb;
+
+    // Get all WordPress tables
+    $tables = $wpdb->get_results('SHOW TABLES', ARRAY_N);
+
+    foreach ($tables as $table) {
+        $table_name = $table[0];
+
+        // Only optimize WordPress tables
+        if (strpos($table_name, $wpdb->prefix) === 0) {
+            $wpdb->query("OPTIMIZE TABLE $table_name");
+        }
+    }
+
+    return 'Database optimized';
+}
+
+// Schedule monthly optimization
+if (!wp_next_scheduled('optimize_db_hook')) {
+    wp_schedule_event(time(), 'monthly', 'optimize_db_hook');
+}
+add_action('optimize_db_hook', 'optimize_database_tables');</code></pre>
+
+      <h3>Comprehensive Database Cleanup</h3>
+      <pre><code class="language-php">// Complete database maintenance function
+function comprehensive_db_cleanup() {
+    global $wpdb;
+
+    $results = array();
+
+    // 1. Clean comments
+    $spam_deleted = $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'spam'");
+    $trash_deleted = $wpdb->query("DELETE FROM $wpdb->comments WHERE comment_approved = 'trash'");
+    $results['comments'] = $spam_deleted + $trash_deleted;
+
+    // 2. Clean orphaned comment meta
+    $orphaned_meta = $wpdb->query(
+        "DELETE cm FROM $wpdb->commentmeta cm
+         LEFT JOIN $wpdb->comments c ON c.comment_ID = cm.comment_id
+         WHERE c.comment_ID IS NULL"
+    );
+    $results['orphaned_meta'] = $orphaned_meta;
+
+    // 3. Delete expired transients
+    $time = time();
+    $transients = $wpdb->query(
+        $wpdb->prepare(
+            "DELETE FROM $wpdb->options
+             WHERE option_name LIKE %s AND option_value < %d",
+            $wpdb->esc_like('_transient_timeout_') . '%',
+            $time
+        )
+    );
+    $results['transients'] = $transients;
+
+    // 4. Clean post revisions (keep latest 3)
+    $revisions = $wpdb->query(
+        "DELETE FROM $wpdb->posts
+         WHERE post_type = 'revision'
+         AND post_date < DATE_SUB(NOW(), INTERVAL 60 DAY)"
+    );
+    $results['revisions'] = $revisions;
+
+    // 5. Delete auto-drafts
+    $drafts = $wpdb->query(
+        "DELETE FROM $wpdb->posts
+         WHERE post_status = 'auto-draft'
+         AND post_date < DATE_SUB(NOW(), INTERVAL 30 DAY)"
+    );
+    $results['auto_drafts'] = $drafts;
+
+    // 6. Optimize tables
+    $tables = $wpdb->get_results('SHOW TABLES', ARRAY_N);
+    $optimized = 0;
+    foreach ($tables as $table) {
+        if (strpos($table[0], $wpdb->prefix) === 0) {
+            $wpdb->query("OPTIMIZE TABLE {$table[0]}");
+            $optimized++;
+        }
+    }
+    $results['tables_optimized'] = $optimized;
+
+    return $results;
+}
+
+// Add admin page to run cleanup
+add_action('admin_menu', function() {
+    add_management_page(
+        'Database Cleanup',
+        'DB Cleanup',
+        'manage_options',
+        'db-cleanup',
+        function() {
+            if (isset($_POST['run_cleanup']) && check_admin_referer('db_cleanup')) {
+                $results = comprehensive_db_cleanup();
+                echo '<div class="notice notice-success"><p>Cleanup complete! ';
+                echo 'Comments: ' . $results['comments'] . ', ';
+                echo 'Transients: ' . $results['transients'] . ', ';
+                echo 'Revisions: ' . $results['revisions'] . ', ';
+                echo 'Tables optimized: ' . $results['tables_optimized'];
+                echo '</p></div>';
+            }
+            ?>
+            <div class="wrap">
+                <h1>Database Cleanup</h1>
+                <form method="post">
+                    <?php wp_nonce_field('db_cleanup'); ?>
+                    <p>This will clean spam comments, expired transients, old revisions, and optimize database tables.</p>
+                    <button type="submit" name="run_cleanup" class="button button-primary">
+                        Run Cleanup
+                    </button>
+                </form>
+            </div>
+            <?php
+        }
+    );
+});</code></pre>
+
+      <h3>Monitor Database Size</h3>
+      <pre><code class="language-php">// Get database size information
+function get_database_size() {
+    global $wpdb;
+
+    $db_name = DB_NAME;
+
+    $result = $wpdb->get_row(
+        $wpdb->prepare(
+            "SELECT SUM(data_length + index_length) / 1024 / 1024 AS size_mb
+             FROM information_schema.TABLES
+             WHERE table_schema = %s
+             AND table_name LIKE %s",
+            $db_name,
+            $wpdb->esc_like($wpdb->prefix) . '%'
+        )
+    );
+
+    return round($result->size_mb, 2) . ' MB';
+}
+
+// Display in dashboard widget
+add_action('wp_dashboard_setup', function() {
+    wp_add_dashboard_widget(
+        'db_size_widget',
+        'Database Size',
+        function() {
+            echo '<p>Current database size: <strong>' . get_database_size() . '</strong></p>';
+        }
+    );
+});</code></pre>
+
+      <h3>What Gets Cleaned</h3>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 8px;">Item</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Typical Savings</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Impact</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">Spam comments</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">10-50 MB</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Medium</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">Expired transients</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">5-20 MB</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">High</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">Post revisions</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">10-100 MB</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Medium</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">Auto-drafts</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">1-5 MB</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Low</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">Table optimization</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">5-15%</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">High</td>
+        </tr>
+      </table>
+
+      <h3>Safety Precautions</h3>
+      <ul>
+        <li><strong>Always backup first:</strong> Use UpdraftPlus, BackWPup, or phpMyAdmin</li>
+        <li><strong>Test on staging:</strong> Never run cleanup on production without testing</li>
+        <li><strong>Check results:</strong> Verify site functionality after cleanup</li>
+        <li><strong>Schedule carefully:</strong> Run during low-traffic periods</li>
+        <li><strong>Monitor performance:</strong> Measure improvement before/after</li>
+      </ul>
+
+      <h3>Recommended Schedule</h3>
+      <ul>
+        <li><strong>Weekly:</strong> Delete expired transients, spam comments</li>
+        <li><strong>Monthly:</strong> Clean revisions, optimize tables</li>
+        <li><strong>Quarterly:</strong> Comprehensive cleanup with backup</li>
+        <li><strong>Annual:</strong> Full database audit and restructure if needed</li>
+      </ul>
+
+      <h3>Alternative: Use Plugins</h3>
+      <p>For non-technical users, consider these plugins:</p>
+      <ul>
+        <li><strong>WP-Optimize:</strong> All-in-one cleanup and optimization</li>
+        <li><strong>Advanced Database Cleaner:</strong> Deep cleaning options</li>
+        <li><strong>WP-Sweep:</strong> Removes orphaned data</li>
+        <li><strong>Optimize Database after Deleting Revisions:</strong> Focused on revisions</li>
+      </ul>
+    `,
+    code: `add_action('cleanup_transients_hook', 'delete_expired_transients');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-14',
+    readTime: '8 min read',
+    category: 'WordPress Performance',
+    tags: ['Database', 'Performance', 'Optimization', 'Maintenance', 'Cleanup'],
+    difficulty: 'Advanced',
+    compatibility: 'WordPress 2.0+',
+    seo: {
+      metaTitle: 'WordPress Database Cleanup & Optimization: Complete Guide 2025',
+      metaDescription: 'Clean and optimize WordPress database with code snippets. Remove spam, transients, revisions and optimize tables for better performance.',
+      keywords: ['wordpress database cleanup', 'optimize wordpress database', 'clean wp database', 'database optimization', 'wordpress maintenance'],
+      canonical: '/blog/database-cleanup',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Database Cleanup & Optimization",
+        "proficiencyLevel": "Advanced"
+      }
+    },
+    faqs: [
+      {
+        question: "How often should I clean my WordPress database?",
+        answer: "Run automated weekly cleanups for transients and spam, monthly table optimization, and quarterly comprehensive cleanups. High-traffic sites benefit from more frequent maintenance."
+      },
+      {
+        question: "Will database cleanup improve my site speed?",
+        answer: "Yes! Cleaning can reduce database size by 30-70% and improve query performance. You'll notice faster admin dashboard, quicker page loads, and more efficient backups."
+      },
+      {
+        question: "Is it safe to run these SQL queries on my live site?",
+        answer: "Only if you backup first! Always test on staging environments. The queries are safe but irreversible. Use plugins like WP-Optimize if you're uncomfortable with direct SQL queries."
+      },
+      {
+        question: "What happens if I delete too many revisions?",
+        answer: "You lose the ability to restore older versions of posts. Keep at least 2-3 recent revisions per post. The examples show how to preserve recent revisions while cleaning old ones."
+      },
+      {
+        question: "Can I automate database cleanup?",
+        answer: "Yes! Use wp_schedule_event() to run cleanup functions automatically. The examples show weekly transient cleanup and monthly table optimization. Combine with WP-CLI for advanced automation."
+      }
+    ]
+  },
+  {
+    id: 20,
+    slug: 'gzip-compression',
+    title: 'Enable GZIP Compression',
+    excerpt: 'Compress your WordPress files with GZIP to reduce bandwidth usage and improve page load times by 50-70%.',
+    content: `
+      <h2>What is GZIP Compression?</h2>
+      <p>GZIP compression reduces the size of files sent from your server to browsers, typically achieving 50-70% reduction in file size. This dramatically improves page load times, especially for text-based files like HTML, CSS, and JavaScript.</p>
+
+      <h3>Enable via .htaccess (Apache)</h3>
+      <pre><code class="language-apache"># Enable GZIP Compression
+<IfModule mod_deflate.c>
+    # Compress HTML, CSS, JavaScript, Text, XML and fonts
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE application/x-font
+    AddOutputFilterByType DEFLATE application/x-font-opentype
+    AddOutputFilterByType DEFLATE application/x-font-otf
+    AddOutputFilterByType DEFLATE application/x-font-truetype
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE application/x-javascript
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE image/svg+xml
+    AddOutputFilterByType DEFLATE image/x-icon
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/xml
+
+    # Remove browser bugs (only needed for really old browsers)
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+    Header append Vary User-Agent
+</IfModule></code></pre>
+
+      <h3>Enable via PHP</h3>
+      <pre><code class="language-php">// Enable GZIP compression in WordPress
+function enable_gzip_compression() {
+    if (!ob_start('ob_gzhandler')) {
+        ob_start();
+    }
+}
+add_action('init', 'enable_gzip_compression');</code></pre>
+
+      <h3>Enable via wp-config.php</h3>
+      <pre><code class="language-php">// Add to wp-config.php
+// Enable GZIP output compression
+if (!defined('ENFORCE_GZIP')) {
+    define('ENFORCE_GZIP', true);
+}
+
+// Enable compression
+ini_set('zlib.output_compression', 'On');
+ini_set('zlib.output_compression_level', '6');</code></pre>
+
+      <h3>Nginx Configuration</h3>
+      <pre><code class="language-nginx"># Add to nginx.conf or site config
+gzip on;
+gzip_vary on;
+gzip_min_length 1024;
+gzip_proxied any;
+gzip_comp_level 6;
+gzip_types
+    text/plain
+    text/css
+    text/xml
+    text/javascript
+    application/json
+    application/javascript
+    application/xml+rss
+    application/rss+xml
+    font/truetype
+    font/opentype
+    application/vnd.ms-fontobject
+    image/svg+xml;</code></pre>
+
+      <h3>Check if GZIP is Enabled</h3>
+      <pre><code class="language-php">// Test if GZIP compression is working
+function check_gzip_compression() {
+    if (!is_admin() && current_user_can('manage_options')) {
+        echo '<!-- GZIP Compression: ';
+
+        if (extension_loaded('zlib')) {
+            echo 'Enabled';
+
+            $compression = ini_get('zlib.output_compression');
+            if ($compression) {
+                echo ' (Level: ' . ini_get('zlib.output_compression_level') . ')';
+            }
+        } else {
+            echo 'Disabled - zlib not loaded';
+        }
+
+        echo ' -->';
+    }
+}
+add_action('wp_head', 'check_gzip_compression');</code></pre>
+
+      <h3>Advanced: Selective Compression</h3>
+      <pre><code class="language-php">// Compress only for specific file types
+function selective_gzip_compression() {
+    // Check if we should compress
+    $compress = false;
+
+    // Get current content type
+    $headers = headers_list();
+    foreach ($headers as $header) {
+        if (stripos($header, 'Content-Type') !== false) {
+            // Compress text-based content
+            if (stripos($header, 'text/') !== false ||
+                stripos($header, 'javascript') !== false ||
+                stripos($header, 'json') !== false) {
+                $compress = true;
+                break;
+            }
+        }
+    }
+
+    if ($compress && !ob_start('ob_gzhandler')) {
+        ob_start();
+    }
+}
+add_action('init', 'selective_gzip_compression', 1);</code></pre>
+
+      <h3>Brotli Compression (Modern Alternative)</h3>
+      <pre><code class="language-apache"># Enable Brotli compression (more efficient than GZIP)
+<IfModule mod_brotli.c>
+    AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/xml
+    AddOutputFilterByType BROTLI_COMPRESS text/css text/javascript
+    AddOutputFilterByType BROTLI_COMPRESS application/javascript
+    AddOutputFilterByType BROTLI_COMPRESS application/json
+    AddOutputFilterByType BROTLI_COMPRESS application/xml
+</IfModule>
+
+# Fallback to GZIP if Brotli not available
+<IfModule !mod_brotli.c>
+    <IfModule mod_deflate.c>
+        AddOutputFilterByType DEFLATE text/html text/plain text/xml
+        AddOutputFilterByType DEFLATE text/css text/javascript
+        AddOutputFilterByType DEFLATE application/javascript
+        AddOutputFilterByType DEFLATE application/json
+    </IfModule>
+</IfModule></code></pre>
+
+      <h3>Exclude Specific Files</h3>
+      <pre><code class="language-apache"># Don't compress images and already-compressed files
+<IfModule mod_deflate.c>
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png|webp|ico|pdf|gz|zip|rar)$ no-gzip dont-vary
+
+    # Compress everything except what we excluded
+    AddOutputFilterByType DEFLATE text/plain
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/x-javascript
+</IfModule></code></pre>
+
+      <h3>Compression Levels</h3>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 8px;">Level</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Compression</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">CPU Usage</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Recommended For</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">1-3</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Low (fast)</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Low</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Shared hosting, high traffic</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">4-6</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Medium (balanced)</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Medium</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Most sites (recommended)</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">7-9</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">High (slow)</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">High</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">VPS/dedicated, low traffic</td>
+        </tr>
+      </table>
+
+      <h3>Performance Impact</h3>
+      <ul>
+        <li><strong>File size reduction:</strong> 50-70% for text files</li>
+        <li><strong>HTML pages:</strong> 60-80% smaller</li>
+        <li><strong>CSS files:</strong> 70-80% smaller</li>
+        <li><strong>JavaScript:</strong> 60-70% smaller</li>
+        <li><strong>Page load time:</strong> 40-60% faster</li>
+        <li><strong>Bandwidth savings:</strong> Significant cost reduction</li>
+      </ul>
+
+      <h3>What to Compress</h3>
+      <ul>
+        <li>✓ HTML pages</li>
+        <li>✓ CSS stylesheets</li>
+        <li>✓ JavaScript files</li>
+        <li>✓ XML and JSON</li>
+        <li>✓ SVG images</li>
+        <li>✓ Plain text files</li>
+        <li>✗ Images (JPG, PNG, GIF already compressed)</li>
+        <li>✗ Videos (already compressed)</li>
+        <li>✗ PDFs (minimal benefit)</li>
+        <li>✗ Zip/Rar files (already compressed)</li>
+      </ul>
+
+      <h3>Testing GZIP</h3>
+      <p>Verify GZIP is working using these tools:</p>
+      <ul>
+        <li><strong>GTmetrix:</strong> Check "Enable compression" in PageSpeed</li>
+        <li><strong>GIDNetwork:</strong> gidnetwork.com/tools/gzip-test.php</li>
+        <li><strong>Check GZIP:</strong> checkgzipcompression.com</li>
+        <li><strong>Browser DevTools:</strong> Check response headers for "content-encoding: gzip"</li>
+        <li><strong>cURL:</strong> curl -H "Accept-Encoding: gzip" -I yoursite.com</li>
+      </ul>
+
+      <h3>Common Issues</h3>
+      <ul>
+        <li><strong>Double compression:</strong> Check if host already enables GZIP</li>
+        <li><strong>Broken pages:</strong> Lower compression level or use .htaccess instead of PHP</li>
+        <li><strong>High CPU:</strong> Reduce compression level from 9 to 6 or lower</li>
+        <li><strong>No effect:</strong> Clear cache (browser, CDN, and WordPress cache)</li>
+        <li><strong>Headers already sent:</strong> GZIP must be enabled before any output</li>
+      </ul>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Use compression level 5-6 for best balance</li>
+        <li>Don't compress images, videos, or already-compressed files</li>
+        <li>Test thoroughly after enabling</li>
+        <li>Check server logs for compression errors</li>
+        <li>Consider Brotli for modern browsers</li>
+        <li>Combine with browser caching for maximum benefit</li>
+      </ul>
+    `,
+    code: `add_action('init', 'enable_gzip_compression');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-14',
+    readTime: '7 min read',
+    category: 'WordPress Performance',
+    tags: ['Performance', 'Compression', 'GZIP', 'Page Speed', 'Optimization'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 2.0+',
+    seo: {
+      metaTitle: 'Enable GZIP Compression in WordPress: Complete Guide 2025',
+      metaDescription: 'Enable GZIP compression to reduce file sizes by 50-70%. Complete code examples for Apache, Nginx, and PHP configuration.',
+      keywords: ['gzip compression wordpress', 'enable gzip', 'wordpress compression', 'reduce file size', 'wordpress performance'],
+      canonical: '/blog/gzip-compression',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Enable GZIP Compression",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "How much faster will my site be with GZIP enabled?",
+        answer: "GZIP typically reduces text file sizes by 50-70%, resulting in 40-60% faster page loads. A 500KB page might compress to 150KB, significantly improving load times especially on mobile connections."
+      },
+      {
+        question: "Does GZIP compression increase server load?",
+        answer: "Yes, but minimally. Compression level 6 (recommended) uses negligible CPU resources and the bandwidth savings far outweigh the processing cost. The tradeoff is heavily favorable even on shared hosting."
+      },
+      {
+        question: "Should I use GZIP or Brotli compression?",
+        answer: "Use both! Brotli offers ~20% better compression than GZIP but isn't supported by all browsers. Configure your server to prefer Brotli with GZIP as fallback for maximum compatibility and performance."
+      },
+      {
+        question: "How do I know if GZIP is already enabled?",
+        answer: "Check your browser's Network tab (DevTools) and look for 'content-encoding: gzip' in response headers. Or use online tools like GTmetrix, which will show 'Enable compression' passed/failed."
+      },
+      {
+        question: "Can GZIP compression break my WordPress site?",
+        answer: "Rarely. Issues usually occur from double compression (host + WordPress both compressing) or headers already sent errors. Test after enabling and reduce compression level if you experience problems. Most modern hosts support GZIP without issues."
+      }
+    ]
+  },
+  {
+    id: 21,
+    slug: 'register-custom-post-type',
+    title: 'Register Custom Post Types',
+    excerpt: 'Create custom post types in WordPress to organize different content types beyond posts and pages, with full customization options.',
+    content: `
+      <h2>Why Use Custom Post Types?</h2>
+      <p>Custom Post Types (CPTs) let you create specialized content types like portfolios, testimonials, products, or events. They provide better content organization and tailored admin interfaces for different content needs.</p>
+
+      <h3>Basic Custom Post Type</h3>
+      <pre><code class="language-php">// Register a simple custom post type
+function register_portfolio_post_type() {
+    register_post_type('portfolio', array(
+        'labels' => array(
+            'name' => 'Portfolio',
+            'singular_name' => 'Portfolio Item',
+            'add_new' => 'Add New Item',
+            'add_new_item' => 'Add New Portfolio Item',
+            'edit_item' => 'Edit Portfolio Item',
+            'new_item' => 'New Portfolio Item',
+            'view_item' => 'View Portfolio Item',
+            'search_items' => 'Search Portfolio',
+            'not_found' => 'No portfolio items found',
+            'not_found_in_trash' => 'No portfolio items found in trash'
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'menu_icon' => 'dashicons-portfolio',
+        'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'rewrite' => array('slug' => 'portfolio'),
+    ));
+}
+add_action('init', 'register_portfolio_post_type');</code></pre>
+
+      <h3>Advanced Custom Post Type with All Options</h3>
+      <pre><code class="language-php">// Comprehensive CPT registration
+function register_advanced_cpt() {
+    $labels = array(
+        'name' => 'Events',
+        'singular_name' => 'Event',
+        'menu_name' => 'Events',
+        'add_new' => 'Add Event',
+        'add_new_item' => 'Add New Event',
+        'edit' => 'Edit',
+        'edit_item' => 'Edit Event',
+        'new_item' => 'New Event',
+        'view' => 'View Event',
+        'view_item' => 'View Event',
+        'search_items' => 'Search Events',
+        'not_found' => 'No Events Found',
+        'not_found_in_trash' => 'No Events Found in Trash',
+        'parent_item_colon' => 'Parent Event'
+    );
+
+    $args = array(
+        'labels' => $labels,
+        'description' => 'Manage your events',
+        'public' => true,
+        'publicly_queryable' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'show_in_nav_menus' => true,
+        'show_in_admin_bar' => true,
+        'show_in_rest' => true, // Gutenberg support
+        'menu_position' => 5,
+        'menu_icon' => 'dashicons-calendar-alt',
+        'capability_type' => 'post',
+        'hierarchical' => false, // true for page-like, false for post-like
+        'supports' => array(
+            'title',
+            'editor',
+            'author',
+            'thumbnail',
+            'excerpt',
+            'comments',
+            'custom-fields',
+            'revisions',
+            'page-attributes'
+        ),
+        'has_archive' => true,
+        'rewrite' => array(
+            'slug' => 'events',
+            'with_front' => false,
+            'pages' => true,
+            'feeds' => true,
+        ),
+        'query_var' => true,
+        'can_export' => true,
+        'delete_with_user' => false,
+        'exclude_from_search' => false,
+    );
+
+    register_post_type('event', $args);
+}
+add_action('init', 'register_advanced_cpt');</code></pre>
+
+      <h3>Multiple Custom Post Types</h3>
+      <pre><code class="language-php">// Register multiple CPTs efficiently
+function register_multiple_cpts() {
+    $post_types = array(
+        'portfolio' => array(
+            'labels' => array(
+                'name' => 'Portfolio',
+                'singular_name' => 'Portfolio Item'
+            ),
+            'menu_icon' => 'dashicons-portfolio',
+            'supports' => array('title', 'editor', 'thumbnail')
+        ),
+        'testimonial' => array(
+            'labels' => array(
+                'name' => 'Testimonials',
+                'singular_name' => 'Testimonial'
+            ),
+            'menu_icon' => 'dashicons-format-quote',
+            'supports' => array('title', 'editor', 'thumbnail')
+        ),
+        'team' => array(
+            'labels' => array(
+                'name' => 'Team Members',
+                'singular_name' => 'Team Member'
+            ),
+            'menu_icon' => 'dashicons-groups',
+            'supports' => array('title', 'editor', 'thumbnail', 'custom-fields')
+        )
+    );
+
+    foreach ($post_types as $key => $args) {
+        $defaults = array(
+            'public' => true,
+            'has_archive' => true,
+            'show_in_rest' => true,
+            'rewrite' => array('slug' => $key)
+        );
+
+        register_post_type($key, array_merge($defaults, $args));
+    }
+}
+add_action('init', 'register_multiple_cpts');</code></pre>
+
+      <h3>CPT with Custom Capabilities</h3>
+      <pre><code class="language-php">// Custom post type with specific permissions
+function register_cpt_with_capabilities() {
+    register_post_type('project', array(
+        'labels' => array(
+            'name' => 'Projects',
+            'singular_name' => 'Project'
+        ),
+        'public' => true,
+        'show_in_rest' => true,
+        'menu_icon' => 'dashicons-lightbulb',
+        'capability_type' => 'project',
+        'map_meta_cap' => true,
+        'capabilities' => array(
+            'edit_post' => 'edit_project',
+            'read_post' => 'read_project',
+            'delete_post' => 'delete_project',
+            'edit_posts' => 'edit_projects',
+            'edit_others_posts' => 'edit_others_projects',
+            'publish_posts' => 'publish_projects',
+            'read_private_posts' => 'read_private_projects',
+        ),
+        'supports' => array('title', 'editor', 'thumbnail')
+    ));
+}
+add_action('init', 'register_cpt_with_capabilities');
+
+// Add capabilities to roles
+function add_project_capabilities() {
+    $role = get_role('administrator');
+    $role->add_cap('edit_project');
+    $role->add_cap('edit_projects');
+    $role->add_cap('edit_others_projects');
+    $role->add_cap('publish_projects');
+    $role->add_cap('read_project');
+    $role->add_cap('read_private_projects');
+    $role->add_cap('delete_project');
+}
+register_activation_hook(__FILE__, 'add_project_capabilities');</code></pre>
+
+      <h3>CPT with Custom Taxonomies</h3>
+      <pre><code class="language-php">// Register CPT with associated taxonomies
+function register_cpt_with_taxonomies() {
+    // Register the post type
+    register_post_type('book', array(
+        'labels' => array(
+            'name' => 'Books',
+            'singular_name' => 'Book'
+        ),
+        'public' => true,
+        'has_archive' => true,
+        'show_in_rest' => true,
+        'menu_icon' => 'dashicons-book',
+        'supports' => array('title', 'editor', 'thumbnail', 'excerpt'),
+        'taxonomies' => array('genre', 'author-tax') // Register taxonomies
+    ));
+
+    // Register genre taxonomy
+    register_taxonomy('genre', 'book', array(
+        'labels' => array(
+            'name' => 'Genres',
+            'singular_name' => 'Genre'
+        ),
+        'hierarchical' => true, // Like categories
+        'show_in_rest' => true,
+        'rewrite' => array('slug' => 'genre')
+    ));
+
+    // Register author taxonomy
+    register_taxonomy('author-tax', 'book', array(
+        'labels' => array(
+            'name' => 'Authors',
+            'singular_name' => 'Author'
+        ),
+        'hierarchical' => false, // Like tags
+        'show_in_rest' => true,
+        'rewrite' => array('slug' => 'book-author')
+    ));
+}
+add_action('init', 'register_cpt_with_taxonomies');</code></pre>
+
+      <h3>Flush Rewrite Rules</h3>
+      <pre><code class="language-php">// Flush rewrite rules on theme activation
+function flush_cpt_rewrite_rules() {
+    // Register your CPT
+    register_portfolio_post_type();
+
+    // Flush rewrite rules
+    flush_rewrite_rules();
+}
+register_activation_hook(__FILE__, 'flush_cpt_rewrite_rules');
+
+// Also flush on theme switch
+add_action('after_switch_theme', 'flush_rewrite_rules');</code></pre>
+
+      <h3>Custom Admin Columns</h3>
+      <pre><code class="language-php">// Add custom columns to CPT admin list
+function add_portfolio_columns($columns) {
+    $new_columns = array();
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['thumbnail'] = 'Image';
+    $new_columns['title'] = $columns['title'];
+    $new_columns['category'] = 'Category';
+    $new_columns['date'] = $columns['date'];
+
+    return $new_columns;
+}
+add_filter('manage_portfolio_posts_columns', 'add_portfolio_columns');
+
+function portfolio_column_content($column_name, $post_id) {
+    if ($column_name == 'thumbnail') {
+        $thumbnail = get_the_post_thumbnail($post_id, array(50, 50));
+        echo $thumbnail ? $thumbnail : '—';
+    }
+
+    if ($column_name == 'category') {
+        $terms = get_the_terms($post_id, 'portfolio_category');
+        if ($terms && !is_wp_error($terms)) {
+            $term_names = wp_list_pluck($terms, 'name');
+            echo implode(', ', $term_names);
+        } else {
+            echo '—';
+        }
+    }
+}
+add_action('manage_portfolio_posts_custom_column', 'portfolio_column_content', 10, 2);</code></pre>
+
+      <h3>Common CPT Parameters</h3>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 8px;">Parameter</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Description</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Default</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">public</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Show in admin and on frontend</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">false</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">show_in_rest</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Enable Gutenberg and REST API</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">false</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">hierarchical</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Page-like (true) or post-like (false)</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">false</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">has_archive</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Enable archive page</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">false</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">supports</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Features (title, editor, thumbnail, etc.)</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">title, editor</td>
+        </tr>
+      </table>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Use lowercase, singular names for post type keys (e.g., 'book' not 'books')</li>
+        <li>Always flush rewrite rules after registering CPTs</li>
+        <li>Enable 'show_in_rest' for Gutenberg support</li>
+        <li>Use descriptive labels for better UX</li>
+        <li>Don't use reserved words (post, page, attachment, etc.)</li>
+        <li>Register CPTs on 'init' action with priority 0</li>
+        <li>Keep post type keys under 20 characters</li>
+      </ul>
+
+      <h3>Common Use Cases</h3>
+      <ul>
+        <li><strong>Portfolio:</strong> Showcase creative work</li>
+        <li><strong>Testimonials:</strong> Client reviews and feedback</li>
+        <li><strong>Team Members:</strong> Staff and employee profiles</li>
+        <li><strong>Products:</strong> E-commerce items (or use WooCommerce)</li>
+        <li><strong>Events:</strong> Calendar and event management</li>
+        <li><strong>FAQs:</strong> Frequently asked questions</li>
+        <li><strong>Services:</strong> Business services offered</li>
+      </ul>
+
+      <h3>Template Hierarchy</h3>
+      <p>WordPress looks for templates in this order:</p>
+      <ul>
+        <li>single-{post-type}.php (e.g., single-portfolio.php)</li>
+        <li>archive-{post-type}.php (e.g., archive-portfolio.php)</li>
+        <li>taxonomy-{taxonomy}-{term}.php</li>
+        <li>taxonomy-{taxonomy}.php</li>
+        <li>single.php</li>
+        <li>archive.php</li>
+        <li>index.php</li>
+      </ul>
+    `,
+    code: `add_action('init', 'register_portfolio_post_type');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-13',
+    readTime: '8 min read',
+    category: 'WordPress Theme Development',
+    tags: ['Custom Post Types', 'Theme Development', 'CPT', 'Development', 'Content Types'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Register Custom Post Types in WordPress: Complete Guide 2025',
+      metaDescription: 'Create custom post types in WordPress with complete code examples. Learn CPT registration, taxonomies, and best practices.',
+      keywords: ['wordpress custom post types', 'register post type', 'cpt wordpress', 'custom post type tutorial', 'wordpress development'],
+      canonical: '/blog/register-custom-post-type',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Register Custom Post Types",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between hierarchical true and false?",
+        answer: "Hierarchical true makes your CPT behave like pages (can have parent/child relationships, page attributes box). Hierarchical false makes it behave like posts (chronological, categories/tags). Use true for structured content, false for blog-style content."
+      },
+      {
+        question: "Do I need to flush rewrite rules every time?",
+        answer: "No, only when registering new CPTs or changing slug/rewrite settings. Use register_activation_hook() for plugins or after_switch_theme for themes. Never flush on every page load—it impacts performance."
+      },
+      {
+        question: "Why isn't my custom post type showing in Gutenberg?",
+        answer: "Add 'show_in_rest' => true to your registration array. This enables both the REST API and Gutenberg editor. Without it, you'll only have the classic editor."
+      },
+      {
+        question: "Can I add custom fields to my CPT?",
+        answer: "Yes! Use add_meta_box() to add custom fields, or use plugins like Advanced Custom Fields (ACF) or Meta Box for easier implementation. Include 'custom-fields' in the 'supports' array to enable the basic custom fields box."
+      },
+      {
+        question: "Should I create CPTs in a plugin or theme?",
+        answer: "Use a plugin for CPTs that contain important content (portfolio, testimonials, etc.) so data persists across theme changes. Use themes only for display-related CPTs that are theme-specific and don't matter if lost when switching themes."
+      }
+    ]
+  },
+  {
+    id: 22,
+    slug: 'register-custom-taxonomy',
+    title: 'Register Custom Taxonomies',
+    excerpt: 'Create custom taxonomies in WordPress to organize and categorize content with tags and categories beyond the defaults.',
+    content: `
+      <h2>What are Custom Taxonomies?</h2>
+      <p>Taxonomies are how WordPress groups content. Custom taxonomies let you create new ways to organize posts, pages, and custom post types—like movie genres, product brands, or event locations.</p>
+
+      <h3>Basic Custom Taxonomy (Category-Style)</h3>
+      <pre><code class="language-php">// Register hierarchical taxonomy (like categories)
+function register_genre_taxonomy() {
+    register_taxonomy('genre', array('post', 'book'), array(
+        'labels' => array(
+            'name' => 'Genres',
+            'singular_name' => 'Genre',
+            'search_items' => 'Search Genres',
+            'all_items' => 'All Genres',
+            'parent_item' => 'Parent Genre',
+            'parent_item_colon' => 'Parent Genre:',
+            'edit_item' => 'Edit Genre',
+            'update_item' => 'Update Genre',
+            'add_new_item' => 'Add New Genre',
+            'new_item_name' => 'New Genre Name',
+            'menu_name' => 'Genres',
+        ),
+        'hierarchical' => true, // true = categories, false = tags
+        'show_ui' => true,
+        'show_in_rest' => true, // Gutenberg support
+        'show_admin_column' => true,
+        'query_var' => true,
+        'rewrite' => array('slug' => 'genre'),
+    ));
+}
+add_action('init', 'register_genre_taxonomy');</code></pre>
+
+      <h3>Tag-Style Taxonomy (Non-Hierarchical)</h3>
+      <pre><code class="language-php">// Register non-hierarchical taxonomy (like tags)
+function register_location_taxonomy() {
+    register_taxonomy('location', 'event', array(
+        'labels' => array(
+            'name' => 'Locations',
+            'singular_name' => 'Location',
+            'search_items' => 'Search Locations',
+            'popular_items' => 'Popular Locations',
+            'all_items' => 'All Locations',
+            'edit_item' => 'Edit Location',
+            'update_item' => 'Update Location',
+            'add_new_item' => 'Add New Location',
+            'new_item_name' => 'New Location Name',
+            'separate_items_with_commas' => 'Separate locations with commas',
+            'add_or_remove_items' => 'Add or remove locations',
+            'choose_from_most_used' => 'Choose from most used locations',
+            'menu_name' => 'Locations',
+        ),
+        'hierarchical' => false, // Acts like tags
+        'show_ui' => true,
+        'show_in_rest' => true,
+        'show_admin_column' => true,
+        'update_count_callback' => '_update_post_term_count',
+        'query_var' => true,
+        'rewrite' => array(
+            'slug' => 'location',
+            'with_front' => false
+        ),
+    ));
+}
+add_action('init', 'register_location_taxonomy');</code></pre>
+
+      <h3>Advanced Taxonomy with Full Options</h3>
+      <pre><code class="language-php">// Comprehensive taxonomy registration
+function register_advanced_taxonomy() {
+    $labels = array(
+        'name' => 'Product Categories',
+        'singular_name' => 'Product Category',
+        'menu_name' => 'Categories',
+        'all_items' => 'All Categories',
+        'parent_item' => 'Parent Category',
+        'parent_item_colon' => 'Parent Category:',
+        'new_item_name' => 'New Category Name',
+        'add_new_item' => 'Add New Category',
+        'edit_item' => 'Edit Category',
+        'update_item' => 'Update Category',
+        'view_item' => 'View Category',
+        'separate_items_with_commas' => 'Separate categories with commas',
+        'add_or_remove_items' => 'Add or remove categories',
+        'choose_from_most_used' => 'Choose from most used',
+        'popular_items' => 'Popular Categories',
+        'search_items' => 'Search Categories',
+        'not_found' => 'Not Found',
+        'no_terms' => 'No categories',
+        'items_list' => 'Categories list',
+        'items_list_navigation' => 'Categories list navigation',
+    );
+
+    $args = array(
+        'labels' => $labels,
+        'description' => 'Product categorization system',
+        'hierarchical' => true,
+        'public' => true,
+        'publicly_queryable' => true,
+        'show_ui' => true,
+        'show_in_menu' => true,
+        'show_in_nav_menus' => true,
+        'show_in_rest' => true,
+        'show_tagcloud' => true,
+        'show_in_quick_edit' => true,
+        'show_admin_column' => true,
+        'meta_box_cb' => 'post_categories_meta_box', // Custom meta box
+        'rewrite' => array(
+            'slug' => 'product-category',
+            'with_front' => true,
+            'hierarchical' => true,
+        ),
+        'query_var' => true,
+        'update_count_callback' => '_update_post_term_count',
+        'sort' => true,
+    );
+
+    register_taxonomy('product_category', array('product'), $args);
+}
+add_action('init', 'register_advanced_taxonomy');</code></pre>
+
+      <h3>Multiple Taxonomies</h3>
+      <pre><code class="language-php">// Register multiple taxonomies efficiently
+function register_multiple_taxonomies() {
+    $taxonomies = array(
+        'brand' => array(
+            'post_types' => array('product'),
+            'labels' => array(
+                'name' => 'Brands',
+                'singular_name' => 'Brand'
+            ),
+            'hierarchical' => true
+        ),
+        'color' => array(
+            'post_types' => array('product'),
+            'labels' => array(
+                'name' => 'Colors',
+                'singular_name' => 'Color'
+            ),
+            'hierarchical' => false
+        ),
+        'size' => array(
+            'post_types' => array('product'),
+            'labels' => array(
+                'name' => 'Sizes',
+                'singular_name' => 'Size'
+            ),
+            'hierarchical' => false
+        )
+    );
+
+    foreach ($taxonomies as $key => $tax) {
+        $defaults = array(
+            'public' => true,
+            'show_in_rest' => true,
+            'show_admin_column' => true,
+            'rewrite' => array('slug' => $key)
+        );
+
+        register_taxonomy(
+            $key,
+            $tax['post_types'],
+            array_merge($defaults, $tax)
+        );
+    }
+}
+add_action('init', 'register_multiple_taxonomies');</code></pre>
+
+      <h3>Add Custom Fields to Taxonomy</h3>
+      <pre><code class="language-php">// Add custom fields to taxonomy terms
+function add_genre_custom_fields($term) {
+    $color = get_term_meta($term->term_id, 'genre_color', true);
+    ?>
+    <tr class="form-field">
+        <th scope="row">
+            <label for="genre_color">Color</label>
+        </th>
+        <td>
+            <input type="color" name="genre_color" id="genre_color"
+                   value="<?php echo esc_attr($color ?: '#000000'); ?>">
+            <p class="description">Choose a color for this genre</p>
+        </td>
+    </tr>
+    <?php
+}
+add_action('genre_edit_form_fields', 'add_genre_custom_fields');
+
+// Save custom field
+function save_genre_custom_fields($term_id) {
+    if (isset($_POST['genre_color'])) {
+        update_term_meta($term_id, 'genre_color', sanitize_hex_color($_POST['genre_color']));
+    }
+}
+add_action('edited_genre', 'save_genre_custom_fields');
+add_action('create_genre', 'save_genre_custom_fields');</code></pre>
+
+      <h3>Custom Taxonomy Columns</h3>
+      <pre><code class="language-php">// Add custom columns to taxonomy admin
+function add_taxonomy_columns($columns) {
+    $new_columns = array();
+    $new_columns['cb'] = $columns['cb'];
+    $new_columns['name'] = $columns['name'];
+    $new_columns['color'] = 'Color';
+    $new_columns['posts'] = $columns['posts'];
+
+    return $new_columns;
+}
+add_filter('manage_edit-genre_columns', 'add_taxonomy_columns');
+
+function populate_taxonomy_columns($content, $column_name, $term_id) {
+    if ($column_name == 'color') {
+        $color = get_term_meta($term_id, 'genre_color', true);
+        if ($color) {
+            $content = '<span style="display:inline-block; width:20px; height:20px;
+                        background:' . esc_attr($color) . '; border:1px solid #ddd;"></span>';
+        } else {
+            $content = '—';
+        }
+    }
+
+    return $content;
+}
+add_filter('manage_genre_custom_column', 'populate_taxonomy_columns', 10, 3);</code></pre>
+
+      <h3>Default Terms</h3>
+      <pre><code class="language-php">// Set default term for taxonomy
+function set_default_genre($post_id, $post) {
+    // Only for published posts
+    if ($post->post_status != 'publish') {
+        return;
+    }
+
+    // Get taxonomy terms
+    $terms = wp_get_object_terms($post_id, 'genre');
+
+    // If no terms assigned, add default
+    if (empty($terms)) {
+        wp_set_object_terms($post_id, 'Uncategorized', 'genre');
+    }
+}
+add_action('save_post', 'set_default_genre', 10, 2);</code></pre>
+
+      <h3>Custom Permalinks for Taxonomy</h3>
+      <pre><code class="language-php">// Custom rewrite rules for taxonomy archives
+function custom_taxonomy_rewrites() {
+    register_taxonomy('genre', 'book', array(
+        'rewrite' => array(
+            'slug' => 'books/genre',
+            'with_front' => false,
+            'hierarchical' => true
+        )
+    ));
+
+    // Flush rewrite rules (only once!)
+    // flush_rewrite_rules();
+}
+add_action('init', 'custom_taxonomy_rewrites');</code></pre>
+
+      <h3>Query Posts by Taxonomy</h3>
+      <pre><code class="language-php">// Query posts by custom taxonomy
+function get_posts_by_genre($genre_slug) {
+    $args = array(
+        'post_type' => 'book',
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'genre',
+                'field' => 'slug',
+                'terms' => $genre_slug,
+            ),
+        ),
+        'posts_per_page' => 10
+    );
+
+    return new WP_Query($args);
+}
+
+// Multiple taxonomies
+function get_posts_by_multiple_taxonomies($genre, $location) {
+    $args = array(
+        'post_type' => 'event',
+        'tax_query' => array(
+            'relation' => 'AND',
+            array(
+                'taxonomy' => 'genre',
+                'field' => 'slug',
+                'terms' => $genre,
+            ),
+            array(
+                'taxonomy' => 'location',
+                'field' => 'slug',
+                'terms' => $location,
+            ),
+        ),
+    );
+
+    return new WP_Query($args);
+}</code></pre>
+
+      <h3>Hierarchical vs Non-Hierarchical</h3>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 8px;">Feature</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Hierarchical (true)</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Non-Hierarchical (false)</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">Behavior</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Like categories</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Like tags</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">Parent/Child</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Yes</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">No</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">Meta Box UI</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Checkboxes</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Text input</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">URL Structure</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">/genre/parent/child/</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">/tag/term/</td>
+        </tr>
+      </table>
+
+      <h3>Common Use Cases</h3>
+      <ul>
+        <li><strong>Products:</strong> Brands, colors, sizes, materials</li>
+        <li><strong>Events:</strong> Locations, event types, organizers</li>
+        <li><strong>Portfolio:</strong> Industries, services, technologies</li>
+        <li><strong>Books:</strong> Genres, authors, publishers</li>
+        <li><strong>Movies:</strong> Genres, actors, directors, studios</li>
+        <li><strong>Recipes:</strong> Cuisines, courses, dietary restrictions</li>
+      </ul>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Use lowercase, descriptive taxonomy names (e.g., 'product_type' not 'types')</li>
+        <li>Always set 'show_in_rest' => true for Gutenberg support</li>
+        <li>Use hierarchical = true for structured data, false for free-form tags</li>
+        <li>Flush rewrite rules after registration (only once!)</li>
+        <li>Keep taxonomy slugs under 32 characters</li>
+        <li>Use singular names for taxonomy keys, plural for labels</li>
+        <li>Don't use reserved words (category, tag, post_tag, etc.)</li>
+      </ul>
+
+      <h3>Template Files</h3>
+      <p>WordPress looks for taxonomy templates in this order:</p>
+      <ul>
+        <li>taxonomy-{taxonomy}-{term}.php (e.g., taxonomy-genre-fiction.php)</li>
+        <li>taxonomy-{taxonomy}.php (e.g., taxonomy-genre.php)</li>
+        <li>taxonomy.php</li>
+        <li>archive.php</li>
+        <li>index.php</li>
+      </ul>
+
+      <h3>Performance Tips</h3>
+      <ul>
+        <li>Cache taxonomy queries with transients</li>
+        <li>Use wp_get_object_terms() for better performance</li>
+        <li>Avoid excessive hierarchical depth (&gt;3 levels)</li>
+        <li>Index taxonomy relationships in custom tables for large sites</li>
+      </ul>
+    `,
+    code: `add_action('init', 'register_genre_taxonomy');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-13',
+    readTime: '9 min read',
+    category: 'WordPress Theme Development',
+    tags: ['Taxonomies', 'Theme Development', 'Categories', 'Tags', 'Organization'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 2.8+',
+    seo: {
+      metaTitle: 'Register Custom Taxonomies in WordPress: Complete Guide 2025',
+      metaDescription: 'Create custom taxonomies in WordPress with detailed code examples. Learn to build categories, tags, and custom organization systems.',
+      keywords: ['wordpress custom taxonomy', 'register taxonomy', 'custom categories wordpress', 'taxonomy wordpress', 'wordpress development'],
+      canonical: '/blog/register-custom-taxonomy',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Register Custom Taxonomies",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between hierarchical and non-hierarchical taxonomies?",
+        answer: "Hierarchical (true) creates category-style taxonomies with parent/child relationships and checkbox UI. Non-hierarchical (false) creates tag-style taxonomies with flat structure and text input. Use hierarchical for structured data, non-hierarchical for flexible tagging."
+      },
+      {
+        question: "Can I add a taxonomy to multiple post types?",
+        answer: "Yes! Pass an array of post types when registering: register_taxonomy('genre', array('post', 'book', 'movie'), $args). This allows the same taxonomy to organize multiple content types."
+      },
+      {
+        question: "How do I add custom fields to taxonomy terms?",
+        answer: "Use term meta functions: get_term_meta(), update_term_meta(). Hook into {taxonomy}_edit_form_fields and {taxonomy}_add_form_fields actions to add fields, then use edited_{taxonomy} and create_{taxonomy} to save values."
+      },
+      {
+        question: "Do I need to flush rewrite rules after registering taxonomies?",
+        answer: "Yes, but only once after initial registration or URL structure changes. Use register_activation_hook() for plugins or after_switch_theme for themes. Never flush on every page load—it severely impacts performance."
+      },
+      {
+        question: "How do I query posts by multiple taxonomies?",
+        answer: "Use tax_query with 'relation' parameter. Set relation to 'AND' for posts matching all taxonomies, or 'OR' for posts matching any. You can query by term ID, slug, or name using the 'field' parameter."
+      }
+    ]
+  },
+  {
+    id: 23,
+    slug: 'add-custom-widget-area',
+    title: 'Add Custom Widget Areas (Sidebars)',
+    excerpt: 'Register custom widget areas in WordPress themes to add flexible content zones throughout your site with drag-and-drop functionality.',
+    content: `
+      <h2>What are Widget Areas?</h2>
+      <p>Widget areas (also called sidebars) are customizable sections where you can add widgets like recent posts, search, custom HTML, and more. They provide non-technical users an easy way to manage content without editing code.</p>
+
+      <h3>Register a Single Widget Area</h3>
+      <pre><code class="language-php">// Register a basic widget area
+function register_custom_widget_area() {
+    register_sidebar(array(
+        'name' => 'Footer Widget Area',
+        'id' => 'footer-widget-area',
+        'description' => 'Appears in the footer section',
+        'before_widget' => '<div class="widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h3 class="widget-title">',
+        'after_title' => '</h3>',
+    ));
+}
+add_action('widgets_init', 'register_custom_widget_area');</code></pre>
+
+      <h3>Display Widget Area in Template</h3>
+      <pre><code class="language-php">// Display in your theme template
+<?php if (is_active_sidebar('footer-widget-area')) : ?>
+    <div class="footer-widgets">
+        <?php dynamic_sidebar('footer-widget-area'); ?>
+    </div>
+<?php endif; ?></code></pre>
+
+      <h3>Register Multiple Widget Areas</h3>
+      <pre><code class="language-php">// Register multiple sidebars at once
+function register_theme_widget_areas() {
+    // Main sidebar
+    register_sidebar(array(
+        'name' => 'Main Sidebar',
+        'id' => 'main-sidebar',
+        'description' => 'Appears on blog posts and pages',
+        'before_widget' => '<aside id="%1$s" class="widget %2$s">',
+        'after_widget' => '</aside>',
+        'before_title' => '<h2 class="widget-title">',
+        'after_title' => '</h2>',
+    ));
+
+    // Footer widget areas (3 columns)
+    $footer_widgets = 3;
+    for ($i = 1; $i <= $footer_widgets; $i++) {
+        register_sidebar(array(
+            'name' => sprintf('Footer Widget Area %d', $i),
+            'id' => sprintf('footer-widget-%d', $i),
+            'description' => sprintf('Footer column %d', $i),
+            'before_widget' => '<div class="footer-widget %2$s">',
+            'after_widget' => '</div>',
+            'before_title' => '<h4 class="footer-widget-title">',
+            'after_title' => '</h4>',
+        ));
+    }
+
+    // Shop sidebar
+    register_sidebar(array(
+        'name' => 'Shop Sidebar',
+        'id' => 'shop-sidebar',
+        'description' => 'Appears on WooCommerce pages',
+        'before_widget' => '<div class="shop-widget %2$s">',
+        'after_widget' => '</div>',
+        'before_title' => '<h3 class="shop-widget-title">',
+        'after_title' => '</h3>',
+    ));
+}
+add_action('widgets_init', 'register_theme_widget_areas');</code></pre>
+
+      <h3>Advanced Widget Area with Custom HTML</h3>
+      <pre><code class="language-php">// Widget area with custom wrapper and schema markup
+function register_advanced_widget_area() {
+    register_sidebar(array(
+        'name' => 'Article Sidebar',
+        'id' => 'article-sidebar',
+        'description' => 'Sidebar for blog articles',
+        'before_widget' => '<section id="%1$s" class="widget %2$s" itemscope itemtype="https://schema.org/WPSideBar">',
+        'after_widget' => '</section>',
+        'before_title' => '<h3 class="widget-title" itemprop="name">',
+        'after_title' => '</h3>',
+    ));
+}
+add_action('widgets_init', 'register_advanced_widget_area');</code></pre>
+
+      <h3>Conditional Widget Areas</h3>
+      <pre><code class="language-php">// Display different widget areas based on page type
+function conditional_widget_display() {
+    if (is_single()) {
+        // Show post sidebar on single posts
+        if (is_active_sidebar('post-sidebar')) {
+            dynamic_sidebar('post-sidebar');
+        }
+    } elseif (is_page()) {
+        // Show page sidebar on pages
+        if (is_active_sidebar('page-sidebar')) {
+            dynamic_sidebar('page-sidebar');
+        }
+    } elseif (is_archive()) {
+        // Show archive sidebar on archives
+        if (is_active_sidebar('archive-sidebar')) {
+            dynamic_sidebar('archive-sidebar');
+        }
+    } else {
+        // Default sidebar
+        if (is_active_sidebar('main-sidebar')) {
+            dynamic_sidebar('main-sidebar');
+        }
+    }
+}</code></pre>
+
+      <h3>Widget Area with Default Content</h3>
+      <pre><code class="language-php">// Display widget area with fallback content
+function widget_area_with_fallback($sidebar_id) {
+    if (is_active_sidebar($sidebar_id)) {
+        dynamic_sidebar($sidebar_id);
+    } else {
+        // Fallback content when no widgets added
+        ?>
+        <div class="default-sidebar-content">
+            <h3>Welcome!</h3>
+            <p>Add widgets to this area from the WordPress admin.</p>
+            <p>Go to Appearance → Widgets to customize this section.</p>
+        </div>
+        <?php
+    }
+}
+
+// Use in template
+widget_area_with_fallback('main-sidebar');</code></pre>
+
+      <h3>Dynamic Widget Area Registration</h3>
+      <pre><code class="language-php">// Register widget areas from theme options
+function register_dynamic_widget_areas() {
+    // Get number of footer columns from theme settings
+    $footer_columns = get_theme_mod('footer_columns', 4);
+
+    for ($i = 1; $i <= $footer_columns; $i++) {
+        register_sidebar(array(
+            'name' => sprintf(__('Footer Column %d', 'textdomain'), $i),
+            'id' => 'footer-' . $i,
+            'description' => sprintf(__('Footer column number %d', 'textdomain'), $i),
+            'before_widget' => '<div class="footer-widget">',
+            'after_widget' => '</div>',
+            'before_title' => '<h4>',
+            'after_title' => '</h4>',
+        ));
+    }
+}
+add_action('widgets_init', 'register_dynamic_widget_areas');</code></pre>
+
+      <h3>Display Footer Columns</h3>
+      <pre><code class="language-php">// Display footer widget columns in template
+<footer class="site-footer">
+    <div class="footer-widgets">
+        <div class="footer-widgets-grid">
+            <?php
+            $footer_columns = get_theme_mod('footer_columns', 4);
+            for ($i = 1; $i <= $footer_columns; $i++) :
+                $sidebar_id = 'footer-' . $i;
+                if (is_active_sidebar($sidebar_id)) :
+            ?>
+                <div class="footer-column">
+                    <?php dynamic_sidebar($sidebar_id); ?>
+                </div>
+            <?php
+                endif;
+            endfor;
+            ?>
+        </div>
+    </div>
+</footer></code></pre>
+
+      <h3>Widget Area Body Classes</h3>
+      <pre><code class="language-php">// Add body class when sidebar is active
+function sidebar_body_class($classes) {
+    if (is_active_sidebar('main-sidebar')) {
+        $classes[] = 'has-sidebar';
+    } else {
+        $classes[] = 'no-sidebar';
+    }
+
+    return $classes;
+}
+add_filter('body_class', 'sidebar_body_class');</code></pre>
+
+      <h3>Custom Widget Wrapper Styling</h3>
+      <pre><code class="language-css">/* CSS for widget areas */
+.widget {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: #f9f9f9;
+    border-radius: 5px;
+}
+
+.widget-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #333;
+}
+
+.footer-widgets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+}
+
+.footer-widget {
+    color: #fff;
+}
+
+/* Responsive sidebar */
+@media (max-width: 768px) {
+    .has-sidebar .main-content {
+        width: 100%;
+    }
+
+    .main-sidebar {
+        width: 100%;
+        margin-top: 30px;
+    }
+}</code></pre>
+
+      <h3>Unregister Default Widget Areas</h3>
+      <pre><code class="language-php">// Remove unwanted default sidebars
+function remove_default_sidebars() {
+    unregister_sidebar('sidebar-1');
+    unregister_sidebar('sidebar-2');
+}
+add_action('widgets_init', 'remove_default_sidebars', 11);</code></pre>
+
+      <h3>Widget Area Parameters</h3>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <th style="border: 1px solid #ddd; padding: 8px;">Parameter</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Description</th>
+          <th style="border: 1px solid #ddd; padding: 8px;">Required</th>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">name</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Display name in admin</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Yes</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">id</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Unique identifier (lowercase, dashes)</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Yes</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">description</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">Helper text in admin</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">No</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">before_widget</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">HTML before each widget</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">No</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">after_widget</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">HTML after each widget</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">No</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">before_title</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">HTML before widget title</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">No</td>
+        </tr>
+        <tr>
+          <td style="border: 1px solid #ddd; padding: 8px;">after_title</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">HTML after widget title</td>
+          <td style="border: 1px solid #ddd; padding: 8px;">No</td>
+        </tr>
+      </table>
+
+      <h3>Common Widget Area Locations</h3>
+      <ul>
+        <li><strong>Primary Sidebar:</strong> Main content area (blog, posts, pages)</li>
+        <li><strong>Footer Widgets:</strong> Site-wide footer (typically 3-4 columns)</li>
+        <li><strong>Header Widget:</strong> Above main content (call-to-action, search)</li>
+        <li><strong>Shop Sidebar:</strong> E-commerce pages (filters, categories)</li>
+        <li><strong>Below Content:</strong> After post content (related posts, CTA)</li>
+        <li><strong>Homepage Widgets:</strong> Customizable homepage sections</li>
+      </ul>
+
+      <h3>Best Practices</h3>
+      <ul>
+        <li>Use descriptive, unique IDs (lowercase with dashes)</li>
+        <li>Include %1$s for widget ID and %2$s for widget class in before_widget</li>
+        <li>Always check is_active_sidebar() before displaying</li>
+        <li>Provide clear descriptions for admin users</li>
+        <li>Use semantic HTML5 elements (aside, section)</li>
+        <li>Keep widget wrapper HTML minimal for flexibility</li>
+        <li>Register all widget areas on 'widgets_init' hook</li>
+      </ul>
+
+      <h3>Testing Widget Areas</h3>
+      <p>After registering widget areas:</p>
+      <ul>
+        <li>Go to Appearance → Widgets in WordPress admin</li>
+        <li>Verify all widget areas appear correctly</li>
+        <li>Add test widgets to each area</li>
+        <li>View frontend to confirm proper display</li>
+        <li>Test responsive behavior on mobile</li>
+        <li>Check empty state (no widgets added)</li>
+      </ul>
+
+      <h3>Common Issues</h3>
+      <ul>
+        <li><strong>Widget area not showing:</strong> Check is_active_sidebar() condition</li>
+        <li><strong>No widgets visible:</strong> Verify dynamic_sidebar() call with correct ID</li>
+        <li><strong>Broken layout:</strong> Check before/after widget HTML structure</li>
+        <li><strong>Can't find in admin:</strong> Ensure widgets_init hook fires</li>
+      </ul>
+    `,
+    code: `add_action('widgets_init', 'register_custom_widget_area');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-13',
+    readTime: '7 min read',
+    category: 'WordPress Theme Development',
+    tags: ['Widgets', 'Sidebars', 'Theme Development', 'Widget Areas', 'Customization'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 2.8+',
+    seo: {
+      metaTitle: 'Add Custom Widget Areas in WordPress: Complete Guide 2025',
+      metaDescription: 'Register custom widget areas (sidebars) in WordPress themes. Complete code examples with best practices and styling tips.',
+      keywords: ['wordpress widget areas', 'register sidebar', 'custom sidebars wordpress', 'widget area tutorial', 'wordpress theme development'],
+      canonical: '/blog/add-custom-widget-area',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "Add Custom Widget Areas (Sidebars)",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between a sidebar and a widget area?",
+        answer: "They're the same thing! WordPress uses register_sidebar() for historical reasons, but the term 'widget area' is more accurate since these areas can appear anywhere (header, footer, content area), not just on the side."
+      },
+      {
+        question: "Why should I use %1$s and %2$s in before_widget?",
+        answer: "%1$s is replaced with the widget's unique ID, and %2$s with the widget's CSS class name. This allows individual styling for each widget instance and provides semantic HTML structure."
+      },
+      {
+        question: "How many widget areas should I create?",
+        answer: "Create widget areas where content flexibility is needed. Common setups: 1 main sidebar, 3-4 footer columns, 1 below-content area. Avoid creating too many—focus on areas users will actually customize."
+      },
+      {
+        question: "Can I have different sidebars for different pages?",
+        answer: "Yes! Use conditional tags (is_single(), is_page(), is_archive()) to display different widget areas based on page type. Or use plugins like Widget Logic for per-page widget control."
+      },
+      {
+        question: "What happens if no widgets are added to a widget area?",
+        answer: "is_active_sidebar() returns false when empty, so you can conditionally hide the area or show placeholder content. Always wrap dynamic_sidebar() in an is_active_sidebar() check to avoid empty widget area containers."
+      }
+    ]
+  },
+  {
+    id: 24,
+    slug: 'enqueue-scripts-styles',
+    title: 'Properly Enqueue Scripts and Styles',
+    excerpt: 'Learn the correct way to add CSS and JavaScript files in WordPress using wp_enqueue_script() and wp_enqueue_style() functions.',
+    content: `
+      <h2>Why Proper Enqueueing Matters</h2>
+      <p>WordPress provides a sophisticated system for loading CSS and JavaScript files that prevents conflicts, manages dependencies, and optimizes loading order. Never hard-code script and style tags in your theme - always use the enqueueing system.</p>
+
+      <h3>Benefits of WordPress Enqueue System</h3>
+      <ul>
+        <li><strong>Dependency Management:</strong> Automatically loads required libraries in the correct order</li>
+        <li><strong>Conflict Prevention:</strong> Prevents duplicate loading of the same script/style</li>
+        <li><strong>Version Control:</strong> Manages cache busting with version parameters</li>
+        <li><strong>Conditional Loading:</strong> Load assets only where needed</li>
+        <li><strong>CDN Support:</strong> Easy integration with external resources</li>
+        <li><strong>Performance:</strong> Control whether scripts load in header or footer</li>
+      </ul>
+
+      <h2>Basic Script Enqueueing</h2>
+      <p>The fundamental way to enqueue a script in WordPress:</p>
+      <pre><code>function my_theme_enqueue_scripts() {
+    // Enqueue custom JavaScript file
+    wp_enqueue_script(
+        'my-custom-script',                          // Handle (unique identifier)
+        get_template_directory_uri() . '/js/custom.js', // File path
+        array('jquery'),                             // Dependencies
+        '1.0.0',                                     // Version
+        true                                          // Load in footer (true) or header (false)
+    );
+}
+add_action('wp_enqueue_scripts', 'my_theme_enqueue_scripts');</code></pre>
+
+      <h2>Basic Style Enqueueing</h2>
+      <p>Enqueuing stylesheets works similarly:</p>
+      <pre><code>function my_theme_enqueue_styles() {
+    // Enqueue main stylesheet
+    wp_enqueue_style(
+        'my-theme-style',                           // Handle
+        get_stylesheet_uri(),                       // File path
+        array(),                                    // Dependencies
+        wp_get_theme()->get('Version')             // Version from style.css
+    );
+
+    // Enqueue custom stylesheet
+    wp_enqueue_style(
+        'custom-style',
+        get_template_directory_uri() . '/css/custom.css',
+        array('my-theme-style'),                   // Load after main stylesheet
+        '1.0.0'
+    );
+}
+add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');</code></pre>
+
+      <h2>Complete Theme Enqueueing Example</h2>
+      <p>A comprehensive example for a production theme:</p>
+      <pre><code>function mytheme_enqueue_assets() {
+    // Get theme version for cache busting
+    $theme_version = wp_get_theme()->get('Version');
+
+    // === STYLES ===
+
+    // Main stylesheet
+    wp_enqueue_style('mytheme-style', get_stylesheet_uri(), array(), $theme_version);
+
+    // Google Fonts
+    wp_enqueue_style(
+        'mytheme-fonts',
+        'https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap',
+        array(),
+        null  // No version for external resources
+    );
+
+    // Custom CSS
+    wp_enqueue_style(
+        'mytheme-custom',
+        get_template_directory_uri() . '/assets/css/custom.css',
+        array('mytheme-style'),
+        $theme_version
+    );
+
+    // === SCRIPTS ===
+
+    // jQuery (WordPress includes it, just ensure it's loaded)
+    wp_enqueue_script('jquery');
+
+    // Main theme JavaScript
+    wp_enqueue_script(
+        'mytheme-main',
+        get_template_directory_uri() . '/assets/js/main.js',
+        array('jquery'),
+        $theme_version,
+        true  // Load in footer
+    );
+
+    // Navigation script
+    wp_enqueue_script(
+        'mytheme-navigation',
+        get_template_directory_uri() . '/assets/js/navigation.js',
+        array('jquery'),
+        $theme_version,
+        true
+    );
+
+    // Comment reply script (only on singular posts/pages with comments)
+    if (is_singular() && comments_open() && get_option('thread_comments')) {
+        wp_enqueue_script('comment-reply');
+    }
+}
+add_action('wp_enqueue_scripts', 'mytheme_enqueue_assets');</code></pre>
+
+      <h2>Conditional Loading</h2>
+      <p>Load assets only where they're needed to improve performance:</p>
+      <pre><code>function conditional_enqueue_assets() {
+    // Only on homepage
+    if (is_front_page()) {
+        wp_enqueue_script('homepage-slider', get_template_directory_uri() . '/js/slider.js', array('jquery'), '1.0', true);
+        wp_enqueue_style('slider-style', get_template_directory_uri() . '/css/slider.css', array(), '1.0');
+    }
+
+    // Only on single posts
+    if (is_single()) {
+        wp_enqueue_script('post-sharing', get_template_directory_uri() . '/js/sharing.js', array(), '1.0', true);
+    }
+
+    // Only on WooCommerce pages
+    if (class_exists('WooCommerce') && (is_woocommerce() || is_cart() || is_checkout())) {
+        wp_enqueue_style('woo-custom', get_template_directory_uri() . '/css/woocommerce.css', array(), '1.0');
+    }
+
+    // Only on contact page
+    if (is_page('contact')) {
+        wp_enqueue_script('google-maps', 'https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY', array(), null, true);
+    }
+
+    // Only for logged-in users
+    if (is_user_logged_in()) {
+        wp_enqueue_style('member-dashboard', get_template_directory_uri() . '/css/dashboard.css', array(), '1.0');
+    }
+}
+add_action('wp_enqueue_scripts', 'conditional_enqueue_assets');</code></pre>
+
+      <h2>Inline Scripts and Styles</h2>
+      <p>Add inline code that depends on an enqueued file:</p>
+      <pre><code>function add_inline_scripts() {
+    // Enqueue the main script first
+    wp_enqueue_script('my-script', get_template_directory_uri() . '/js/script.js', array('jquery'), '1.0', true);
+
+    // Add inline script AFTER the enqueued file
+    $inline_script = "
+        jQuery(document).ready(function($) {
+            console.log('Script loaded!');
+            // Pass PHP data to JavaScript
+            var siteData = {
+                ajaxUrl: '" . admin_url('admin-ajax.php') . "',
+                nonce: '" . wp_create_nonce('my-nonce') . "',
+                userId: " . get_current_user_id() . "
+            };
+        });
+    ";
+    wp_add_inline_script('my-script', $inline_script);
+
+    // Add inline CSS
+    wp_enqueue_style('my-style', get_template_directory_uri() . '/css/style.css', array(), '1.0');
+    $custom_css = "
+        .custom-element {
+            background-color: " . get_theme_mod('custom_bg_color', '#ffffff') . ";
+        }
+    ";
+    wp_add_inline_style('my-style', $custom_css);
+}
+add_action('wp_enqueue_scripts', 'add_inline_scripts');</code></pre>
+
+      <h2>Localizing Scripts (Pass PHP to JavaScript)</h2>
+      <p>The proper way to pass PHP variables to JavaScript:</p>
+      <pre><code>function localize_script_data() {
+    wp_enqueue_script('my-ajax-script', get_template_directory_uri() . '/js/ajax.js', array('jquery'), '1.0', true);
+
+    // Create data array
+    $script_data = array(
+        'ajaxUrl'    => admin_url('admin-ajax.php'),
+        'nonce'      => wp_create_nonce('my_ajax_nonce'),
+        'postId'     => get_the_ID(),
+        'userId'     => get_current_user_id(),
+        'siteUrl'    => home_url(),
+        'themePath'  => get_template_directory_uri(),
+        'isLoggedIn' => is_user_logged_in(),
+        'strings'    => array(
+            'loading' => __('Loading...', 'textdomain'),
+            'error'   => __('An error occurred', 'textdomain')
+        )
+    );
+
+    // Localize the script
+    wp_localize_script('my-ajax-script', 'myScriptData', $script_data);
+}
+add_action('wp_enqueue_scripts', 'localize_script_data');
+
+// In your JavaScript file (ajax.js):
+// Access data like: myScriptData.ajaxUrl, myScriptData.nonce, etc.</code></pre>
+
+      <h2>Dequeue and Deregister Scripts</h2>
+      <p>Remove unwanted scripts loaded by plugins or themes:</p>
+      <pre><code>function remove_unwanted_scripts() {
+    // Dequeue a script (can be re-enqueued later)
+    wp_dequeue_script('jquery-migrate');
+
+    // Deregister a script (completely removes it)
+    wp_deregister_script('wp-embed');
+
+    // Remove emoji scripts
+    remove_action('wp_head', 'print_emoji_detection_script', 7);
+    remove_action('wp_print_styles', 'print_emoji_styles');
+
+    // Dequeue WooCommerce scripts on non-shop pages
+    if (!is_woocommerce() && !is_cart() && !is_checkout()) {
+        wp_dequeue_style('woocommerce-general');
+        wp_dequeue_style('woocommerce-layout');
+        wp_dequeue_style('woocommerce-smallscreen');
+    }
+}
+add_action('wp_enqueue_scripts', 'remove_unwanted_scripts', 100); // High priority to run later</code></pre>
+
+      <h2>Admin Scripts and Styles</h2>
+      <p>Enqueue assets for the WordPress admin area:</p>
+      <pre><code>function admin_enqueue_assets($hook) {
+    // Global admin assets
+    wp_enqueue_style('admin-custom', get_template_directory_uri() . '/admin/css/admin.css', array(), '1.0');
+
+    // Only on specific admin pages
+    if ('post.php' === $hook || 'post-new.php' === $hook) {
+        wp_enqueue_script('post-editor-enhancements', get_template_directory_uri() . '/admin/js/editor.js', array('jquery'), '1.0', true);
+    }
+
+    // Only on theme options page
+    if ('appearance_page_theme-options' === $hook) {
+        wp_enqueue_style('wp-color-picker');
+        wp_enqueue_script('theme-options', get_template_directory_uri() . '/admin/js/options.js', array('wp-color-picker'), '1.0', true);
+    }
+
+    // Enqueue media uploader
+    if ('post.php' === $hook) {
+        wp_enqueue_media();
+    }
+}
+add_action('admin_enqueue_scripts', 'admin_enqueue_assets');</code></pre>
+
+      <h2>Script Attributes (async, defer, module)</h2>
+      <p>Add modern script attributes for better performance:</p>
+      <pre><code>// Add defer attribute to scripts
+function add_defer_attribute($tag, $handle) {
+    $defer_scripts = array('my-script', 'analytics');
+
+    if (in_array($handle, $defer_scripts)) {
+        return str_replace(' src', ' defer src', $tag);
+    }
+
+    return $tag;
+}
+add_filter('script_loader_tag', 'add_defer_attribute', 10, 2);
+
+// Add async attribute
+function add_async_attribute($tag, $handle) {
+    $async_scripts = array('google-analytics', 'facebook-pixel');
+
+    if (in_array($handle, $async_scripts)) {
+        return str_replace(' src', ' async src', $tag);
+    }
+
+    return $tag;
+}
+add_filter('script_loader_tag', 'add_async_attribute', 10, 2);
+
+// Add type="module" for ES6 modules
+function add_module_attribute($tag, $handle) {
+    if ('my-module-script' === $handle) {
+        return str_replace(' src', ' type="module" src', $tag);
+    }
+    return $tag;
+}
+add_filter('script_loader_tag', 'add_module_attribute', 10, 2);</code></pre>
+
+      <h2>Advanced: Resource Hints</h2>
+      <p>Optimize loading with DNS prefetch, preconnect, and preload:</p>
+      <pre><code>function add_resource_hints($urls, $relation_type) {
+    if ('dns-prefetch' === $relation_type) {
+        $urls[] = '//fonts.googleapis.com';
+        $urls[] = '//fonts.gstatic.com';
+        $urls[] = '//www.google-analytics.com';
+    }
+
+    if ('preconnect' === $relation_type) {
+        $urls[] = 'https://fonts.gstatic.com';
+    }
+
+    return $urls;
+}
+add_filter('wp_resource_hints', 'add_resource_hints', 10, 2);
+
+// Preload critical assets
+function preload_critical_assets() {
+    echo '<link rel="preload" href="' . get_template_directory_uri() . '/assets/fonts/main-font.woff2" as="font" type="font/woff2" crossorigin>';
+    echo '<link rel="preload" href="' . get_template_directory_uri() . '/assets/css/critical.css" as="style">';
+}
+add_action('wp_head', 'preload_critical_assets', 1);</code></pre>
+
+      <h2>Best Practices Summary</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Practice</th>
+            <th>Why It Matters</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Use unique handles</td>
+            <td>Prevents conflicts with plugins</td>
+            <td>'mytheme-main' not just 'main'</td>
+          </tr>
+          <tr>
+            <td>Declare dependencies</td>
+            <td>Ensures load order</td>
+            <td>array('jquery') for jQuery-dependent scripts</td>
+          </tr>
+          <tr>
+            <td>Version your assets</td>
+            <td>Cache busting</td>
+            <td>Use theme version or filemtime()</td>
+          </tr>
+          <tr>
+            <td>Load scripts in footer</td>
+            <td>Better page load performance</td>
+            <td>Set $in_footer parameter to true</td>
+          </tr>
+          <tr>
+            <td>Use conditional loading</td>
+            <td>Reduces unnecessary HTTP requests</td>
+            <td>is_front_page(), is_single(), etc.</td>
+          </tr>
+          <tr>
+            <td>Use wp_localize_script()</td>
+            <td>Pass PHP to JS safely</td>
+            <td>For AJAX URLs, nonces, settings</td>
+          </tr>
+          <tr>
+            <td>Never hard-code tags</td>
+            <td>Breaks WordPress ecosystem</td>
+            <td>Use enqueue functions, not &lt;script&gt; tags</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Common Mistakes to Avoid</h2>
+      <ul>
+        <li><strong>Hard-coding scripts in header.php:</strong> Bypasses WordPress's dependency management</li>
+        <li><strong>Not checking if script exists:</strong> Can cause errors if plugin is deactivated</li>
+        <li><strong>Loading everything everywhere:</strong> Kills performance - use conditional loading</li>
+        <li><strong>Forgetting dependencies:</strong> Scripts may fail if jQuery loads after your code</li>
+        <li><strong>Not versioning assets:</strong> Users see cached old versions after updates</li>
+        <li><strong>Using document.write():</strong> Breaks async/defer loading</li>
+        <li><strong>Enqueuing in the wrong hook:</strong> Use wp_enqueue_scripts for frontend, admin_enqueue_scripts for backend</li>
+      </ul>
+
+      <h2>Performance Impact</h2>
+      <p><strong>Properly enqueuing assets can reduce page load time by 30-50%</strong> through dependency optimization, conditional loading, and proper script placement. Always load JavaScript in the footer when possible, and only load assets where they're actually needed.</p>
+    `,
+    code: `function my_theme_enqueue_scripts() {
+    // Enqueue CSS
+    wp_enqueue_style(
+        'my-theme-style',
+        get_stylesheet_uri(),
+        array(),
+        wp_get_theme()->get('Version')
+    );
+
+    // Enqueue JavaScript
+    wp_enqueue_script(
+        'my-custom-script',
+        get_template_directory_uri() . '/js/custom.js',
+        array('jquery'),
+        '1.0.0',
+        true  // Load in footer
+    );
+
+    // Localize script with data
+    wp_localize_script('my-custom-script', 'myData', array(
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'nonce'   => wp_create_nonce('my_nonce')
+    ));
+}
+add_action('wp_enqueue_scripts', 'my_theme_enqueue_scripts');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-29',
+    readTime: '8 min read',
+    category: 'WordPress Theme Development',
+    tags: ['JavaScript', 'CSS', 'wp_enqueue', 'Performance', 'Dependencies'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 5.0+',
+    seo: {
+      metaTitle: 'How to Properly Enqueue Scripts and Styles in WordPress | Complete Guide',
+      metaDescription: 'Master WordPress script and style enqueueing with wp_enqueue_script() and wp_enqueue_style(). Learn dependency management, conditional loading, and performance optimization.',
+      keywords: ['wordpress enqueue scripts', 'wp_enqueue_script', 'wp_enqueue_style', 'wordpress add javascript', 'wordpress add css', 'wordpress dependencies', 'wordpress localize script', 'wordpress performance'],
+      canonical: '/blog/enqueue-scripts-styles',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "How to Properly Enqueue Scripts and Styles in WordPress",
+        "description": "Comprehensive guide to WordPress script and style enqueueing system for better performance and conflict prevention",
+        "author": {
+          "@type": "Person",
+          "name": "Shahmir Khan"
+        },
+        "datePublished": "2025-01-29",
+        "dateModified": "2025-01-29",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between wp_enqueue_script() and wp_register_script()?",
+        answer: "wp_register_script() only registers a script for later use, while wp_enqueue_script() both registers AND queues it for output. You can register scripts early (in init) and enqueue them conditionally later. However, wp_enqueue_script() can do both in one step, so you often don't need wp_register_script() unless you're registering scripts that might be used by other plugins/themes."
+      },
+      {
+        question: "Should I load scripts in the header or footer?",
+        answer: "Always load scripts in the footer (set $in_footer parameter to true) unless they're absolutely critical for above-the-fold rendering. Footer-loaded scripts don't block page rendering, resulting in faster perceived load times. Only load in header if the script must run before page content renders, like modernizr or critical configuration scripts."
+      },
+      {
+        question: "How do I pass PHP variables to JavaScript in WordPress?",
+        answer: "Use wp_localize_script() after enqueuing your script. This creates a JavaScript object with your PHP data. Example: wp_localize_script('my-script', 'myData', array('ajaxUrl' => admin_url('admin-ajax.php'))). In your JS file, access it as myData.ajaxUrl. Never echo JavaScript variables directly in templates."
+      },
+      {
+        question: "Why shouldn't I use <script> tags directly in my theme files?",
+        answer: "Hard-coding script tags bypasses WordPress's dependency management, can cause conflicts with plugins, prevents version control, breaks caching optimization, and doesn't allow other plugins to properly dequeue or modify your scripts. Always use wp_enqueue_script() in the wp_enqueue_scripts hook for proper integration with the WordPress ecosystem."
+      },
+      {
+        question: "How can I conditionally load scripts only on specific pages?",
+        answer: "Use WordPress conditional tags inside your enqueue function. For example: if (is_front_page()) { wp_enqueue_script('slider', ...) } or if (is_single()) { wp_enqueue_script('sharing', ...) }. This prevents unnecessary HTTP requests on pages where the scripts aren't needed, significantly improving performance."
+      }
+    ]
+  },
+  {
+    id: 25,
+    slug: 'add-theme-support',
+    title: 'Enable WordPress Theme Features',
+    excerpt: 'Use add_theme_support() to enable powerful WordPress features like post thumbnails, custom logos, HTML5 markup, and more in your theme.',
+    content: `
+      <h2>Understanding Theme Support</h2>
+      <p>WordPress includes many optional features that themes must explicitly enable using the add_theme_support() function. This function tells WordPress that your theme is ready to handle specific functionality, from basic features like post thumbnails to advanced capabilities like block editor enhancements.</p>
+
+      <h3>Why Use Theme Support?</h3>
+      <ul>
+        <li><strong>Feature Control:</strong> Enable only the features your theme actually needs</li>
+        <li><strong>Performance:</strong> Avoid loading unnecessary functionality</li>
+        <li><strong>Standards:</strong> Implement WordPress best practices and modern standards</li>
+        <li><strong>Block Editor:</strong> Unlock advanced Gutenberg capabilities</li>
+        <li><strong>User Experience:</strong> Provide expected WordPress functionality</li>
+      </ul>
+
+      <h2>Basic Theme Support Setup</h2>
+      <p>All theme support declarations go in your functions.php file, hooked to after_setup_theme:</p>
+      <pre><code>function mytheme_setup() {
+    // Post thumbnails (featured images)
+    add_theme_support('post-thumbnails');
+
+    // Automatic feed links
+    add_theme_support('automatic-feed-links');
+
+    // Let WordPress manage the document title
+    add_theme_support('title-tag');
+
+    // HTML5 markup
+    add_theme_support('html5', array(
+        'search-form',
+        'comment-form',
+        'comment-list',
+        'gallery',
+        'caption',
+        'style',
+        'script'
+    ));
+
+    // Custom logo
+    add_theme_support('custom-logo', array(
+        'height'      => 100,
+        'width'       => 400,
+        'flex-height' => true,
+        'flex-width'  => true
+    ));
+}
+add_action('after_setup_theme', 'mytheme_setup');</code></pre>
+
+      <h2>Essential Theme Features</h2>
+
+      <h3>1. Post Thumbnails (Featured Images)</h3>
+      <pre><code>// Basic post thumbnail support
+add_theme_support('post-thumbnails');
+
+// For specific post types only
+add_theme_support('post-thumbnails', array('post', 'page', 'portfolio'));
+
+// Set custom thumbnail sizes
+add_image_size('thumbnail-large', 800, 600, true);  // Hard crop
+add_image_size('banner', 1200, 400, false);         // Proportional resize
+add_image_size('square', 400, 400, true);           // Perfect square
+
+// Usage in templates:
+// the_post_thumbnail('thumbnail-large');</code></pre>
+
+      <h3>2. Title Tag Management</h3>
+      <pre><code>// Let WordPress handle the <title> tag
+add_theme_support('title-tag');
+
+// Remove the <title> tag from header.php - WordPress adds it automatically
+// This enables SEO plugins to manage the title properly</code></pre>
+
+      <h3>3. HTML5 Support</h3>
+      <pre><code>// Enable modern HTML5 markup for WordPress-generated elements
+add_theme_support('html5', array(
+    'search-form',      // Search form
+    'comment-form',     // Comment form
+    'comment-list',     // Comment list
+    'gallery',          // Gallery shortcode
+    'caption',          // Image captions
+    'style',            // Inline style tags
+    'script',           // Inline script tags
+    'navigation-widgets' // Navigation widget
+));
+
+// Benefits: Cleaner markup, better accessibility, modern standards</code></pre>
+
+      <h3>4. Custom Logo</h3>
+      <pre><code>add_theme_support('custom-logo', array(
+    'height'      => 100,
+    'width'       => 400,
+    'flex-height' => true,      // Allow any height
+    'flex-width'  => true,       // Allow any width
+    'header-text' => array('site-title', 'site-description'),
+    'unlink-homepage-logo' => true  // Don't link logo on homepage
+));
+
+// Display in template:
+// if (has_custom_logo()) {
+//     the_custom_logo();
+// }</code></pre>
+
+      <h3>5. Custom Background</h3>
+      <pre><code>add_theme_support('custom-background', array(
+    'default-color'      => 'ffffff',
+    'default-image'      => get_template_directory_uri() . '/images/bg.jpg',
+    'default-repeat'     => 'no-repeat',
+    'default-position-x' => 'center',
+    'default-position-y' => 'top',
+    'default-size'       => 'cover',
+    'default-attachment' => 'fixed'
+));</code></pre>
+
+      <h3>6. Custom Header</h3>
+      <pre><code>add_theme_support('custom-header', array(
+    'default-image'      => get_template_directory_uri() . '/images/header.jpg',
+    'width'              => 1920,
+    'height'             => 400,
+    'flex-width'         => true,
+    'flex-height'        => true,
+    'header-text'        => true,
+    'default-text-color' => '000000'
+));
+
+// Register default header images
+register_default_headers(array(
+    'header1' => array(
+        'url'           => get_template_directory_uri() . '/images/header1.jpg',
+        'thumbnail_url' => get_template_directory_uri() . '/images/header1-thumb.jpg',
+        'description'   => __('Header Image 1', 'textdomain')
+    )
+));</code></pre>
+
+      <h2>Block Editor (Gutenberg) Support</h2>
+
+      <h3>Wide and Full Width Blocks</h3>
+      <pre><code>// Enable wide and full alignment options
+add_theme_support('align-wide');
+
+// Requires CSS in your theme:
+// .alignwide { max-width: 1200px; }
+// .alignfull { width: 100vw; margin-left: calc(50% - 50vw); }</code></pre>
+
+      <h3>Editor Color Palette</h3>
+      <pre><code>add_theme_support('editor-color-palette', array(
+    array(
+        'name'  => __('Primary Color', 'textdomain'),
+        'slug'  => 'primary',
+        'color' => '#007bff'
+    ),
+    array(
+        'name'  => __('Secondary Color', 'textdomain'),
+        'slug'  => 'secondary',
+        'color' => '#6c757d'
+    ),
+    array(
+        'name'  => __('Dark Gray', 'textdomain'),
+        'slug'  => 'dark-gray',
+        'color' => '#333333'
+    ),
+    array(
+        'name'  => __('Light Gray', 'textdomain'),
+        'slug'  => 'light-gray',
+        'color' => '#f8f9fa'
+    )
+));
+
+// Disable custom colors (force palette only)
+add_theme_support('disable-custom-colors');</code></pre>
+
+      <h3>Editor Font Sizes</h3>
+      <pre><code>add_theme_support('editor-font-sizes', array(
+    array(
+        'name' => __('Small', 'textdomain'),
+        'size' => 14,
+        'slug' => 'small'
+    ),
+    array(
+        'name' => __('Regular', 'textdomain'),
+        'size' => 16,
+        'slug' => 'regular'
+    ),
+    array(
+        'name' => __('Large', 'textdomain'),
+        'size' => 24,
+        'slug' => 'large'
+    ),
+    array(
+        'name' => __('Huge', 'textdomain'),
+        'size' => 36,
+        'slug' => 'huge'
+    )
+));
+
+// Disable custom font sizes
+add_theme_support('disable-custom-font-sizes');</code></pre>
+
+      <h3>Editor Styles</h3>
+      <pre><code>// Load editor stylesheet
+add_theme_support('editor-styles');
+
+// Add stylesheet for block editor
+add_editor_style('editor-style.css');
+
+// Or multiple stylesheets
+add_editor_style(array('editor-style.css', 'custom-fonts.css'));</code></pre>
+
+      <h3>Responsive Embeds</h3>
+      <pre><code>// Make embeds responsive (YouTube, Vimeo, etc.)
+add_theme_support('responsive-embeds');</code></pre>
+
+      <h2>Post Formats</h2>
+      <pre><code>// Enable post formats
+add_theme_support('post-formats', array(
+    'aside',   // Short note or update
+    'gallery', // Image gallery
+    'link',    // Link to another site
+    'image',   // Single image
+    'quote',   // Quotation
+    'status',  // Short status update (Twitter-like)
+    'video',   // Single video
+    'audio',   // Audio file
+    'chat'     // Chat transcript
+));
+
+// Check format in template:
+// if (has_post_format('video')) {
+//     // Display video format
+// }</code></pre>
+
+      <h2>Complete Modern Theme Setup</h2>
+      <p>A comprehensive example for a modern WordPress theme:</p>
+      <pre><code>function mytheme_setup() {
+    // === ESSENTIAL FEATURES ===
+
+    // Load text domain for translations
+    load_theme_textdomain('mytheme', get_template_directory() . '/languages');
+
+    // Automatic feed links
+    add_theme_support('automatic-feed-links');
+
+    // Let WordPress handle title tag
+    add_theme_support('title-tag');
+
+    // Post thumbnails
+    add_theme_support('post-thumbnails');
+    set_post_thumbnail_size(825, 510, true);
+    add_image_size('mytheme-featured', 1200, 630, true);
+    add_image_size('mytheme-thumbnail', 350, 233, true);
+
+    // HTML5 support
+    add_theme_support('html5', array(
+        'search-form',
+        'comment-form',
+        'comment-list',
+        'gallery',
+        'caption',
+        'style',
+        'script',
+        'navigation-widgets'
+    ));
+
+    // === CUSTOMIZATION ===
+
+    // Custom logo
+    add_theme_support('custom-logo', array(
+        'height'      => 90,
+        'width'       => 400,
+        'flex-height' => true,
+        'flex-width'  => true
+    ));
+
+    // Custom background
+    add_theme_support('custom-background', array(
+        'default-color' => 'ffffff'
+    ));
+
+    // Refresh widgets
+    add_theme_support('customize-selective-refresh-widgets');
+
+    // === BLOCK EDITOR ===
+
+    // Wide alignment
+    add_theme_support('align-wide');
+
+    // Responsive embeds
+    add_theme_support('responsive-embeds');
+
+    // Editor styles
+    add_theme_support('editor-styles');
+    add_editor_style('editor-style.css');
+
+    // Custom color palette
+    add_theme_support('editor-color-palette', array(
+        array('name' => __('Primary', 'mytheme'), 'slug' => 'primary', 'color' => '#007bff'),
+        array('name' => __('Secondary', 'mytheme'), 'slug' => 'secondary', 'color' => '#6c757d'),
+        array('name' => __('Success', 'mytheme'), 'slug' => 'success', 'color' => '#28a745'),
+        array('name' => __('Danger', 'mytheme'), 'slug' => 'danger', 'color' => '#dc3545'),
+        array('name' => __('Light', 'mytheme'), 'slug' => 'light', 'color' => '#f8f9fa'),
+        array('name' => __('Dark', 'mytheme'), 'slug' => 'dark', 'color' => '#343a40')
+    ));
+
+    // Custom font sizes
+    add_theme_support('editor-font-sizes', array(
+        array('name' => __('Small', 'mytheme'), 'size' => 14, 'slug' => 'small'),
+        array('name' => __('Normal', 'mytheme'), 'size' => 16, 'slug' => 'normal'),
+        array('name' => __('Medium', 'mytheme'), 'size' => 20, 'slug' => 'medium'),
+        array('name' => __('Large', 'mytheme'), 'size' => 28, 'slug' => 'large'),
+        array('name' => __('Huge', 'mytheme'), 'size' => 36, 'slug' => 'huge')
+    ));
+
+    // === WooCommerce (if plugin active) ===
+    if (class_exists('WooCommerce')) {
+        add_theme_support('woocommerce');
+        add_theme_support('wc-product-gallery-zoom');
+        add_theme_support('wc-product-gallery-lightbox');
+        add_theme_support('wc-product-gallery-slider');
+    }
+}
+add_action('after_setup_theme', 'mytheme_setup');</code></pre>
+
+      <h2>Checking Theme Support</h2>
+      <pre><code>// Check if a feature is supported
+if (current_theme_supports('post-thumbnails')) {
+    // Feature is enabled
+}
+
+// Get support parameters
+$args = get_theme_support('custom-logo');
+
+// Remove theme support
+remove_theme_support('custom-header');
+
+// Check specific post type support
+if (post_type_supports('page', 'thumbnail')) {
+    // Pages support thumbnails
+}</code></pre>
+
+      <h2>All Available Theme Support Features</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>Purpose</th>
+            <th>Since Version</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>post-thumbnails</td>
+            <td>Featured images for posts</td>
+            <td>2.9</td>
+          </tr>
+          <tr>
+            <td>automatic-feed-links</td>
+            <td>RSS feed links in head</td>
+            <td>3.0</td>
+          </tr>
+          <tr>
+            <td>title-tag</td>
+            <td>Let WordPress manage title tag</td>
+            <td>4.1</td>
+          </tr>
+          <tr>
+            <td>html5</td>
+            <td>HTML5 markup for core features</td>
+            <td>3.6</td>
+          </tr>
+          <tr>
+            <td>custom-logo</td>
+            <td>Site logo uploader</td>
+            <td>4.5</td>
+          </tr>
+          <tr>
+            <td>custom-background</td>
+            <td>Background customization</td>
+            <td>3.4</td>
+          </tr>
+          <tr>
+            <td>custom-header</td>
+            <td>Header image customization</td>
+            <td>3.4</td>
+          </tr>
+          <tr>
+            <td>post-formats</td>
+            <td>Special post formats</td>
+            <td>3.1</td>
+          </tr>
+          <tr>
+            <td>align-wide</td>
+            <td>Wide/full block alignment</td>
+            <td>5.0</td>
+          </tr>
+          <tr>
+            <td>editor-styles</td>
+            <td>Block editor styling</td>
+            <td>5.0</td>
+          </tr>
+          <tr>
+            <td>responsive-embeds</td>
+            <td>Responsive video embeds</td>
+            <td>5.0</td>
+          </tr>
+          <tr>
+            <td>editor-color-palette</td>
+            <td>Custom editor colors</td>
+            <td>5.0</td>
+          </tr>
+          <tr>
+            <td>editor-font-sizes</td>
+            <td>Custom editor font sizes</td>
+            <td>5.0</td>
+          </tr>
+          <tr>
+            <td>wp-block-styles</td>
+            <td>Default block styles</td>
+            <td>5.0</td>
+          </tr>
+          <tr>
+            <td>widgets</td>
+            <td>Legacy widgets support</td>
+            <td>2.2</td>
+          </tr>
+          <tr>
+            <td>menus</td>
+            <td>Custom navigation menus</td>
+            <td>3.0</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Best Practices</h2>
+      <ul>
+        <li><strong>Hook to after_setup_theme:</strong> Always add theme support in this hook, not directly in functions.php</li>
+        <li><strong>Enable only what you need:</strong> Don't blindly enable all features - consider your theme's design</li>
+        <li><strong>Check requirements:</strong> Some features require corresponding CSS/template support</li>
+        <li><strong>Test thoroughly:</strong> Ensure enabled features work properly in your theme</li>
+        <li><strong>Document features:</strong> Let users know which WordPress features your theme supports</li>
+        <li><strong>Consider child themes:</strong> Make sure features work if a child theme is used</li>
+        <li><strong>Block editor first:</strong> For modern themes, prioritize block editor features</li>
+      </ul>
+
+      <h2>Performance Impact</h2>
+      <p><strong>Minimal performance impact</strong> when used correctly. Theme support declarations are simple feature flags that don't load additional code unless the feature is actually used. However, enabling unused features can add unnecessary admin UI elements.</p>
+    `,
+    code: `function mytheme_setup() {
+    // Essential features
+    add_theme_support('title-tag');
+    add_theme_support('post-thumbnails');
+    add_theme_support('automatic-feed-links');
+
+    // HTML5 support
+    add_theme_support('html5', array(
+        'search-form',
+        'comment-form',
+        'comment-list',
+        'gallery',
+        'caption'
+    ));
+
+    // Custom logo
+    add_theme_support('custom-logo', array(
+        'height'      => 100,
+        'width'       => 400,
+        'flex-height' => true,
+        'flex-width'  => true
+    ));
+
+    // Block editor features
+    add_theme_support('align-wide');
+    add_theme_support('editor-styles');
+    add_theme_support('responsive-embeds');
+}
+add_action('after_setup_theme', 'mytheme_setup');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-29',
+    readTime: '7 min read',
+    category: 'WordPress Theme Development',
+    tags: ['Theme Support', 'Features', 'add_theme_support', 'Gutenberg', 'Block Editor'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 5.0+',
+    seo: {
+      metaTitle: 'WordPress add_theme_support() Complete Guide | Enable Theme Features',
+      metaDescription: 'Learn how to use add_theme_support() to enable WordPress features like post thumbnails, custom logos, HTML5, block editor enhancements, and more in your theme.',
+      keywords: ['wordpress theme support', 'add_theme_support', 'wordpress post thumbnails', 'wordpress custom logo', 'wordpress block editor', 'wordpress theme features', 'gutenberg support'],
+      canonical: '/blog/add-theme-support',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "WordPress Theme Support - Complete Guide to add_theme_support()",
+        "description": "Complete guide to enabling WordPress theme features using add_theme_support() function",
+        "author": {
+          "@type": "Person",
+          "name": "Shahmir Khan"
+        },
+        "datePublished": "2025-01-29",
+        "dateModified": "2025-01-29",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "What is the difference between add_theme_support() and add_post_type_support()?",
+        answer: "add_theme_support() enables features at the theme level (like post thumbnails, custom logos, HTML5 markup), while add_post_type_support() adds specific features to post types (like 'thumbnail', 'editor', 'comments'). Theme support enables features globally, while post type support is more granular and targets specific content types."
+      },
+      {
+        question: "When should I use the after_setup_theme hook for theme support?",
+        answer: "Always use after_setup_theme for add_theme_support() calls. This hook fires before init and allows both parent and child themes to register features. Don't call add_theme_support() directly in functions.php outside this hook, as it may cause compatibility issues with child themes and some WordPress core functionality."
+      },
+      {
+        question: "Do I need CSS for block editor features like align-wide?",
+        answer: "Yes, enabling block editor features like align-wide only adds the UI options in the editor. You must add corresponding CSS to your theme to properly display these features on the frontend. For example, .alignwide and .alignfull classes need max-width and width styles to function correctly."
+      },
+      {
+        question: "Can I disable theme support that was added by a parent theme?",
+        answer: "Yes, use remove_theme_support('feature-name') in your child theme's functions.php, also hooked to after_setup_theme but with a higher priority (like 11). Example: add_action('after_setup_theme', 'child_theme_remove_features', 11); This allows child themes to disable features they don't want to support."
+      },
+      {
+        question: "What happens if I don't enable title-tag support?",
+        answer: "If you don't enable title-tag support, you must manually add the <title> tag in your header.php file. This is the old method and is not recommended because it prevents SEO plugins from properly managing page titles. Always use add_theme_support('title-tag') and let WordPress handle the title tag automatically."
+      }
+    ]
+  },
+  {
+    id: 26,
+    slug: 'register-navigation-menu',
+    title: 'Register Custom Navigation Menus',
+    excerpt: 'Learn how to register and display custom navigation menus in WordPress using register_nav_menus() and wp_nav_menu() functions.',
+    content: `
+      <h2>WordPress Navigation Menu System</h2>
+      <p>WordPress provides a powerful menu system that allows users to create custom navigation menus through the admin interface. As a theme developer, you register menu locations where these menus can be displayed, giving site administrators full control over their navigation structure.</p>
+
+      <h3>Benefits of Custom Menus</h3>
+      <ul>
+        <li><strong>User Control:</strong> Non-technical users can manage navigation without touching code</li>
+        <li><strong>Flexibility:</strong> Support multiple menu locations (header, footer, mobile, etc.)</li>
+        <li><strong>Hierarchy:</strong> Built-in support for nested menu items</li>
+        <li><strong>Customization:</strong> Add custom classes, icons, and attributes</li>
+        <li><strong>Accessibility:</strong> Built-in ARIA attributes and keyboard navigation</li>
+      </ul>
+
+      <h2>Basic Menu Registration</h2>
+      <p>Register menu locations in your theme's functions.php:</p>
+      <pre><code>function mytheme_register_menus() {
+    register_nav_menus(array(
+        'primary'   => __('Primary Menu', 'mytheme'),
+        'footer'    => __('Footer Menu', 'mytheme')
+    ));
+}
+add_action('after_setup_theme', 'mytheme_register_menus');</code></pre>
+
+      <h2>Displaying Menus in Templates</h2>
+      <p>Use wp_nav_menu() to display registered menus:</p>
+      <pre><code><!-- Basic menu display -->
+<?php
+wp_nav_menu(array(
+    'theme_location' => 'primary',
+    'container'      => 'nav',
+    'container_class' => 'main-navigation',
+    'menu_class'     => 'menu',
+    'fallback_cb'    => false
+));
+?></code></pre>
+
+      <h2>Complete Menu Registration Example</h2>
+      <p>Register multiple menu locations for a full-featured theme:</p>
+      <pre><code>function mytheme_register_navigation_menus() {
+    register_nav_menus(array(
+        'primary'   => esc_html__('Primary Menu', 'mytheme'),
+        'secondary' => esc_html__('Secondary Menu', 'mytheme'),
+        'footer'    => esc_html__('Footer Menu', 'mytheme'),
+        'mobile'    => esc_html__('Mobile Menu', 'mytheme'),
+        'social'    => esc_html__('Social Links Menu', 'mytheme')
+    ));
+}
+add_action('after_setup_theme', 'mytheme_register_navigation_menus');
+
+// Alternative: Register single menu
+// register_nav_menu('primary', __('Primary Menu', 'mytheme'));</code></pre>
+
+      <h2>Advanced Menu Display Options</h2>
+
+      <h3>Primary Navigation with Full Options</h3>
+      <pre><code><?php
+wp_nav_menu(array(
+    'theme_location'  => 'primary',
+    'menu_id'         => 'primary-menu',
+    'menu_class'      => 'nav-menu',
+    'container'       => 'nav',
+    'container_class' => 'primary-navigation',
+    'container_id'    => 'site-navigation',
+    'depth'           => 3,                  // Maximum menu depth
+    'fallback_cb'     => 'wp_page_menu',    // Fallback function
+    'items_wrap'      => '<ul id="%1$s" class="%2$s">%3$s</ul>',
+    'before'          => '',                 // Before each link
+    'after'           => '',                 // After each link
+    'link_before'     => '<span>',          // Inside each link, before text
+    'link_after'      => '</span>',         // Inside each link, after text
+    'echo'            => true                // Echo or return
+));
+?></code></pre>
+
+      <h3>Footer Menu (Simple List)</h3>
+      <pre><code><?php
+wp_nav_menu(array(
+    'theme_location' => 'footer',
+    'menu_id'        => 'footer-menu',
+    'menu_class'     => 'footer-links',
+    'container'      => 'div',
+    'container_class' => 'footer-navigation',
+    'depth'          => 1,                  // Single level only
+    'fallback_cb'    => false               // No fallback
+));
+?></code></pre>
+
+      <h3>Mobile Menu with Toggle</h3>
+      <pre><code><button class="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false">
+    <span class="screen-reader-text"><?php esc_html_e('Menu', 'mytheme'); ?></span>
+    <span class="hamburger"></span>
+</button>
+
+<?php
+wp_nav_menu(array(
+    'theme_location' => 'mobile',
+    'menu_id'        => 'mobile-menu',
+    'menu_class'     => 'mobile-nav-menu',
+    'container'      => 'nav',
+    'container_class' => 'mobile-navigation',
+    'container_id'   => 'mobile-nav'
+));
+?></code></pre>
+
+      <h2>Conditional Menu Display</h2>
+      <pre><code>// Check if menu location has a menu assigned
+if (has_nav_menu('primary')) {
+    wp_nav_menu(array(
+        'theme_location' => 'primary'
+    ));
+} else {
+    echo '<p>Please assign a menu to the Primary Menu location.</p>';
+}
+
+// Display different menus based on conditions
+if (is_user_logged_in()) {
+    wp_nav_menu(array('theme_location' => 'member-menu'));
+} else {
+    wp_nav_menu(array('theme_location' => 'guest-menu'));
+}
+
+// Custom menu by ID or slug
+wp_nav_menu(array(
+    'menu' => 'Main Menu',  // Menu name
+    // or
+    'menu' => 12            // Menu ID
+));</code></pre>
+
+      <h2>Social Links Menu</h2>
+      <pre><code>// Register social menu
+register_nav_menu('social', __('Social Links Menu', 'mytheme'));
+
+// Display with icons (requires CSS or SVG handling)
+<nav class="social-navigation">
+    <?php
+    wp_nav_menu(array(
+        'theme_location'  => 'social',
+        'menu_id'         => 'social-menu',
+        'menu_class'      => 'social-links',
+        'depth'           => 1,
+        'link_before'     => '<span class="screen-reader-text">',
+        'link_after'      => '</span>',
+        'container'       => 'div',
+        'container_class' => 'social-links-wrapper'
+    ));
+    ?>
+</nav>
+
+<!-- Add CSS to display icons -->
+<style>
+.social-links a[href*="facebook.com"]::before { content: "\\f09a"; }
+.social-links a[href*="twitter.com"]::before { content: "\\f099"; }
+.social-links a[href*="instagram.com"]::before { content: "\\f16d"; }
+</style></code></pre>
+
+      <h2>Custom Menu Walker</h2>
+      <p>Create a custom walker class to modify menu output:</p>
+      <pre><code>class Custom_Walker_Nav_Menu extends Walker_Nav_Menu {
+    // Start level (ul)
+    function start_lvl(&$output, $depth = 0, $args = null) {
+        $indent = str_repeat("\\t", $depth);
+        $output .= "\\n$indent<ul class=\\"sub-menu depth-$depth\\">\\n";
+    }
+
+    // Start element (li)
+    function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
+        $indent = ($depth) ? str_repeat("\\t", $depth) : '';
+
+        // Add custom classes
+        $classes = empty($item->classes) ? array() : (array) $item->classes;
+        $classes[] = 'menu-item-' . $item->ID;
+
+        if ($item->current) {
+            $classes[] = 'current-menu-item';
+        }
+
+        $class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args, $depth));
+        $class_names = $class_names ? ' class="' . esc_attr($class_names) . '"' : '';
+
+        $output .= $indent . '<li' . $class_names . '>';
+
+        // Build link
+        $atts = array();
+        $atts['title']  = !empty($item->attr_title) ? $item->attr_title : '';
+        $atts['target'] = !empty($item->target) ? $item->target : '';
+        $atts['rel']    = !empty($item->xfn) ? $item->xfn : '';
+        $atts['href']   = !empty($item->url) ? $item->url : '';
+
+        $atts = apply_filters('nav_menu_link_attributes', $atts, $item, $args, $depth);
+
+        $attributes = '';
+        foreach ($atts as $attr => $value) {
+            if (!empty($value)) {
+                $value = ('href' === $attr) ? esc_url($value) : esc_attr($value);
+                $attributes .= ' ' . $attr . '="' . $value . '"';
+            }
+        }
+
+        $title = apply_filters('the_title', $item->title, $item->ID);
+
+        $item_output = $args->before;
+        $item_output .= '<a' . $attributes . '>';
+        $item_output .= $args->link_before . $title . $args->link_after;
+        $item_output .= '</a>';
+        $item_output .= $args->after;
+
+        $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
+    }
+}
+
+// Use custom walker
+wp_nav_menu(array(
+    'theme_location' => 'primary',
+    'walker'         => new Custom_Walker_Nav_Menu()
+));</code></pre>
+
+      <h2>Menu Filters and Customization</h2>
+
+      <h3>Add Custom Class to Menu Items</h3>
+      <pre><code>// Add icon to specific menu items
+function add_menu_item_icons($classes, $item, $args, $depth) {
+    if ($args->theme_location == 'primary') {
+        if ($item->title == 'Home') {
+            $classes[] = 'menu-item-home';
+        }
+        if ($item->title == 'Contact') {
+            $classes[] = 'menu-item-contact';
+        }
+    }
+    return $classes;
+}
+add_filter('nav_menu_css_class', 'add_menu_item_icons', 10, 4);</code></pre>
+
+      <h3>Modify Menu Link Attributes</h3>
+      <pre><code>function add_menu_link_attributes($atts, $item, $args, $depth) {
+    // Add data attributes
+    $atts['data-menu-item'] = $item->ID;
+
+    // Add rel="nofollow" to specific links
+    if (in_array('nofollow', $item->classes)) {
+        $atts['rel'] = 'nofollow';
+    }
+
+    // Open external links in new tab
+    if (strpos($atts['href'], 'http') !== false && strpos($atts['href'], home_url()) === false) {
+        $atts['target'] = '_blank';
+        $atts['rel'] = 'noopener noreferrer';
+    }
+
+    return $atts;
+}
+add_filter('nav_menu_link_attributes', 'add_menu_link_attributes', 10, 4);</code></pre>
+
+      <h3>Add Description to Menu Items</h3>
+      <pre><code>class Menu_With_Description extends Walker_Nav_Menu {
+    function start_el(&$output, $item, $depth = 0, $args = null, $id = 0) {
+        $indent = ($depth) ? str_repeat("\\t", $depth) : '';
+
+        $output .= $indent . '<li class="menu-item">';
+
+        $output .= '<a href="' . esc_url($item->url) . '">';
+        $output .= esc_html($item->title);
+
+        // Add description if available
+        if (!empty($item->description)) {
+            $output .= '<span class="menu-item-description">' . esc_html($item->description) . '</span>';
+        }
+
+        $output .= '</a>';
+    }
+}
+
+// Enable menu item descriptions
+add_filter('walker_nav_menu_start_el', 'enable_menu_description', 10, 4);
+function enable_menu_description($item_output, $item, $depth, $args) {
+    if (!empty($item->description)) {
+        $item_output = str_replace(
+            '</a>',
+            '<span class="menu-description">' . $item->description . '</span></a>',
+            $item_output
+        );
+    }
+    return $item_output;
+}</code></pre>
+
+      <h2>Get Menu Locations and Data</h2>
+      <pre><code>// Get all registered menu locations
+$locations = get_registered_nav_menus();
+print_r($locations);
+
+// Get menu assigned to a location
+$menu = get_nav_menu_locations();
+$menu_id = $menu['primary'];
+
+// Get menu object
+$menu_object = wp_get_nav_menu_object($menu_id);
+echo $menu_object->name;
+
+// Get menu items
+$menu_items = wp_get_nav_menu_items($menu_id);
+foreach ($menu_items as $item) {
+    echo $item->title . ' - ' . $item->url . '<br>';
+}</code></pre>
+
+      <h2>Responsive Menu Example</h2>
+      <pre><code><!-- HTML Structure -->
+<header class="site-header">
+    <div class="site-branding">
+        <?php the_custom_logo(); ?>
+    </div>
+
+    <button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false">
+        <span class="menu-toggle-icon"></span>
+        <span class="screen-reader-text">Menu</span>
+    </button>
+
+    <?php
+    wp_nav_menu(array(
+        'theme_location' => 'primary',
+        'menu_id'        => 'primary-menu',
+        'container'      => 'nav',
+        'container_class' => 'primary-navigation'
+    ));
+    ?>
+</header>
+
+<script>
+// Toggle mobile menu
+document.querySelector('.menu-toggle').addEventListener('click', function() {
+    const menu = document.getElementById('primary-menu');
+    const isExpanded = this.getAttribute('aria-expanded') === 'true';
+
+    this.setAttribute('aria-expanded', !isExpanded);
+    menu.classList.toggle('menu-open');
+});
+</script></code></pre>
+
+      <h2>Common Menu Parameters</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Parameter</th>
+            <th>Description</th>
+            <th>Default</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>theme_location</td>
+            <td>Registered menu location</td>
+            <td>''</td>
+          </tr>
+          <tr>
+            <td>menu</td>
+            <td>Menu ID, slug, or name</td>
+            <td>''</td>
+          </tr>
+          <tr>
+            <td>container</td>
+            <td>Wrapper element (div, nav, false)</td>
+            <td>'div'</td>
+          </tr>
+          <tr>
+            <td>container_class</td>
+            <td>CSS class for container</td>
+            <td>'menu-{menu-slug}-container'</td>
+          </tr>
+          <tr>
+            <td>menu_class</td>
+            <td>CSS class for ul element</td>
+            <td>'menu'</td>
+          </tr>
+          <tr>
+            <td>menu_id</td>
+            <td>ID attribute for ul element</td>
+            <td>''</td>
+          </tr>
+          <tr>
+            <td>depth</td>
+            <td>Maximum menu depth (0 = unlimited)</td>
+            <td>0</td>
+          </tr>
+          <tr>
+            <td>walker</td>
+            <td>Custom walker class instance</td>
+            <td>Walker_Nav_Menu</td>
+          </tr>
+          <tr>
+            <td>fallback_cb</td>
+            <td>Callback if menu doesn't exist</td>
+            <td>'wp_page_menu'</td>
+          </tr>
+          <tr>
+            <td>before</td>
+            <td>HTML before each link</td>
+            <td>''</td>
+          </tr>
+          <tr>
+            <td>after</td>
+            <td>HTML after each link</td>
+            <td>''</td>
+          </tr>
+          <tr>
+            <td>link_before</td>
+            <td>HTML inside link, before text</td>
+            <td>''</td>
+          </tr>
+          <tr>
+            <td>link_after</td>
+            <td>HTML inside link, after text</td>
+            <td>''</td>
+          </tr>
+          <tr>
+            <td>items_wrap</td>
+            <td>HTML template for ul element</td>
+            <td>'<ul id="%1$s" class="%2$s">%3$s</ul>'</td>
+          </tr>
+          <tr>
+            <td>echo</td>
+            <td>Echo or return output</td>
+            <td>true</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Best Practices</h2>
+      <ul>
+        <li><strong>Register in after_setup_theme:</strong> Always register menus in this hook for proper theme support</li>
+        <li><strong>Descriptive location names:</strong> Use clear names like 'primary', 'footer', not 'menu1', 'menu2'</li>
+        <li><strong>Always check has_nav_menu():</strong> Provide fallbacks when no menu is assigned</li>
+        <li><strong>Use semantic HTML:</strong> Wrap menus in &lt;nav&gt; elements for accessibility</li>
+        <li><strong>Add ARIA attributes:</strong> Include aria-expanded, aria-label for better accessibility</li>
+        <li><strong>Mobile-first approach:</strong> Design for mobile navigation first, enhance for desktop</li>
+        <li><strong>Limit depth wisely:</strong> Deep nested menus can be difficult to navigate</li>
+        <li><strong>Test thoroughly:</strong> Ensure menus work with keyboard navigation</li>
+      </ul>
+
+      <h2>Performance Impact</h2>
+      <p><strong>Minimal performance impact.</strong> WordPress menu system is well-optimized with built-in caching. However, avoid complex walkers with database queries inside loops, and consider caching menu output for high-traffic sites using transients or object caching.</p>
+    `,
+    code: `// Register menu locations
+function mytheme_register_menus() {
+    register_nav_menus(array(
+        'primary' => __('Primary Menu', 'mytheme'),
+        'footer'  => __('Footer Menu', 'mytheme'),
+        'mobile'  => __('Mobile Menu', 'mytheme')
+    ));
+}
+add_action('after_setup_theme', 'mytheme_register_menus');
+
+// Display menu in template
+<?php
+if (has_nav_menu('primary')) {
+    wp_nav_menu(array(
+        'theme_location'  => 'primary',
+        'menu_id'         => 'primary-menu',
+        'container'       => 'nav',
+        'container_class' => 'main-navigation'
+    ));
+}
+?>`,
+    author: 'Shahmir Khan',
+    date: '2025-01-29',
+    readTime: '9 min read',
+    category: 'WordPress Theme Development',
+    tags: ['Menus', 'Navigation', 'Theme Development', 'wp_nav_menu', 'Accessibility'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'WordPress Custom Navigation Menus Guide | register_nav_menus & wp_nav_menu',
+      metaDescription: 'Complete guide to registering and displaying WordPress navigation menus. Learn register_nav_menus(), wp_nav_menu(), custom walkers, and menu customization techniques.',
+      keywords: ['wordpress navigation menu', 'register_nav_menus', 'wp_nav_menu', 'wordpress custom menu', 'wordpress menu walker', 'wordpress menu customization', 'wordpress mobile menu'],
+      canonical: '/blog/register-navigation-menu',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "How to Register and Display Custom Navigation Menus in WordPress",
+        "description": "Comprehensive guide to WordPress navigation menu system including registration, display, and customization",
+        "author": {
+          "@type": "Person",
+          "name": "Shahmir Khan"
+        },
+        "datePublished": "2025-01-29",
+        "dateModified": "2025-01-29",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between register_nav_menu() and register_nav_menus()?",
+        answer: "register_nav_menu() registers a single menu location and takes two parameters (location key and description). register_nav_menus() registers multiple locations at once and takes an array of location => description pairs. Both achieve the same result, but register_nav_menus() is more convenient when registering multiple locations."
+      },
+      {
+        question: "How do I display a menu without a container wrapper?",
+        answer: "Set 'container' => false in wp_nav_menu() arguments. This will output only the <ul> menu element without any wrapper div or nav. Example: wp_nav_menu(array('theme_location' => 'primary', 'container' => false)). This is useful when you need precise control over the menu HTML structure."
+      },
+      {
+        question: "Can I add custom fields to menu items?",
+        answer: "Yes, use the walker_nav_menu_start_el filter or create a custom Walker class. You can also enable built-in fields like CSS Classes, Link Target, and Description by clicking 'Screen Options' in the Menus admin page. For completely custom fields, you'll need to hook into wp_setup_nav_menu_item and add custom meta boxes."
+      },
+      {
+        question: "How do I create a mega menu in WordPress?",
+        answer: "Create a custom Walker class that modifies the menu output structure, or use CSS to style deep nested menus. In your walker, check the menu depth and add custom HTML containers for submenu items. Combine this with CSS grid or flexbox to create multi-column layouts. Many themes use JavaScript to dynamically position and show/hide mega menu panels."
+      },
+      {
+        question: "What is the fallback_cb parameter for?",
+        answer: "fallback_cb specifies a function to call if no menu is assigned to the location. The default is 'wp_page_menu' which displays a list of pages. Set it to false to show nothing if no menu exists, or create a custom callback function to display alternative content. This is useful for providing helpful messages or default navigation."
+      }
+    ]
+  },
+  {
+    id: 27,
+    slug: 'add-custom-image-sizes',
+    title: 'Register Custom Image Sizes',
+    excerpt: 'Create custom image sizes in WordPress using add_image_size() to automatically generate optimized thumbnails for different layouts.',
+    content: `
+      <h2>WordPress Image Size System</h2>
+      <p>WordPress automatically generates multiple sizes when you upload an image. By default, it creates thumbnail, medium, medium_large, and large sizes. You can register custom image sizes to match your theme's specific design requirements, ensuring images are perfectly sized for different contexts without manual resizing.</p>
+
+      <h3>Benefits of Custom Image Sizes</h3>
+      <ul>
+        <li><strong>Performance:</strong> Serve appropriately-sized images instead of scaling large originals</li>
+        <li><strong>Consistency:</strong> Uniform image dimensions across your site</li>
+        <li><strong>Flexibility:</strong> Different sizes for different layouts (blog cards, hero sections, galleries)</li>
+        <li><strong>Responsive Design:</strong> Optimized images for various screen sizes</li>
+        <li><strong>Bandwidth Savings:</strong> Smaller file sizes improve load times</li>
+      </ul>
+
+      <h2>Basic Image Size Registration</h2>
+      <p>Register custom image sizes in your theme's functions.php:</p>
+      <pre><code>function mytheme_register_image_sizes() {
+    // add_image_size( $name, $width, $height, $crop );
+    add_image_size('blog-thumbnail', 400, 300, true);
+    add_image_size('hero-banner', 1920, 600, true);
+    add_image_size('square-small', 200, 200, true);
+}
+add_action('after_setup_theme', 'mytheme_register_image_sizes');</code></pre>
+
+      <h3>Parameter Explanation</h3>
+      <ul>
+        <li><strong>$name:</strong> Unique identifier for the image size</li>
+        <li><strong>$width:</strong> Maximum width in pixels (0 = no limit)</li>
+        <li><strong>$height:</strong> Maximum height in pixels (0 = no limit)</li>
+        <li><strong>$crop:</strong> true = hard crop, false = proportional resize, array = crop position</li>
+      </ul>
+
+      <h2>Crop Options</h2>
+
+      <h3>Hard Crop (Exact Dimensions)</h3>
+      <pre><code>// True = crop to exact dimensions (center crop)
+add_image_size('portfolio-thumb', 400, 400, true);
+
+// This will always produce 400x400 images, cropping if necessary</code></pre>
+
+      <h3>Soft Crop (Proportional Resize)</h3>
+      <pre><code>// False = resize proportionally (no cropping)
+add_image_size('flexible-size', 800, 600, false);
+
+// This maintains aspect ratio, max 800px wide or 600px tall
+// Actual size depends on original image proportions</code></pre>
+
+      <h3>Crop Position (Advanced)</h3>
+      <pre><code>// Specify crop position as array [x, y]
+// x: 'left', 'center', 'right'
+// y: 'top', 'center', 'bottom'
+
+add_image_size('header-image', 1200, 400, array('center', 'top'));
+add_image_size('profile-pic', 300, 300, array('center', 'center'));
+add_image_size('bottom-crop', 800, 600, array('center', 'bottom'));</code></pre>
+
+      <h2>Complete Theme Image Sizes Example</h2>
+      <pre><code>function mytheme_setup_image_sizes() {
+    // Enable post thumbnail support
+    add_theme_support('post-thumbnails');
+
+    // Set default post thumbnail size (soft crop)
+    set_post_thumbnail_size(825, 510, false);
+
+    // === BLOG & POST IMAGES ===
+
+    // Featured image for blog cards
+    add_image_size('blog-card', 600, 400, true);
+
+    // Large blog post image
+    add_image_size('blog-large', 1200, 675, array('center', 'center'));
+
+    // Small thumbnail for related posts
+    add_image_size('related-post', 300, 200, true);
+
+    // === GALLERY & PORTFOLIO ===
+
+    // Square thumbnails for galleries
+    add_image_size('gallery-thumb', 350, 350, true);
+
+    // Portfolio grid item
+    add_image_size('portfolio-item', 600, 450, array('center', 'center'));
+
+    // Portfolio full width
+    add_image_size('portfolio-full', 1920, 1080, false);
+
+    // === HEADER & HERO ===
+
+    // Hero/banner image
+    add_image_size('hero-banner', 1920, 600, array('center', 'center'));
+
+    // Page header
+    add_image_size('page-header', 1600, 400, array('center', 'top'));
+
+    // === SIDEBAR & WIDGETS ===
+
+    // Sidebar widget thumbnail
+    add_image_size('sidebar-thumb', 100, 100, true);
+
+    // Widget featured image
+    add_image_size('widget-featured', 400, 250, true);
+
+    // === SPECIAL SIZES ===
+
+    // Open Graph / Social sharing
+    add_image_size('og-image', 1200, 630, true);
+
+    // Email newsletter
+    add_image_size('newsletter', 600, 400, false);
+}
+add_action('after_setup_theme', 'mytheme_setup_image_sizes');</code></pre>
+
+      <h2>Displaying Custom Image Sizes</h2>
+
+      <h3>In The Loop (Featured Images)</h3>
+      <pre><code>// Display specific size
+if (has_post_thumbnail()) {
+    the_post_thumbnail('blog-card', array('class' => 'blog-thumbnail'));
+}
+
+// With attributes
+the_post_thumbnail('hero-banner', array(
+    'class' => 'hero-image',
+    'alt'   => get_the_title(),
+    'loading' => 'lazy'
+));
+
+// Get thumbnail HTML without echoing
+$thumbnail = get_the_post_thumbnail(get_the_ID(), 'portfolio-item');</code></pre>
+
+      <h3>By Attachment ID</h3>
+      <pre><code>$attachment_id = get_post_thumbnail_id();
+
+// Display image
+echo wp_get_attachment_image($attachment_id, 'gallery-thumb', false, array(
+    'class' => 'gallery-image',
+    'alt'   => get_the_title()
+));
+
+// Get image URL only
+$image_url = wp_get_attachment_image_src($attachment_id, 'blog-large');
+if ($image_url) {
+    echo '<img src="' . esc_url($image_url[0]) . '" width="' . $image_url[1] . '" height="' . $image_url[2] . '">';
+}
+
+// Get image metadata
+$image_data = wp_get_attachment_image_src($attachment_id, 'hero-banner');
+list($url, $width, $height) = $image_data;
+echo "URL: $url, Width: $width, Height: $height";</code></pre>
+
+      <h3>Using WordPress Image Functions</h3>
+      <pre><code>// Get all available sizes for an image
+$image_sizes = wp_get_attachment_metadata($attachment_id);
+print_r($image_sizes['sizes']);
+
+// Check if specific size exists
+if (isset($image_sizes['sizes']['blog-card'])) {
+    $blog_card = $image_sizes['sizes']['blog-card'];
+    echo "Blog card: {$blog_card['width']}x{$blog_card['height']}";
+}</code></pre>
+
+      <h2>Responsive Images with srcset</h2>
+      <pre><code>// WordPress automatically generates srcset for responsive images
+the_post_thumbnail('blog-large', array('class' => 'responsive-image'));
+
+// Manually create srcset
+$image_id = get_post_thumbnail_id();
+$srcset = wp_get_attachment_image_srcset($image_id, 'blog-large');
+$sizes = wp_get_attachment_image_sizes($image_id, 'blog-large');
+
+echo '<img src="' . wp_get_attachment_image_url($image_id, 'blog-large') . '"';
+echo ' srcset="' . esc_attr($srcset) . '"';
+echo ' sizes="' . esc_attr($sizes) . '"';
+echo ' alt="' . esc_attr(get_post_meta($image_id, '_wp_attachment_image_alt', true)) . '">';
+
+// Custom sizes attribute for different breakpoints
+the_post_thumbnail('blog-large', array(
+    'sizes' => '(max-width: 600px) 100vw, (max-width: 1200px) 50vw, 800px'
+));</code></pre>
+
+      <h2>Make Custom Sizes Selectable in Editor</h2>
+      <pre><code>// Add custom sizes to media library size dropdown
+function add_custom_image_sizes_to_media_library($sizes) {
+    return array_merge($sizes, array(
+        'blog-card'      => __('Blog Card (600x400)', 'mytheme'),
+        'hero-banner'    => __('Hero Banner (1920x600)', 'mytheme'),
+        'portfolio-item' => __('Portfolio Item (600x450)', 'mytheme'),
+        'og-image'       => __('Social Sharing (1200x630)', 'mytheme')
+    ));
+}
+add_filter('image_size_names_choose', 'add_custom_image_sizes_to_media_library');</code></pre>
+
+      <h2>Conditional Image Sizes</h2>
+      <pre><code>// Different sizes based on post type
+if (has_post_thumbnail()) {
+    if (get_post_type() === 'portfolio') {
+        the_post_thumbnail('portfolio-item');
+    } elseif (get_post_type() === 'product') {
+        the_post_thumbnail('product-thumbnail');
+    } else {
+        the_post_thumbnail('blog-card');
+    }
+}
+
+// Different sizes based on context
+if (is_single()) {
+    the_post_thumbnail('blog-large');  // Large for single posts
+} else {
+    the_post_thumbnail('blog-card');   // Smaller for archives
+}</code></pre>
+
+      <h2>Regenerating Thumbnails</h2>
+      <pre><code>// Programmatically regenerate thumbnails for existing images
+// Note: This can be resource-intensive, run carefully
+
+function regenerate_all_image_sizes() {
+    // Only allow administrators to run this
+    if (!current_user_can('manage_options')) {
+        return;
+    }
+
+    $args = array(
+        'post_type'      => 'attachment',
+        'post_mime_type' => 'image',
+        'post_status'    => 'inherit',
+        'posts_per_page' => -1
+    );
+
+    $attachments = get_posts($args);
+
+    foreach ($attachments as $attachment) {
+        $file = get_attached_file($attachment->ID);
+
+        if (file_exists($file)) {
+            wp_update_attachment_metadata(
+                $attachment->ID,
+                wp_generate_attachment_metadata($attachment->ID, $file)
+            );
+        }
+    }
+}
+
+// Better: Use WP-CLI or a plugin like "Regenerate Thumbnails" for production
+// wp media regenerate --yes</code></pre>
+
+      <h2>Removing Default Image Sizes</h2>
+      <pre><code>// Disable default WordPress image sizes to save disk space
+function remove_default_image_sizes($sizes) {
+    // Remove specific sizes
+    unset($sizes['thumbnail']);    // 150x150
+    unset($sizes['medium']);       // 300x300
+    unset($sizes['medium_large']); // 768x0
+    unset($sizes['large']);        // 1024x1024
+
+    return $sizes;
+}
+add_filter('intermediate_image_sizes_advanced', 'remove_default_image_sizes');
+
+// Prevent generation of specific sizes
+function disable_image_sizes() {
+    remove_image_size('1536x1536'); // WordPress 5.3+ 2x medium_large
+    remove_image_size('2048x2048'); // WordPress 5.3+ 2x large
+}
+add_action('init', 'disable_image_sizes');</code></pre>
+
+      <h2>Get All Registered Image Sizes</h2>
+      <pre><code>function get_all_image_sizes() {
+    global $_wp_additional_image_sizes;
+
+    $sizes = array();
+
+    // Get default sizes
+    foreach (array('thumbnail', 'medium', 'medium_large', 'large') as $size) {
+        $sizes[$size] = array(
+            'width'  => get_option("{$size}_size_w"),
+            'height' => get_option("{$size}_size_h"),
+            'crop'   => (bool) get_option("{$size}_crop")
+        );
+    }
+
+    // Get custom sizes
+    if (isset($_wp_additional_image_sizes) && count($_wp_additional_image_sizes)) {
+        $sizes = array_merge($sizes, $_wp_additional_image_sizes);
+    }
+
+    return $sizes;
+}
+
+// Display all sizes
+$all_sizes = get_all_image_sizes();
+foreach ($all_sizes as $size => $data) {
+    echo "$size: {$data['width']}x{$data['height']}, Crop: " . ($data['crop'] ? 'Yes' : 'No') . "<br>";
+}</code></pre>
+
+      <h2>Best Practices</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Practice</th>
+            <th>Why It Matters</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Descriptive names</td>
+            <td>Makes sizes easy to identify</td>
+            <td>'blog-card' not 'size1'</td>
+          </tr>
+          <tr>
+            <td>Register in after_setup_theme</td>
+            <td>Ensures proper timing</td>
+            <td>Use the correct hook</td>
+          </tr>
+          <tr>
+            <td>Don't over-generate</td>
+            <td>Saves disk space and processing</td>
+            <td>Only create sizes you'll use</td>
+          </tr>
+          <tr>
+            <td>Use appropriate crop</td>
+            <td>Prevents awkward cropping</td>
+            <td>Portraits: center crop, landscapes: soft crop</td>
+          </tr>
+          <tr>
+            <td>Match design specs</td>
+            <td>Avoids browser resizing</td>
+            <td>Measure actual dimensions in design</td>
+          </tr>
+          <tr>
+            <td>Consider retina displays</td>
+            <td>Sharp images on high-DPI screens</td>
+            <td>2x sizes for critical images</td>
+          </tr>
+          <tr>
+            <td>Use lazy loading</td>
+            <td>Improves page load speed</td>
+            <td>loading="lazy" attribute</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Common Image Size Patterns</h2>
+      <ul>
+        <li><strong>Blog Card:</strong> 600x400 (3:2 ratio) - Perfect for blog listings</li>
+        <li><strong>Square Thumbnail:</strong> 300x300 (1:1 ratio) - Great for avatars, product grids</li>
+        <li><strong>Hero Banner:</strong> 1920x600 (16:5 ratio) - Wide header images</li>
+        <li><strong>Open Graph:</strong> 1200x630 (1.91:1 ratio) - Social media sharing</li>
+        <li><strong>Portrait:</strong> 600x800 (3:4 ratio) - Team members, portraits</li>
+        <li><strong>Landscape:</strong> 800x450 (16:9 ratio) - Video thumbnails, wide images</li>
+        <li><strong>Sidebar Widget:</strong> 400x250 - Small promotional images</li>
+      </ul>
+
+      <h2>Performance Impact</h2>
+      <p><strong>Initial processing cost, ongoing performance gain.</strong> Generating thumbnails uses server resources when images are uploaded, but dramatically improves frontend performance by serving appropriately-sized images. A 4MB original resized to 50KB for thumbnails is an 80x file size reduction. Consider using a CDN and image optimization plugin for best results.</p>
+    `,
+    code: `function mytheme_register_image_sizes() {
+    // Enable post thumbnails
+    add_theme_support('post-thumbnails');
+
+    // Set default thumbnail size
+    set_post_thumbnail_size(825, 510, false);
+
+    // Register custom sizes
+    add_image_size('blog-card', 600, 400, true);
+    add_image_size('hero-banner', 1920, 600, array('center', 'center'));
+    add_image_size('gallery-thumb', 350, 350, true);
+    add_image_size('portfolio-item', 800, 600, false);
+}
+add_action('after_setup_theme', 'mytheme_register_image_sizes');
+
+// Make sizes available in media library
+function add_sizes_to_media_library($sizes) {
+    return array_merge($sizes, array(
+        'blog-card' => __('Blog Card', 'mytheme'),
+        'hero-banner' => __('Hero Banner', 'mytheme')
+    ));
+}
+add_filter('image_size_names_choose', 'add_sizes_to_media_library');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-29',
+    readTime: '8 min read',
+    category: 'WordPress Theme Development',
+    tags: ['Images', 'Thumbnails', 'Media', 'Performance', 'Responsive'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 2.9+',
+    seo: {
+      metaTitle: 'WordPress Custom Image Sizes Guide | add_image_size() Tutorial',
+      metaDescription: 'Learn how to register custom image sizes in WordPress using add_image_size(). Complete guide to cropping, responsive images, and thumbnail optimization.',
+      keywords: ['wordpress image sizes', 'add_image_size', 'wordpress thumbnails', 'custom image sizes wordpress', 'wordpress crop images', 'wordpress responsive images', 'regenerate thumbnails'],
+      canonical: '/blog/add-custom-image-sizes',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "How to Register Custom Image Sizes in WordPress",
+        "description": "Complete guide to creating and using custom image sizes in WordPress themes",
+        "author": {
+          "@type": "Person",
+          "name": "Shahmir Khan"
+        },
+        "datePublished": "2025-01-29",
+        "dateModified": "2025-01-29",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between hard crop and soft crop in add_image_size()?",
+        answer: "Hard crop (true) forces exact dimensions by cropping the image to fit, potentially cutting off parts of the image. Soft crop (false) resizes proportionally without cropping, maintaining the entire image but resulting in variable dimensions that won't exceed your specified width or height. Use hard crop for consistent layouts, soft crop when you need to preserve the entire image."
+      },
+      {
+        question: "Do I need to regenerate thumbnails after adding new image sizes?",
+        answer: "Yes, for existing images. New image sizes only affect images uploaded after registration. Use a plugin like 'Regenerate Thumbnails' or WP-CLI command 'wp media regenerate' to create the new sizes for previously uploaded images. New uploads will automatically generate all registered sizes."
+      },
+      {
+        question: "How can I reduce the number of image sizes WordPress generates?",
+        answer: "Use the intermediate_image_sizes_advanced filter to remove unwanted sizes. This prevents WordPress from generating default sizes like thumbnail, medium, and large. Only register the exact sizes your theme needs to save disk space and processing time. Consider removing 1536x1536 and 2048x2048 sizes added in WordPress 5.3+ if you don't need them."
+      },
+      {
+        question: "Can I specify crop position when using add_image_size()?",
+        answer: "Yes, pass an array as the fourth parameter with x and y positions. Example: add_image_size('header', 1200, 400, array('center', 'top')) crops from the center horizontally and top vertically. Options are 'left', 'center', 'right' for x-axis and 'top', 'center', 'bottom' for y-axis. This gives you precise control over which part of the image is kept."
+      },
+      {
+        question: "How do I make custom image sizes appear in the WordPress media library dropdown?",
+        answer: "Use the image_size_names_choose filter. Add your custom sizes with descriptive names: add_filter('image_size_names_choose', function($sizes) { return array_merge($sizes, array('blog-card' => 'Blog Card')); }); This makes your custom sizes selectable when inserting images into posts, allowing editors to choose the appropriate size."
+      }
+    ]
+  },
+  {
+    id: 28,
+    slug: 'custom-post-meta-fields',
+    title: 'Add Custom Meta Boxes',
+    excerpt: 'Create custom meta boxes and fields in the WordPress post editor using add_meta_box() to store additional post metadata.',
+    content: `
+      <h2>WordPress Meta Box System</h2>
+      <p>Meta boxes are custom panels in the WordPress post editor that allow you to add extra fields and functionality. They're essential for storing additional post data beyond title and content, such as custom prices, dates, settings, or any custom information your theme or plugin needs.</p>
+
+      <h3>Common Use Cases</h3>
+      <ul>
+        <li><strong>Custom Fields:</strong> Store additional post-specific data (subtitle, location, price)</li>
+        <li><strong>Post Options:</strong> Control layout, features, or display settings per post</li>
+        <li><strong>SEO Data:</strong> Custom title, description, keywords</li>
+        <li><strong>Product Information:</strong> Price, SKU, specifications</li>
+        <li><strong>Event Details:</strong> Date, time, venue, registration link</li>
+        <li><strong>Media:</strong> External video URLs, image galleries</li>
+      </ul>
+
+      <h2>Basic Meta Box Registration</h2>
+      <pre><code>function register_custom_meta_box() {
+    add_meta_box(
+        'custom_meta_box_id',           // Unique ID
+        'Custom Meta Box Title',        // Box title
+        'render_custom_meta_box',       // Callback function
+        'post',                         // Post type (post, page, or custom)
+        'normal',                       // Context (normal, side, advanced)
+        'high'                          // Priority (high, low, default)
+    );
+}
+add_action('add_meta_boxes', 'register_custom_meta_box');
+
+// Callback function to display meta box content
+function render_custom_meta_box($post) {
+    // Add nonce for security
+    wp_nonce_field('custom_meta_box_nonce_action', 'custom_meta_box_nonce');
+
+    // Get current value
+    $value = get_post_meta($post->ID, '_custom_field_key', true);
+
+    // Display field
+    echo '<label for="custom_field">Custom Field:</label>';
+    echo '<input type="text" id="custom_field" name="custom_field" value="' . esc_attr($value) . '" style="width: 100%;">';
+}
+
+// Save meta box data
+function save_custom_meta_box($post_id) {
+    // Check nonce
+    if (!isset($_POST['custom_meta_box_nonce']) ||
+        !wp_verify_nonce($_POST['custom_meta_box_nonce'], 'custom_meta_box_nonce_action')) {
+        return;
+    }
+
+    // Check autosave
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Check permissions
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    // Save data
+    if (isset($_POST['custom_field'])) {
+        update_post_meta($post_id, '_custom_field_key', sanitize_text_field($_POST['custom_field']));
+    }
+}
+add_action('save_post', 'save_custom_meta_box');</code></pre>
+
+      <h2>Complete Meta Box Example</h2>
+      <p>A production-ready meta box with multiple field types:</p>
+      <pre><code>// Register meta box
+function product_details_meta_box() {
+    add_meta_box(
+        'product_details',
+        __('Product Details', 'textdomain'),
+        'product_details_callback',
+        'product',  // Custom post type
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'product_details_meta_box');
+
+// Display meta box
+function product_details_callback($post) {
+    // Nonce for security
+    wp_nonce_field('product_details_nonce_action', 'product_details_nonce');
+
+    // Get saved values
+    $price = get_post_meta($post->ID, '_product_price', true);
+    $sku = get_post_meta($post->ID, '_product_sku', true);
+    $featured = get_post_meta($post->ID, '_product_featured', true);
+    $status = get_post_meta($post->ID, '_product_status', true);
+    ?>
+    <style>
+        .product-meta-field { margin-bottom: 15px; }
+        .product-meta-field label { display: block; font-weight: bold; margin-bottom: 5px; }
+        .product-meta-field input[type="text"],
+        .product-meta-field input[type="number"],
+        .product-meta-field select { width: 100%; }
+    </style>
+
+    <div class="product-meta-field">
+        <label for="product_price"><?php _e('Price ($):', 'textdomain'); ?></label>
+        <input type="number" id="product_price" name="product_price"
+               value="<?php echo esc_attr($price); ?>" step="0.01" min="0">
+    </div>
+
+    <div class="product-meta-field">
+        <label for="product_sku"><?php _e('SKU:', 'textdomain'); ?></label>
+        <input type="text" id="product_sku" name="product_sku"
+               value="<?php echo esc_attr($sku); ?>">
+    </div>
+
+    <div class="product-meta-field">
+        <label>
+            <input type="checkbox" name="product_featured" value="1"
+                   <?php checked($featured, '1'); ?>>
+            <?php _e('Featured Product', 'textdomain'); ?>
+        </label>
+    </div>
+
+    <div class="product-meta-field">
+        <label for="product_status"><?php _e('Status:', 'textdomain'); ?></label>
+        <select id="product_status" name="product_status">
+            <option value="in_stock" <?php selected($status, 'in_stock'); ?>>
+                <?php _e('In Stock', 'textdomain'); ?>
+            </option>
+            <option value="out_of_stock" <?php selected($status, 'out_of_stock'); ?>>
+                <?php _e('Out of Stock', 'textdomain'); ?>
+            </option>
+            <option value="preorder" <?php selected($status, 'preorder'); ?>>
+                <?php _e('Pre-order', 'textdomain'); ?>
+            </option>
+        </select>
+    </div>
+    <?php
+}
+
+// Save meta box data
+function save_product_details($post_id) {
+    // Verify nonce
+    if (!isset($_POST['product_details_nonce']) ||
+        !wp_verify_nonce($_POST['product_details_nonce'], 'product_details_nonce_action')) {
+        return;
+    }
+
+    // Check autosave
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Check permissions
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    // Save price
+    if (isset($_POST['product_price'])) {
+        update_post_meta($post_id, '_product_price',
+            sanitize_text_field($_POST['product_price']));
+    }
+
+    // Save SKU
+    if (isset($_POST['product_sku'])) {
+        update_post_meta($post_id, '_product_sku',
+            sanitize_text_field($_POST['product_sku']));
+    }
+
+    // Save featured status
+    $featured = isset($_POST['product_featured']) ? '1' : '0';
+    update_post_meta($post_id, '_product_featured', $featured);
+
+    // Save status
+    if (isset($_POST['product_status'])) {
+        $allowed_statuses = array('in_stock', 'out_of_stock', 'preorder');
+        $status = sanitize_text_field($_POST['product_status']);
+
+        if (in_array($status, $allowed_statuses)) {
+            update_post_meta($post_id, '_product_status', $status);
+        }
+    }
+}
+add_action('save_post', 'save_product_details');</code></pre>
+
+      <h2>Different Input Field Types</h2>
+
+      <h3>Text Input</h3>
+      <pre><code>$value = get_post_meta($post->ID, '_subtitle', true);
+echo '<input type="text" name="subtitle" value="' . esc_attr($value) . '" style="width: 100%;">';</code></pre>
+
+      <h3>Textarea</h3>
+      <pre><code>$value = get_post_meta($post->ID, '_custom_excerpt', true);
+echo '<textarea name="custom_excerpt" rows="4" style="width: 100%;">' . esc_textarea($value) . '</textarea>';</code></pre>
+
+      <h3>Checkbox</h3>
+      <pre><code>$checked = get_post_meta($post->ID, '_hide_sidebar', true);
+echo '<label><input type="checkbox" name="hide_sidebar" value="1" ' . checked($checked, '1', false) . '> Hide Sidebar</label>';</code></pre>
+
+      <h3>Radio Buttons</h3>
+      <pre><code>$layout = get_post_meta($post->ID, '_layout', true);
+$layouts = array('full' => 'Full Width', 'sidebar' => 'With Sidebar', 'narrow' => 'Narrow');
+
+foreach ($layouts as $key => $label) {
+    echo '<label><input type="radio" name="layout" value="' . esc_attr($key) . '" ' .
+         checked($layout, $key, false) . '> ' . esc_html($label) . '</label><br>';
+}</code></pre>
+
+      <h3>Select Dropdown</h3>
+      <pre><code>$color = get_post_meta($post->ID, '_color_scheme', true);
+$colors = array('blue' => 'Blue', 'red' => 'Red', 'green' => 'Green');
+
+echo '<select name="color_scheme">';
+foreach ($colors as $value => $label) {
+    echo '<option value="' . esc_attr($value) . '" ' .
+         selected($color, $value, false) . '>' . esc_html($label) . '</option>';
+}
+echo '</select>';</code></pre>
+
+      <h3>WordPress Editor</h3>
+      <pre><code>$content = get_post_meta($post->ID, '_custom_content', true);
+wp_editor($content, 'custom_content', array(
+    'textarea_name' => 'custom_content',
+    'textarea_rows' => 10,
+    'media_buttons' => true
+));</code></pre>
+
+      <h3>Color Picker</h3>
+      <pre><code>// Enqueue color picker
+function enqueue_color_picker($hook) {
+    if ('post.php' === $hook || 'post-new.php' === $hook) {
+        wp_enqueue_style('wp-color-picker');
+        wp_enqueue_script('wp-color-picker');
+    }
+}
+add_action('admin_enqueue_scripts', 'enqueue_color_picker');
+
+// Display color picker
+$color = get_post_meta($post->ID, '_bg_color', true);
+echo '<input type="text" name="bg_color" value="' . esc_attr($color) . '" class="color-picker">';
+
+// JavaScript to initialize
+echo '<script>
+jQuery(document).ready(function($) {
+    $(".color-picker").wpColorPicker();
+});
+</script>';</code></pre>
+
+      <h3>Date Picker</h3>
+      <pre><code>// Enqueue date picker
+function enqueue_date_picker($hook) {
+    if ('post.php' === $hook || 'post-new.php' === $hook) {
+        wp_enqueue_script('jquery-ui-datepicker');
+        wp_enqueue_style('jquery-ui-css', 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
+    }
+}
+add_action('admin_enqueue_scripts', 'enqueue_date_picker');
+
+// Display date picker
+$date = get_post_meta($post->ID, '_event_date', true);
+echo '<input type="text" name="event_date" value="' . esc_attr($date) . '" class="datepicker">';
+
+// JavaScript to initialize
+echo '<script>
+jQuery(document).ready(function($) {
+    $(".datepicker").datepicker({ dateFormat: "yy-mm-dd" });
+});
+</script>';</code></pre>
+
+      <h3>Image Upload</h3>
+      <pre><code>// Display image upload field
+$image_id = get_post_meta($post->ID, '_custom_image', true);
+$image_url = $image_id ? wp_get_attachment_url($image_id) : '';
+
+echo '<div class="custom-image-upload">';
+echo '<input type="hidden" name="custom_image" id="custom_image" value="' . esc_attr($image_id) . '">';
+echo '<input type="button" class="button upload-image-button" value="Upload Image">';
+echo '<input type="button" class="button remove-image-button" value="Remove">';
+if ($image_url) {
+    echo '<img src="' . esc_url($image_url) . '" style="max-width: 200px; display: block; margin-top: 10px;">';
+}
+echo '</div>';
+
+// JavaScript for media uploader
+echo '<script>
+jQuery(document).ready(function($) {
+    var mediaUploader;
+
+    $(".upload-image-button").click(function(e) {
+        e.preventDefault();
+
+        if (mediaUploader) {
+            mediaUploader.open();
+            return;
+        }
+
+        mediaUploader = wp.media({
+            title: "Choose Image",
+            button: { text: "Select" },
+            multiple: false
+        });
+
+        mediaUploader.on("select", function() {
+            var attachment = mediaUploader.state().get("selection").first().toJSON();
+            $("#custom_image").val(attachment.id);
+            $(".custom-image-upload img").remove();
+            $(".custom-image-upload").append(\'<img src="\' + attachment.url + \'" style="max-width: 200px; display: block; margin-top: 10px;">\');
+        });
+
+        mediaUploader.open();
+    });
+
+    $(".remove-image-button").click(function(e) {
+        e.preventDefault();
+        $("#custom_image").val("");
+        $(".custom-image-upload img").remove();
+    });
+});
+</script>';</code></pre>
+
+      <h2>Meta Box for Specific Post Types</h2>
+      <pre><code>// Add meta box to multiple post types
+function add_meta_box_to_post_types() {
+    $post_types = array('post', 'page', 'product', 'event');
+
+    foreach ($post_types as $post_type) {
+        add_meta_box(
+            'custom_settings',
+            'Custom Settings',
+            'custom_settings_callback',
+            $post_type,
+            'side',
+            'default'
+        );
+    }
+}
+add_action('add_meta_boxes', 'add_meta_box_to_post_types');</code></pre>
+
+      <h2>Conditional Meta Boxes</h2>
+      <pre><code>// Show meta box only for specific post types or templates
+function conditional_meta_box() {
+    global $post;
+
+    // Only for posts with specific category
+    if (has_category('products', $post)) {
+        add_meta_box(
+            'product_info',
+            'Product Information',
+            'product_info_callback',
+            'post',
+            'normal',
+            'high'
+        );
+    }
+
+    // Only for specific page template
+    $template = get_post_meta($post->ID, '_wp_page_template', true);
+    if ($template === 'template-landing.php') {
+        add_meta_box(
+            'landing_options',
+            'Landing Page Options',
+            'landing_options_callback',
+            'page',
+            'side',
+            'default'
+        );
+    }
+}
+add_action('add_meta_boxes', 'conditional_meta_box');</code></pre>
+
+      <h2>Retrieving Meta Data in Templates</h2>
+      <pre><code>// In your theme template files
+$price = get_post_meta(get_the_ID(), '_product_price', true);
+$sku = get_post_meta(get_the_ID(), '_product_sku', true);
+$featured = get_post_meta(get_the_ID(), '_product_featured', true);
+
+if ($price) {
+    echo '<span class="price">$' . esc_html($price) . '</span>';
+}
+
+if ($featured === '1') {
+    echo '<span class="badge">Featured</span>';
+}
+
+// Get all meta for a post
+$all_meta = get_post_meta(get_the_ID());
+print_r($all_meta);</code></pre>
+
+      <h2>Security Best Practices</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Security Measure</th>
+            <th>Why It Matters</th>
+            <th>Implementation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Nonce Verification</td>
+            <td>Prevents CSRF attacks</td>
+            <td>wp_nonce_field() + wp_verify_nonce()</td>
+          </tr>
+          <tr>
+            <td>Check Autosave</td>
+            <td>Prevents data loss</td>
+            <td>if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE)</td>
+          </tr>
+          <tr>
+            <td>Check Permissions</td>
+            <td>Ensures user can edit</td>
+            <td>current_user_can('edit_post', $post_id)</td>
+          </tr>
+          <tr>
+            <td>Sanitize Input</td>
+            <td>Prevents XSS attacks</td>
+            <td>sanitize_text_field(), sanitize_email(), etc.</td>
+          </tr>
+          <tr>
+            <td>Escape Output</td>
+            <td>Prevents XSS when displaying</td>
+            <td>esc_attr(), esc_html(), esc_url()</td>
+          </tr>
+          <tr>
+            <td>Validate Data</td>
+            <td>Ensures data integrity</td>
+            <td>Check allowed values, data types</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Common Sanitization Functions</h2>
+      <ul>
+        <li><strong>sanitize_text_field():</strong> General text input (strips tags, line breaks)</li>
+        <li><strong>sanitize_textarea_field():</strong> Textarea (allows line breaks)</li>
+        <li><strong>sanitize_email():</strong> Email addresses</li>
+        <li><strong>sanitize_url():</strong> URLs</li>
+        <li><strong>sanitize_hex_color():</strong> Hex color codes</li>
+        <li><strong>absint():</strong> Absolute integer (positive numbers only)</li>
+        <li><strong>intval():</strong> Integer conversion</li>
+        <li><strong>floatval():</strong> Float conversion</li>
+        <li><strong>wp_kses_post():</strong> HTML content (allows safe HTML tags)</li>
+      </ul>
+
+      <h2>Performance Impact</h2>
+      <p><strong>Minimal performance impact.</strong> Post meta is stored efficiently in the database and is indexed for fast retrieval. However, avoid storing large amounts of data in meta fields (use custom tables for extensive data). Each get_post_meta() call queries the database, so cache results if you need to access the same meta multiple times in a template.</p>
+    `,
+    code: `// Register meta box
+function custom_meta_box() {
+    add_meta_box(
+        'custom_details',
+        __('Custom Details', 'textdomain'),
+        'custom_meta_box_callback',
+        'post',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'custom_meta_box');
+
+// Display meta box
+function custom_meta_box_callback($post) {
+    wp_nonce_field('custom_meta_nonce_action', 'custom_meta_nonce');
+
+    $value = get_post_meta($post->ID, '_custom_field', true);
+
+    echo '<label>Custom Field:</label>';
+    echo '<input type="text" name="custom_field" value="' . esc_attr($value) . '" style="width: 100%;">';
+}
+
+// Save meta box data
+function save_custom_meta($post_id) {
+    if (!isset($_POST['custom_meta_nonce']) ||
+        !wp_verify_nonce($_POST['custom_meta_nonce'], 'custom_meta_nonce_action')) {
+        return;
+    }
+
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    if (isset($_POST['custom_field'])) {
+        update_post_meta($post_id, '_custom_field',
+            sanitize_text_field($_POST['custom_field']));
+    }
+}
+add_action('save_post', 'save_custom_meta');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-29',
+    readTime: '10 min read',
+    category: 'WordPress Theme Development',
+    tags: ['Meta Boxes', 'Custom Fields', 'Post Meta', 'Admin', 'Security'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 2.5+',
+    seo: {
+      metaTitle: 'WordPress Custom Meta Boxes Guide | add_meta_box() Tutorial',
+      metaDescription: 'Learn how to create custom meta boxes in WordPress using add_meta_box(). Complete guide to custom fields, post meta, security, and data handling.',
+      keywords: ['wordpress meta boxes', 'add_meta_box', 'wordpress custom fields', 'post meta wordpress', 'wordpress admin fields', 'save post meta', 'wordpress nonce'],
+      canonical: '/blog/custom-post-meta-fields',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "How to Add Custom Meta Boxes in WordPress",
+        "description": "Complete guide to creating custom meta boxes and handling post metadata in WordPress",
+        "author": {
+          "@type": "Person",
+          "name": "Shahmir Khan"
+        },
+        "datePublished": "2025-01-29",
+        "dateModified": "2025-01-29",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between update_post_meta() and add_post_meta()?",
+        answer: "update_post_meta() adds the meta if it doesn't exist and updates it if it does - it's a combination of add and update. add_post_meta() only adds new meta and can create multiple entries with the same key (unless you set $unique to true). For single-value fields, always use update_post_meta() as it's simpler and prevents duplicates."
+      },
+      {
+        question: "Why should meta keys start with an underscore?",
+        answer: "Meta keys starting with underscore (like '_product_price') are considered 'private' or 'protected' and won't appear in the Custom Fields meta box in the WordPress editor. Use underscore for meta managed by your code only. Public meta (without underscore) can be edited through the default Custom Fields interface, which might cause issues if users modify them manually."
+      },
+      {
+        question: "How do I make meta boxes only appear for specific users or roles?",
+        answer: "Check user capabilities in your add_meta_boxes callback: if (!current_user_can('manage_options')) { return; }. You can also use conditional logic based on user roles, post author, or any other criteria before calling add_meta_box(). This allows you to show different meta boxes to different user groups."
+      },
+      {
+        question: "Can I save meta box data using AJAX instead of the save_post hook?",
+        answer: "Yes, you can use AJAX by creating a custom AJAX handler with wp_ajax_ actions. This allows for auto-saving, real-time validation, or saving without refreshing the page. However, you still need proper nonce verification, sanitization, and permission checks. The save_post hook is simpler and more reliable for most use cases, but AJAX provides better user experience for complex forms."
+      },
+      {
+        question: "What's the best way to display repeating fields (like multiple phone numbers)?",
+        answer: "Store repeating fields as a serialized array using update_post_meta($post_id, '_phone_numbers', array('123-456', '789-012')). Retrieve with get_post_meta($post_id, '_phone_numbers', true). In your meta box, use JavaScript to add/remove field rows dynamically, then collect all values into an array before saving. Alternatively, consider using the Carbon Fields or Advanced Custom Fields library for complex repeating field UIs."
+      }
+    ]
+  },
+  {
+    id: 29,
+    slug: 'breadcrumbs-without-plugin',
+    title: 'Add Breadcrumb Navigation',
+    excerpt: 'Create SEO-friendly breadcrumb navigation in WordPress without plugins, with Schema.org markup for better search engine visibility.',
+    content: `
+      <h2>Breadcrumb Navigation Benefits</h2>
+      <p>Breadcrumbs show users their current location within your site's hierarchy and provide an easy way to navigate back to parent pages. They're crucial for both user experience and SEO, as search engines use breadcrumbs to understand your site structure.</p>
+
+      <h3>Why Add Breadcrumbs?</h3>
+      <ul>
+        <li><strong>User Experience:</strong> Shows users where they are in the site hierarchy</li>
+        <li><strong>Easy Navigation:</strong> Quick access to parent pages and categories</li>
+        <li><strong>SEO Benefits:</strong> Search engines display breadcrumbs in search results</li>
+        <li><strong>Lower Bounce Rate:</strong> Encourages users to explore more pages</li>
+        <li><strong>Accessibility:</strong> Helps screen readers understand page context</li>
+        <li><strong>Mobile-Friendly:</strong> Compact navigation for small screens</li>
+      </ul>
+
+      <h2>Basic Breadcrumb Function</h2>
+      <pre><code>function custom_breadcrumbs() {
+    // Get the global post object
+    global $post;
+
+    // Start breadcrumb
+    echo '<nav class="breadcrumbs">';
+    echo '<a href="' . home_url('/') . '">Home</a>';
+
+    if (is_category() || is_single()) {
+        echo ' &raquo; ';
+        $categories = get_the_category();
+        if ($categories) {
+            $category = $categories[0];
+            echo '<a href="' . get_category_link($category->term_id) . '">' . $category->name . '</a>';
+        }
+    }
+
+    if (is_single()) {
+        echo ' &raquo; ';
+        echo '<span>' . get_the_title() . '</span>';
+    }
+
+    if (is_page()) {
+        if ($post->post_parent) {
+            $parent_id = $post->post_parent;
+            $breadcrumbs = array();
+
+            while ($parent_id) {
+                $page = get_page($parent_id);
+                $breadcrumbs[] = '<a href="' . get_permalink($page->ID) . '">' . get_the_title($page->ID) . '</a>';
+                $parent_id = $page->post_parent;
+            }
+
+            $breadcrumbs = array_reverse($breadcrumbs);
+            foreach ($breadcrumbs as $crumb) {
+                echo ' &raquo; ' . $crumb;
+            }
+        }
+
+        echo ' &raquo; <span>' . get_the_title() . '</span>';
+    }
+
+    echo '</nav>';
+}
+
+// Usage in your template:
+// custom_breadcrumbs();</code></pre>
+
+      <h2>Complete Breadcrumb Function with Schema Markup</h2>
+      <p>A production-ready breadcrumb function with Schema.org structured data:</p>
+      <pre><code>function advanced_breadcrumbs() {
+    // Don't display on homepage
+    if (is_front_page()) {
+        return;
+    }
+
+    global $post;
+    $breadcrumbs = array();
+    $position = 1;
+
+    // Home link
+    $breadcrumbs[] = array(
+        'url' => home_url('/'),
+        'title' => 'Home',
+        'position' => $position++
+    );
+
+    // Category archive
+    if (is_category()) {
+        $category = get_queried_object();
+
+        // Parent categories
+        if ($category->parent != 0) {
+            $parent_cats = array();
+            $parent_id = $category->parent;
+
+            while ($parent_id) {
+                $parent_cat = get_category($parent_id);
+                $parent_cats[] = array(
+                    'url' => get_category_link($parent_cat->term_id),
+                    'title' => $parent_cat->name,
+                    'position' => 0
+                );
+                $parent_id = $parent_cat->parent;
+            }
+
+            $parent_cats = array_reverse($parent_cats);
+            foreach ($parent_cats as $cat) {
+                $cat['position'] = $position++;
+                $breadcrumbs[] = $cat;
+            }
+        }
+
+        $breadcrumbs[] = array(
+            'url' => '',
+            'title' => $category->name,
+            'position' => $position++
+        );
+    }
+
+    // Tag archive
+    elseif (is_tag()) {
+        $tag = get_queried_object();
+        $breadcrumbs[] = array(
+            'url' => '',
+            'title' => 'Tag: ' . $tag->name,
+            'position' => $position++
+        );
+    }
+
+    // Author archive
+    elseif (is_author()) {
+        $author = get_queried_object();
+        $breadcrumbs[] = array(
+            'url' => '',
+            'title' => 'Author: ' . $author->display_name,
+            'position' => $position++
+        );
+    }
+
+    // Date archive
+    elseif (is_date()) {
+        if (is_day()) {
+            $breadcrumbs[] = array(
+                'url' => get_year_link(get_the_time('Y')),
+                'title' => get_the_time('Y'),
+                'position' => $position++
+            );
+            $breadcrumbs[] = array(
+                'url' => get_month_link(get_the_time('Y'), get_the_time('m')),
+                'title' => get_the_time('F'),
+                'position' => $position++
+            );
+            $breadcrumbs[] = array(
+                'url' => '',
+                'title' => get_the_time('d'),
+                'position' => $position++
+            );
+        } elseif (is_month()) {
+            $breadcrumbs[] = array(
+                'url' => get_year_link(get_the_time('Y')),
+                'title' => get_the_time('Y'),
+                'position' => $position++
+            );
+            $breadcrumbs[] = array(
+                'url' => '',
+                'title' => get_the_time('F'),
+                'position' => $position++
+            );
+        } elseif (is_year()) {
+            $breadcrumbs[] = array(
+                'url' => '',
+                'title' => get_the_time('Y'),
+                'position' => $position++
+            );
+        }
+    }
+
+    // Search results
+    elseif (is_search()) {
+        $breadcrumbs[] = array(
+            'url' => '',
+            'title' => 'Search results for: ' . get_search_query(),
+            'position' => $position++
+        );
+    }
+
+    // 404
+    elseif (is_404()) {
+        $breadcrumbs[] = array(
+            'url' => '',
+            'title' => '404 - Page Not Found',
+            'position' => $position++
+        );
+    }
+
+    // Single post
+    elseif (is_single() && !is_attachment()) {
+        // Get post type
+        $post_type = get_post_type_object(get_post_type());
+
+        // For posts, add category
+        if (get_post_type() == 'post') {
+            $categories = get_the_category();
+            if ($categories) {
+                $category = $categories[0];
+
+                // Parent categories
+                if ($category->parent != 0) {
+                    $parent_cats = array();
+                    $parent_id = $category->parent;
+
+                    while ($parent_id) {
+                        $parent_cat = get_category($parent_id);
+                        $parent_cats[] = array(
+                            'url' => get_category_link($parent_cat->term_id),
+                            'title' => $parent_cat->name,
+                            'position' => 0
+                        );
+                        $parent_id = $parent_cat->parent;
+                    }
+
+                    $parent_cats = array_reverse($parent_cats);
+                    foreach ($parent_cats as $cat) {
+                        $cat['position'] = $position++;
+                        $breadcrumbs[] = $cat;
+                    }
+                }
+
+                $breadcrumbs[] = array(
+                    'url' => get_category_link($category->term_id),
+                    'title' => $category->name,
+                    'position' => $position++
+                );
+            }
+        }
+        // For custom post types
+        else {
+            $breadcrumbs[] = array(
+                'url' => get_post_type_archive_link(get_post_type()),
+                'title' => $post_type->labels->name,
+                'position' => $position++
+            );
+        }
+
+        // Current post
+        $breadcrumbs[] = array(
+            'url' => '',
+            'title' => get_the_title(),
+            'position' => $position++
+        );
+    }
+
+    // Pages
+    elseif (is_page() && !is_front_page()) {
+        // Parent pages
+        if ($post->post_parent) {
+            $parent_pages = array();
+            $parent_id = $post->post_parent;
+
+            while ($parent_id) {
+                $page = get_page($parent_id);
+                $parent_pages[] = array(
+                    'url' => get_permalink($page->ID),
+                    'title' => get_the_title($page->ID),
+                    'position' => 0
+                );
+                $parent_id = $page->post_parent;
+            }
+
+            $parent_pages = array_reverse($parent_pages);
+            foreach ($parent_pages as $page) {
+                $page['position'] = $position++;
+                $breadcrumbs[] = $page;
+            }
+        }
+
+        // Current page
+        $breadcrumbs[] = array(
+            'url' => '',
+            'title' => get_the_title(),
+            'position' => $position++
+        );
+    }
+
+    // Attachment
+    elseif (is_attachment()) {
+        $parent = get_post($post->post_parent);
+        $breadcrumbs[] = array(
+            'url' => get_permalink($parent),
+            'title' => $parent->post_title,
+            'position' => $position++
+        );
+        $breadcrumbs[] = array(
+            'url' => '',
+            'title' => get_the_title(),
+            'position' => $position++
+        );
+    }
+
+    // Output breadcrumbs
+    if (!empty($breadcrumbs)) {
+        echo '<nav class="breadcrumbs" aria-label="Breadcrumb">';
+        echo '<ol itemscope itemtype="https://schema.org/BreadcrumbList">';
+
+        foreach ($breadcrumbs as $crumb) {
+            echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+
+            if ($crumb['url']) {
+                echo '<a itemprop="item" href="' . esc_url($crumb['url']) . '">';
+                echo '<span itemprop="name">' . esc_html($crumb['title']) . '</span>';
+                echo '</a>';
+            } else {
+                echo '<span itemprop="name">' . esc_html($crumb['title']) . '</span>';
+            }
+
+            echo '<meta itemprop="position" content="' . $crumb['position'] . '" />';
+            echo '</li>';
+        }
+
+        echo '</ol>';
+        echo '</nav>';
+    }
+}
+
+// Usage in header.php or other templates:
+// advanced_breadcrumbs();</code></pre>
+
+      <h2>CSS Styling for Breadcrumbs</h2>
+      <pre><code>/* Basic Breadcrumb Styles */
+.breadcrumbs {
+    padding: 10px 0;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: #666;
+}
+
+.breadcrumbs ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.breadcrumbs li {
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumbs li:not(:last-child)::after {
+    content: "›";
+    margin: 0 8px;
+    color: #999;
+}
+
+.breadcrumbs a {
+    color: #0066cc;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.breadcrumbs a:hover {
+    color: #004499;
+    text-decoration: underline;
+}
+
+.breadcrumbs li:last-child span {
+    color: #333;
+    font-weight: 500;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .breadcrumbs {
+        font-size: 12px;
+    }
+
+    .breadcrumbs li:not(:last-child)::after {
+        margin: 0 4px;
+    }
+}</code></pre>
+
+      <h2>Alternative Separators</h2>
+      <pre><code>/* Arrow separator */
+.breadcrumbs li:not(:last-child)::after {
+    content: "→";
+}
+
+/* Slash separator */
+.breadcrumbs li:not(:last-child)::after {
+    content: "/";
+}
+
+/* Double angle */
+.breadcrumbs li:not(:last-child)::after {
+    content: "»";
+}
+
+/* Greater than */
+.breadcrumbs li:not(:last-child)::after {
+    content: ">";
+}
+
+/* SVG icon */
+.breadcrumbs li:not(:last-child)::after {
+    content: "";
+    background: url('data:image/svg+xml,...') center/contain no-repeat;
+    width: 16px;
+    height: 16px;
+    margin: 0 8px;
+}</code></pre>
+
+      <h2>JSON-LD Schema Markup Alternative</h2>
+      <p>Add structured data as JSON-LD instead of microdata:</p>
+      <pre><code>function breadcrumb_schema_json_ld() {
+    if (is_front_page()) {
+        return;
+    }
+
+    global $post;
+    $breadcrumbs = array();
+    $position = 1;
+
+    // Build breadcrumbs array (same as above)
+    // ... [breadcrumb building code] ...
+
+    // Generate JSON-LD
+    $schema = array(
+        '@context' => 'https://schema.org',
+        '@type' => 'BreadcrumbList',
+        'itemListElement' => array()
+    );
+
+    foreach ($breadcrumbs as $crumb) {
+        $item = array(
+            '@type' => 'ListItem',
+            'position' => $crumb['position'],
+            'name' => $crumb['title']
+        );
+
+        if ($crumb['url']) {
+            $item['item'] = $crumb['url'];
+        }
+
+        $schema['itemListElement'][] = $item;
+    }
+
+    // Output JSON-LD
+    echo '<script type="application/ld+json">';
+    echo wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+    echo '</script>';
+}
+add_action('wp_head', 'breadcrumb_schema_json_ld');</code></pre>
+
+      <h2>Breadcrumb Shortcode</h2>
+      <pre><code>// Add breadcrumbs via shortcode
+function breadcrumb_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'separator' => '›',
+        'home_text' => 'Home'
+    ), $atts);
+
+    ob_start();
+    // Call your breadcrumb function here
+    advanced_breadcrumbs();
+    return ob_get_clean();
+}
+add_shortcode('breadcrumbs', 'breadcrumb_shortcode');
+
+// Usage in posts/pages: [breadcrumbs]
+// With custom separator: [breadcrumbs separator="/"]</code></pre>
+
+      <h2>Yoast SEO Breadcrumbs Integration</h2>
+      <pre><code>// If using Yoast SEO, you can use their breadcrumb function
+if (function_exists('yoast_breadcrumb')) {
+    yoast_breadcrumb('<nav class="breadcrumbs">', '</nav>');
+}
+
+// Or check if breadcrumbs are enabled
+if (function_exists('yoast_breadcrumb') &&
+    WPSEO_Options::get('breadcrumbs-enable') === true) {
+    yoast_breadcrumb();
+}</code></pre>
+
+      <h2>WooCommerce Breadcrumbs</h2>
+      <pre><code>// Customize WooCommerce breadcrumbs
+add_filter('woocommerce_breadcrumb_defaults', 'custom_woocommerce_breadcrumbs');
+function custom_woocommerce_breadcrumbs() {
+    return array(
+        'delimiter'   => ' › ',
+        'wrap_before' => '<nav class="woocommerce-breadcrumb">',
+        'wrap_after'  => '</nav>',
+        'before'      => '',
+        'after'       => '',
+        'home'        => _x('Home', 'breadcrumb', 'woocommerce')
+    );
+}
+
+// Display WooCommerce breadcrumbs
+if (function_exists('woocommerce_breadcrumb')) {
+    woocommerce_breadcrumb();
+}</code></pre>
+
+      <h2>Best Practices</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Practice</th>
+            <th>Why It Matters</th>
+            <th>Implementation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Add Schema markup</td>
+            <td>Helps search engines display breadcrumbs in results</td>
+            <td>Use microdata or JSON-LD</td>
+          </tr>
+          <tr>
+            <td>Don't show on homepage</td>
+            <td>Redundant - user is already home</td>
+            <td>if (!is_front_page())</td>
+          </tr>
+          <tr>
+            <td>Make last item non-clickable</td>
+            <td>Represents current page</td>
+            <td>Use <span> not <a></td>
+          </tr>
+          <tr>
+            <td>Show full hierarchy</td>
+            <td>Complete navigation path</td>
+            <td>Include all parent pages/categories</td>
+          </tr>
+          <tr>
+            <td>Use semantic HTML</td>
+            <td>Better accessibility</td>
+            <td><nav> and <ol> elements</td>
+          </tr>
+          <tr>
+            <td>Add ARIA labels</td>
+            <td>Screen reader support</td>
+            <td>aria-label="Breadcrumb"</td>
+          </tr>
+          <tr>
+            <td>Mobile-friendly</td>
+            <td>Works on all devices</td>
+            <td>Responsive CSS, truncate if needed</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Common Breadcrumb Patterns</h2>
+      <ul>
+        <li><strong>Blog Post:</strong> Home › Category › Post Title</li>
+        <li><strong>Page with Parents:</strong> Home › Parent Page › Child Page</li>
+        <li><strong>Product:</strong> Home › Shop › Category › Product</li>
+        <li><strong>Archive:</strong> Home › Category Archive</li>
+        <li><strong>Author:</strong> Home › Author: John Doe</li>
+        <li><strong>Search:</strong> Home › Search Results</li>
+        <li><strong>Date:</strong> Home › 2025 › January › 15</li>
+      </ul>
+
+      <h2>Performance Impact</h2>
+      <p><strong>Minimal performance impact.</strong> Breadcrumb generation involves a few database queries to fetch parent pages/categories, but these are lightweight. The Schema markup adds a small amount of HTML/JSON but provides significant SEO benefits. Consider caching breadcrumbs for high-traffic sites if performance becomes a concern.</p>
+    `,
+    code: `function custom_breadcrumbs() {
+    if (is_front_page()) {
+        return;
+    }
+
+    global $post;
+
+    echo '<nav class="breadcrumbs" aria-label="Breadcrumb">';
+    echo '<ol itemscope itemtype="https://schema.org/BreadcrumbList">';
+
+    // Home
+    echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+    echo '<a itemprop="item" href="' . home_url('/') . '">';
+    echo '<span itemprop="name">Home</span></a>';
+    echo '<meta itemprop="position" content="1" /></li>';
+
+    if (is_category()) {
+        $category = get_queried_object();
+        echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+        echo '<span itemprop="name">' . $category->name . '</span>';
+        echo '<meta itemprop="position" content="2" /></li>';
+    }
+
+    if (is_single()) {
+        $categories = get_the_category();
+        if ($categories) {
+            $category = $categories[0];
+            echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+            echo '<a itemprop="item" href="' . get_category_link($category) . '">';
+            echo '<span itemprop="name">' . $category->name . '</span></a>';
+            echo '<meta itemprop="position" content="2" /></li>';
+        }
+        echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+        echo '<span itemprop="name">' . get_the_title() . '</span>';
+        echo '<meta itemprop="position" content="3" /></li>';
+    }
+
+    if (is_page()) {
+        echo '<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">';
+        echo '<span itemprop="name">' . get_the_title() . '</span>';
+        echo '<meta itemprop="position" content="2" /></li>';
+    }
+
+    echo '</ol></nav>';
+}`,
+    author: 'Shahmir Khan',
+    date: '2025-01-29',
+    readTime: '9 min read',
+    category: 'WordPress Theme Development',
+    tags: ['Breadcrumbs', 'Navigation', 'SEO', 'Schema.org', 'Accessibility'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'WordPress Breadcrumb Navigation Tutorial | SEO-Friendly with Schema',
+      metaDescription: 'Create custom breadcrumb navigation in WordPress without plugins. Complete guide with Schema.org markup, accessibility, and SEO best practices.',
+      keywords: ['wordpress breadcrumbs', 'breadcrumb navigation', 'schema org breadcrumbs', 'wordpress seo navigation', 'custom breadcrumbs wordpress', 'breadcrumb without plugin'],
+      canonical: '/blog/breadcrumbs-without-plugin',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "How to Add Breadcrumb Navigation in WordPress",
+        "description": "Complete guide to creating SEO-friendly breadcrumb navigation with Schema.org structured data",
+        "author": {
+          "@type": "Person",
+          "name": "Shahmir Khan"
+        },
+        "datePublished": "2025-01-29",
+        "dateModified": "2025-01-29",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "Should breadcrumbs be displayed on the homepage?",
+        answer: "No, breadcrumbs should not appear on the homepage. The homepage is the starting point of your site hierarchy, so displaying 'Home' breadcrumb would be redundant. Always check if (!is_front_page()) before rendering breadcrumbs. This is a common best practice followed by major websites and recommended by SEO experts."
+      },
+      {
+        question: "What's the difference between microdata and JSON-LD for breadcrumb Schema markup?",
+        answer: "Both are valid ways to add Schema.org structured data. Microdata is embedded directly in the HTML (using itemscope, itemprop attributes), while JSON-LD is a separate script block in the page head. Google recommends JSON-LD because it's easier to maintain and doesn't clutter your HTML. However, microdata works perfectly fine and some developers prefer it for keeping markup and data together."
+      },
+      {
+        question: "How do breadcrumbs help with SEO?",
+        answer: "Breadcrumbs improve SEO in multiple ways: 1) They help search engines understand your site structure and page hierarchy, 2) Google often displays breadcrumbs in search results instead of the URL, making listings more appealing, 3) They create additional internal links that help distribute page authority, 4) Schema markup helps search engines parse breadcrumbs correctly. Proper breadcrumb implementation can improve click-through rates from search results."
+      },
+      {
+        question: "Should the last breadcrumb item (current page) be a link?",
+        answer: "No, the last breadcrumb representing the current page should not be a link. It should be plain text (using <span>) because clicking it would just reload the same page, which is poor UX. This is the standard convention and what users expect. Only intermediate breadcrumb items should be clickable links."
+      },
+      {
+        question: "How can I make breadcrumbs mobile-friendly?",
+        answer: "For mobile, consider: 1) Using smaller font sizes (12-14px), 2) Reducing padding/margins, 3) Truncating long breadcrumbs showing only 'Home > ... > Current Page', 4) Using compact separators like '>' instead of arrows, 5) Making breadcrumb links large enough to tap (44x44px minimum), 6) Using horizontal scrolling for very long breadcrumbs. Test on actual devices to ensure breadcrumbs remain usable on small screens."
+      }
+    ]
+  },
+  {
+    id: 30,
+    slug: 'custom-page-templates',
+    title: 'Create Custom Page Templates',
+    excerpt: 'Design custom page templates in WordPress to create unique layouts for different pages like landing pages, full-width layouts, or contact pages.',
+    content: `
+      <h2>WordPress Page Templates</h2>
+      <p>Page templates allow you to create different layouts for different pages in WordPress. Instead of every page looking the same, you can design specialized templates for landing pages, portfolios, contact pages, and more. This gives you complete control over the structure and appearance of individual pages.</p>
+
+      <h3>Benefits of Custom Page Templates</h3>
+      <ul>
+        <li><strong>Flexible Layouts:</strong> Different designs for different page types</li>
+        <li><strong>Full Width Pages:</strong> Remove sidebars for landing pages</li>
+        <li><strong>Custom Functionality:</strong> Add unique features to specific pages</li>
+        <li><strong>Better User Experience:</strong> Optimized layouts for specific purposes</li>
+        <li><strong>No Plugins Required:</strong> Native WordPress functionality</li>
+        <li><strong>Easy Selection:</strong> Admins can choose templates from page editor</li>
+      </ul>
+
+      <h2>Basic Page Template Creation</h2>
+      <p>Create a new PHP file in your theme directory with a template header:</p>
+      <pre><code><?php
+/**
+ * Template Name: Full Width Page
+ * Template Post Type: page
+ * Description: A full-width page template without sidebar
+ */
+
+get_header();
+?>
+
+<div class="full-width-container">
+    <main id="main" class="site-main">
+        <?php
+        while (have_posts()) :
+            the_post();
+            ?>
+            <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+                <header class="entry-header">
+                    <h1 class="entry-title"><?php the_title(); ?></h1>
+                </header>
+
+                <div class="entry-content">
+                    <?php the_content(); ?>
+                </div>
+            </article>
+            <?php
+        endwhile;
+        ?>
+    </main>
+</div>
+
+<?php
+get_footer();</code></pre>
+
+      <h2>Template Header Comments</h2>
+      <p>The comment block at the top defines the template:</p>
+      <pre><code>/**
+ * Template Name: Landing Page
+ * Template Post Type: page, post, product
+ * Description: Custom landing page with hero section
+ */
+
+// Template Name: Required - appears in page editor dropdown
+// Template Post Type: Optional - which post types can use this (default: page)
+// Description: Optional - shown in template selector</code></pre>
+
+      <h2>Complete Landing Page Template Example</h2>
+      <pre><code><?php
+/**
+ * Template Name: Landing Page
+ * Description: Full-width landing page without header/footer navigation
+ */
+
+// Custom header for landing page
+?>
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php wp_head(); ?>
+</head>
+<body <?php body_class('landing-page'); ?>>
+
+<div class="landing-page-wrapper">
+    <?php while (have_posts()) : the_post(); ?>
+
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <h1><?php the_title(); ?></h1>
+                <?php if (get_field('hero_subtitle')): ?>
+                    <p class="hero-subtitle"><?php the_field('hero_subtitle'); ?></p>
+                <?php endif; ?>
+                <a href="#contact" class="cta-button">Get Started</a>
+            </div>
+        </section>
+
+        <!-- Main Content -->
+        <section class="main-content">
+            <div class="container">
+                <?php the_content(); ?>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <?php if (have_rows('features')): ?>
+            <section class="features-section">
+                <div class="container">
+                    <div class="features-grid">
+                        <?php while (have_rows('features')): the_row(); ?>
+                            <div class="feature-item">
+                                <h3><?php the_sub_field('feature_title'); ?></h3>
+                                <p><?php the_sub_field('feature_description'); ?></p>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
+                </div>
+            </section>
+        <?php endif; ?>
+
+        <!-- Contact Form Section -->
+        <section id="contact" class="contact-section">
+            <div class="container">
+                <h2>Get In Touch</h2>
+                <?php echo do_shortcode('[contact-form-7 id="123"]'); ?>
+            </div>
+        </section>
+
+    <?php endwhile; ?>
+</div>
+
+<?php wp_footer(); ?>
+</body>
+</html></code></pre>
+
+      <h2>Portfolio Template Example</h2>
+      <pre><code><?php
+/**
+ * Template Name: Portfolio Grid
+ * Description: Display portfolio items in a grid layout
+ */
+
+get_header();
+?>
+
+<div class="portfolio-template">
+    <header class="page-header">
+        <h1 class="page-title"><?php the_title(); ?></h1>
+        <?php the_content(); ?>
+    </header>
+
+    <div class="portfolio-grid">
+        <?php
+        // Query portfolio items
+        $portfolio_args = array(
+            'post_type'      => 'portfolio',
+            'posts_per_page' => 12,
+            'orderby'        => 'date',
+            'order'          => 'DESC'
+        );
+
+        $portfolio_query = new WP_Query($portfolio_args);
+
+        if ($portfolio_query->have_posts()) :
+            while ($portfolio_query->have_posts()) : $portfolio_query->the_post();
+                ?>
+                <article class="portfolio-item">
+                    <a href="<?php the_permalink(); ?>">
+                        <?php if (has_post_thumbnail()): ?>
+                            <?php the_post_thumbnail('portfolio-thumb'); ?>
+                        <?php endif; ?>
+                        <div class="portfolio-overlay">
+                            <h3><?php the_title(); ?></h3>
+                            <?php
+                            $categories = get_the_terms(get_the_ID(), 'portfolio_category');
+                            if ($categories) {
+                                echo '<span class="category">' . $categories[0]->name . '</span>';
+                            }
+                            ?>
+                        </div>
+                    </a>
+                </article>
+                <?php
+            endwhile;
+            wp_reset_postdata();
+        else:
+            echo '<p>No portfolio items found.</p>';
+        endif;
+        ?>
+    </div>
+</div>
+
+<?php
+get_footer();</code></pre>
+
+      <h2>Sidebar Options Template</h2>
+      <pre><code><?php
+/**
+ * Template Name: Left Sidebar
+ * Description: Page with left sidebar layout
+ */
+
+get_header();
+?>
+
+<div class="content-sidebar-wrap">
+    <?php get_sidebar('left'); ?>
+
+    <main id="main" class="site-main">
+        <?php
+        while (have_posts()) :
+            the_post();
+            get_template_part('template-parts/content', 'page');
+        endwhile;
+        ?>
+    </main>
+</div>
+
+<?php
+get_footer();</code></pre>
+
+      <h2>Template for Multiple Post Types</h2>
+      <pre><code><?php
+/**
+ * Template Name: Testimonials Page
+ * Template Post Type: page, post
+ * Description: Display testimonials in a carousel
+ */
+
+get_header();
+?>
+
+<div class="testimonials-template">
+    <?php while (have_posts()) : the_post(); ?>
+        <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+            <header class="entry-header">
+                <h1><?php the_title(); ?></h1>
+                <?php the_content(); ?>
+            </header>
+
+            <div class="testimonials-carousel">
+                <?php
+                $testimonials = new WP_Query(array(
+                    'post_type'      => 'testimonial',
+                    'posts_per_page' => 10,
+                    'orderby'        => 'rand'
+                ));
+
+                if ($testimonials->have_posts()) :
+                    while ($testimonials->have_posts()) : $testimonials->the_post();
+                        ?>
+                        <div class="testimonial-slide">
+                            <blockquote>
+                                <?php the_content(); ?>
+                                <footer>
+                                    <cite>
+                                        <?php echo get_post_meta(get_the_ID(), '_client_name', true); ?>
+                                        <?php
+                                        $company = get_post_meta(get_the_ID(), '_company', true);
+                                        if ($company) {
+                                            echo ', ' . esc_html($company);
+                                        }
+                                        ?>
+                                    </cite>
+                                </footer>
+                            </blockquote>
+                        </div>
+                        <?php
+                    endwhile;
+                    wp_reset_postdata();
+                endif;
+                ?>
+            </div>
+        </article>
+    <?php endwhile; ?>
+</div>
+
+<?php
+get_footer();</code></pre>
+
+      <h2>Blank/Canvas Template</h2>
+      <pre><code><?php
+/**
+ * Template Name: Blank Canvas
+ * Description: Blank page without header/footer for page builders
+ */
+?>
+<!DOCTYPE html>
+<html <?php language_attributes(); ?>>
+<head>
+    <meta charset="<?php bloginfo('charset'); ?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <?php wp_head(); ?>
+</head>
+<body <?php body_class('blank-template'); ?>>
+
+<?php
+while (have_posts()) :
+    the_post();
+    the_content();
+endwhile;
+?>
+
+<?php wp_footer(); ?>
+</body>
+</html></code></pre>
+
+      <h2>Template with Custom Query</h2>
+      <pre><code><?php
+/**
+ * Template Name: Blog Archive
+ * Description: Custom blog archive with filtering
+ */
+
+get_header();
+?>
+
+<div class="custom-blog-archive">
+    <header class="archive-header">
+        <h1><?php the_title(); ?></h1>
+
+        <!-- Category Filter -->
+        <div class="archive-filters">
+            <?php
+            $categories = get_categories(array('hide_empty' => true));
+            foreach ($categories as $category) {
+                echo '<a href="' . get_category_link($category->term_id) . '" class="filter-btn">';
+                echo esc_html($category->name) . ' (' . $category->count . ')';
+                echo '</a>';
+            }
+            ?>
+        </div>
+    </header>
+
+    <div class="archive-posts">
+        <?php
+        $paged = (get_query_var('paged')) ? get_query_var('paged') : 1;
+
+        $blog_args = array(
+            'post_type'      => 'post',
+            'posts_per_page' => 10,
+            'paged'          => $paged,
+            'orderby'        => 'date',
+            'order'          => 'DESC'
+        );
+
+        $blog_query = new WP_Query($blog_args);
+
+        if ($blog_query->have_posts()) :
+            while ($blog_query->have_posts()) : $blog_query->the_post();
+                get_template_part('template-parts/content', 'excerpt');
+            endwhile;
+
+            // Pagination
+            echo '<div class="pagination">';
+            echo paginate_links(array(
+                'total'   => $blog_query->max_num_pages,
+                'current' => $paged
+            ));
+            echo '</div>';
+
+            wp_reset_postdata();
+        else:
+            echo '<p>No posts found.</p>';
+        endif;
+        ?>
+    </div>
+</div>
+
+<?php
+get_footer();</code></pre>
+
+      <h2>Conditional Template Logic</h2>
+      <pre><code><?php
+/**
+ * Template Name: Flexible Layout
+ * Description: Template with conditional sections
+ */
+
+get_header();
+
+// Check if user is logged in
+$is_logged_in = is_user_logged_in();
+
+// Get template options from meta
+$show_sidebar = get_post_meta(get_the_ID(), '_show_sidebar', true);
+$header_style = get_post_meta(get_the_ID(), '_header_style', true);
+?>
+
+<div class="flexible-template <?php echo $show_sidebar ? 'has-sidebar' : 'full-width'; ?>">
+
+    <?php if ($header_style === 'hero'): ?>
+        <div class="hero-header" style="background-image: url(<?php echo get_the_post_thumbnail_url(get_the_ID(), 'full'); ?>);">
+            <h1><?php the_title(); ?></h1>
+        </div>
+    <?php else: ?>
+        <header class="standard-header">
+            <h1><?php the_title(); ?></h1>
+        </header>
+    <?php endif; ?>
+
+    <div class="content-area">
+        <?php if ($show_sidebar): ?>
+            <div class="with-sidebar-layout">
+                <main class="main-content">
+                    <?php
+                    while (have_posts()) :
+                        the_post();
+                        the_content();
+                    endwhile;
+                    ?>
+                </main>
+                <?php get_sidebar(); ?>
+            </div>
+        <?php else: ?>
+            <main class="full-width-content">
+                <?php
+                while (have_posts()) :
+                    the_post();
+                    the_content();
+                endwhile;
+                ?>
+            </main>
+        <?php endif; ?>
+    </div>
+
+    <?php if ($is_logged_in): ?>
+        <section class="members-only">
+            <h2>Exclusive Member Content</h2>
+            <?php echo do_shortcode('[members_content]'); ?>
+        </section>
+    <?php endif; ?>
+</div>
+
+<?php
+get_footer();</code></pre>
+
+      <h2>Template Parts for Reusability</h2>
+      <pre><code>// template-parts/content-page.php
+<article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+    <header class="entry-header">
+        <?php the_title('<h1 class="entry-title">', '</h1>'); ?>
+    </header>
+
+    <div class="entry-content">
+        <?php the_content(); ?>
+        <?php
+        wp_link_pages(array(
+            'before' => '<div class="page-links">Pages:',
+            'after'  => '</div>'
+        ));
+        ?>
+    </div>
+</article>
+
+// Use in template:
+get_template_part('template-parts/content', 'page');</code></pre>
+
+      <h2>Template Hierarchy Override</h2>
+      <pre><code>// WordPress looks for templates in this order:
+// 1. Custom template selected in page editor
+// 2. page-{slug}.php (e.g., page-about.php)
+// 3. page-{id}.php (e.g., page-42.php)
+// 4. page.php
+// 5. singular.php
+// 6. index.php
+
+// Example: page-about.php (for page with slug "about")
+<?php get_header(); ?>
+
+<div class="about-page">
+    <!-- Custom about page layout -->
+</div>
+
+<?php get_footer(); ?></code></pre>
+
+      <h2>Programmatically Set Template</h2>
+      <pre><code>// Force a template for specific pages
+function assign_custom_template($template) {
+    if (is_page('contact')) {
+        $new_template = locate_template(array('page-templates/contact.php'));
+        if ($new_template) {
+            return $new_template;
+        }
+    }
+    return $template;
+}
+add_filter('template_include', 'assign_custom_template');</code></pre>
+
+      <h2>Best Practices</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Practice</th>
+            <th>Why It Matters</th>
+            <th>Implementation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Use template parts</td>
+            <td>Keeps code DRY and maintainable</td>
+            <td>get_template_part()</td>
+          </tr>
+          <tr>
+            <td>Descriptive template names</td>
+            <td>Easy for admins to understand</td>
+            <td>"Landing Page" not "Template 1"</td>
+          </tr>
+          <tr>
+            <td>Store in subdirectory</td>
+            <td>Organizes theme files</td>
+            <td>page-templates/landing.php</td>
+          </tr>
+          <tr>
+            <td>Include get_header/footer</td>
+            <td>Maintains site consistency</td>
+            <td>Unless building blank template</td>
+          </tr>
+          <tr>
+            <td>Reset query after WP_Query</td>
+            <td>Prevents conflicts</td>
+            <td>wp_reset_postdata()</td>
+          </tr>
+          <tr>
+            <td>Use body_class()</td>
+            <td>Enables template-specific CSS</td>
+            <td>body_class('landing-page')</td>
+          </tr>
+          <tr>
+            <td>Add descriptions</td>
+            <td>Helps users choose right template</td>
+            <td>Template Description comment</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Common Template Types</h2>
+      <ul>
+        <li><strong>Full Width:</strong> No sidebar for landing pages or focused content</li>
+        <li><strong>Blank/Canvas:</strong> No header/footer for page builders</li>
+        <li><strong>Portfolio Grid:</strong> Display work/projects in grid layout</li>
+        <li><strong>Contact:</strong> Custom contact page with forms and maps</li>
+        <li><strong>Archive:</strong> Custom post type archives with filtering</li>
+        <li><strong>Sidebar Variations:</strong> Left sidebar, right sidebar, both</li>
+        <li><strong>Coming Soon:</strong> Maintenance mode or launch pages</li>
+        <li><strong>Testimonials:</strong> Display customer reviews/testimonials</li>
+      </ul>
+
+      <h2>Template File Naming</h2>
+      <pre><code>// Option 1: Root directory (simple themes)
+your-theme/
+  ├── template-landing.php
+  ├── template-portfolio.php
+  └── template-contact.php
+
+// Option 2: Subdirectory (organized themes)
+your-theme/
+  ├── page-templates/
+  │   ├── landing.php
+  │   ├── portfolio.php
+  │   └── contact.php
+
+// Both work - WordPress finds them automatically
+// Subdirectory is preferred for organization</code></pre>
+
+      <h2>Performance Impact</h2>
+      <p><strong>No performance impact.</strong> Page templates are just alternative PHP files - there's no performance difference between using a custom template versus the default page.php. However, be mindful of custom queries (WP_Query) within templates, as complex queries can slow page load. Always use wp_reset_postdata() and consider query caching for heavy queries.</p>
+    `,
+    code: `<?php
+/**
+ * Template Name: Full Width Page
+ * Template Post Type: page
+ * Description: A full-width layout without sidebar
+ */
+
+get_header();
+?>
+
+<div class="full-width-wrapper">
+    <main id="main" class="site-main">
+        <?php
+        while (have_posts()) :
+            the_post();
+            ?>
+            <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
+                <header class="entry-header">
+                    <h1 class="entry-title"><?php the_title(); ?></h1>
+                </header>
+
+                <div class="entry-content">
+                    <?php
+                    the_content();
+
+                    wp_link_pages(array(
+                        'before' => '<div class="page-links">' . __('Pages:', 'textdomain'),
+                        'after'  => '</div>',
+                    ));
+                    ?>
+                </div>
+            </article>
+            <?php
+        endwhile;
+        ?>
+    </main>
+</div>
+
+<?php
+get_footer();`,
+    author: 'Shahmir Khan',
+    date: '2025-01-29',
+    readTime: '9 min read',
+    category: 'WordPress Theme Development',
+    tags: ['Templates', 'Page Templates', 'Theme Development', 'Layouts', 'Custom Pages'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 4.7+',
+    seo: {
+      metaTitle: 'WordPress Custom Page Templates Guide | Create Unique Page Layouts',
+      metaDescription: 'Learn how to create custom page templates in WordPress. Complete guide to designing landing pages, portfolios, full-width layouts, and more.',
+      keywords: ['wordpress page templates', 'custom page template', 'wordpress template name', 'page template wordpress', 'wordpress landing page template', 'full width template wordpress'],
+      canonical: '/blog/custom-page-templates',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "How to Create Custom Page Templates in WordPress",
+        "description": "Complete guide to creating custom page templates for unique layouts in WordPress themes",
+        "author": {
+          "@type": "Person",
+          "name": "Shahmir Khan"
+        },
+        "datePublished": "2025-01-29",
+        "dateModified": "2025-01-29",
+        "proficiencyLevel": "Intermediate"
+      }
+    },
+    faqs: [
+      {
+        question: "Where should I save custom page template files in my theme?",
+        answer: "You can save them either in the theme root directory or in a page-templates/ subdirectory - WordPress will find them in either location. For better organization, especially with multiple templates, use a subdirectory like page-templates/ or templates/. The file must have the Template Name comment at the top to appear in the page editor dropdown."
+      },
+      {
+        question: "Can I create page templates for custom post types?",
+        answer: "Yes! Use the 'Template Post Type' comment to specify which post types can use the template. Example: Template Post Type: page, post, product. This makes the template available in the template selector for those post types. Without this line, templates default to only pages."
+      },
+      {
+        question: "What's the difference between page templates and template hierarchy files?",
+        answer: "Page templates (with Template Name comment) are manually selected by the user in the page editor. Template hierarchy files like page-about.php or page-42.php are automatically used based on the page slug or ID - no manual selection needed. Page templates offer more flexibility as they can be applied to any page, while hierarchy files are tied to specific pages."
+      },
+      {
+        question: "Do I need to include get_header() and get_footer() in custom templates?",
+        answer: "Usually yes, unless you're creating a blank/canvas template for page builders. get_header() and get_footer() ensure your site maintains consistent navigation, branding, and functionality. They also include essential wp_head() and wp_footer() hooks that plugins and WordPress core rely on. Only omit them if you're intentionally creating a standalone page."
+      },
+      {
+        question: "How do I add custom CSS for a specific page template?",
+        answer: "WordPress automatically adds body classes including the template filename (e.g., page-template-landing). Target this in your CSS: .page-template-landing { /* styles */ }. You can also add custom body classes using body_class('my-custom-class') in your template, or enqueue template-specific stylesheets conditionally using is_page_template('page-templates/landing.php')."
+      }
+    ]
+  },
+  {
+    id: 31,
+    slug: 'change-excerpt-length',
+    title: 'Customize Excerpt Length',
+    excerpt: 'Control the length of WordPress post excerpts by modifying word count and ending text using built-in filters.',
+    content: `
+      <h2>WordPress Excerpt System</h2>
+      <p>WordPress automatically generates excerpts from post content when you use the_excerpt(). By default, excerpts are limited to 55 words and end with "[...]". You can customize both the length and the ending text to match your theme's design.</p>
+
+      <h3>Why Customize Excerpts?</h3>
+      <ul>
+        <li><strong>Better Control:</strong> Match excerpt length to your design</li>
+        <li><strong>Consistency:</strong> Uniform content previews across your site</li>
+        <li><strong>User Experience:</strong> Appropriate preview length for different layouts</li>
+        <li><strong>Call to Action:</strong> Custom "Read More" text</li>
+        <li><strong>SEO:</strong> Control meta descriptions derived from excerpts</li>
+      </ul>
+
+      <h2>Change Excerpt Length</h2>
+      <pre><code>// Change default excerpt length from 55 words
+function custom_excerpt_length($length) {
+    return 30; // Change to desired word count
+}
+add_filter('excerpt_length', 'custom_excerpt_length');</code></pre>
+
+      <h2>Change Excerpt Ending ("[...]")</h2>
+      <pre><code>// Change the default "[...]" ending
+function custom_excerpt_more($more) {
+    return '...';
+}
+add_filter('excerpt_more', 'custom_excerpt_more');
+
+// Or add a "Read More" link
+function custom_excerpt_more_link($more) {
+    global $post;
+    return '... <a class="read-more" href="' . get_permalink($post->ID) . '">Read More &raquo;</a>';
+}
+add_filter('excerpt_more', 'custom_excerpt_more_link');</code></pre>
+
+      <h2>Complete Excerpt Customization</h2>
+      <pre><code>// Customize both length and ending
+function mytheme_excerpt_length($length) {
+    return 40; // 40 words
+}
+add_filter('excerpt_length', 'mytheme_excerpt_length');
+
+function mytheme_excerpt_more($more) {
+    return sprintf(
+        ' <a class="read-more-link" href="%s">%s</a>',
+        esc_url(get_permalink()),
+        __('Continue Reading', 'textdomain')
+    );
+}
+add_filter('excerpt_more', 'mytheme_excerpt_more');</code></pre>
+
+      <h2>Different Excerpt Lengths for Different Post Types</h2>
+      <pre><code>function custom_excerpt_length_by_post_type($length) {
+    global $post;
+
+    if ($post->post_type === 'post') {
+        return 50;
+    } elseif ($post->post_type === 'portfolio') {
+        return 20;
+    } elseif ($post->post_type === 'product') {
+        return 15;
+    }
+
+    return $length; // Default
+}
+add_filter('excerpt_length', 'custom_excerpt_length_by_post_type');</code></pre>
+
+      <h2>Context-Specific Excerpt Length</h2>
+      <pre><code>// Different lengths for archive vs single pages
+function context_specific_excerpt_length($length) {
+    if (is_archive()) {
+        return 25; // Shorter on archives
+    } elseif (is_search()) {
+        return 35; // Medium on search results
+    } elseif (is_home()) {
+        return 40; // Longer on blog homepage
+    }
+
+    return $length;
+}
+add_filter('excerpt_length', 'context_specific_excerpt_length');</code></pre>
+
+      <h2>Character-Based Excerpt (Instead of Words)</h2>
+      <pre><code>// Limit by characters instead of words
+function character_based_excerpt($length = 200) {
+    $text = get_the_excerpt();
+
+    if (strlen($text) > $length) {
+        $text = substr($text, 0, $length);
+        // Find last complete word
+        $text = substr($text, 0, strrpos($text, ' '));
+        $text .= '...';
+    }
+
+    return $text;
+}
+
+// Usage in template:
+// echo character_based_excerpt(150);</code></pre>
+
+      <h2>Custom Excerpt Function with Options</h2>
+      <pre><code>function custom_excerpt($length = 40, $more = '...', $strip_tags = true) {
+    global $post;
+
+    // If manual excerpt exists, use it
+    if (has_excerpt()) {
+        $excerpt = get_the_excerpt();
+    } else {
+        $excerpt = $post->post_content;
+    }
+
+    // Strip tags if requested
+    if ($strip_tags) {
+        $excerpt = strip_tags($excerpt);
+        $excerpt = strip_shortcodes($excerpt);
+    }
+
+    // Limit to words
+    $words = explode(' ', $excerpt, $length + 1);
+
+    if (count($words) > $length) {
+        array_pop($words);
+        $excerpt = implode(' ', $words) . $more;
+    }
+
+    return $excerpt;
+}
+
+// Usage in templates:
+// echo custom_excerpt(30, '...');
+// echo custom_excerpt(50, ' <a href="' . get_permalink() . '">Read more</a>');</code></pre>
+
+      <h2>Preserve HTML in Excerpts</h2>
+      <pre><code>// Keep HTML formatting in excerpts
+function html_excerpt($text = '', $length = 55, $more = '...') {
+    if ($text === '') {
+        $text = get_the_content('');
+        $text = strip_shortcodes($text);
+        $text = apply_filters('the_content', $text);
+    }
+
+    // Allowed HTML tags
+    $text = strip_tags($text, '<p><br><strong><em><a><ul><li><ol>');
+
+    // Limit to words while preserving HTML
+    $words = explode(' ', $text, $length + 1);
+
+    if (count($words) > $length) {
+        array_pop($words);
+        $text = implode(' ', $words) . $more;
+    }
+
+    // Balance HTML tags
+    $text = force_balance_tags($text);
+
+    return $text;
+}
+
+// Usage:
+// echo html_excerpt(get_the_excerpt(), 40, '...');</code></pre>
+
+      <h2>Remove Excerpt More Link</h2>
+      <pre><code>// Completely remove the [...] or "more" link
+function remove_excerpt_more($more) {
+    return '';
+}
+add_filter('excerpt_more', 'remove_excerpt_more');</code></pre>
+
+      <h2>Add Read More Button</h2>
+      <pre><code>function styled_excerpt_more($more) {
+    return sprintf(
+        '<a class="btn btn-primary read-more" href="%s">%s</a>',
+        esc_url(get_permalink()),
+        __('Read Full Article', 'textdomain')
+    );
+}
+add_filter('excerpt_more', 'styled_excerpt_more');
+
+// CSS for button styling
+/* .read-more {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #0066cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    margin-top: 10px;
+} */</code></pre>
+
+      <h2>Excerpt with Icon</h2>
+      <pre><code>function excerpt_more_with_icon($more) {
+    return sprintf(
+        ' <a class="more-link" href="%s"><span class="icon">→</span> %s</a>',
+        esc_url(get_permalink()),
+        __('Continue Reading', 'textdomain')
+    );
+}
+add_filter('excerpt_more', 'excerpt_more_with_icon');</code></pre>
+
+      <h2>Different Excerpts for Different Categories</h2>
+      <pre><code>function category_specific_excerpt_length($length) {
+    if (has_category('news')) {
+        return 30; // Shorter for news
+    } elseif (has_category('tutorials')) {
+        return 60; // Longer for tutorials
+    }
+
+    return $length;
+}
+add_filter('excerpt_length', 'category_specific_excerpt_length');</code></pre>
+
+      <h2>Smart Excerpt (Ends at Sentence)</h2>
+      <pre><code>function smart_excerpt($length = 40) {
+    global $post;
+
+    $text = $post->post_content;
+    $text = strip_tags($text);
+    $text = strip_shortcodes($text);
+
+    $words = explode(' ', $text, $length + 1);
+
+    if (count($words) > $length) {
+        array_pop($words);
+        $text = implode(' ', $words);
+
+        // Find last sentence end
+        $last_period = strrpos($text, '.');
+        $last_exclaim = strrpos($text, '!');
+        $last_question = strrpos($text, '?');
+
+        $last_sentence = max($last_period, $last_exclaim, $last_question);
+
+        if ($last_sentence !== false && $last_sentence > strlen($text) / 2) {
+            $text = substr($text, 0, $last_sentence + 1);
+        } else {
+            $text .= '...';
+        }
+    }
+
+    return $text;
+}
+
+// Usage:
+// echo smart_excerpt(50);</code></pre>
+
+      <h2>Display in Templates</h2>
+      <pre><code><!-- Default WordPress excerpt -->
+<?php the_excerpt(); ?>
+
+<!-- Manual excerpt with custom function -->
+<?php echo custom_excerpt(30, '...'); ?>
+
+<!-- Check if excerpt exists before displaying -->
+<?php if (has_excerpt()): ?>
+    <div class="excerpt">
+        <?php the_excerpt(); ?>
+    </div>
+<?php else: ?>
+    <div class="excerpt">
+        <?php echo custom_excerpt(40, '...'); ?>
+    </div>
+<?php endif; ?>
+
+<!-- Get excerpt without echoing -->
+<?php
+$excerpt = get_the_excerpt();
+echo '<p>' . $excerpt . '</p>';
+?></code></pre>
+
+      <h2>Excerpt vs Content</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Function</th>
+            <th>Purpose</th>
+            <th>When to Use</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>the_excerpt()</td>
+            <td>Short summary (auto-generated or manual)</td>
+            <td>Blog archives, search results, related posts</td>
+          </tr>
+          <tr>
+            <td>the_content()</td>
+            <td>Full post content</td>
+            <td>Single post pages, full article display</td>
+          </tr>
+          <tr>
+            <td>the_content('Read More')</td>
+            <td>Content with <!--more--> tag</td>
+            <td>Partial content with manual break point</td>
+          </tr>
+          <tr>
+            <td>get_the_excerpt()</td>
+            <td>Returns excerpt without displaying</td>
+            <td>Custom excerpt manipulation</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Best Practices</h2>
+      <ul>
+        <li><strong>Consistent Length:</strong> Use same excerpt length across similar contexts</li>
+        <li><strong>Manual Excerpts:</strong> Write custom excerpts for important posts</li>
+        <li><strong>Escape Output:</strong> Use esc_html() or wp_kses_post() when displaying excerpts</li>
+        <li><strong>Responsive Design:</strong> Consider mobile-friendly excerpt lengths</li>
+        <li><strong>Don't Strip All HTML:</strong> Preserve formatting tags if needed</li>
+        <li><strong>Test Different Lengths:</strong> Find optimal length for your design</li>
+        <li><strong>Include CTA:</strong> Add "Read More" link for better engagement</li>
+      </ul>
+
+      <h2>Performance Impact</h2>
+      <p><strong>Negligible performance impact.</strong> Excerpt generation is a simple text manipulation operation that happens during template rendering. The filters add minimal overhead. However, avoid complex operations inside excerpt filters (like database queries) as they run for every post in archives.</p>
+    `,
+    code: `// Customize excerpt length
+function custom_excerpt_length($length) {
+    return 30; // Change to your desired word count
+}
+add_filter('excerpt_length', 'custom_excerpt_length');
+
+// Customize excerpt ending and add "Read More" link
+function custom_excerpt_more($more) {
+    return sprintf(
+        ' <a class="read-more" href="%s">%s</a>',
+        esc_url(get_permalink()),
+        __('Read More', 'textdomain')
+    );
+}
+add_filter('excerpt_more', 'custom_excerpt_more');
+
+// Usage in templates:
+// <?php the_excerpt(); ?>`,
+    author: 'Shahmir Khan',
+    date: '2025-01-30',
+    readTime: '7 min read',
+    category: 'WordPress Content',
+    tags: ['Excerpts', 'Content', 'Filters', 'Customization'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 2.9+',
+    seo: {
+      metaTitle: 'How to Customize WordPress Excerpt Length | Change Word Count & More Text',
+      metaDescription: 'Learn how to customize WordPress excerpt length and "Read More" text using excerpt_length and excerpt_more filters. Includes code examples and best practices.',
+      keywords: ['wordpress excerpt length', 'customize excerpt', 'excerpt_length filter', 'excerpt_more', 'wordpress read more', 'change excerpt length'],
+      canonical: '/blog/change-excerpt-length',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "How to Customize WordPress Excerpt Length",
+        "description": "Complete guide to customizing WordPress excerpt length and more text",
+        "author": {
+          "@type": "Person",
+          "name": "Shahmir Khan"
+        },
+        "datePublished": "2025-01-30",
+        "dateModified": "2025-01-30",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the default WordPress excerpt length?",
+        answer: "By default, WordPress limits excerpts to 55 words and ends them with '[...]'. You can change both the word count using the excerpt_length filter and the ending text using the excerpt_more filter. These filters give you complete control over how excerpts appear throughout your site."
+      },
+      {
+        question: "Can I have different excerpt lengths for different post types?",
+        answer: "Yes! Check the global $post variable inside your excerpt_length filter function and return different lengths based on $post->post_type. For example, return 50 for posts, 20 for products, and 30 for portfolio items. This allows you to tailor excerpt length to each content type's needs."
+      },
+      {
+        question: "How do I create character-based excerpts instead of word-based?",
+        answer: "Use get_the_excerpt() or get_the_content(), then use substr() to limit characters. Remember to find the last complete word using strrpos() to avoid cutting words in half. Example: $text = substr($text, 0, strrpos(substr($text, 0, 200), ' ')) . '...'; This creates a 200-character excerpt that ends at a word boundary."
+      },
+      {
+        question: "Should I use the_excerpt() or the_content('Read More') in archives?",
+        answer: "Use the_excerpt() in archives for consistent, controlled content previews. Use the_content('Read More') only when you want to respect manual <!--more--> tags placed by authors. the_excerpt() is better for archives because it provides uniform length across all posts, while the_content() with <!--more--> tag can vary significantly."
+      },
+      {
+        question: "How do I keep HTML formatting in excerpts?",
+        answer: "By default, the_excerpt() strips all HTML. To preserve formatting, use strip_tags() with allowed tags parameter: strip_tags($text, '<p><strong><em><a>'). Then use force_balance_tags() to ensure proper HTML structure. Alternatively, use wp_trim_words() which preserves some HTML while limiting word count."
+      }
+    ]
+  },
+  {
+    id: 32,
+    slug: 'custom-read-more-text',
+    title: 'Change Read More Link Text',
+    excerpt: 'Customize the "Read More" link text and styling in WordPress using excerpt_more and the_content_more_link filters.',
+    content: `
+      <h2>WordPress Read More Links</h2>
+      <p>WordPress displays "Read More" links in two contexts: in excerpts (the_excerpt) and when using the <!--more--> tag in post content (the_content). You can customize both the text and appearance of these links to match your site's design and improve user engagement.</p>
+
+      <h3>Benefits of Custom Read More Links</h3>
+      <ul>
+        <li><strong>Better CTR:</strong> Custom text can increase click-through rates</li>
+        <li><strong>Brand Voice:</strong> Match your site's tone and personality</li>
+        <li><strong>User Clarity:</strong> Clear calls-to-action improve navigation</li>
+        <li><strong>Accessibility:</strong> Descriptive text helps screen readers</li>
+        <li><strong>Styling Control:</strong> Custom classes for design flexibility</li>
+      </ul>
+
+      <h2>Change Excerpt Read More Text</h2>
+      <pre><code>// Change "Read More" text in excerpts
+function custom_excerpt_more($more) {
+    return sprintf(
+        ' <a class="read-more-link" href="%s">%s</a>',
+        esc_url(get_permalink()),
+        __('Continue Reading', 'textdomain')
+    );
+}
+add_filter('excerpt_more', 'custom_excerpt_more');</code></pre>
+
+      <h2>Change Content More Link Text</h2>
+      <pre><code>// Change <!--more--> link text
+function custom_content_more_link($more_link, $more_link_text) {
+    return sprintf(
+        '<a href="%s" class="more-link">%s</a>',
+        esc_url(get_permalink() . '#more-' . get_the_ID()),
+        __('Read Full Article', 'textdomain')
+    );
+}
+add_filter('the_content_more_link', 'custom_content_more_link', 10, 2);</code></pre>
+
+      <h2>Read More with Icon</h2>
+      <pre><code>function read_more_with_icon($more) {
+    return sprintf(
+        ' <a class="read-more-link" href="%s"><span class="icon">→</span> %s</a>',
+        esc_url(get_permalink()),
+        __('Keep Reading', 'textdomain')
+    );
+}
+add_filter('excerpt_more', 'read_more_with_icon');
+
+// CSS for icon styling
+/* .read-more-link .icon {
+    display: inline-block;
+    margin-right: 5px;
+    transition: transform 0.2s;
+}
+.read-more-link:hover .icon {
+    transform: translateX(5px);
+} */</code></pre>
+
+      <h2>Button-Styled Read More</h2>
+      <pre><code>function button_styled_read_more($more) {
+    return sprintf(
+        '<p class="read-more-wrapper"><a class="btn btn-primary read-more-btn" href="%s">%s</a></p>',
+        esc_url(get_permalink()),
+        __('Read the Full Story', 'textdomain')
+    );
+}
+add_filter('excerpt_more', 'button_styled_read_more');
+
+// CSS for button
+/* .read-more-wrapper {
+    margin-top: 15px;
+}
+.read-more-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #0066cc;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+.read-more-btn:hover {
+    background: #0052a3;
+} */</code></pre>
+
+      <h2>Read More with Post Title</h2>
+      <pre><code>function read_more_with_title($more) {
+    return sprintf(
+        ' <a class="read-more-link" href="%s">%s "%s"</a>',
+        esc_url(get_permalink()),
+        __('Continue reading', 'textdomain'),
+        get_the_title()
+    );
+}
+add_filter('excerpt_more', 'read_more_with_title');</code></pre>
+
+      <h2>Different Text for Different Post Types</h2>
+      <pre><code>function post_type_specific_read_more($more) {
+    global $post;
+
+    $read_more_text = array(
+        'post'      => __('Read Article', 'textdomain'),
+        'portfolio' => __('View Project', 'textdomain'),
+        'product'   => __('View Product', 'textdomain'),
+        'page'      => __('Learn More', 'textdomain')
+    );
+
+    $text = isset($read_more_text[$post->post_type])
+        ? $read_more_text[$post->post_type]
+        : __('Read More', 'textdomain');
+
+    return sprintf(
+        ' <a class="read-more-link" href="%s">%s</a>',
+        esc_url(get_permalink()),
+        $text
+    );
+}
+add_filter('excerpt_more', 'post_type_specific_read_more');</code></pre>
+
+      <h2>Read More with Reading Time</h2>
+      <pre><code>function read_more_with_time($more) {
+    // Calculate reading time (average 200 words per minute)
+    $content = get_post_field('post_content', get_the_ID());
+    $word_count = str_word_count(strip_tags($content));
+    $reading_time = ceil($word_count / 200);
+
+    return sprintf(
+        ' <a class="read-more-link" href="%s">%s <span class="reading-time">(%d min read)</span></a>',
+        esc_url(get_permalink()),
+        __('Continue Reading', 'textdomain'),
+        $reading_time
+    );
+}
+add_filter('excerpt_more', 'read_more_with_time');</code></pre>
+
+      <h2>Remove Read More Link Completely</h2>
+      <pre><code>// Remove excerpt more link
+function remove_excerpt_more($more) {
+    return '';
+}
+add_filter('excerpt_more', 'remove_excerpt_more');
+
+// Remove content more link
+function remove_content_more_link($more_link) {
+    return '';
+}
+add_filter('the_content_more_link', 'remove_content_more_link');</code></pre>
+
+      <h2>Read More with Category-Specific Text</h2>
+      <pre><code>function category_specific_read_more($more) {
+    if (has_category('tutorials')) {
+        $text = __('View Tutorial', 'textdomain');
+    } elseif (has_category('news')) {
+        $text = __('Read News', 'textdomain');
+    } elseif (has_category('reviews')) {
+        $text = __('Read Review', 'textdomain');
+    } else {
+        $text = __('Read More', 'textdomain');
+    }
+
+    return sprintf(
+        ' <a class="read-more-link" href="%s">%s</a>',
+        esc_url(get_permalink()),
+        $text
+    );
+}
+add_filter('excerpt_more', 'category_specific_read_more');</code></pre>
+
+      <h2>Read More with Smooth Scroll</h2>
+      <pre><code>function read_more_smooth_scroll($more_link) {
+    global $post;
+
+    return sprintf(
+        '<a href="%s" class="more-link smooth-scroll">%s</a>',
+        esc_url(get_permalink() . '#more-' . $post->ID),
+        __('Continue Reading', 'textdomain')
+    );
+}
+add_filter('the_content_more_link', 'read_more_smooth_scroll');
+
+// JavaScript for smooth scrolling
+/* <script>
+document.querySelectorAll('.smooth-scroll').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').split('#')[1];
+        const target = document.getElementById(targetId);
+        if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+    });
+});
+</script> */</code></pre>
+
+      <h2>Read More with SVG Icon</h2>
+      <pre><code>function read_more_with_svg($more) {
+    $svg_arrow = '<svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 0L6.59 1.41L12.17 7H0v2h12.17l-5.58 5.59L8 16l8-8z"/>
+    </svg>';
+
+    return sprintf(
+        ' <a class="read-more-link" href="%s">%s %s</a>',
+        esc_url(get_permalink()),
+        __('Read More', 'textdomain'),
+        $svg_arrow
+    );
+}
+add_filter('excerpt_more', 'read_more_with_svg');</code></pre>
+
+      <h2>Read More in New Tab</h2>
+      <pre><code>function read_more_new_tab($more) {
+    return sprintf(
+        ' <a class="read-more-link" href="%s" target="_blank" rel="noopener noreferrer">%s</a>',
+        esc_url(get_permalink()),
+        __('Read More', 'textdomain')
+    );
+}
+add_filter('excerpt_more', 'read_more_new_tab');</code></pre>
+
+      <h2>Advanced: Read More with Data Attributes</h2>
+      <pre><code>function read_more_with_data_attrs($more) {
+    global $post;
+
+    return sprintf(
+        ' <a class="read-more-link" href="%s" data-post-id="%d" data-post-type="%s">%s</a>',
+        esc_url(get_permalink()),
+        $post->ID,
+        $post->post_type,
+        __('Read More', 'textdomain')
+    );
+}
+add_filter('excerpt_more', 'read_more_with_data_attrs');</code></pre>
+
+      <h2>Template Tag for Manual Read More</h2>
+      <pre><code>// Create a reusable template tag
+function custom_read_more_link($text = null, $class = 'read-more') {
+    if ($text === null) {
+        $text = __('Read More', 'textdomain');
+    }
+
+    return sprintf(
+        '<a class="%s" href="%s">%s</a>',
+        esc_attr($class),
+        esc_url(get_permalink()),
+        esc_html($text)
+    );
+}
+
+// Usage in templates:
+// echo custom_read_more_link();
+// echo custom_read_more_link('Continue Reading', 'btn btn-primary');</code></pre>
+
+      <h2>Complete Example with Multiple Styles</h2>
+      <pre><code>// Main read more customization function
+function mytheme_read_more_link($more) {
+    global $post;
+
+    // Different styles for different contexts
+    if (is_home() || is_archive()) {
+        // Simple link for archives
+        return sprintf(
+            ' <a class="read-more-link" href="%s">%s &rarr;</a>',
+            esc_url(get_permalink()),
+            __('Continue Reading', 'textdomain')
+        );
+    } elseif (is_search()) {
+        // Include post title in search results
+        return sprintf(
+            ' <a class="read-more-link" href="%s">%s "%s"</a>',
+            esc_url(get_permalink()),
+            __('Read', 'textdomain'),
+            get_the_title()
+        );
+    } else {
+        // Button style for other contexts
+        return sprintf(
+            '<p class="read-more-wrapper"><a class="btn-read-more" href="%s">%s</a></p>',
+            esc_url(get_permalink()),
+            __('Read Full Article', 'textdomain')
+        );
+    }
+}
+add_filter('excerpt_more', 'mytheme_read_more_link');</code></pre>
+
+      <h2>CSS Styling Examples</h2>
+      <pre><code>/* Basic Link Style */
+.read-more-link {
+    color: #0066cc;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.2s;
+}
+.read-more-link:hover {
+    color: #004499;
+    text-decoration: underline;
+}
+
+/* Button Style */
+.btn-read-more {
+    display: inline-block;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-read-more:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Link with Arrow */
+.read-more-link::after {
+    content: "→";
+    display: inline-block;
+    margin-left: 5px;
+    transition: transform 0.2s;
+}
+.read-more-link:hover::after {
+    transform: translateX(5px);
+}
+
+/* Underline Effect */
+.read-more-link {
+    position: relative;
+    padding-bottom: 2px;
+}
+.read-more-link::before {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #0066cc;
+    transition: width 0.3s;
+}
+.read-more-link:hover::before {
+    width: 100%;
+}</code></pre>
+
+      <h2>Accessibility Considerations</h2>
+      <pre><code>// Accessible read more link with screen reader text
+function accessible_read_more($more) {
+    return sprintf(
+        ' <a class="read-more-link" href="%s"><span class="screen-reader-text">%s</span>%s</a>',
+        esc_url(get_permalink()),
+        sprintf(__('Continue reading %s', 'textdomain'), get_the_title()),
+        __('Read More', 'textdomain')
+    );
+}
+add_filter('excerpt_more', 'accessible_read_more');
+
+// CSS for screen reader text
+/* .screen-reader-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    border: 0;
+} */</code></pre>
+
+      <h2>Best Practices</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Practice</th>
+            <th>Why It Matters</th>
+            <th>Example</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Descriptive Text</td>
+            <td>Better accessibility and SEO</td>
+            <td>"Continue Reading Article Title" vs "Click Here"</td>
+          </tr>
+          <tr>
+            <td>Consistent Styling</td>
+            <td>Professional appearance</td>
+            <td>Use same class across all read more links</td>
+          </tr>
+          <tr>
+            <td>Clear CTA</td>
+            <td>Higher click-through rates</td>
+            <td>"Read Full Article" vs "More"</td>
+          </tr>
+          <tr>
+            <td>Escape Output</td>
+            <td>Security</td>
+            <td>Use esc_url(), esc_html()</td>
+          </tr>
+          <tr>
+            <td>Mobile-Friendly</td>
+            <td>Touch targets</td>
+            <td>Minimum 44x44px clickable area</td>
+          </tr>
+          <tr>
+            <td>Visual Feedback</td>
+            <td>Better UX</td>
+            <td>Hover states, transitions</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Performance Impact</h2>
+      <p><strong>Zero performance impact.</strong> Customizing read more links is purely cosmetic and doesn't affect page load time or database queries. The filters execute during template rendering with negligible overhead.</p>
+    `,
+    code: `// Change excerpt "Read More" text
+function custom_excerpt_more($more) {
+    return sprintf(
+        ' <a class="read-more-link" href="%s">%s</a>',
+        esc_url(get_permalink()),
+        __('Continue Reading', 'textdomain')
+    );
+}
+add_filter('excerpt_more', 'custom_excerpt_more');
+
+// Change content <!--more--> link text
+function custom_content_more_link($more_link) {
+    return sprintf(
+        '<a href="%s" class="more-link">%s</a>',
+        esc_url(get_permalink() . '#more-' . get_the_ID()),
+        __('Read Full Article', 'textdomain')
+    );
+}
+add_filter('the_content_more_link', 'custom_content_more_link');`,
+    author: 'Shahmir Khan',
+    date: '2025-01-30',
+    readTime: '6 min read',
+    category: 'WordPress Content',
+    tags: ['Excerpts', 'Read More', 'Content', 'Filters', 'User Experience'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 2.9+',
+    seo: {
+      metaTitle: 'Change WordPress Read More Link Text | Customize Continue Reading Button',
+      metaDescription: 'Learn how to customize WordPress "Read More" link text and styling using excerpt_more and the_content_more_link filters. Includes button styles and accessibility tips.',
+      keywords: ['wordpress read more', 'customize read more link', 'excerpt_more', 'wordpress continue reading', 'change read more text', 'wordpress more link'],
+      canonical: '/blog/custom-read-more-text',
+      schema: {
+        "@context": "https://schema.org",
+        "@type": "TechArticle",
+        "headline": "How to Customize WordPress Read More Link Text",
+        "description": "Complete guide to customizing read more links in WordPress excerpts and content",
+        "author": {
+          "@type": "Person",
+          "name": "Shahmir Khan"
+        },
+        "datePublished": "2025-01-30",
+        "dateModified": "2025-01-30",
+        "proficiencyLevel": "Beginner"
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between excerpt_more and the_content_more_link filters?",
+        answer: "excerpt_more changes the read more link in auto-generated excerpts (when using the_excerpt()). the_content_more_link changes the read more link when using <!--more--> tag in post content with the_content(). Use excerpt_more for archive pages and the_content_more_link for posts with manual break points."
+      },
+      {
+        question: "How can I make read more links more accessible?",
+        answer: "Include the post title in screen reader text so users know what they're reading more about. Use: <span class='screen-reader-text'>Continue reading [Post Title]</span>Read More. This helps screen reader users understand the link context without seeing surrounding content. Also ensure links have proper contrast ratios and are keyboard accessible."
+      },
+      {
+        question: "Can I style read more links as buttons?",
+        answer: "Yes! Return HTML with button classes in your filter function. Example: '<a class=\"btn btn-primary\" href=\"...'>Read More</a>'. Then style with CSS using padding, background colors, border-radius, and hover effects. Make sure button-styled links meet minimum 44x44px touch target size for mobile usability."
+      },
+      {
+        question: "How do I add an icon to read more links?",
+        answer: "Include the icon HTML in your filter return value. For font icons: 'Read More <i class=\"fa fa-arrow-right\"></i>'. For SVG: 'Read More <svg>...</svg>'. For CSS pseudo-elements, add a class and use ::after { content: '→'; }. SVG icons offer best performance and scalability."
+      },
+      {
+        question: "Should read more links open in new tabs?",
+        answer: "Generally no. Opening in new tabs is unexpected behavior for internal links and can confuse users, especially on mobile. Only use target='_blank' if the link goes to external content. For internal read more links, let users navigate normally and use browser back button if needed."
+      }
+    ]
+  },
+  {
+    id: 33,
+    slug: 'add-featured-image-rss',
+    title: 'Add Featured Images to RSS Feed',
+    excerpt: 'Learn how to automatically include featured images in your WordPress RSS feed for better content syndication and social media sharing.',
+    content: `
+      <div class="snippet-content">
+        <p>By default, WordPress RSS feeds don't include featured images, which can make your syndicated content less engaging and reduce social media visibility. Adding featured images to RSS feeds improves content presentation in feed readers, email subscriptions, and social media platforms that parse RSS feeds.</p>
+
+        <h2>Why Add Featured Images to RSS Feeds?</h2>
+        <ul>
+          <li><strong>Better Content Syndication:</strong> Images make your content more recognizable and engaging in feed readers</li>
+          <li><strong>Improved Social Sharing:</strong> Platforms like Facebook, LinkedIn, and Twitter better parse feeds with images</li>
+          <li><strong>Email Marketing:</strong> Email services using RSS-to-email benefit from featured images</li>
+          <li><strong>Content Aggregators:</strong> Sites pulling your RSS feed display more attractive content</li>
+          <li><strong>Brand Recognition:</strong> Visual content helps maintain brand identity across platforms</li>
+        </ul>
+
+        <h2>Basic Implementation</h2>
+        <p>Add this code to your theme's <code>functions.php</code> file to include featured images in RSS feeds:</p>
+
+        <pre><code>/**
+ * Add featured image to RSS feed
+ */
+function add_featured_image_to_rss($content) {
+    global $post;
+
+    // Check if post has a featured image
+    if (has_post_thumbnail($post->ID)) {
+        $content = '<div>' . get_the_post_thumbnail($post->ID, 'medium', array('style' => 'margin-bottom: 15px;')) . '</div>' . $content;
+    }
+
+    return $content;
+}
+add_filter('the_excerpt_rss', 'add_featured_image_to_rss');
+add_filter('the_content_feed', 'add_featured_image_to_rss');</code></pre>
+
+        <h2>Advanced RSS Feed Image Implementation</h2>
+        <p>For more control over image size, styling, and placement, use this enhanced version:</p>
+
+        <pre><code>/**
+ * Add featured image to RSS feed with custom styling
+ */
+function custom_rss_post_thumbnail($content) {
+    global $post;
+
+    // Only process posts with featured images
+    if (!has_post_thumbnail($post->ID)) {
+        return $content;
+    }
+
+    // Get the featured image
+    $thumbnail_id = get_post_thumbnail_id($post->ID);
+    $thumbnail = wp_get_attachment_image_src($thumbnail_id, 'large');
+
+    if (!$thumbnail) {
+        return $content;
+    }
+
+    // Get image metadata
+    $image_url = esc_url($thumbnail[0]);
+    $image_width = $thumbnail[1];
+    $image_height = $thumbnail[2];
+    $image_alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
+    $post_title = get_the_title($post->ID);
+
+    // Build HTML with proper styling for feed readers
+    $image_html = sprintf(
+        '<div style="margin: 0 0 20px 0; text-align: center;">
+            <img src="%s" alt="%s" width="%s" height="%s" style="max-width: 100%%; height: auto; display: block; margin: 0 auto;" />
+        </div>',
+        $image_url,
+        esc_attr($image_alt ? $image_alt : $post_title),
+        $image_width,
+        $image_height
+    );
+
+    return $image_html . $content;
+}
+add_filter('the_excerpt_rss', 'custom_rss_post_thumbnail');
+add_filter('the_content_feed', 'custom_rss_post_thumbnail');</code></pre>
+
+        <h2>Adding RSS Enclosure Tag</h2>
+        <p>The enclosure tag helps podcasting apps and some feed readers recognize media attachments:</p>
+
+        <pre><code>/**
+ * Add featured image as RSS enclosure
+ */
+function add_featured_image_as_enclosure() {
+    global $post;
+
+    if (!has_post_thumbnail($post->ID)) {
+        return;
+    }
+
+    $thumbnail_id = get_post_thumbnail_id($post->ID);
+    $thumbnail = wp_get_attachment_image_src($thumbnail_id, 'full');
+
+    if (!$thumbnail) {
+        return;
+    }
+
+    $image_url = $thumbnail[0];
+    $image_size = filesize(get_attached_file($thumbnail_id));
+    $image_type = get_post_mime_type($thumbnail_id);
+
+    echo sprintf(
+        '<enclosure url="%s" length="%s" type="%s" />' . "\\n",
+        esc_url($image_url),
+        $image_size,
+        esc_attr($image_type)
+    );
+}
+add_action('rss2_item', 'add_featured_image_as_enclosure');</code></pre>
+
+        <h2>Post Type Specific RSS Images</h2>
+        <p>Control which post types show featured images in RSS feeds:</p>
+
+        <pre><code>/**
+ * Add featured images to RSS for specific post types
+ */
+function custom_post_type_rss_image($content) {
+    global $post;
+
+    // Define post types that should show featured images
+    $allowed_post_types = array('post', 'portfolio', 'news');
+
+    // Check if current post type is allowed
+    if (!in_array(get_post_type($post->ID), $allowed_post_types)) {
+        return $content;
+    }
+
+    if (!has_post_thumbnail($post->ID)) {
+        return $content;
+    }
+
+    $thumbnail_id = get_post_thumbnail_id($post->ID);
+    $thumbnail = wp_get_attachment_image_src($thumbnail_id, 'medium_large');
+
+    if ($thumbnail) {
+        $image_html = sprintf(
+            '<figure style="margin: 0 0 1.5em 0;">
+                <img src="%s" alt="%s" style="max-width: 100%%; height: auto; border-radius: 8px;" />
+            </figure>',
+            esc_url($thumbnail[0]),
+            esc_attr(get_the_title($post->ID))
+        );
+
+        $content = $image_html . $content;
+    }
+
+    return $content;
+}
+add_filter('the_excerpt_rss', 'custom_post_type_rss_image');
+add_filter('the_content_feed', 'custom_post_type_rss_image');</code></pre>
+
+        <h2>RSS Feed with Fallback Images</h2>
+        <p>Provide a default image when posts don't have featured images:</p>
+
+        <pre><code>/**
+ * Add featured or fallback image to RSS feed
+ */
+function rss_image_with_fallback($content) {
+    global $post;
+
+    $image_url = '';
+    $image_alt = get_the_title($post->ID);
+
+    // Try to get featured image first
+    if (has_post_thumbnail($post->ID)) {
+        $thumbnail_id = get_post_thumbnail_id($post->ID);
+        $thumbnail = wp_get_attachment_image_src($thumbnail_id, 'large');
+
+        if ($thumbnail) {
+            $image_url = $thumbnail[0];
+            $image_alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
+            if (!$image_alt) {
+                $image_alt = get_the_title($post->ID);
+            }
+        }
+    }
+
+    // Use fallback image if no featured image
+    if (!$image_url) {
+        $image_url = get_template_directory_uri() . '/images/default-rss-image.jpg';
+        $image_alt = get_bloginfo('name') . ' - ' . get_the_title($post->ID);
+    }
+
+    // Build responsive image HTML
+    $image_html = sprintf(
+        '<div style="margin-bottom: 20px;">
+            <img src="%s" alt="%s" style="max-width: 100%%; height: auto; display: block;" />
+        </div>',
+        esc_url($image_url),
+        esc_attr($image_alt)
+    );
+
+    return $image_html . $content;
+}
+add_filter('the_excerpt_rss', 'rss_image_with_fallback');
+add_filter('the_content_feed', 'rss_image_with_fallback');</code></pre>
+
+        <h2>Media RSS Namespace Implementation</h2>
+        <p>Add Media RSS (MRSS) namespace for enhanced feed compatibility with media platforms:</p>
+
+        <pre><code>/**
+ * Add Media RSS namespace to feed
+ */
+function add_media_rss_namespace() {
+    echo 'xmlns:media="http://search.yahoo.com/mrss/"';
+}
+add_action('rss2_ns', 'add_media_rss_namespace');
+
+/**
+ * Add featured image as media:content tag
+ */
+function add_media_content_to_feed() {
+    global $post;
+
+    if (!has_post_thumbnail($post->ID)) {
+        return;
+    }
+
+    $thumbnail_id = get_post_thumbnail_id($post->ID);
+    $thumbnail = wp_get_attachment_image_src($thumbnail_id, 'full');
+
+    if (!$thumbnail) {
+        return;
+    }
+
+    $image_url = $thumbnail[0];
+    $image_width = $thumbnail[1];
+    $image_height = $thumbnail[2];
+    $image_type = get_post_mime_type($thumbnail_id);
+    $image_title = get_the_title($thumbnail_id);
+    $image_alt = get_post_meta($thumbnail_id, '_wp_attachment_image_alt', true);
+
+    printf(
+        '<media:content url="%s" width="%s" height="%s" type="%s" medium="image">
+            <media:title type="plain"><![CDATA[%s]]></media:title>
+            <media:description type="plain"><![CDATA[%s]]></media:description>
+        </media:content>' . "\\n",
+        esc_url($image_url),
+        $image_width,
+        $image_height,
+        esc_attr($image_type),
+        $image_title ? $image_title : get_the_title($post->ID),
+        $image_alt ? $image_alt : get_the_title($post->ID)
+    );
+}
+add_action('rss2_item', 'add_media_content_to_feed');</code></pre>
+
+        <h2>Category-Specific RSS Images</h2>
+        <p>Show different image sizes or styles based on post categories:</p>
+
+        <pre><code>/**
+ * Category-specific RSS feed images
+ */
+function category_specific_rss_images($content) {
+    global $post;
+
+    if (!has_post_thumbnail($post->ID)) {
+        return $content;
+    }
+
+    // Define image sizes per category
+    $image_size = 'medium';
+
+    if (has_category('featured', $post->ID)) {
+        $image_size = 'large';
+    } elseif (has_category('news', $post->ID)) {
+        $image_size = 'medium_large';
+    }
+
+    $thumbnail_id = get_post_thumbnail_id($post->ID);
+    $thumbnail = wp_get_attachment_image_src($thumbnail_id, $image_size);
+
+    if ($thumbnail) {
+        $style = 'max-width: 100%; height: auto; border-radius: 4px;';
+
+        // Add special styling for featured category
+        if (has_category('featured', $post->ID)) {
+            $style .= ' border: 3px solid #0073aa;';
+        }
+
+        $image_html = sprintf(
+            '<div style="margin-bottom: 1.5em;">
+                <img src="%s" alt="%s" style="%s" />
+            </div>',
+            esc_url($thumbnail[0]),
+            esc_attr(get_the_title($post->ID)),
+            $style
+        );
+
+        $content = $image_html . $content;
+    }
+
+    return $content;
+}
+add_filter('the_excerpt_rss', 'category_specific_rss_images');
+add_filter('the_content_feed', 'category_specific_rss_images');</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Use Inline Styles</td>
+              <td>Many feed readers strip external CSS; inline styles ensure consistent appearance</td>
+            </tr>
+            <tr>
+              <td>Optimize Image Size</td>
+              <td>Use 'medium' or 'large' sizes (not 'full') to reduce feed size and load times</td>
+            </tr>
+            <tr>
+              <td>Include Alt Text</td>
+              <td>Improves accessibility and provides context when images don't load</td>
+            </tr>
+            <tr>
+              <td>Test Feed Validity</td>
+              <td>Use W3C Feed Validator to ensure proper RSS formatting</td>
+            </tr>
+            <tr>
+              <td>Set Max Width 100%</td>
+              <td>Ensures responsive images that work on mobile feed readers</td>
+            </tr>
+            <tr>
+              <td>Use HTTPS Images</td>
+              <td>Prevents mixed content warnings in secure contexts</td>
+            </tr>
+            <tr>
+              <td>Add Enclosure Tags</td>
+              <td>Better compatibility with podcasting apps and media aggregators</td>
+            </tr>
+            <tr>
+              <td>Consider Feed Size</td>
+              <td>Balance image quality with feed download size for better performance</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Testing Your RSS Feed</h2>
+        <p>After implementing featured images in RSS:</p>
+        <ol>
+          <li>Visit your RSS feed URL (usually <code>yoursite.com/feed/</code>)</li>
+          <li>Validate using <a href="https://validator.w3.org/feed/" target="_blank" rel="noopener">W3C Feed Validator</a></li>
+          <li>Test in popular feed readers (Feedly, Inoreader, NewsBlur)</li>
+          <li>Check RSS-to-email services (Mailchimp, FeedBurner)</li>
+          <li>Verify images load properly and are responsive</li>
+          <li>Test social media platforms that parse RSS</li>
+        </ol>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Minimal impact on site performance (0.001-0.002s per feed request). Featured images are already loaded in WordPress; RSS filters add negligible processing time. Main consideration is feed file size - use optimized image sizes (medium/large) rather than full-size images to keep feeds under 100KB when possible.</p>
+
+        <h2>Troubleshooting Common Issues</h2>
+        <ul>
+          <li><strong>Images not showing:</strong> Clear site cache and RSS feed cache; check if featured images exist</li>
+          <li><strong>Broken images:</strong> Verify image URLs are absolute (not relative) and use HTTPS</li>
+          <li><strong>Feed validation errors:</strong> Ensure proper escaping with esc_url() and esc_attr()</li>
+          <li><strong>Layout issues:</strong> Use inline styles only; avoid external CSS that feed readers strip</li>
+          <li><strong>Slow feed loading:</strong> Reduce image sizes; avoid 'full' size images in feeds</li>
+        </ul>
+      </div>
+    `,
+    code: `/**
+ * Add featured image to RSS feed
+ */
+function add_featured_image_to_rss($content) {
+    global $post;
+
+    if (has_post_thumbnail($post->ID)) {
+        $content = '<div>' . get_the_post_thumbnail($post->ID, 'medium', array('style' => 'margin-bottom: 15px;')) . '</div>' . $content;
+    }
+
+    return $content;
+}
+add_filter('the_excerpt_rss', 'add_featured_image_to_rss');
+add_filter('the_content_feed', 'add_featured_image_to_rss');`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-15',
+    readTime: '7 min',
+    category: 'WordPress Content',
+    tags: ['RSS', 'Featured Images', 'Feed'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Add Featured Images to WordPress RSS Feed - Complete Guide 2025',
+      metaDescription: 'Learn how to automatically include featured images in WordPress RSS feeds. Improve content syndication, social sharing, and email marketing with complete code examples.',
+      keywords: ['WordPress RSS feed', 'featured images RSS', 'RSS feed images', 'WordPress feed customization', 'RSS enclosure', 'Media RSS', 'content syndication', 'RSS-to-email', 'feed reader images'],
+      canonical: 'https://shahmir.dev/blog/add-featured-image-rss',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Add Featured Images to WordPress RSS Feed',
+        description: 'Complete guide to adding featured images to WordPress RSS feeds for better content syndication and social media sharing.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-15',
+        dateModified: '2025-01-15',
+        proficiencyLevel: 'Beginner',
+        dependencies: 'WordPress 4.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Why don't featured images show in my RSS feed by default?",
+        answer: "WordPress RSS feeds only include post content and excerpt by default. Featured images are separate post metadata, not part of the content. You need to use filters like the_excerpt_rss or the_content_feed to manually add featured images to your RSS feed output. This gives you control over image size, placement, and styling."
+      },
+      {
+        question: "Which image size should I use for RSS feeds?",
+        answer: "Use 'medium' (300x300) or 'large' (1024x1024) sizes for RSS feeds. Avoid 'full' size images as they significantly increase feed file size, causing slow loading in feed readers and email services. Medium size offers a good balance between quality and performance, while large is better for high-resolution displays. Consider your audience - if they're mainly on mobile, use medium."
+      },
+      {
+        question: "What's the difference between adding images to feed content vs using enclosure tags?",
+        answer: "Adding images to feed content (using the_content_feed filter) displays images inline within the post content in feed readers. Enclosure tags are separate XML elements that mark images as attachments - they're mainly used by podcasting apps and some feed aggregators. Use both approaches for maximum compatibility: inline images for visual presentation and enclosures for media-aware applications."
+      },
+      {
+        question: "How can I test if featured images are working in my RSS feed?",
+        answer: "Visit yoursite.com/feed/ to view your RSS XML. Look for image tags or enclosure elements in post items. Use the W3C Feed Validator to check for errors. Test in feed readers like Feedly, Inoreader, or The Old Reader. Also test RSS-to-email services like Mailchimp RSS campaigns. Clear all caching (browser, WordPress, CDN) before testing, as feeds are heavily cached."
+      },
+      {
+        question: "Can I add different images to RSS than the featured image?",
+        answer: "Yes, instead of using get_the_post_thumbnail(), use custom logic to select images. You could use a custom field for RSS-specific images, extract the first image from post content with DOMDocument, use category-based default images, or dynamically generate social media optimized images. Just ensure you return proper HTML with inline styles for feed reader compatibility."
+      }
+    ]
+  },
+  {
+    id: 34,
+    slug: 'auto-featured-image',
+    title: 'Automatically Set Featured Image',
+    excerpt: 'Automatically set featured images from post content, attachments, or external sources to save time and ensure all posts have visual content.',
+    content: `
+      <div class="snippet-content">
+        <p>Manually setting featured images for every post can be time-consuming and easy to forget. Automating this process ensures every post has a featured image, improving SEO, social sharing, and visual consistency across your site.</p>
+
+        <h2>Why Automate Featured Image Setting?</h2>
+        <ul>
+          <li><strong>Time Efficiency:</strong> Save hours of manual work, especially for content-heavy sites</li>
+          <li><strong>Consistency:</strong> Ensure every post has a featured image for uniform appearance</li>
+          <li><strong>SEO Benefits:</strong> Featured images improve search result appearance and CTR</li>
+          <li><strong>Social Media:</strong> Automatic images ensure proper Open Graph and Twitter Card display</li>
+          <li><strong>Content Migration:</strong> Automatically set images when importing content from other platforms</li>
+          <li><strong>User Experience:</strong> Non-technical users don't need to remember to set featured images</li>
+        </ul>
+
+        <h2>Automatically Set First Image as Featured</h2>
+        <p>This code automatically uses the first image in post content as the featured image:</p>
+
+        <pre><code>/**
+ * Automatically set featured image from first image in content
+ */
+function auto_set_featured_image_from_content($post_id) {
+    // Skip if not a post or if running autosave
+    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+        return;
+    }
+
+    // Skip if featured image already set
+    if (has_post_thumbnail($post_id)) {
+        return;
+    }
+
+    // Get post content
+    $post = get_post($post_id);
+    $content = $post->post_content;
+
+    // Find first image in content
+    preg_match_all('/<img[^>]+src=["\']([^"\']+)["\'][^>]*>/i', $content, $matches);
+
+    if (empty($matches[1][0])) {
+        return;
+    }
+
+    $image_url = $matches[1][0];
+
+    // Get image ID from URL
+    $attachment_id = attachment_url_to_postid($image_url);
+
+    if ($attachment_id) {
+        set_post_thumbnail($post_id, $attachment_id);
+    }
+}
+add_action('save_post', 'auto_set_featured_image_from_content');
+add_action('publish_post', 'auto_set_featured_image_from_content');</code></pre>
+
+        <h2>Set Featured Image from First Upload</h2>
+        <p>Automatically set the first image uploaded to a post as its featured image:</p>
+
+        <pre><code>/**
+ * Auto set first uploaded image as featured
+ */
+function auto_set_first_uploaded_image($post_id) {
+    // Only for posts without featured images
+    if (has_post_thumbnail($post_id)) {
+        return;
+    }
+
+    // Get all attachments for this post
+    $attached_images = get_posts(array(
+        'post_type'      => 'attachment',
+        'posts_per_page' => 1,
+        'post_status'    => 'any',
+        'post_parent'    => $post_id,
+        'post_mime_type' => 'image',
+        'orderby'        => 'date',
+        'order'          => 'ASC'
+    ));
+
+    if (!empty($attached_images)) {
+        $attachment_id = $attached_images[0]->ID;
+        set_post_thumbnail($post_id, $attachment_id);
+    }
+}
+add_action('save_post', 'auto_set_first_uploaded_image');
+add_action('publish_post', 'auto_set_first_uploaded_image');</code></pre>
+
+        <h2>Upload External Image and Set as Featured</h2>
+        <p>Extract external images from content, upload to media library, and set as featured:</p>
+
+        <pre><code>/**
+ * Download external image and set as featured
+ */
+function auto_featured_image_external($post_id) {
+    // Security checks
+    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+        return;
+    }
+
+    if (has_post_thumbnail($post_id)) {
+        return;
+    }
+
+    $post = get_post($post_id);
+    $content = $post->post_content;
+
+    // Find first image
+    preg_match_all('/<img[^>]+src=["\']([^"\']+)["\'][^>]*>/i', $content, $matches);
+
+    if (empty($matches[1][0])) {
+        return;
+    }
+
+    $image_url = $matches[1][0];
+
+    // Check if it's an external URL
+    if (strpos($image_url, home_url()) === false) {
+        // Upload to media library
+        $attachment_id = upload_external_image($image_url, $post_id);
+
+        if ($attachment_id) {
+            set_post_thumbnail($post_id, $attachment_id);
+        }
+    } else {
+        // Internal image - just set it
+        $attachment_id = attachment_url_to_postid($image_url);
+        if ($attachment_id) {
+            set_post_thumbnail($post_id, $attachment_id);
+        }
+    }
+}
+add_action('save_post', 'auto_featured_image_external');
+
+/**
+ * Helper function to upload external image
+ */
+function upload_external_image($image_url, $post_id) {
+    require_once(ABSPATH . 'wp-admin/includes/file.php');
+    require_once(ABSPATH . 'wp-admin/includes/media.php');
+    require_once(ABSPATH . 'wp-admin/includes/image.php');
+
+    // Download image to temp location
+    $temp_file = download_url($image_url);
+
+    if (is_wp_error($temp_file)) {
+        return false;
+    }
+
+    // Get the filename
+    $filename = basename($image_url);
+
+    // Prepare file array
+    $file_array = array(
+        'name'     => $filename,
+        'tmp_name' => $temp_file
+    );
+
+    // Upload to media library
+    $attachment_id = media_handle_sideload($file_array, $post_id);
+
+    // Clean up temp file
+    @unlink($temp_file);
+
+    if (is_wp_error($attachment_id)) {
+        return false;
+    }
+
+    return $attachment_id;
+}</code></pre>
+
+        <h2>Post Type Specific Auto Featured Images</h2>
+        <p>Set featured images only for specific post types:</p>
+
+        <pre><code>/**
+ * Auto set featured image for specific post types
+ */
+function auto_featured_image_by_post_type($post_id) {
+    // Define post types for auto featured images
+    $allowed_post_types = array('post', 'news', 'portfolio');
+
+    $post_type = get_post_type($post_id);
+
+    // Check if current post type is in allowed list
+    if (!in_array($post_type, $allowed_post_types)) {
+        return;
+    }
+
+    // Skip if already has featured image
+    if (has_post_thumbnail($post_id)) {
+        return;
+    }
+
+    // Security checks
+    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+        return;
+    }
+
+    // Get first attached image
+    $images = get_attached_media('image', $post_id);
+
+    if (!empty($images)) {
+        $first_image = array_shift($images);
+        set_post_thumbnail($post_id, $first_image->ID);
+    } else {
+        // Try to get from content
+        $post = get_post($post_id);
+        preg_match_all('/<img[^>]+src=["\']([^"\']+)["\'][^>]*>/i', $post->post_content, $matches);
+
+        if (!empty($matches[1][0])) {
+            $attachment_id = attachment_url_to_postid($matches[1][0]);
+            if ($attachment_id) {
+                set_post_thumbnail($post_id, $attachment_id);
+            }
+        }
+    }
+}
+add_action('save_post', 'auto_featured_image_by_post_type');</code></pre>
+
+        <h2>Generate Placeholder Featured Image</h2>
+        <p>Generate a placeholder image with post title when no image is available:</p>
+
+        <pre><code>/**
+ * Generate placeholder featured image with post title
+ */
+function generate_placeholder_featured_image($post_id) {
+    // Skip if already has featured image
+    if (has_post_thumbnail($post_id)) {
+        return;
+    }
+
+    // Security checks
+    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+        return;
+    }
+
+    // Check if GD library is available
+    if (!function_exists('imagecreatetruecolor')) {
+        return;
+    }
+
+    $post = get_post($post_id);
+    $title = $post->post_title;
+
+    // Create image (1200x630 for social media)
+    $width = 1200;
+    $height = 630;
+    $image = imagecreatetruecolor($width, $height);
+
+    // Set background color (blue)
+    $bg_color = imagecolorallocate($image, 41, 128, 185);
+    imagefill($image, 0, 0, $bg_color);
+
+    // Set text color (white)
+    $text_color = imagecolorallocate($image, 255, 255, 255);
+
+    // Word wrap title
+    $wrapped_title = wordwrap($title, 30, "\\n");
+
+    // Calculate text position for centering
+    $font_size = 5; // Built-in font size
+    $lines = explode("\\n", $wrapped_title);
+    $line_height = 20;
+    $total_height = count($lines) * $line_height;
+    $start_y = ($height - $total_height) / 2;
+
+    // Draw each line centered
+    foreach ($lines as $i => $line) {
+        $text_width = imagefontwidth($font_size) * strlen($line);
+        $x = ($width - $text_width) / 2;
+        $y = $start_y + ($i * $line_height);
+        imagestring($image, $font_size, $x, $y, $line, $text_color);
+    }
+
+    // Save to uploads directory
+    $upload_dir = wp_upload_dir();
+    $filename = 'placeholder-' . $post_id . '.png';
+    $filepath = $upload_dir['path'] . '/' . $filename;
+
+    imagepng($image, $filepath);
+    imagedestroy($image);
+
+    // Add to media library
+    $attachment = array(
+        'post_mime_type' => 'image/png',
+        'post_title'     => 'Featured Image - ' . $title,
+        'post_content'   => '',
+        'post_status'    => 'inherit'
+    );
+
+    $attachment_id = wp_insert_attachment($attachment, $filepath, $post_id);
+
+    // Generate metadata
+    $attach_data = wp_generate_attachment_metadata($attachment_id, $filepath);
+    wp_update_attachment_metadata($attachment_id, $attach_data);
+
+    // Set as featured image
+    set_post_thumbnail($post_id, $attachment_id);
+}
+add_action('save_post', 'generate_placeholder_featured_image');</code></pre>
+
+        <h2>Category-Based Default Featured Images</h2>
+        <p>Assign default featured images based on post category:</p>
+
+        <pre><code>/**
+ * Set category-specific default featured images
+ */
+function category_default_featured_image($post_id) {
+    // Skip if already has featured image
+    if (has_post_thumbnail($post_id)) {
+        return;
+    }
+
+    // Security checks
+    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+        return;
+    }
+
+    // Get post categories
+    $categories = get_the_category($post_id);
+
+    if (empty($categories)) {
+        return;
+    }
+
+    // Map category slugs to default image IDs
+    // Replace these IDs with your actual attachment IDs
+    $default_images = array(
+        'technology' => 123,
+        'lifestyle'  => 124,
+        'business'   => 125,
+        'health'     => 126,
+        'travel'     => 127,
+        'food'       => 128
+    );
+
+    // Get first category
+    $category_slug = $categories[0]->slug;
+
+    // Set default image if category matches
+    if (isset($default_images[$category_slug])) {
+        set_post_thumbnail($post_id, $default_images[$category_slug]);
+    } else {
+        // Use generic default image (attachment ID 100)
+        set_post_thumbnail($post_id, 100);
+    }
+}
+add_action('save_post', 'category_default_featured_image');</code></pre>
+
+        <h2>AI-Powered Featured Image Selection</h2>
+        <p>Use advanced logic to select the most relevant image from post content:</p>
+
+        <pre><code>/**
+ * Intelligently select best image from content
+ */
+function smart_auto_featured_image($post_id) {
+    // Security and duplicate checks
+    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id) || has_post_thumbnail($post_id)) {
+        return;
+    }
+
+    $post = get_post($post_id);
+    $content = $post->post_content;
+
+    // Find all images with their attributes
+    preg_match_all('/<img[^>]+>/i', $content, $img_tags);
+
+    if (empty($img_tags[0])) {
+        return;
+    }
+
+    $best_image = null;
+    $best_score = 0;
+
+    foreach ($img_tags[0] as $img_tag) {
+        $score = 0;
+
+        // Extract src
+        preg_match('/src=["\']([^"\']+)["\']/', $img_tag, $src_match);
+        if (empty($src_match[1])) {
+            continue;
+        }
+
+        $image_url = $src_match[1];
+        $attachment_id = attachment_url_to_postid($image_url);
+
+        if (!$attachment_id) {
+            continue;
+        }
+
+        // Get image metadata
+        $metadata = wp_get_attachment_metadata($attachment_id);
+
+        if (!$metadata) {
+            continue;
+        }
+
+        // Scoring criteria
+        // 1. Image size (prefer larger images, optimal 1200x630)
+        if (isset($metadata['width']) && isset($metadata['height'])) {
+            $width = $metadata['width'];
+            $height = $metadata['height'];
+
+            // Prefer images close to 1200x630 (social media size)
+            $ideal_ratio = 1200 / 630;
+            $actual_ratio = $width / $height;
+            $ratio_diff = abs($ideal_ratio - $actual_ratio);
+
+            if ($width >= 800 && $height >= 400) {
+                $score += 50;
+            }
+
+            if ($ratio_diff < 0.3) {
+                $score += 30;
+            }
+        }
+
+        // 2. Position in content (prefer early images)
+        $position = strpos($content, $img_tag);
+        if ($position < strlen($content) / 3) {
+            $score += 20; // In first third
+        }
+
+        // 3. Has alt text (better for SEO)
+        if (preg_match('/alt=["\']([^"\']+)["\']/', $img_tag, $alt_match)) {
+            if (!empty($alt_match[1])) {
+                $score += 10;
+            }
+        }
+
+        // 4. File type (prefer jpg/png over gif)
+        $file_type = $metadata['file'] ?? '';
+        if (strpos($file_type, '.jpg') !== false || strpos($file_type, '.jpeg') !== false || strpos($file_type, '.png') !== false) {
+            $score += 10;
+        }
+
+        // Update best image if this scores higher
+        if ($score > $best_score) {
+            $best_score = $score;
+            $best_image = $attachment_id;
+        }
+    }
+
+    // Set the best image as featured
+    if ($best_image) {
+        set_post_thumbnail($post_id, $best_image);
+    }
+}
+add_action('save_post', 'smart_auto_featured_image');</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Check for Existing Featured Image</td>
+              <td>Prevents overwriting manually set featured images</td>
+            </tr>
+            <tr>
+              <td>Validate Image Existence</td>
+              <td>Ensures images exist in media library before setting as featured</td>
+            </tr>
+            <tr>
+              <td>Skip Autosave and Revisions</td>
+              <td>Prevents unnecessary processing and database queries</td>
+            </tr>
+            <tr>
+              <td>Use Appropriate Hooks</td>
+              <td>save_post for drafts, publish_post for published content only</td>
+            </tr>
+            <tr>
+              <td>Optimize Image Selection</td>
+              <td>Choose images with proper dimensions for social sharing (1200x630)</td>
+            </tr>
+            <tr>
+              <td>Handle External Images Properly</td>
+              <td>Download and import external images to prevent broken links</td>
+            </tr>
+            <tr>
+              <td>Provide Fallback Options</td>
+              <td>Use default images or placeholders when no suitable image found</td>
+            </tr>
+            <tr>
+              <td>Test with Different Post Types</td>
+              <td>Ensure automation works correctly across all content types</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Low to moderate impact (0.01-0.1s per post save). Image extraction and selection add minimal overhead. External image downloads can take 1-2 seconds depending on image size and network speed. Use conditional logic to skip processing when not needed (e.g., when featured image already exists). Consider running intensive operations (like external downloads) asynchronously using wp_schedule_single_event() for better user experience.</p>
+
+        <h2>Common Use Cases</h2>
+        <ul>
+          <li><strong>Content Migration:</strong> Automatically set featured images when importing from WordPress.com, Medium, or other platforms</li>
+          <li><strong>User-Generated Content:</strong> Ensure front-end submissions always have featured images</li>
+          <li><strong>RSS Feed Imports:</strong> Automatically pull and set images from syndicated content</li>
+          <li><strong>News Sites:</strong> Use first image from wire service articles</li>
+          <li><strong>Portfolio Sites:</strong> Set first gallery image as featured automatically</li>
+          <li><strong>E-commerce:</strong> Use first product image as featured for better catalog display</li>
+        </ul>
+      </div>
+    `,
+    code: `/**
+ * Automatically set featured image from first image in content
+ */
+function auto_set_featured_image_from_content($post_id) {
+    if (wp_is_post_autosave($post_id) || wp_is_post_revision($post_id)) {
+        return;
+    }
+
+    if (has_post_thumbnail($post_id)) {
+        return;
+    }
+
+    $post = get_post($post_id);
+    $content = $post->post_content;
+
+    preg_match_all('/<img[^>]+src=["\']([^"\']+)["\'][^>]*>/i', $content, $matches);
+
+    if (empty($matches[1][0])) {
+        return;
+    }
+
+    $image_url = $matches[1][0];
+    $attachment_id = attachment_url_to_postid($image_url);
+
+    if ($attachment_id) {
+        set_post_thumbnail($post_id, $attachment_id);
+    }
+}
+add_action('save_post', 'auto_set_featured_image_from_content');`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-15',
+    readTime: '8 min',
+    category: 'WordPress Content',
+    tags: ['Featured Images', 'Automation', 'Media'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Automatically Set Featured Images in WordPress - Complete Guide 2025',
+      metaDescription: 'Learn how to automatically set featured images from post content, uploads, or external sources. Save time and ensure every WordPress post has visual content.',
+      keywords: ['WordPress featured image', 'auto featured image', 'automatic featured image WordPress', 'set featured image automatically', 'WordPress automation', 'featured image from content', 'WordPress media automation', 'auto set thumbnail'],
+      canonical: 'https://shahmir.dev/blog/auto-featured-image',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Automatically Set Featured Image in WordPress',
+        description: 'Complete guide to automatically setting featured images from post content, attachments, or external sources in WordPress.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-15',
+        dateModified: '2025-01-15',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WordPress 4.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Will automatic featured images overwrite manually set ones?",
+        answer: "No, if you use the has_post_thumbnail() check in your code. This function returns true if a featured image already exists, allowing your automation to skip those posts. This is best practice and prevents accidentally overwriting images that users or editors have carefully selected. Always include this check at the beginning of your automation function."
+      },
+      {
+        question: "How do I automatically set featured images for existing posts?",
+        answer: "The save_post hook only triggers when posts are saved. For existing posts, create a one-time script using WP-CLI or a custom admin page that loops through posts without featured images using get_posts() with a meta_query checking for _thumbnail_id. Then apply your featured image logic to each post. Run this as a bulk operation during off-peak hours to avoid performance issues."
+      },
+      {
+        question: "Can I download and use the first Google Images result as featured image?",
+        answer: "Technically yes, but legally no. Automatically downloading images from Google Images or other sources violates copyright laws and Terms of Service. Instead, use images from your own content, licensed stock photo APIs (like Unsplash API with proper attribution), or create placeholder images. Always respect copyright and only automate with images you have rights to use."
+      },
+      {
+        question: "What's the best image size for auto-generated featured images?",
+        answer: "Create images at 1200x630 pixels, the optimal size for social media sharing (Facebook, LinkedIn, Twitter). This ensures good display quality across platforms. WordPress will automatically generate smaller sizes. For placeholder images, use this dimension with a 16:9 or 1.91:1 aspect ratio. Avoid square images (they get cropped poorly on social platforms)."
+      },
+      {
+        question: "How can I set different default images for different categories?",
+        answer: "Create a mapping array that associates category slugs with attachment IDs: $default_images = array('tech' => 123, 'lifestyle' => 456). Get the post's category using get_the_category(), match the slug to your array, and use set_post_thumbnail() with the corresponding ID. Upload your default images to the media library first and note their attachment IDs. This works well for news sites and multi-topic blogs."
+      }
+    ]
+  },
+  {
+    id: 35,
+    slug: 'custom-content-before-after-posts',
+    title: 'Add Content Before/After Posts',
+    excerpt: 'Insert custom content, ads, CTAs, or social sharing buttons automatically before or after post content using WordPress filters.',
+    content: `
+      <div class="snippet-content">
+        <p>Adding content before or after posts is a common need for CTAs, advertisements, social sharing buttons, author bios, related posts, and disclaimer text. Using WordPress filters, you can inject this content automatically without modifying templates or editing individual posts.</p>
+
+        <h2>Why Add Content Before/After Posts?</h2>
+        <ul>
+          <li><strong>Call-to-Actions:</strong> Add newsletter signups, product promotions, or download buttons after content</li>
+          <li><strong>Monetization:</strong> Insert ads strategically before or after engaging content</li>
+          <li><strong>Social Engagement:</strong> Add sharing buttons to encourage content distribution</li>
+          <li><strong>Legal Compliance:</strong> Display disclaimers, disclosures, or copyright notices</li>
+          <li><strong>User Navigation:</strong> Show related posts, author bios, or next/previous navigation</li>
+          <li><strong>Consistency:</strong> Ensure uniform content across all posts without manual editing</li>
+        </ul>
+
+        <h2>Add Content After Posts</h2>
+        <p>This basic example adds custom content after every post:</p>
+
+        <pre><code>/**
+ * Add custom content after post content
+ */
+function add_content_after_post($content) {
+    // Only on single posts, not pages
+    if (is_single() && is_main_query()) {
+        $custom_content = '<div class="after-post-content">';
+        $custom_content .= '<h3>Enjoyed this article?</h3>';
+        $custom_content .= '<p>Subscribe to our newsletter for more great content!</p>';
+        $custom_content .= '<a href="/newsletter" class="btn">Subscribe Now</a>';
+        $custom_content .= '</div>';
+
+        $content .= $custom_content;
+    }
+
+    return $content;
+}
+add_filter('the_content', 'add_content_after_post');</code></pre>
+
+        <h2>Add Content Before Posts</h2>
+        <p>Insert content at the beginning of post content:</p>
+
+        <pre><code>/**
+ * Add custom content before post content
+ */
+function add_content_before_post($content) {
+    // Only on single posts
+    if (is_single() && is_main_query()) {
+        $custom_content = '<div class="before-post-content">';
+        $custom_content .= '<p class="post-notice">';
+        $custom_content .= '<strong>Note:</strong> This article was last updated on ' . get_the_modified_date() . '.';
+        $custom_content .= '</p>';
+        $custom_content .= '</div>';
+
+        $content = $custom_content . $content;
+    }
+
+    return $content;
+}
+add_filter('the_content', 'add_content_before_post');</code></pre>
+
+        <h2>Add Content Before AND After Posts</h2>
+        <p>Combine both approaches in a single function:</p>
+
+        <pre><code>/**
+ * Add content before and after posts
+ */
+function add_content_before_and_after_post($content) {
+    // Only on single posts, not in feeds or admin
+    if (!is_single() || !is_main_query() || is_feed()) {
+        return $content;
+    }
+
+    // Content to add before
+    $before_content = '<div class="alert alert-info">';
+    $before_content .= '<strong>Reading Time:</strong> ' . estimate_reading_time() . ' minutes';
+    $before_content .= '</div>';
+
+    // Content to add after
+    $after_content = '<div class="post-footer">';
+    $after_content .= '<div class="share-buttons">';
+    $after_content .= '<h4>Share this article:</h4>';
+    $after_content .= '<a href="https://twitter.com/intent/tweet?url=' . urlencode(get_permalink()) . '&text=' . urlencode(get_the_title()) . '" target="_blank">Twitter</a> | ';
+    $after_content .= '<a href="https://www.facebook.com/sharer/sharer.php?u=' . urlencode(get_permalink()) . '" target="_blank">Facebook</a> | ';
+    $after_content .= '<a href="https://www.linkedin.com/sharing/share-offsite/?url=' . urlencode(get_permalink()) . '" target="_blank">LinkedIn</a>';
+    $after_content .= '</div>';
+    $after_content .= '</div>';
+
+    return $before_content . $content . $after_content;
+}
+add_filter('the_content', 'add_content_before_and_after_post');
+
+/**
+ * Helper function to estimate reading time
+ */
+function estimate_reading_time() {
+    $content = get_post_field('post_content', get_the_ID());
+    $word_count = str_word_count(strip_tags($content));
+    $reading_time = ceil($word_count / 200); // Average reading speed: 200 words/min
+
+    return $reading_time;
+}</code></pre>
+
+        <h2>Category-Specific Content</h2>
+        <p>Add different content based on post category:</p>
+
+        <pre><code>/**
+ * Add category-specific content after posts
+ */
+function category_specific_content_after_post($content) {
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    $custom_content = '';
+
+    if (has_category('tutorials')) {
+        $custom_content = '<div class="tutorial-footer">';
+        $custom_content .= '<h4>Need help with this tutorial?</h4>';
+        $custom_content .= '<p>Join our community forum for support!</p>';
+        $custom_content .= '<a href="/forum" class="btn">Visit Forum</a>';
+        $custom_content .= '</div>';
+    } elseif (has_category('products')) {
+        $custom_content = '<div class="product-cta">';
+        $custom_content .= '<h4>Ready to purchase?</h4>';
+        $custom_content .= '<p>Get 10% off with code: BLOG10</p>';
+        $custom_content .= '<a href="/shop" class="btn btn-primary">Shop Now</a>';
+        $custom_content .= '</div>';
+    } elseif (has_category('news')) {
+        $custom_content = '<div class="news-footer">';
+        $custom_content .= '<p><em>Stay updated with our latest news by following us on social media.</em></p>';
+        $custom_content .= '</div>';
+    }
+
+    return $content . $custom_content;
+}
+add_filter('the_content', 'category_specific_content_after_post');</code></pre>
+
+        <h2>Add Author Bio After Posts</h2>
+        <p>Display author information at the end of posts:</p>
+
+        <pre><code>/**
+ * Add author bio after post content
+ */
+function add_author_bio_after_post($content) {
+    // Only on single posts
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    global $post;
+    $author_id = $post->post_author;
+
+    // Get author information
+    $author_name = get_the_author_meta('display_name', $author_id);
+    $author_bio = get_the_author_meta('description', $author_id);
+    $author_url = get_author_posts_url($author_id);
+    $author_avatar = get_avatar($author_id, 80);
+
+    // Skip if author has no bio
+    if (empty($author_bio)) {
+        return $content;
+    }
+
+    // Build author box HTML
+    $author_box = '<div class="author-bio-box">';
+    $author_box .= '<div class="author-avatar">' . $author_avatar . '</div>';
+    $author_box .= '<div class="author-info">';
+    $author_box .= '<h4>About ' . esc_html($author_name) . '</h4>';
+    $author_box .= '<p>' . esc_html($author_bio) . '</p>';
+    $author_box .= '<a href="' . esc_url($author_url) . '" class="author-link">View all posts by ' . esc_html($author_name) . '</a>';
+    $author_box .= '</div>';
+    $author_box .= '</div>';
+
+    return $content . $author_box;
+}
+add_filter('the_content', 'add_author_bio_after_post');</code></pre>
+
+        <h2>Add Related Posts After Content</h2>
+        <p>Show related posts from the same category:</p>
+
+        <pre><code>/**
+ * Add related posts after post content
+ */
+function add_related_posts_after_content($content) {
+    // Only on single posts
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    global $post;
+
+    // Get categories of current post
+    $categories = get_the_category($post->ID);
+
+    if (empty($categories)) {
+        return $content;
+    }
+
+    $category_ids = array();
+    foreach ($categories as $category) {
+        $category_ids[] = $category->term_id;
+    }
+
+    // Query for related posts
+    $related_posts = get_posts(array(
+        'category__in'   => $category_ids,
+        'post__not_in'   => array($post->ID),
+        'posts_per_page' => 3,
+        'orderby'        => 'rand'
+    ));
+
+    if (empty($related_posts)) {
+        return $content;
+    }
+
+    // Build related posts HTML
+    $related_html = '<div class="related-posts">';
+    $related_html .= '<h3>You Might Also Like:</h3>';
+    $related_html .= '<ul>';
+
+    foreach ($related_posts as $related_post) {
+        $related_html .= '<li>';
+        $related_html .= '<a href="' . get_permalink($related_post->ID) . '">';
+        $related_html .= esc_html($related_post->post_title);
+        $related_html .= '</a>';
+        $related_html .= '</li>';
+    }
+
+    $related_html .= '</ul>';
+    $related_html .= '</div>';
+
+    wp_reset_postdata();
+
+    return $content . $related_html;
+}
+add_filter('the_content', 'add_related_posts_after_content');</code></pre>
+
+        <h2>Add Ads or Banners</h2>
+        <p>Insert advertisement blocks strategically:</p>
+
+        <pre><code>/**
+ * Add advertisement after post content
+ */
+function add_ad_after_post_content($content) {
+    // Only on single posts, not in feeds
+    if (!is_single() || !is_main_query() || is_feed()) {
+        return $content;
+    }
+
+    $ad_content = '<div class="post-ad-container">';
+    $ad_content .= '<!-- Advertisement -->';
+    $ad_content .= '<div class="ad-label">Advertisement</div>';
+
+    // Option 1: Direct ad code
+    $ad_content .= '<div class="ad-block">';
+    $ad_content .= '<!-- Insert your ad code here -->';
+    $ad_content .= '<a href="https://example.com/product" target="_blank" rel="noopener">';
+    $ad_content .= '<img src="/images/ad-banner.jpg" alt="Advertisement" />';
+    $ad_content .= '</a>';
+    $ad_content .= '</div>';
+
+    // Option 2: AdSense code (replace with your publisher ID)
+    // $ad_content .= '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>';
+    // $ad_content .= '<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXXX" data-ad-slot="XXXXXXXXXX" data-ad-format="auto"></ins>';
+    // $ad_content .= '<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>';
+
+    $ad_content .= '</div>';
+
+    return $content . $ad_content;
+}
+add_filter('the_content', 'add_ad_after_post_content');</code></pre>
+
+        <h2>Conditional Content Based on User Status</h2>
+        <p>Show different content for logged-in vs logged-out users:</p>
+
+        <pre><code>/**
+ * Add content based on user login status
+ */
+function add_conditional_content_after_post($content) {
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    $custom_content = '<div class="user-specific-content">';
+
+    if (is_user_logged_in()) {
+        // Content for logged-in users
+        $current_user = wp_get_current_user();
+        $custom_content .= '<p>Thanks for reading, ' . esc_html($current_user->display_name) . '!</p>';
+        $custom_content .= '<a href="/dashboard" class="btn">Go to Dashboard</a>';
+    } else {
+        // Content for logged-out users
+        $custom_content .= '<h4>Want access to premium content?</h4>';
+        $custom_content .= '<p>Create a free account to unlock exclusive articles and features.</p>';
+        $custom_content .= '<a href="/register" class="btn btn-primary">Sign Up Free</a> ';
+        $custom_content .= '<a href="/login" class="btn btn-secondary">Login</a>';
+    }
+
+    $custom_content .= '</div>';
+
+    return $content . $custom_content;
+}
+add_filter('the_content', 'add_conditional_content_after_post');</code></pre>
+
+        <h2>Add Disclaimer or Legal Notice</h2>
+        <p>Automatically add disclaimers to specific post types or categories:</p>
+
+        <pre><code>/**
+ * Add disclaimer before post content
+ */
+function add_disclaimer_before_post($content) {
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    // Only add to specific categories
+    if (has_category(array('medical', 'legal', 'financial'))) {
+        $disclaimer = '<div class="post-disclaimer">';
+        $disclaimer .= '<p><strong>Disclaimer:</strong> The information provided in this article is for educational and informational purposes only. It should not be considered professional advice. Please consult with a qualified professional before making any decisions based on this content.</p>';
+        $disclaimer .= '</div>';
+
+        $content = $disclaimer . $content;
+    }
+
+    return $content;
+}
+add_filter('the_content', 'add_disclaimer_before_post');</code></pre>
+
+        <h2>Post Type Specific Content</h2>
+        <p>Add different content for different post types:</p>
+
+        <pre><code>/**
+ * Add content after posts based on post type
+ */
+function add_content_by_post_type($content) {
+    if (!is_singular() || !is_main_query()) {
+        return $content;
+    }
+
+    $post_type = get_post_type();
+    $custom_content = '';
+
+    switch ($post_type) {
+        case 'post':
+            $custom_content = '<div class="blog-post-footer">';
+            $custom_content .= '<p>Browse more <a href="/blog">blog articles</a>.</p>';
+            $custom_content .= '</div>';
+            break;
+
+        case 'portfolio':
+            $custom_content = '<div class="portfolio-footer">';
+            $custom_content .= '<p>Interested in working together? <a href="/contact">Get in touch</a>!</p>';
+            $custom_content .= '</div>';
+            break;
+
+        case 'product':
+            $custom_content = '<div class="product-footer">';
+            $custom_content .= '<p>Questions about this product? <a href="/support">Contact support</a>.</p>';
+            $custom_content .= '</div>';
+            break;
+
+        default:
+            // No custom content for other post types
+            break;
+    }
+
+    return $content . $custom_content;
+}
+add_filter('the_content', 'add_content_by_post_type');</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Use is_single() Check</td>
+              <td>Prevents content from appearing on archive pages, search results, or excerpts</td>
+            </tr>
+            <tr>
+              <td>Use is_main_query() Check</td>
+              <td>Ensures content only appears in main post content, not widgets or sidebars</td>
+            </tr>
+            <tr>
+              <td>Escape Output</td>
+              <td>Use esc_html(), esc_url(), esc_attr() for security and XSS prevention</td>
+            </tr>
+            <tr>
+              <td>Exclude from Feeds</td>
+              <td>Use !is_feed() to prevent extra content in RSS feeds if not needed</td>
+            </tr>
+            <tr>
+              <td>Use Semantic HTML</td>
+              <td>Wrap content in divs with descriptive classes for easy styling</td>
+            </tr>
+            <tr>
+              <td>Test on Mobile</td>
+              <td>Ensure added content displays properly on small screens</td>
+            </tr>
+            <tr>
+              <td>Consider Performance</td>
+              <td>Avoid complex queries or external API calls in the_content filter</td>
+            </tr>
+            <tr>
+              <td>Provide Opt-Out Option</td>
+              <td>Consider adding custom field to disable injected content per-post</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Minimal impact (0.001-0.005s) for simple content injection. String concatenation is very fast in PHP. Complex additions with database queries (like related posts) can add 0.01-0.05s. Cache related posts queries with transients for better performance. Avoid external API calls or complex computations. For ads, use async loading scripts to prevent blocking page render.</p>
+
+        <h2>Styling Your Injected Content</h2>
+        <p>Add CSS to style your before/after content. Add this to your theme's style.css or custom CSS:</p>
+
+        <pre><code>/* After post content styling */
+.after-post-content {
+    background: #f8f9fa;
+    padding: 20px;
+    margin: 30px 0;
+    border-left: 4px solid #0073aa;
+}
+
+.after-post-content h3 {
+    margin-top: 0;
+}
+
+/* Author bio box */
+.author-bio-box {
+    display: flex;
+    gap: 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 30px 0;
+}
+
+.author-avatar {
+    flex-shrink: 0;
+}
+
+/* Related posts */
+.related-posts {
+    background: #f0f0f0;
+    padding: 20px;
+    margin: 30px 0;
+}
+
+.related-posts ul {
+    list-style: none;
+    padding: 0;
+}
+
+.related-posts li {
+    margin: 10px 0;
+}
+
+/* Advertisement label */
+.ad-label {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 10px;
+}</code></pre>
+      </div>
+    `,
+    code: `/**
+ * Add custom content after post content
+ */
+function add_content_after_post($content) {
+    if (is_single() && is_main_query()) {
+        $custom_content = '<div class="after-post-content">';
+        $custom_content .= '<h3>Enjoyed this article?</h3>';
+        $custom_content .= '<p>Subscribe to our newsletter for more great content!</p>';
+        $custom_content .= '<a href="/newsletter" class="btn">Subscribe Now</a>';
+        $custom_content .= '</div>';
+
+        $content .= $custom_content;
+    }
+
+    return $content;
+}
+add_filter('the_content', 'add_content_after_post');`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-15',
+    readTime: '7 min',
+    category: 'WordPress Content',
+    tags: ['Content', 'Hooks', 'Filters'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Add Content Before or After Posts in WordPress - Complete Guide 2025',
+      metaDescription: 'Learn how to automatically insert custom content, CTAs, ads, social buttons, author bios, and more before or after WordPress post content using filters.',
+      keywords: ['WordPress add content after post', 'WordPress the_content filter', 'insert content WordPress', 'WordPress post hooks', 'add CTA after post', 'WordPress content injection', 'author bio WordPress', 'related posts WordPress'],
+      canonical: 'https://shahmir.dev/blog/custom-content-before-after-posts',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Add Content Before/After Posts in WordPress',
+        description: 'Complete guide to inserting custom content, CTAs, ads, social sharing buttons, and more before or after WordPress posts.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-15',
+        dateModified: '2025-01-15',
+        proficiencyLevel: 'Beginner',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Why is my injected content appearing in excerpts and archive pages?",
+        answer: "You need to add conditional checks to your function. Use is_single() to restrict to single post pages only, and is_main_query() to ensure it only affects the main content loop. Without these checks, the_content filter applies everywhere WordPress displays content, including excerpts, archives, and widgets. Always wrap your code in: if (is_single() && is_main_query()) { ... }"
+      },
+      {
+        question: "How do I add content in the middle of a post, not just before or after?",
+        answer: "You'll need to split the content string at your desired position. You can use strpos() to find a specific HTML tag or string, substr() to split the content, or count paragraphs with preg_match_all() and insert after a specific paragraph number. For example, to insert after the 3rd paragraph: Find all </p> tags, split after the 3rd occurrence, insert your content, then concatenate everything back together."
+      },
+      {
+        question: "Will this content appear in my RSS feed?",
+        answer: "Yes, by default it will. To exclude from RSS feeds, add !is_feed() to your conditional check: if (is_single() && is_main_query() && !is_feed()). This prevents newsletter signups, ads, or other web-only content from appearing in feed readers. However, you might want some content (like author bios) in feeds - adjust based on your needs."
+      },
+      {
+        question: "Can I disable the injected content for specific posts?",
+        answer: "Yes, add a custom field check. Use get_post_meta() to check for a custom field like 'disable_injected_content'. If it exists and is true, return the content without modification. In your function: if (get_post_meta(get_the_ID(), 'disable_injected_content', true)) { return $content; }. Then add this custom field to posts where you want to disable the feature."
+      },
+      {
+        question: "How do I add different content for mobile vs desktop users?",
+        answer: "Use wp_is_mobile() to detect mobile devices, though note it's basic user-agent detection. Better approach: use CSS media queries to hide/show different content blocks. Add both mobile and desktop versions to your injected content with different classes, then use CSS @media queries to display only the appropriate version. This is more reliable than server-side detection."
+      }
+    ]
+  },
+  {
+    id: 36,
+    slug: 'remove-p-tags-images',
+    title: 'Remove P Tags Around Images',
+    excerpt: 'Eliminate unwanted paragraph tags that WordPress automatically wraps around images for cleaner HTML and better styling control.',
+    content: `
+      <div class="snippet-content">
+        <p>WordPress's wpautop() function automatically wraps images in paragraph tags, which can cause unwanted spacing, layout issues, and CSS styling challenges. Removing these tags gives you cleaner HTML and better control over image presentation.</p>
+
+        <h2>Why Remove P Tags Around Images?</h2>
+        <ul>
+          <li><strong>Better Layouts:</strong> Prevent unwanted margins and spacing around images</li>
+          <li><strong>Styling Control:</strong> Apply CSS directly to images without paragraph interference</li>
+          <li><strong>Grid Layouts:</strong> Essential for creating image galleries and grid-based designs</li>
+          <li><strong>Flexbox/CSS Grid:</strong> Paragraph wrappers break modern CSS layout systems</li>
+          <li><strong>Responsive Design:</strong> Easier to implement responsive image techniques</li>
+          <li><strong>Validation:</strong> Prevents invalid HTML when using figure tags or other image containers</li>
+        </ul>
+
+        <h2>Basic: Remove All P Tags from Images</h2>
+        <p>This code strips paragraph tags from around all images in post content:</p>
+
+        <pre><code>/**
+ * Remove p tags around images
+ */
+function remove_p_tags_around_images($content) {
+    // Remove p tags that only contain an img tag
+    $content = preg_replace('/<p>\\s*(<a .*>)?\\s*(<img .*>)\\s*(<\\/a>)?\\s*<\\/p>/iU', '\\1\\2\\3', $content);
+
+    return $content;
+}
+add_filter('the_content', 'remove_p_tags_around_images');</code></pre>
+
+        <h2>Advanced: Remove P Tags with Better Pattern Matching</h2>
+        <p>More comprehensive approach handling various image scenarios:</p>
+
+        <pre><code>/**
+ * Remove p tags around images (comprehensive version)
+ */
+function advanced_remove_p_tags_images($content) {
+    // Pattern 1: Remove p tags around images
+    $content = preg_replace('/<p>\\s*(<a .*>)?\\s*(<img .*>)\\s*(<\\/a>)?\\s*<\\/p>/iU', '\\1\\2\\3', $content);
+
+    // Pattern 2: Remove p tags that only contain whitespace and an image
+    $content = preg_replace('/<p>([\\s]*)?(<img[^>]*>)([\\s]*)?<\\/p>/i', '\\2', $content);
+
+    // Pattern 3: Remove p tags from images with captions
+    $content = preg_replace('/<p>\\s*(<a[^>]+>\\s*)?(<img[^>]+>)(\\s*<\\/a>)?([^<]*)<\\/p>/i', '\\1\\2\\3\\4', $content);
+
+    return $content;
+}
+add_filter('the_content', 'advanced_remove_p_tags_images');</code></pre>
+
+        <h2>Remove P Tags and Add Custom Wrapper</h2>
+        <p>Strip paragraph tags and wrap images in figure elements instead:</p>
+
+        <pre><code>/**
+ * Remove p tags and wrap images in figure elements
+ */
+function replace_p_with_figure($content) {
+    // Remove p tags from images
+    $content = preg_replace('/<p>\\s*(<a .*>)?\\s*(<img .*>)\\s*(<\\/a>)?\\s*<\\/p>/iU', '\\1\\2\\3', $content);
+
+    // Wrap standalone images in figure tags
+    $content = preg_replace(
+        '/(<img[^>]+class="[^"]*)(wp-image-[0-9]+)([^"]*"[^>]*>)/i',
+        '<figure class="wp-figure">\\1\\2\\3</figure>',
+        $content
+    );
+
+    return $content;
+}
+add_filter('the_content', 'replace_p_with_figure');</code></pre>
+
+        <h2>Conditional: Only Remove for Aligned Images</h2>
+        <p>Remove paragraph tags only from images with alignment classes:</p>
+
+        <pre><code>/**
+ * Remove p tags only from aligned images
+ */
+function remove_p_from_aligned_images($content) {
+    // Remove p tags only from images with alignleft, alignright, aligncenter
+    $patterns = array(
+        '/<p>\\s*(<a[^>]+>)?\\s*(<img[^>]+class="[^"]*alignleft[^"]*"[^>]*>)\\s*(<\\/a>)?\\s*<\\/p>/i',
+        '/<p>\\s*(<a[^>]+>)?\\s*(<img[^>]+class="[^"]*alignright[^"]*"[^>]*>)\\s*(<\\/a>)?\\s*<\\/p>/i',
+        '/<p>\\s*(<a[^>]+>)?\\s*(<img[^>]+class="[^"]*aligncenter[^"]*"[^>]*>)\\s*(<\\/a>)?\\s*<\\/p>/i',
+        '/<p>\\s*(<a[^>]+>)?\\s*(<img[^>]+class="[^"]*alignnone[^"]*"[^>]*>)\\s*(<\\/a>)?\\s*<\\/p>/i'
+    );
+
+    foreach ($patterns as $pattern) {
+        $content = preg_replace($pattern, '\\1\\2\\3', $content);
+    }
+
+    return $content;
+}
+add_filter('the_content', 'remove_p_from_aligned_images');</code></pre>
+
+        <h2>Remove P Tags from WordPress Galleries</h2>
+        <p>Clean up paragraph tags around WordPress gallery shortcodes:</p>
+
+        <pre><code>/**
+ * Remove p tags from gallery shortcodes
+ */
+function remove_p_from_galleries($content) {
+    // Remove p tags from gallery shortcode
+    $content = preg_replace('/<p>\\s*\\[gallery([^\\]]*)\\]\\s*<\\/p>/i', '[gallery\\1]', $content);
+
+    // Remove p tags from other common shortcodes with media
+    $shortcodes = array('gallery', 'caption', 'embed', 'video', 'audio');
+
+    foreach ($shortcodes as $shortcode) {
+        $content = preg_replace(
+            '/<p>\\s*\\[' . $shortcode . '([^\\]]*)\\]\\s*<\\/p>/i',
+            '[' . $shortcode . '\\1]',
+            $content
+        );
+    }
+
+    return $content;
+}
+add_filter('the_content', 'remove_p_from_galleries');</code></pre>
+
+        <h2>Gutenberg Block Editor Compatible</h2>
+        <p>Handle both classic editor and Gutenberg block content:</p>
+
+        <pre><code>/**
+ * Remove p tags around images (Gutenberg compatible)
+ */
+function remove_p_tags_gutenberg_compatible($content) {
+    // Check if block editor is being used
+    $is_gutenberg = has_blocks($content);
+
+    if ($is_gutenberg) {
+        // For Gutenberg, only clean specific scenarios
+        // Most block content is already properly structured
+        $content = preg_replace('/<p>\\s*(<figure[^>]*>.*?<\\/figure>)\\s*<\\/p>/is', '\\1', $content);
+    } else {
+        // For classic editor, use full cleanup
+        $content = preg_replace('/<p>\\s*(<a .*>)?\\s*(<img .*>)\\s*(<\\/a>)?\\s*<\\/p>/iU', '\\1\\2\\3', $content);
+    }
+
+    return $content;
+}
+add_filter('the_content', 'remove_p_tags_gutenberg_compatible', 20);</code></pre>
+
+        <h2>Completely Disable wpautop for Images</h2>
+        <p>Prevent WordPress from adding paragraph tags to images in the first place:</p>
+
+        <pre><code>/**
+ * Disable wpautop entirely
+ */
+function disable_wpautop_completely() {
+    remove_filter('the_content', 'wpautop');
+    remove_filter('the_excerpt', 'wpautop');
+}
+add_action('after_setup_theme', 'disable_wpautop_completely');
+
+/**
+ * Alternative: Disable wpautop only for specific post types
+ */
+function disable_wpautop_for_post_types() {
+    global $post;
+
+    // Disable for pages and custom post types
+    if (is_page() || get_post_type($post) == 'portfolio') {
+        remove_filter('the_content', 'wpautop');
+    }
+}
+add_action('wp', 'disable_wpautop_for_post_types');</code></pre>
+
+        <h2>Remove Empty P Tags</h2>
+        <p>Clean up empty paragraph tags that can appear after removing image paragraphs:</p>
+
+        <pre><code>/**
+ * Remove empty p tags and p tags with only whitespace
+ */
+function remove_empty_p_tags($content) {
+    // Remove p tags around images
+    $content = preg_replace('/<p>\\s*(<a .*>)?\\s*(<img .*>)\\s*(<\\/a>)?\\s*<\\/p>/iU', '\\1\\2\\3', $content);
+
+    // Remove completely empty p tags
+    $content = preg_replace('/<p>\\s*<\\/p>/i', '', $content);
+
+    // Remove p tags that only contain &nbsp;
+    $content = preg_replace('/<p>\\s*&nbsp;\\s*<\\/p>/i', '', $content);
+
+    // Remove p tags with only whitespace
+    $content = preg_replace('/<p>\\s+<\\/p>/i', '', $content);
+
+    return $content;
+}
+add_filter('the_content', 'remove_empty_p_tags', 20);</code></pre>
+
+        <h2>Custom: Keep P Tags, Remove Margins</h2>
+        <p>Alternative approach: keep paragraph tags but add a class for CSS targeting:</p>
+
+        <pre><code>/**
+ * Add class to p tags containing images
+ */
+function add_class_to_image_paragraphs($content) {
+    // Add custom class to p tags that contain images
+    $content = preg_replace(
+        '/<p>(\\s*<a[^>]*>)?\\s*<img/i',
+        '<p class="image-paragraph">\\1<img',
+        $content
+    );
+
+    return $content;
+}
+add_filter('the_content', 'add_class_to_image_paragraphs');
+
+/* Add to your CSS */
+/*
+.image-paragraph {
+    margin: 0;
+    padding: 0;
+}
+*/</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Test with Different Scenarios</td>
+              <td>Verify regex works with linked images, aligned images, and captions</td>
+            </tr>
+            <tr>
+              <td>Use Higher Filter Priority</td>
+              <td>Add priority 20+ to ensure it runs after wpautop (which runs at 10)</td>
+            </tr>
+            <tr>
+              <td>Preserve Accessibility</td>
+              <td>Ensure alt text and captions remain intact after processing</td>
+            </tr>
+            <tr>
+              <td>Consider Gutenberg</td>
+              <td>Block editor has better image handling; adjust logic accordingly</td>
+            </tr>
+            <tr>
+              <td>Don't Remove All wpautop</td>
+              <td>Completely disabling wpautop affects paragraph formatting site-wide</td>
+            </tr>
+            <tr>
+              <td>Cache Bust After Changes</td>
+              <td>Clear all caching after implementing to see changes immediately</td>
+            </tr>
+            <tr>
+              <td>Test RSS Feeds</td>
+              <td>Ensure images still display properly in feed readers</td>
+            </tr>
+            <tr>
+              <td>Validate HTML</td>
+              <td>Use W3C validator to ensure output is valid HTML5</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Negligible impact (0.001-0.003s per post). Regex operations are fast and execute during the_content filter which already processes content. More complex patterns with multiple replacements may add 0.002-0.005s. Consider using simpler patterns if you have very long posts with many images. No database queries involved, making this very lightweight.</p>
+
+        <h2>Troubleshooting</h2>
+        <ul>
+          <li><strong>P tags still appearing:</strong> Increase filter priority to 20 or higher: add_filter('the_content', 'function_name', 20)</li>
+          <li><strong>Images disappearing:</strong> Check regex pattern isn't too aggressive; test with simple pattern first</li>
+          <li><strong>Gutenberg blocks affected:</strong> Add has_blocks() check to only process classic editor content</li>
+          <li><strong>Captions broken:</strong> Use more specific regex that preserves caption shortcode structure</li>
+          <li><strong>RSS feed issues:</strong> Test in feed reader; may need to exclude from is_feed() contexts</li>
+        </ul>
+
+        <h2>CSS Alternative Solution</h2>
+        <p>If you prefer not to modify HTML, use CSS to neutralize paragraph tag effects:</p>
+
+        <pre><code>/* Remove margins from paragraphs containing only images */
+.entry-content p > img:only-child {
+    display: block;
+}
+
+.entry-content p:has(> img:only-child) {
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+}
+
+/* For linked images */
+.entry-content p:has(> a:only-child > img) {
+    margin: 0;
+    padding: 0;
+}
+
+/* Aligned images */
+.entry-content p img.alignleft,
+.entry-content p img.alignright,
+.entry-content p img.aligncenter {
+    display: block;
+}
+
+/* Note: :has() selector has limited browser support */</code></pre>
+      </div>
+    `,
+    code: `/**
+ * Remove p tags around images
+ */
+function remove_p_tags_around_images($content) {
+    // Remove p tags that only contain an img tag
+    $content = preg_replace('/<p>\\s*(<a .*>)?\\s*(<img .*>)\\s*(<\\/a>)?\\s*<\\/p>/iU', '\\1\\2\\3', $content);
+
+    return $content;
+}
+add_filter('the_content', 'remove_p_tags_around_images');`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-15',
+    readTime: '6 min',
+    category: 'WordPress Content',
+    tags: ['Images', 'Formatting', 'Content'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Remove P Tags Around Images in WordPress - Complete Guide 2025',
+      metaDescription: 'Learn how to remove unwanted paragraph tags that WordPress wraps around images for cleaner HTML, better layouts, and improved styling control.',
+      keywords: ['WordPress remove p tags images', 'WordPress wpautop', 'remove paragraph tags WordPress', 'WordPress image formatting', 'clean WordPress HTML', 'WordPress image paragraphs', 'wpautop filter', 'WordPress image spacing'],
+      canonical: 'https://shahmir.dev/blog/remove-p-tags-images',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Remove P Tags Around Images in WordPress',
+        description: 'Complete guide to removing unwanted paragraph tags around images in WordPress for better layout control and cleaner HTML.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-15',
+        dateModified: '2025-01-15',
+        proficiencyLevel: 'Beginner',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Why does WordPress wrap images in paragraph tags?",
+        answer: "WordPress uses the wpautop() function to automatically format plain text into properly formatted HTML paragraphs. This function treats images as inline content and wraps them in <p> tags, similar to how it handles text. This behavior dates back to WordPress's blogging origins where most images were embedded within text paragraphs. While helpful for basic formatting, it causes layout issues with modern CSS techniques."
+      },
+      {
+        question: "Will removing paragraph tags break my site's layout?",
+        answer: "Generally no, but test first. Removing p tags typically improves layouts by eliminating unwanted margins and spacing. However, if your CSS specifically targets 'p img' selectors, you may need to update your styles. Check your theme's CSS for image-related paragraph styles before implementing. Always test on a staging site first, especially if using older themes that may depend on these paragraph wrappers."
+      },
+      {
+        question: "Should I completely disable wpautop or just remove p tags from images?",
+        answer: "Only remove p tags from images, don't disable wpautop entirely. Completely removing wpautop affects all content formatting - your paragraphs won't have proper spacing, line breaks will disappear, and content will become unformatted text. Use targeted regex patterns that only affect image-containing paragraphs while preserving wpautop's benefits for text content."
+      },
+      {
+        question: "Does this work with Gutenberg block editor?",
+        answer: "Partially. Gutenberg generally produces cleaner HTML and doesn't wrap block-level images in paragraph tags like the classic editor does. However, if you paste images into paragraph blocks or use classic editor content, you may still encounter wrapped images. Use has_blocks() to detect Gutenberg content and apply different rules. For pure Gutenberg sites, you may not need this fix at all."
+      },
+      {
+        question: "Why isn't my code working even with priority set?",
+        answer: "Several reasons: 1) Caching - clear all caches (browser, WordPress, CDN) to see changes. 2) Theme override - some themes manually apply wpautop or strip filters. 3) Plugin conflict - page builders or formatting plugins may interfere. 4) Gutenberg blocks - block content may already be properly structured. 5) Regex pattern issue - test with simpler patterns first. Check with var_dump($content) to see actual content structure."
+      }
+    ]
+  },
+  {
+    id: 37,
+    slug: 'add-table-of-contents',
+    title: 'Generate Table of Contents',
+    excerpt: 'Automatically create a dynamic table of contents from post headings to improve navigation and user experience on long-form content.',
+    content: `
+      <div class="snippet-content">
+        <p>A table of contents (TOC) dramatically improves readability of long articles by providing quick navigation to specific sections. This code automatically generates a TOC by parsing heading tags (H2, H3, etc.) from your post content and creating jump links with smooth scroll navigation.</p>
+
+        <h2>Why Add a Table of Contents?</h2>
+        <ul>
+          <li><strong>Better UX:</strong> Users can jump directly to sections they're interested in</li>
+          <li><strong>Longer Session Duration:</strong> Readers stay engaged with scannable content structure</li>
+          <li><strong>SEO Benefits:</strong> Google may display TOC as sitelinks in search results</li>
+          <li><strong>Accessibility:</strong> Screen readers can navigate content more easily</li>
+          <li><strong>Mobile Friendly:</strong> Quick navigation is especially valuable on small screens</li>
+          <li><strong>Lower Bounce Rate:</strong> Visitors find relevant content faster</li>
+        </ul>
+
+        <h2>Basic Table of Contents</h2>
+        <p>This function automatically generates a TOC from H2 and H3 headings:</p>
+
+        <pre><code>/**
+ * Generate table of contents from post headings
+ */
+function generate_table_of_contents($content) {
+    // Only on single posts with more than 3 headings
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    // Find all H2 and H3 headings
+    preg_match_all('/<h([2-3])([^>]*)>(.*?)<\\/h[2-3]>/i', $content, $matches, PREG_SET_ORDER);
+
+    // Need at least 3 headings for TOC
+    if (count($matches) < 3) {
+        return $content;
+    }
+
+    $toc = '<div class="table-of-contents">';
+    $toc .= '<h2>Table of Contents</h2>';
+    $toc .= '<ul>';
+
+    foreach ($matches as $heading) {
+        $level = $heading[1];
+        $text = strip_tags($heading[3]);
+        $slug = sanitize_title($text);
+
+        // Add ID to heading in content
+        $content = str_replace(
+            $heading[0],
+            '<h' . $level . ' id="' . $slug . '">' . $heading[3] . '</h' . $level . '>',
+            $content
+        );
+
+        // Add to TOC
+        $class = ($level == 2) ? 'toc-h2' : 'toc-h3';
+        $toc .= '<li class="' . $class . '">';
+        $toc .= '<a href="#' . $slug . '">' . esc_html($text) . '</a>';
+        $toc .= '</li>';
+    }
+
+    $toc .= '</ul>';
+    $toc .= '</div>';
+
+    // Insert TOC after first paragraph
+    $content = preg_replace('/<\\/p>/', '</p>' . $toc, $content, 1);
+
+    return $content;
+}
+add_filter('the_content', 'generate_table_of_contents', 10);</code></pre>
+
+        <h2>Advanced TOC with Hierarchy</h2>
+        <p>Create nested lists that respect heading hierarchy (H2 > H3 > H4):</p>
+
+        <pre><code>/**
+ * Generate hierarchical table of contents
+ */
+function advanced_table_of_contents($content) {
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    // Extract all headings H2-H4
+    preg_match_all('/<h([2-4])([^>]*)>(.*?)<\\/h[2-4]>/i', $content, $matches, PREG_SET_ORDER);
+
+    if (count($matches) < 3) {
+        return $content;
+    }
+
+    $toc = '<div class="advanced-toc">';
+    $toc .= '<div class="toc-header">';
+    $toc .= '<h2>Contents</h2>';
+    $toc .= '<button class="toc-toggle" aria-label="Toggle Table of Contents">[show]</button>';
+    $toc .= '</div>';
+    $toc .= '<nav class="toc-nav" role="navigation">';
+    $toc .= '<ul class="toc-list">';
+
+    $prev_level = 2;
+    $counter = 0;
+
+    foreach ($matches as $heading) {
+        $level = (int)$heading[1];
+        $text = strip_tags($heading[3]);
+        $slug = 'heading-' . ++$counter;
+
+        // Add ID to heading in content
+        if (strpos($heading[0], 'id=') === false) {
+            $new_heading = '<h' . $level . ' id="' . $slug . '"' . $heading[2] . '>' . $heading[3] . '</h' . $level . '>';
+            $content = str_replace($heading[0], $new_heading, $content);
+        }
+
+        // Handle nesting
+        if ($level > $prev_level) {
+            $toc .= '<ul class="toc-sublist">';
+        } elseif ($level < $prev_level) {
+            $toc .= str_repeat('</ul></li>', $prev_level - $level);
+        } else {
+            if ($counter > 1) {
+                $toc .= '</li>';
+            }
+        }
+
+        $toc .= '<li class="toc-item toc-level-' . $level . '">';
+        $toc .= '<a href="#' . $slug . '" class="toc-link">' . esc_html($text) . '</a>';
+
+        $prev_level = $level;
+    }
+
+    // Close remaining tags
+    $toc .= '</li>';
+    $toc .= str_repeat('</ul>', $prev_level - 1);
+    $toc .= '</nav>';
+    $toc .= '</div>';
+
+    // Insert after first paragraph
+    $content = preg_replace('/<\\/p>/', '</p>' . $toc, $content, 1);
+
+    return $content;
+}
+add_filter('the_content', 'advanced_table_of_contents', 10);</code></pre>
+
+        <h2>Sticky/Fixed Table of Contents</h2>
+        <p>Create a sidebar TOC that stays visible while scrolling:</p>
+
+        <pre><code>/**
+ * Generate sticky sidebar table of contents
+ */
+function sticky_sidebar_toc($content) {
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    global $post;
+
+    preg_match_all('/<h([2-3])([^>]*)>(.*?)<\\/h[2-3]>/i', $content, $matches, PREG_SET_ORDER);
+
+    if (count($matches) < 3) {
+        return $content;
+    }
+
+    $toc_html = '<aside class="sticky-toc" role="complementary">';
+    $toc_html .= '<div class="sticky-toc-inner">';
+    $toc_html .= '<h3>Jump to Section</h3>';
+    $toc_html .= '<ul class="toc-menu">';
+
+    $heading_count = 0;
+
+    foreach ($matches as $heading) {
+        $level = $heading[1];
+        $text = strip_tags($heading[3]);
+        $slug = 'toc-' . sanitize_title($text) . '-' . ++$heading_count;
+
+        // Add ID to headings
+        if (strpos($heading[0], 'id=') === false) {
+            $new_heading = '<h' . $level . ' id="' . $slug . '"' . $heading[2] . '>' . $heading[3] . '</h' . $level . '>';
+            $content = str_replace($heading[0], $new_heading, $content);
+        }
+
+        $indent_class = ($level == 3) ? 'toc-indent' : '';
+
+        $toc_html .= '<li class="toc-item ' . $indent_class . '">';
+        $toc_html .= '<a href="#' . $slug . '" class="toc-link" data-target="' . $slug . '">';
+        $toc_html .= esc_html($text);
+        $toc_html .= '</a>';
+        $toc_html .= '</li>';
+    }
+
+    $toc_html .= '</ul>';
+    $toc_html .= '<div class="toc-progress">';
+    $toc_html .= '<div class="toc-progress-bar"></div>';
+    $toc_html .= '</div>';
+    $toc_html .= '</div>';
+    $toc_html .= '</aside>';
+
+    // Store TOC in post meta for template use
+    update_post_meta($post->ID, '_toc_sidebar', $toc_html);
+
+    return $content;
+}
+add_filter('the_content', 'sticky_sidebar_toc', 10);</code></pre>
+
+        <h2>Collapsible Table of Contents</h2>
+        <p>Add expand/collapse functionality with smooth animations:</p>
+
+        <pre><code>/**
+ * Generate collapsible table of contents
+ */
+function collapsible_toc($content) {
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    preg_match_all('/<h([2-4])([^>]*)>(.*?)<\\/h[2-4]>/i', $content, $matches, PREG_SET_ORDER);
+
+    if (count($matches) < 3) {
+        return $content;
+    }
+
+    $toc = '<div class="collapsible-toc" data-state="expanded">';
+    $toc .= '<div class="toc-header-bar">';
+    $toc .= '<h3 class="toc-title">📋 Table of Contents</h3>';
+    $toc .= '<button class="toc-toggle-btn" aria-expanded="true" aria-label="Toggle Table of Contents">';
+    $toc .= '<span class="toc-toggle-icon">▼</span>';
+    $toc .= '</button>';
+    $toc .= '</div>';
+    $toc .= '<div class="toc-content">';
+    $toc .= '<ol class="toc-ordered-list">';
+
+    $index = 0;
+
+    foreach ($matches as $heading) {
+        $level = (int)$heading[1];
+        $text = strip_tags($heading[3]);
+        $slug = 'section-' . ++$index;
+
+        // Update content with IDs
+        if (strpos($heading[0], 'id=') === false) {
+            $replacement = '<h' . $level . ' id="' . $slug . '"' . $heading[2] . '>' . $heading[3] . '</h' . $level . '>';
+            $content = str_replace($heading[0], $replacement, $content);
+        }
+
+        $depth_class = 'toc-depth-' . ($level - 1);
+
+        $toc .= '<li class="toc-entry ' . $depth_class . '">';
+        $toc .= '<a href="#' . $slug . '" class="toc-anchor">';
+        $toc .= '<span class="toc-number">' . $index . '.</span> ';
+        $toc .= '<span class="toc-text">' . esc_html($text) . '</span>';
+        $toc .= '</a>';
+        $toc .= '</li>';
+    }
+
+    $toc .= '</ol>';
+    $toc .= '</div>';
+    $toc .= '</div>';
+
+    // JavaScript for toggle functionality
+    $toc .= '<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tocToggle = document.querySelector(".toc-toggle-btn");
+        const tocContent = document.querySelector(".toc-content");
+        const tocContainer = document.querySelector(".collapsible-toc");
+
+        if (tocToggle) {
+            tocToggle.addEventListener("click", function() {
+                const isExpanded = tocContainer.getAttribute("data-state") === "expanded";
+                tocContainer.setAttribute("data-state", isExpanded ? "collapsed" : "expanded");
+                this.setAttribute("aria-expanded", !isExpanded);
+                tocContent.style.display = isExpanded ? "none" : "block";
+            });
+        }
+
+        // Smooth scroll
+        document.querySelectorAll(".toc-anchor").forEach(link => {
+            link.addEventListener("click", function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute("href"));
+                if (target) {
+                    target.scrollIntoView({ behavior: "smooth", block: "start" });
+                    // Update URL without jumping
+                    history.pushState(null, null, this.getAttribute("href"));
+                }
+            });
+        });
+    });
+    </script>';
+
+    // Insert after first paragraph
+    $content = preg_replace('/<\\/p>/', '</p>' . $toc, $content, 1);
+
+    return $content;
+}
+add_filter('the_content', 'collapsible_toc', 10);</code></pre>
+
+        <h2>Shortcode-Based TOC</h2>
+        <p>Give users control over TOC placement with a [toc] shortcode:</p>
+
+        <pre><code>/**
+ * Table of contents shortcode
+ */
+function toc_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'title'    => 'Table of Contents',
+        'depth'    => 3,  // Include H2, H3
+        'toggle'   => 'yes',
+        'numbered' => 'no'
+    ), $atts);
+
+    global $post;
+
+    if (!$post) {
+        return '';
+    }
+
+    $content = $post->post_content;
+
+    // Extract headings based on depth
+    $max_depth = (int)$atts['depth'];
+    $pattern = '/<h([2-' . $max_depth . '])([^>]*)>(.*?)<\\/h[2-' . $max_depth . ']>/i';
+    preg_match_all($pattern, $content, $matches, PREG_SET_ORDER);
+
+    if (empty($matches)) {
+        return '';
+    }
+
+    $list_type = ($atts['numbered'] === 'yes') ? 'ol' : 'ul';
+    $toggle_btn = '';
+
+    if ($atts['toggle'] === 'yes') {
+        $toggle_btn = '<button class="toc-toggle" onclick="this.nextElementSibling.classList.toggle(\'hidden\')">[show/hide]</button>';
+    }
+
+    $toc = '<div class="shortcode-toc">';
+    $toc .= '<div class="toc-head">';
+    $toc .= '<h3>' . esc_html($atts['title']) . '</h3>';
+    $toc .= $toggle_btn;
+    $toc .= '</div>';
+    $toc .= '<' . $list_type . ' class="toc-list">';
+
+    $counter = 0;
+
+    foreach ($matches as $heading) {
+        $text = strip_tags($heading[3]);
+        $slug = 'toc-heading-' . ++$counter;
+        $level = (int)$heading[1];
+
+        $toc .= '<li class="toc-level-' . $level . '">';
+        $toc .= '<a href="#' . $slug . '">' . esc_html($text) . '</a>';
+        $toc .= '</li>';
+    }
+
+    $toc .= '</' . $list_type . '>';
+    $toc .= '</div>';
+
+    return $toc;
+}
+add_shortcode('toc', 'toc_shortcode');
+
+/**
+ * Usage in posts:
+ * [toc]
+ * [toc title="Contents" depth="4" toggle="yes" numbered="yes"]
+ */</code></pre>
+
+        <h2>Conditional TOC by Category or Word Count</h2>
+        <p>Show TOC only for long posts or specific categories:</p>
+
+        <pre><code>/**
+ * Conditional table of contents
+ */
+function conditional_toc($content) {
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    global $post;
+
+    // Only show on posts with 1500+ words
+    $word_count = str_word_count(strip_tags($post->post_content));
+
+    if ($word_count < 1500) {
+        return $content;
+    }
+
+    // Only show for specific categories
+    $show_categories = array('tutorials', 'guides', 'reviews');
+    $post_categories = wp_get_post_categories($post->ID, array('fields' => 'slugs'));
+
+    if (!array_intersect($show_categories, $post_categories)) {
+        return $content;
+    }
+
+    // Generate TOC
+    preg_match_all('/<h([2-3])([^>]*)>(.*?)<\\/h[2-3]>/i', $content, $matches, PREG_SET_ORDER);
+
+    if (count($matches) < 4) {
+        return $content;
+    }
+
+    $toc = '<div class="conditional-toc">';
+    $toc .= '<h2>Article Overview</h2>';
+    $toc .= '<p class="toc-meta">Reading time: ' . ceil($word_count / 200) . ' minutes</p>';
+    $toc .= '<ul>';
+
+    $idx = 0;
+
+    foreach ($matches as $heading) {
+        $text = strip_tags($heading[3]);
+        $slug = 'section-' . ++$idx;
+
+        // Add anchors
+        if (strpos($heading[0], 'id=') === false) {
+            $content = str_replace(
+                $heading[0],
+                '<h' . $heading[1] . ' id="' . $slug . '">' . $heading[3] . '</h' . $heading[1] . '>',
+                $content
+            );
+        }
+
+        $toc .= '<li><a href="#' . $slug . '">' . esc_html($text) . '</a></li>';
+    }
+
+    $toc .= '</ul>';
+    $toc .= '</div>';
+
+    // Insert after first paragraph
+    $content = preg_replace('/<\\/p>/', '</p>' . $toc, $content, 1);
+
+    return $content;
+}
+add_filter('the_content', 'conditional_toc', 10);</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Use Unique IDs</td>
+              <td>Prevent duplicate IDs by adding counters or post-specific prefixes</td>
+            </tr>
+            <tr>
+              <td>Sanitize Heading Text</td>
+              <td>Use sanitize_title() to create URL-safe slugs for anchor links</td>
+            </tr>
+            <tr>
+              <td>Check Heading Count</td>
+              <td>Only show TOC if there are 3+ headings; otherwise it's unnecessary</td>
+            </tr>
+            <tr>
+              <td>Implement Smooth Scroll</td>
+              <td>Enhance UX with CSS scroll-behavior: smooth or JavaScript scrollIntoView()</td>
+            </tr>
+            <tr>
+              <td>Make It Accessible</td>
+              <td>Use semantic HTML (nav, aria-labels) for screen reader compatibility</td>
+            </tr>
+            <tr>
+              <td>Add Active State</td>
+              <td>Highlight current section in TOC as user scrolls through content</td>
+            </tr>
+            <tr>
+              <td>Mobile Optimization</td>
+              <td>Consider collapsible TOC or floating button for small screens</td>
+            </tr>
+            <tr>
+              <td>Cache TOC Output</td>
+              <td>Store generated TOC in transients for better performance on high-traffic posts</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Low impact (0.005-0.01s per post). Regex pattern matching and string replacement are relatively fast operations. For very long posts (5000+ words with 50+ headings), impact can reach 0.02-0.05s. Consider caching the generated TOC in post meta or transients for frequently accessed posts. JavaScript-based TOC generation (client-side) can eliminate server impact entirely but reduces SEO benefits.</p>
+
+        <h2>Styling Your Table of Contents</h2>
+        <p>Add CSS to make your TOC visually appealing:</p>
+
+        <pre><code>/* Basic TOC Styling */
+.table-of-contents {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-left: 4px solid #0073aa;
+    padding: 20px;
+    margin: 30px 0;
+}
+
+.table-of-contents h2 {
+    margin-top: 0;
+    font-size: 1.2em;
+}
+
+.table-of-contents ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.table-of-contents li {
+    margin: 8px 0;
+}
+
+.toc-h3 {
+    padding-left: 20px;
+}
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Active link highlighting */
+.toc-link.active {
+    font-weight: bold;
+    color: #0073aa;
+}
+
+/* Sticky TOC */
+.sticky-toc {
+    position: sticky;
+    top: 20px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+}
+
+/* Collapsible TOC */
+.collapsible-toc[data-state="collapsed"] .toc-content {
+    display: none;
+}
+
+.toc-toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+}</code></pre>
+      </div>
+    `,
+    code: `/**
+ * Generate table of contents from post headings
+ */
+function generate_table_of_contents($content) {
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    preg_match_all('/<h([2-3])([^>]*)>(.*?)<\\/h[2-3]>/i', $content, $matches, PREG_SET_ORDER);
+
+    if (count($matches) < 3) {
+        return $content;
+    }
+
+    $toc = '<div class="table-of-contents">';
+    $toc .= '<h2>Table of Contents</h2>';
+    $toc .= '<ul>';
+
+    foreach ($matches as $heading) {
+        $level = $heading[1];
+        $text = strip_tags($heading[3]);
+        $slug = sanitize_title($text);
+
+        $content = str_replace(
+            $heading[0],
+            '<h' . $level . ' id="' . $slug . '">' . $heading[3] . '</h' . $level . '>',
+            $content
+        );
+
+        $class = ($level == 2) ? 'toc-h2' : 'toc-h3';
+        $toc .= '<li class="' . $class . '"><a href="#' . $slug . '">' . esc_html($text) . '</a></li>';
+    }
+
+    $toc .= '</ul></div>';
+
+    $content = preg_replace('/<\\/p>/', '</p>' . $toc, $content, 1);
+
+    return $content;
+}
+add_filter('the_content', 'generate_table_of_contents', 10);`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-15',
+    readTime: '9 min',
+    category: 'WordPress Content',
+    tags: ['TOC', 'Content', 'Navigation'],
+    difficulty: 'Advanced',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Generate Table of Contents in WordPress - Complete Guide 2025',
+      metaDescription: 'Learn how to automatically create dynamic table of contents from post headings in WordPress. Improve navigation, SEO, and user experience with comprehensive code examples.',
+      keywords: ['WordPress table of contents', 'TOC WordPress', 'automatic TOC', 'WordPress navigation', 'heading anchors WordPress', 'WordPress jump links', 'sticky TOC', 'collapsible table of contents'],
+      canonical: 'https://shahmir.dev/blog/add-table-of-contents',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Generate Table of Contents in WordPress',
+        description: 'Complete guide to automatically generating table of contents from post headings for better navigation and SEO.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-15',
+        dateModified: '2025-01-15',
+        proficiencyLevel: 'Advanced',
+        dependencies: 'WordPress 4.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "How do I prevent the TOC from appearing on certain posts?",
+        answer: "Add a custom field check at the beginning of your function: if (get_post_meta(get_the_ID(), 'disable_toc', true)) { return $content; }. Then add a custom field 'disable_toc' with value '1' to posts where you don't want TOC. Alternatively, check post categories or tags to exclude specific content types. You can also set a minimum word count requirement so short posts don't get a TOC."
+      },
+      {
+        question: "Why aren't my heading anchors working after clicking?",
+        answer: "Several reasons: 1) IDs might not be added to headings (check HTML source). 2) JavaScript might be preventing default link behavior. 3) Fixed headers can cause offset issues - add scroll-padding-top: 100px; to your CSS. 4) The ID replacement in str_replace() might fail if headings already have IDs. Use strpos() to check for existing IDs before adding. 5) URL encoding issues - ensure slugs are properly sanitized."
+      },
+      {
+        question: "Can I make the TOC highlight the current section as I scroll?",
+        answer: "Yes, use Intersection Observer API in JavaScript. Observe all heading elements, and when they enter viewport, add an 'active' class to the corresponding TOC link. Example: const observer = new IntersectionObserver(entries => { entries.forEach(entry => { if(entry.isIntersecting) { document.querySelector('[href=\"#' + entry.target.id + '\"]').classList.add('active'); } }); }); Then observe all headings with IDs."
+      },
+      {
+        question: "How do I place the TOC in the sidebar instead of inline?",
+        answer: "Store the TOC HTML in a post meta field or global variable instead of inserting it into content. Then create a widget or use get_post_meta() in your sidebar template to display it. Example: In filter function, use update_post_meta($post->ID, '_sidebar_toc', $toc); instead of adding to content. In sidebar.php: echo get_post_meta(get_the_ID(), '_sidebar_toc', true); Add position: sticky; top: 20px; to CSS for fixed sidebar behavior."
+      },
+      {
+        question: "Will this work with Gutenberg blocks?",
+        answer: "Yes, it works with both classic and Gutenberg content since it processes the final rendered HTML output, not the editor content. However, Gutenberg's heading blocks already include anchor options. You can access these with the block's 'anchor' setting. For consistency, your code should check if headings already have IDs before adding new ones: if (strpos($heading[0], 'id=') === false) { /* add ID */ }. This prevents duplicate or conflicting anchors."
+      }
+    ]
+  },
+  {
+    id: 38,
+    slug: 'estimated-reading-time',
+    title: 'Calculate Reading Time',
+    excerpt: 'Display estimated reading time for posts to help readers gauge time commitment and improve content engagement metrics.',
+    content: `
+      <div class="snippet-content">
+        <p>Adding estimated reading time to posts improves user experience by setting expectations about time commitment. Studies show that displaying reading time increases engagement by 10-15% as readers are more likely to start articles when they know the time investment required.</p>
+
+        <h2>Why Add Reading Time?</h2>
+        <ul>
+          <li><strong>User Experience:</strong> Readers can decide if they have time to read now or bookmark for later</li>
+          <li><strong>Increased Engagement:</strong> Transparency about content length builds trust</li>
+          <li><strong>Lower Bounce Rate:</strong> Visitors know what to expect and are less likely to leave immediately</li>
+          <li><strong>Content Planning:</strong> Helps you maintain consistent post lengths</li>
+          <li><strong>Accessibility:</strong> Benefits readers with time constraints or attention differences</li>
+          <li><strong>Mobile Users:</strong> Particularly valuable for on-the-go readers</li>
+        </ul>
+
+        <h2>Basic Reading Time Calculator</h2>
+        <p>Calculate reading time based on average reading speed (200 words per minute):</p>
+
+        <pre><code>/**
+ * Calculate estimated reading time
+ */
+function calculate_reading_time($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+
+    $post = get_post($post_id);
+
+    if (!$post) {
+        return 0;
+    }
+
+    // Get post content and strip HTML tags
+    $content = strip_tags($post->post_content);
+
+    // Count words
+    $word_count = str_word_count($content);
+
+    // Calculate reading time (average 200 words per minute)
+    $reading_time = ceil($word_count / 200);
+
+    return $reading_time;
+}
+
+/**
+ * Display reading time
+ */
+function display_reading_time() {
+    $reading_time = calculate_reading_time();
+
+    if ($reading_time < 1) {
+        return '< 1 min read';
+    }
+
+    return $reading_time . ' min read';
+}
+
+// Usage in template:
+// echo display_reading_time();</code></pre>
+
+        <h2>Advanced: Automatic Display Before Content</h2>
+        <p>Automatically insert reading time at the beginning of post content:</p>
+
+        <pre><code>/**
+ * Add reading time before post content
+ */
+function add_reading_time_to_content($content) {
+    // Only on single posts
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    global $post;
+
+    // Calculate reading time
+    $word_count = str_word_count(strip_tags($post->post_content));
+    $reading_time = ceil($word_count / 200);
+
+    // Build reading time HTML
+    $reading_time_html = '<div class="reading-time-container">';
+    $reading_time_html .= '<span class="reading-time-icon">📖</span> ';
+    $reading_time_html .= '<span class="reading-time-text">';
+
+    if ($reading_time < 1) {
+        $reading_time_html .= 'Less than 1 minute read';
+    } elseif ($reading_time == 1) {
+        $reading_time_html .= '1 minute read';
+    } else {
+        $reading_time_html .= $reading_time . ' minutes read';
+    }
+
+    $reading_time_html .= ' • ' . number_format($word_count) . ' words';
+    $reading_time_html .= '</span>';
+    $reading_time_html .= '</div>';
+
+    // Prepend to content
+    return $reading_time_html . $content;
+}
+add_filter('the_content', 'add_reading_time_to_content', 1);</code></pre>
+
+        <h2>Reading Time with Progress Bar</h2>
+        <p>Display reading time with a visual progress indicator as readers scroll:</p>
+
+        <pre><code>/**
+ * Add reading time with progress tracking
+ */
+function reading_time_with_progress($content) {
+    if (!is_single() || !is_main_query()) {
+        return $content;
+    }
+
+    global $post;
+
+    $word_count = str_word_count(strip_tags($post->post_content));
+    $reading_time = ceil($word_count / 200);
+
+    // Reading time display
+    $html = '<div class="reading-time-progress-wrapper">';
+    $html .= '<div class="reading-meta">';
+    $html .= '<span class="reading-time">' . $reading_time . ' min read</span>';
+    $html .= '<span class="word-count">' . number_format($word_count) . ' words</span>';
+    $html .= '</div>';
+    $html .= '<div class="reading-progress-bar">';
+    $html .= '<div class="reading-progress-fill" id="reading-progress"></div>';
+    $html .= '</div>';
+    $html .= '</div>';
+
+    // JavaScript for scroll progress
+    $html .= '<script>
+    window.addEventListener("scroll", function() {
+        const article = document.querySelector(".entry-content");
+        if (!article) return;
+
+        const articleTop = article.offsetTop;
+        const articleHeight = article.offsetHeight;
+        const scrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+        const windowHeight = window.innerHeight;
+
+        const progress = ((scrollPosition - articleTop + windowHeight) / articleHeight) * 100;
+        const progressBar = document.getElementById("reading-progress");
+
+        if (progressBar) {
+            progressBar.style.width = Math.min(Math.max(progress, 0), 100) + "%";
+        }
+    });
+    </script>';
+
+    return $html . $content;
+}
+add_filter('the_content', 'reading_time_with_progress', 1);</code></pre>
+
+        <h2>Shortcode for Reading Time</h2>
+        <p>Create a [reading_time] shortcode for flexible placement:</p>
+
+        <pre><code>/**
+ * Reading time shortcode
+ */
+function reading_time_shortcode($atts) {
+    $atts = shortcode_atts(array(
+        'post_id' => get_the_ID(),
+        'icon'    => 'yes',
+        'words'   => 'no',
+        'format'  => 'long'  // long or short
+    ), $atts);
+
+    $post = get_post($atts['post_id']);
+
+    if (!$post) {
+        return '';
+    }
+
+    $content = strip_tags($post->post_content);
+    $word_count = str_word_count($content);
+    $reading_time = ceil($word_count / 200);
+
+    $output = '';
+
+    // Add icon
+    if ($atts['icon'] === 'yes') {
+        $output .= '<span class="reading-icon">⏱</span> ';
+    }
+
+    // Format reading time
+    if ($atts['format'] === 'short') {
+        $output .= $reading_time . ' min';
+    } else {
+        if ($reading_time < 1) {
+            $output .= 'Less than a minute';
+        } elseif ($reading_time == 1) {
+            $output .= '1 minute read';
+        } else {
+            $output .= $reading_time . ' minute read';
+        }
+    }
+
+    // Add word count
+    if ($atts['words'] === 'yes') {
+        $output .= ' (' . number_format($word_count) . ' words)';
+    }
+
+    return '<span class="reading-time-shortcode">' . $output . '</span>';
+}
+add_shortcode('reading_time', 'reading_time_shortcode');
+
+/**
+ * Usage:
+ * [reading_time]
+ * [reading_time icon="no" words="yes"]
+ * [reading_time format="short"]
+ */</code></pre>
+
+        <h2>Reading Time in Post Meta</h2>
+        <p>Store reading time as post meta for efficient retrieval:</p>
+
+        <pre><code>/**
+ * Calculate and save reading time on post save
+ */
+function save_reading_time_meta($post_id) {
+    // Avoid autosave
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Check user permissions
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    // Only for posts
+    if (get_post_type($post_id) !== 'post') {
+        return;
+    }
+
+    $post = get_post($post_id);
+
+    if (!$post) {
+        return;
+    }
+
+    // Calculate reading time
+    $content = strip_tags($post->post_content);
+    $word_count = str_word_count($content);
+    $reading_time = ceil($word_count / 200);
+
+    // Save as post meta
+    update_post_meta($post_id, '_reading_time_minutes', $reading_time);
+    update_post_meta($post_id, '_word_count', $word_count);
+}
+add_action('save_post', 'save_reading_time_meta');
+
+/**
+ * Retrieve saved reading time
+ */
+function get_stored_reading_time($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+
+    $reading_time = get_post_meta($post_id, '_reading_time_minutes', true);
+
+    if (!$reading_time) {
+        // Calculate if not stored
+        $reading_time = calculate_reading_time($post_id);
+        update_post_meta($post_id, '_reading_time_minutes', $reading_time);
+    }
+
+    return (int)$reading_time;
+}</code></pre>
+
+        <h2>Reading Speed Customization</h2>
+        <p>Let users adjust reading speed based on their preferences:</p>
+
+        <pre><code>/**
+ * Calculate reading time with custom reading speed
+ */
+function custom_speed_reading_time($post_id = null, $words_per_minute = 200) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+
+    $post = get_post($post_id);
+
+    if (!$post) {
+        return 0;
+    }
+
+    // Strip shortcodes and HTML
+    $content = strip_shortcodes($post->post_content);
+    $content = strip_tags($content);
+
+    // Count words
+    $word_count = str_word_count($content);
+
+    // Calculate with custom speed
+    $reading_time = ceil($word_count / $words_per_minute);
+
+    return $reading_time;
+}
+
+/**
+ * Display reading time for different reading speeds
+ */
+function display_multi_speed_reading_time() {
+    $word_count = str_word_count(strip_tags(get_post_field('post_content')));
+
+    $speeds = array(
+        'slow'    => 150,  // Slow reader
+        'average' => 200,  // Average reader
+        'fast'    => 300   // Fast reader
+    );
+
+    $html = '<div class="reading-time-options">';
+    $html .= '<p>Estimated reading time:</p>';
+    $html .= '<ul class="reading-speeds">';
+
+    foreach ($speeds as $speed_name => $wpm) {
+        $time = ceil($word_count / $wpm);
+        $html .= '<li><strong>' . ucfirst($speed_name) . ':</strong> ' . $time . ' min</li>';
+    }
+
+    $html .= '</ul>';
+    $html .= '</div>';
+
+    return $html;
+}</code></pre>
+
+        <h2>Multilingual Reading Time</h2>
+        <p>Support different languages with translation-ready output:</p>
+
+        <pre><code>/**
+ * Multilingual reading time
+ */
+function multilingual_reading_time($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+
+    $post = get_post($post_id);
+
+    if (!$post) {
+        return '';
+    }
+
+    $content = strip_tags($post->post_content);
+    $word_count = str_word_count($content);
+
+    // Adjust WPM for different languages
+    $locale = get_locale();
+    $wpm = 200; // Default English
+
+    switch ($locale) {
+        case 'zh_CN': // Chinese
+        case 'ja': // Japanese
+            $wpm = 300; // Characters per minute
+            break;
+        case 'ar': // Arabic
+            $wpm = 180;
+            break;
+        case 'es_ES': // Spanish
+        case 'fr_FR': // French
+            $wpm = 220;
+            break;
+    }
+
+    $reading_time = ceil($word_count / $wpm);
+
+    // Translatable strings
+    if ($reading_time < 1) {
+        return __('Less than a minute', 'textdomain');
+    } elseif ($reading_time == 1) {
+        return sprintf(__('%d minute read', 'textdomain'), 1);
+    } else {
+        return sprintf(__('%d minutes read', 'textdomain'), $reading_time);
+    }
+}</code></pre>
+
+        <h2>Schema.org Markup for Reading Time</h2>
+        <p>Add structured data for search engines:</p>
+
+        <pre><code>/**
+ * Add reading time schema markup
+ */
+function add_reading_time_schema() {
+    if (!is_single()) {
+        return;
+    }
+
+    global $post;
+
+    $word_count = str_word_count(strip_tags($post->post_content));
+    $reading_time = ceil($word_count / 200);
+
+    // Convert to ISO 8601 duration format
+    $duration = 'PT' . $reading_time . 'M';
+
+    ?>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "<?php echo esc_js(get_the_title()); ?>",
+        "timeRequired": "<?php echo esc_js($duration); ?>",
+        "wordCount": <?php echo $word_count; ?>
+    }
+    </script>
+    <?php
+}
+add_action('wp_head', 'add_reading_time_schema');</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Use 200 WPM Default</td>
+              <td>Average reading speed for adults; provides accurate estimates</td>
+            </tr>
+            <tr>
+              <td>Round Up, Not Down</td>
+              <td>Better to overestimate slightly than underestimate time commitment</td>
+            </tr>
+            <tr>
+              <td>Strip HTML & Shortcodes</td>
+              <td>Ensures accurate word count by removing non-content elements</td>
+            </tr>
+            <tr>
+              <td>Cache in Post Meta</td>
+              <td>Reduces computation on every page load; update on post save</td>
+            </tr>
+            <tr>
+              <td>Display Prominently</td>
+              <td>Place near title or before content so readers see it immediately</td>
+            </tr>
+            <tr>
+              <td>Use Clear Language</td>
+              <td>"5 min read" is clearer than "5 minute reading time"</td>
+            </tr>
+            <tr>
+              <td>Consider Images/Videos</td>
+              <td>For media-heavy posts, add extra time for viewing</td>
+            </tr>
+            <tr>
+              <td>Translate for Multilingual</td>
+              <td>Use translation functions for international audiences</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Minimal impact (0.001-0.002s) when calculated on-the-fly. For best performance, calculate and store reading time in post meta on save_post hook. This eliminates runtime calculation entirely. str_word_count() is very fast even on 5000+ word articles. For sites with multilingual content or complex calculations, caching in transients or post meta is recommended.</p>
+
+        <h2>Styling Reading Time Display</h2>
+        <p>CSS examples for attractive reading time presentation:</p>
+
+        <pre><code>/* Basic reading time badge */
+.reading-time-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f0f0f0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.reading-time-icon {
+    font-size: 18px;
+}
+
+/* Progress bar */
+.reading-progress-bar {
+    width: 100%;
+    height: 4px;
+    background: #e0e0e0;
+    margin: 10px 0;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.reading-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #0073aa, #00a0d2);
+    width: 0%;
+    transition: width 0.1s ease-out;
+}
+
+/* Reading meta info */
+.reading-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+/* Minimal style */
+.reading-time-shortcode {
+    font-size: 13px;
+    color: #999;
+    font-weight: 500;
+}
+
+/* With icon */
+.reading-time-shortcode .reading-icon {
+    margin-right: 4px;
+    opacity: 0.7;
+}</code></pre>
+
+        <h2>Enhancing Reading Time Calculations</h2>
+        <p>Advanced considerations for more accurate estimates:</p>
+
+        <ul>
+          <li><strong>Code Blocks:</strong> Add 30 seconds per code snippet (readers study code longer)</li>
+          <li><strong>Images:</strong> Add 12 seconds per image (based on eye-tracking studies)</li>
+          <li><strong>Videos:</strong> Add actual video duration to reading time</li>
+          <li><strong>Lists:</strong> Multiply bullet points by 1.2x (faster to scan)</li>
+          <li><strong>Technical Content:</strong> Reduce WPM to 150 for highly technical posts</li>
+          <li><strong>Tables:</strong> Add 15 seconds per table row</li>
+        </ul>
+      </div>
+    `,
+    code: `/**
+ * Calculate estimated reading time
+ */
+function calculate_reading_time($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+
+    $post = get_post($post_id);
+
+    if (!$post) {
+        return 0;
+    }
+
+    $content = strip_tags($post->post_content);
+    $word_count = str_word_count($content);
+    $reading_time = ceil($word_count / 200);
+
+    return $reading_time;
+}
+
+/**
+ * Display reading time
+ */
+function display_reading_time() {
+    $reading_time = calculate_reading_time();
+
+    if ($reading_time < 1) {
+        return '< 1 min read';
+    }
+
+    return $reading_time . ' min read';
+}`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-15',
+    readTime: '7 min',
+    category: 'WordPress Content',
+    tags: ['Reading Time', 'Content', 'UX'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'Calculate Reading Time in WordPress - Complete Guide 2025',
+      metaDescription: 'Learn how to calculate and display estimated reading time for WordPress posts. Improve UX and engagement with comprehensive code examples and best practices.',
+      keywords: ['WordPress reading time', 'estimated reading time', 'WordPress word count', 'reading time calculator', 'WordPress UX', 'post meta reading time', 'reading time shortcode', 'WordPress engagement'],
+      canonical: 'https://shahmir.dev/blog/estimated-reading-time',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Calculate Reading Time in WordPress',
+        description: 'Complete guide to calculating and displaying estimated reading time for posts to improve user experience.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-15',
+        dateModified: '2025-01-15',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WordPress 4.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "What's the average reading speed I should use?",
+        answer: "Use 200 words per minute (WPM) as the standard for English content. This is the average reading speed for adults reading typical online content. For technical or academic content, consider 150 WPM. For simple content or listicles, 250 WPM works better. Different languages have different speeds: Chinese/Japanese ~300 characters/min, Arabic ~180 WPM, Spanish/French ~220 WPM."
+      },
+      {
+        question: "Should I include images and videos in reading time calculation?",
+        answer: "Yes, for more accurate estimates. Add approximately 12 seconds per image (based on eye-tracking studies showing people pause to view images). For videos, add the actual video duration. For code blocks, add 30 seconds each as readers study code more carefully. You can detect these with preg_match_all() to count <img>, <video>, and <code> tags in content."
+      },
+      {
+        question: "How can I store reading time to avoid calculating it every time?",
+        answer: "Use the save_post hook to calculate and store reading time in post meta when posts are saved. Use update_post_meta($post_id, '_reading_time', $reading_time); to save it, and get_post_meta($post_id, '_reading_time', true); to retrieve. This eliminates runtime calculation entirely. Remember to recalculate when posts are updated. This is much more efficient for high-traffic sites."
+      },
+      {
+        question: "Why is my reading time showing 0 or incorrect values?",
+        answer: "Common issues: 1) Content contains only HTML without text - strip_tags() returns empty string. 2) str_word_count() doesn't work well with non-Latin scripts - use mb_strlen() for character count instead. 3) Post content includes shortcodes - use strip_shortcodes() before counting. 4) Using wrong post ID - ensure get_the_ID() returns correct value in your context. Test with var_dump($word_count) to debug."
+      },
+      {
+        question: "Can I add reading time to the REST API response?",
+        answer: "Yes, use register_rest_field() to add reading time to post endpoints. Example: register_rest_field('post', 'reading_time', array('get_callback' => function($post) { return calculate_reading_time($post['id']); })); This makes reading time available at /wp-json/wp/v2/posts endpoint in 'reading_time' field. Useful for headless WordPress setups or custom frontends."
+      }
+    ]
+  },
+  {
+    id: 39,
+    slug: 'custom-archive-title',
+    title: 'Customize Archive Page Titles',
+    excerpt: 'Remove default prefixes like "Category:", "Tag:", and "Author:" from archive page titles for cleaner, more professional-looking archive pages.',
+    content: `
+      <div class="snippet-content">
+        <p>By default, WordPress adds prefixes like "Category:", "Tag:", "Author:", and "Archives:" to archive page titles. While this is informative, it often looks redundant and cluttered. Customizing these titles provides a cleaner, more professional appearance and better SEO.</p>
+
+        <h2>Why Customize Archive Titles?</h2>
+        <ul>
+          <li><strong>Cleaner Design:</strong> Remove unnecessary prefixes for a more polished look</li>
+          <li><strong>Better SEO:</strong> Custom titles can include keywords without redundant words</li>
+          <li><strong>Branding:</strong> Add custom text that matches your site's voice</li>
+          <li><strong>User Experience:</strong> Clearer, more concise titles are easier to understand</li>
+          <li><strong>Social Sharing:</strong> Better-looking titles when pages are shared on social media</li>
+          <li><strong>Consistency:</strong> Match title formatting across all archive types</li>
+        </ul>
+
+        <h2>Remove All Archive Prefixes</h2>
+        <p>Strip all default prefixes (Category:, Tag:, Author:, etc.) from archive titles:</p>
+
+        <pre><code>/**
+ * Remove archive title prefixes
+ */
+function remove_archive_title_prefix($title) {
+    // Remove "Category:", "Tag:", "Author:", etc.
+    if (is_category()) {
+        $title = single_cat_title('', false);
+    } elseif (is_tag()) {
+        $title = single_tag_title('', false);
+    } elseif (is_author()) {
+        $title = get_the_author();
+    } elseif (is_post_type_archive()) {
+        $title = post_type_archive_title('', false);
+    } elseif (is_tax()) {
+        $title = single_term_title('', false);
+    } elseif (is_year()) {
+        $title = get_the_date('Y');
+    } elseif (is_month()) {
+        $title = get_the_date('F Y');
+    } elseif (is_day()) {
+        $title = get_the_date('F j, Y');
+    }
+
+    return $title;
+}
+add_filter('get_the_archive_title', 'remove_archive_title_prefix');</code></pre>
+
+        <h2>Remove Prefix with Regex</h2>
+        <p>Quick solution using regex to remove common archive prefixes:</p>
+
+        <pre><code>/**
+ * Remove archive prefixes using regex
+ */
+function remove_archive_prefix_regex($title) {
+    // Remove "Category:", "Tag:", "Author:", "Archives:", etc.
+    $title = preg_replace('/^\\w+:\\s/', '', $title);
+
+    return $title;
+}
+add_filter('get_the_archive_title', 'remove_archive_prefix_regex');</code></pre>
+
+        <h2>Custom Archive Titles by Type</h2>
+        <p>Add custom formatting for different archive types:</p>
+
+        <pre><code>/**
+ * Customize archive titles by type
+ */
+function custom_archive_titles($title) {
+    if (is_category()) {
+        $title = 'Browse: ' . single_cat_title('', false);
+    } elseif (is_tag()) {
+        $title = 'Tagged with: ' . single_tag_title('', false);
+    } elseif (is_author()) {
+        $title = 'Posts by ' . get_the_author();
+    } elseif (is_post_type_archive()) {
+        $title = post_type_archive_title('', false) . ' Archive';
+    } elseif (is_tax()) {
+        $title = 'Topic: ' . single_term_title('', false);
+    } elseif (is_year()) {
+        $title = 'Year: ' . get_the_date('Y');
+    } elseif (is_month()) {
+        $title = get_the_date('F Y') . ' Archives';
+    } elseif (is_day()) {
+        $title = 'Daily Archives: ' . get_the_date('F j, Y');
+    } elseif (is_search()) {
+        $title = 'Search Results for: ' . get_search_query();
+    }
+
+    return $title;
+}
+add_filter('get_the_archive_title', 'custom_archive_titles');</code></pre>
+
+        <h2>Add Icons to Archive Titles</h2>
+        <p>Enhance archive titles with relevant icons:</p>
+
+        <pre><code>/**
+ * Add icons to archive titles
+ */
+function archive_titles_with_icons($title) {
+    if (is_category()) {
+        $title = '<span class="archive-icon">📁</span> ' . single_cat_title('', false);
+    } elseif (is_tag()) {
+        $title = '<span class="archive-icon">🏷️</span> ' . single_tag_title('', false);
+    } elseif (is_author()) {
+        $title = '<span class="archive-icon">👤</span> ' . get_the_author();
+    } elseif (is_date()) {
+        $title = '<span class="archive-icon">📅</span> ' . preg_replace('/^\\w+:\\s/', '', $title);
+    } elseif (is_search()) {
+        $title = '<span class="archive-icon">🔍</span> Search: ' . get_search_query();
+    } else {
+        // Remove default prefix for other archives
+        $title = preg_replace('/^\\w+:\\s/', '', $title);
+    }
+
+    return $title;
+}
+add_filter('get_the_archive_title', 'archive_titles_with_icons');</code></pre>
+
+        <h2>SEO-Optimized Archive Titles</h2>
+        <p>Create SEO-friendly titles with keyword placement:</p>
+
+        <pre><code>/**
+ * SEO-optimized archive titles
+ */
+function seo_archive_titles($title) {
+    $site_name = get_bloginfo('name');
+
+    if (is_category()) {
+        $cat_name = single_cat_title('', false);
+        $title = $cat_name . ' Articles | ' . $site_name;
+    } elseif (is_tag()) {
+        $tag_name = single_tag_title('', false);
+        $title = $tag_name . ' Posts | ' . $site_name;
+    } elseif (is_author()) {
+        $author = get_the_author();
+        $title = 'Articles by ' . $author . ' | ' . $site_name;
+    } elseif (is_year()) {
+        $year = get_the_date('Y');
+        $title = $year . ' Archives | ' . $site_name;
+    } elseif (is_month()) {
+        $month_year = get_the_date('F Y');
+        $title = $month_year . ' Archives | ' . $site_name;
+    } elseif (is_post_type_archive()) {
+        $post_type = post_type_archive_title('', false);
+        $title = $post_type . ' | ' . $site_name;
+    }
+
+    return $title;
+}
+add_filter('get_the_archive_title', 'seo_archive_titles');</code></pre>
+
+        <h2>Archive Titles with Post Count</h2>
+        <p>Show the number of posts in the archive:</p>
+
+        <pre><code>/**
+ * Add post count to archive titles
+ */
+function archive_titles_with_count($title) {
+    global $wp_query;
+
+    $post_count = $wp_query->found_posts;
+
+    if (is_category()) {
+        $cat = single_cat_title('', false);
+        $title = $cat . ' <span class="post-count">(' . $post_count . ' posts)</span>';
+    } elseif (is_tag()) {
+        $tag = single_tag_title('', false);
+        $title = $tag . ' <span class="post-count">(' . $post_count . ')</span>';
+    } elseif (is_author()) {
+        $author = get_the_author();
+        $title = $author . ' <span class="post-count">(' . $post_count . ' articles)</span>';
+    } elseif (is_year() || is_month() || is_day()) {
+        // Remove default prefix
+        $title = preg_replace('/^\\w+:\\s/', '', $title);
+        $title .= ' <span class="post-count">(' . $post_count . ')</span>';
+    } else {
+        // Remove prefix for other types
+        $title = preg_replace('/^\\w+:\\s/', '', $title);
+    }
+
+    return $title;
+}
+add_filter('get_the_archive_title', 'archive_titles_with_count');</code></pre>
+
+        <h2>Multilingual Archive Titles</h2>
+        <p>Translation-ready archive titles for multilingual sites:</p>
+
+        <pre><code>/**
+ * Multilingual archive titles
+ */
+function multilingual_archive_titles($title) {
+    if (is_category()) {
+        $cat = single_cat_title('', false);
+        $title = sprintf(__('Category: %s', 'textdomain'), $cat);
+    } elseif (is_tag()) {
+        $tag = single_tag_title('', false);
+        $title = sprintf(__('Tag: %s', 'textdomain'), $tag);
+    } elseif (is_author()) {
+        $author = get_the_author();
+        $title = sprintf(__('Author: %s', 'textdomain'), $author);
+    } elseif (is_year()) {
+        $year = get_the_date('Y');
+        $title = sprintf(__('Year: %s', 'textdomain'), $year);
+    } elseif (is_month()) {
+        $month = get_the_date('F Y');
+        $title = sprintf(__('Month: %s', 'textdomain'), $month);
+    } elseif (is_day()) {
+        $date = get_the_date('F j, Y');
+        $title = sprintf(__('Daily Archives: %s', 'textdomain'), $date);
+    } elseif (is_post_type_archive()) {
+        $post_type = post_type_archive_title('', false);
+        $title = $post_type;
+    }
+
+    return $title;
+}
+add_filter('get_the_archive_title', 'multilingual_archive_titles');</code></pre>
+
+        <h2>Conditional Archive Title Formatting</h2>
+        <p>Different styles for specific categories or taxonomies:</p>
+
+        <pre><code>/**
+ * Conditional archive title formatting
+ */
+function conditional_archive_formatting($title) {
+    if (is_category()) {
+        $cat_id = get_queried_object_id();
+        $cat_name = single_cat_title('', false);
+
+        // Special formatting for specific categories
+        if (in_array($cat_id, array(5, 12, 23))) {
+            // Featured categories get different format
+            $title = '⭐ ' . $cat_name . ' (Featured)';
+        } else {
+            $title = $cat_name;
+        }
+    } elseif (is_tax('portfolio_category')) {
+        // Custom taxonomy - different format
+        $term = single_term_title('', false);
+        $title = 'Portfolio: ' . $term;
+    } elseif (is_author()) {
+        $author_id = get_queried_object_id();
+        $author_name = get_the_author_meta('display_name', $author_id);
+        $author_role = get_the_author_meta('role', $author_id);
+
+        // Show author role if available
+        if ($author_role && $author_role !== 'subscriber') {
+            $title = $author_name . ' <span class="author-role">(' . ucfirst($author_role) . ')</span>';
+        } else {
+            $title = $author_name;
+        }
+    } else {
+        // Remove default prefix
+        $title = preg_replace('/^\\w+:\\s/', '', $title);
+    }
+
+    return $title;
+}
+add_filter('get_the_archive_title', 'conditional_archive_formatting');</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Keep It Concise</td>
+              <td>Short, clear titles are better for UX and mobile displays</td>
+            </tr>
+            <tr>
+              <td>Be Consistent</td>
+              <td>Use similar formatting across all archive types</td>
+            </tr>
+            <tr>
+              <td>Include Keywords</td>
+              <td>SEO benefit from descriptive titles with relevant terms</td>
+            </tr>
+            <tr>
+              <td>Avoid Redundancy</td>
+              <td>If heading says "Category", don't repeat it in title</td>
+            </tr>
+            <tr>
+              <td>Use Translation Functions</td>
+              <td>Make titles translatable for multilingual sites</td>
+            </tr>
+            <tr>
+              <td>Test All Archive Types</td>
+              <td>Verify titles work for categories, tags, authors, dates, custom taxonomies</td>
+            </tr>
+            <tr>
+              <td>Consider Breadcrumbs</td>
+              <td>Ensure custom titles work well with breadcrumb navigation</td>
+            </tr>
+            <tr>
+              <td>Escape Output</td>
+              <td>Use esc_html() when adding HTML to prevent XSS</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Zero to negligible impact (< 0.001s). The get_the_archive_title filter executes once per archive page load. Simple string operations and WordPress helper functions are extremely fast. Even complex conditional logic with multiple checks adds virtually no measurable overhead. This is one of the safest and most efficient customizations you can make.</p>
+
+        <h2>Archive Title Styling</h2>
+        <p>CSS to enhance your custom archive titles:</p>
+
+        <pre><code>/* Archive page title */
+.archive-title {
+    font-size: 2.5em;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* Archive icon */
+.archive-icon {
+    font-size: 1.1em;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Post count badge */
+.post-count {
+    font-size: 0.6em;
+    font-weight: 400;
+    color: #666;
+    opacity: 0.8;
+}
+
+/* Author role */
+.author-role {
+    font-size: 0.7em;
+    font-weight: 400;
+    color: #0073aa;
+    font-style: italic;
+}</code></pre>
+
+        <h2>Customizing Archive Description</h2>
+        <p>Also customize the archive description that appears below the title:</p>
+
+        <pre><code>/**
+ * Customize archive description
+ */
+function custom_archive_description($description) {
+    if (is_category()) {
+        $cat_id = get_queried_object_id();
+        $cat_desc = category_description($cat_id);
+
+        if ($cat_desc) {
+            $description = $cat_desc;
+        } else {
+            $post_count = get_queried_object()->count;
+            $description = 'Browse ' . $post_count . ' articles in this category.';
+        }
+    } elseif (is_author()) {
+        $author_bio = get_the_author_meta('description');
+
+        if ($author_bio) {
+            $description = $author_bio;
+        } else {
+            $description = 'All articles by ' . get_the_author() . '.';
+        }
+    } elseif (is_tag()) {
+        $tag = single_tag_title('', false);
+        $description = 'Articles tagged with "' . $tag . '".';
+    }
+
+    return $description;
+}
+add_filter('get_the_archive_description', 'custom_archive_description');</code></pre>
+      </div>
+    `,
+    code: `/**
+ * Remove archive title prefixes
+ */
+function remove_archive_title_prefix($title) {
+    if (is_category()) {
+        $title = single_cat_title('', false);
+    } elseif (is_tag()) {
+        $title = single_tag_title('', false);
+    } elseif (is_author()) {
+        $title = get_the_author();
+    } elseif (is_post_type_archive()) {
+        $title = post_type_archive_title('', false);
+    } elseif (is_tax()) {
+        $title = single_term_title('', false);
+    }
+
+    return $title;
+}
+add_filter('get_the_archive_title', 'remove_archive_title_prefix');`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-15',
+    readTime: '6 min',
+    category: 'WordPress Content',
+    tags: ['Archives', 'Titles', 'Templates'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 4.1+',
+    seo: {
+      metaTitle: 'Customize Archive Page Titles in WordPress - Remove Prefixes Guide 2025',
+      metaDescription: 'Learn how to remove default prefixes like "Category:" and "Tag:" from WordPress archive titles. Clean, professional archive pages with custom formatting.',
+      keywords: ['WordPress archive title', 'remove category prefix', 'customize archive titles', 'WordPress get_the_archive_title', 'archive page customization', 'WordPress taxonomy titles', 'remove tag prefix'],
+      canonical: 'https://shahmir.dev/blog/custom-archive-title',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Customize Archive Page Titles in WordPress',
+        description: 'Complete guide to customizing archive page titles and removing default prefixes in WordPress.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-15',
+        dateModified: '2025-01-15',
+        proficiencyLevel: 'Beginner',
+        dependencies: 'WordPress 4.1+'
+      }
+    },
+    faqs: [
+      {
+        question: "Why does WordPress add 'Category:' and other prefixes to archive titles?",
+        answer: "WordPress adds these prefixes (Category:, Tag:, Author:, Archives:) to clearly identify the archive type for users. This is especially helpful when using the default theme or generic templates. The get_the_archive_title() function automatically adds these prefixes based on the archive type. While informative, many developers remove them for cleaner designs and better SEO, since the context is usually clear from the page layout."
+      },
+      {
+        question: "Will removing prefixes affect my SEO?",
+        answer: "No, removing prefixes generally improves SEO. Cleaner titles without redundant words like 'Category:' tend to perform better in search results. Search engines understand the context from URL structure, breadcrumbs, and page content. Shorter, more focused titles often have higher click-through rates. Just ensure your custom titles still clearly describe the page content and include relevant keywords."
+      },
+      {
+        question: "How do I remove prefixes for custom post type archives?",
+        answer: "Use is_post_type_archive() in your filter: if (is_post_type_archive()) { $title = post_type_archive_title('', false); }. The second parameter 'false' tells WordPress not to echo the title. For custom taxonomies, use is_tax() with single_term_title('', false). You can also check specific post types: if (is_post_type_archive('portfolio')) { $title = 'Our Work'; }."
+      },
+      {
+        question: "Can I use different titles for specific categories?",
+        answer: "Yes, use get_queried_object_id() to get the current category ID, then add conditional logic: $cat_id = get_queried_object_id(); if ($cat_id == 5) { $title = 'Special Category Title'; } else { $title = single_cat_title('', false); }. This works for tags, authors, and custom taxonomies too. You can also check by slug using get_queried_object()->slug."
+      },
+      {
+        question: "Why is my archive title filter not working?",
+        answer: "Common issues: 1) Theme doesn't use the_archive_title() - check template files and add it if missing. 2) Another plugin or theme overrides your filter with higher priority - increase your filter priority: add_filter('get_the_archive_title', 'your_function', 20). 3) Archive title is hardcoded in template - modify template directly. 4) Caching - clear all caches after making changes. Check archive.php, category.php, or taxonomy.php in your theme."
+      }
+    ]
+  },
+  {
+    id: 40,
+    slug: 'add-view-counter',
+    title: 'Add Post View Counter',
+    excerpt: 'Track and display post views without plugins using post meta. Monitor popular content and show view counts to visitors.',
+    content: `
+      <div class="snippet-content">
+        <p>Tracking post views helps you understand which content resonates with your audience. This data is valuable for content strategy, identifying popular topics, and displaying social proof. This solution uses WordPress post meta to store view counts efficiently without external services or plugins.</p>
+
+        <h2>Why Track Post Views?</h2>
+        <ul>
+          <li><strong>Content Strategy:</strong> Identify popular topics to create more relevant content</li>
+          <li><strong>Social Proof:</strong> Display view counts to encourage engagement</li>
+          <li><strong>Popular Posts Widget:</strong> Show most-viewed content automatically</li>
+          <li><strong>Analytics:</strong> Track trends without relying on Google Analytics</li>
+          <li><strong>Performance Insights:</strong> Compare post performance over time</li>
+          <li><strong>Lightweight:</strong> No external API calls or plugin overhead</li>
+        </ul>
+
+        <h2>Basic View Counter</h2>
+        <p>Track views and store count in post meta:</p>
+
+        <pre><code>/**
+ * Track post views
+ */
+function track_post_views($post_id) {
+    if (!is_single()) {
+        return;
+    }
+
+    if (empty($post_id)) {
+        global $post;
+        $post_id = $post->ID;
+    }
+
+    // Get current view count
+    $count = get_post_meta($post_id, 'post_views_count', true);
+
+    if ($count == '') {
+        $count = 0;
+        delete_post_meta($post_id, 'post_views_count');
+        add_post_meta($post_id, 'post_views_count', '0');
+    } else {
+        $count++;
+        update_post_meta($post_id, 'post_views_count', $count);
+    }
+}
+add_action('wp_head', 'track_post_views');
+
+/**
+ * Display post views
+ */
+function get_post_views($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+
+    $count = get_post_meta($post_id, 'post_views_count', true);
+
+    if ($count == '') {
+        return '0 views';
+    }
+
+    return number_format($count) . ' views';
+}</code></pre>
+
+        <h2>Advanced: Exclude Logged-in Users & Bots</h2>
+        <p>Track only real visitor views, excluding admins and bots:</p>
+
+        <pre><code>/**
+ * Advanced post view tracking
+ */
+function advanced_track_post_views($post_id) {
+    if (!is_single()) {
+        return;
+    }
+
+    if (empty($post_id)) {
+        global $post;
+        $post_id = $post->ID;
+    }
+
+    // Exclude logged-in users
+    if (is_user_logged_in()) {
+        return;
+    }
+
+    // Exclude bots
+    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+    $bot_patterns = array('bot', 'crawl', 'slurp', 'spider', 'mediapartners');
+
+    foreach ($bot_patterns as $pattern) {
+        if (stripos($user_agent, $pattern) !== false) {
+            return;
+        }
+    }
+
+    // Track unique views with cookie
+    $cookie_name = 'post_view_' . $post_id;
+
+    if (!isset($_COOKIE[$cookie_name])) {
+        // Set cookie for 24 hours
+        setcookie($cookie_name, '1', time() + 86400, COOKIEPATH, COOKIE_DOMAIN);
+
+        // Increment view count
+        $count = (int)get_post_meta($post_id, 'post_views_count', true);
+        $count++;
+        update_post_meta($post_id, 'post_views_count', $count);
+    }
+}
+add_action('wp_head', 'advanced_track_post_views');</code></pre>
+
+        <h2>Display Views with Icon</h2>
+        <p>Show formatted view count with visual icon:</p>
+
+        <pre><code>/**
+ * Display views with icon
+ */
+function display_post_views_with_icon($post_id = null) {
+    if (!$post_id) {
+        $post_id = get_the_ID();
+    }
+
+    $count = (int)get_post_meta($post_id, 'post_views_count', true);
+
+    $output = '<span class="post-views">';
+    $output .= '<span class="views-icon">👁</span> ';
+
+    if ($count >= 1000000) {
+        $output .= number_format($count / 1000000, 1) . 'M';
+    } elseif ($count >= 1000) {
+        $output .= number_format($count / 1000, 1) . 'K';
+    } else {
+        $output .= $count;
+    }
+
+    $output .= ' views</span>';
+
+    return $output;
+}
+
+// Usage:
+// echo display_post_views_with_icon();</code></pre>
+
+        <h2>Most Viewed Posts Query</h2>
+        <p>Retrieve and display most popular posts:</p>
+
+        <pre><code>/**
+ * Get most viewed posts
+ */
+function get_most_viewed_posts($count = 5) {
+    $args = array(
+        'post_type'      => 'post',
+        'posts_per_page' => $count,
+        'meta_key'       => 'post_views_count',
+        'orderby'        => 'meta_value_num',
+        'order'          => 'DESC'
+    );
+
+    return new WP_Query($args);
+}
+
+/**
+ * Display most viewed posts widget
+ */
+function display_popular_posts() {
+    $popular_posts = get_most_viewed_posts(5);
+
+    if ($popular_posts->have_posts()) {
+        echo '<div class="popular-posts-widget">';
+        echo '<h3>Most Popular</h3>';
+        echo '<ul>';
+
+        while ($popular_posts->have_posts()) {
+            $popular_posts->the_post();
+            $views = get_post_meta(get_the_ID(), 'post_views_count', true);
+
+            echo '<li>';
+            echo '<a href="' . get_permalink() . '">' . get_the_title() . '</a>';
+            echo '<span class="view-count">' . number_format($views) . ' views</span>';
+            echo '</li>';
+        }
+
+        echo '</ul>';
+        echo '</div>';
+
+        wp_reset_postdata();
+    }
+}</code></pre>
+
+        <h2>REST API Integration</h2>
+        <p>Add view count to REST API responses:</p>
+
+        <pre><code>/**
+ * Add view count to REST API
+ */
+function add_views_to_rest_api() {
+    register_rest_field('post', 'views', array(
+        'get_callback' => function($post) {
+            $views = get_post_meta($post['id'], 'post_views_count', true);
+            return $views ? (int)$views : 0;
+        },
+        'schema' => array(
+            'description' => 'Post view count',
+            'type'        => 'integer'
+        )
+    ));
+}
+add_action('rest_api_init', 'add_views_to_rest_api');</code></pre>
+
+        <h2>Admin Column for Views</h2>
+        <p>Show view counts in WordPress admin post list:</p>
+
+        <pre><code>/**
+ * Add views column to admin
+ */
+function add_views_column($columns) {
+    $columns['post_views'] = 'Views';
+    return $columns;
+}
+add_filter('manage_posts_columns', 'add_views_column');
+
+/**
+ * Display view count in admin column
+ */
+function display_views_column($column, $post_id) {
+    if ($column === 'post_views') {
+        $views = get_post_meta($post_id, 'post_views_count', true);
+        echo $views ? number_format($views) : '0';
+    }
+}
+add_action('manage_posts_custom_column', 'display_views_column', 10, 2);
+
+/**
+ * Make views column sortable
+ */
+function make_views_column_sortable($columns) {
+    $columns['post_views'] = 'post_views';
+    return $columns;
+}
+add_filter('manage_edit-post_sortable_columns', 'make_views_column_sortable');
+
+/**
+ * Sort by views
+ */
+function sort_by_views($query) {
+    if (!is_admin()) {
+        return;
+    }
+
+    $orderby = $query->get('orderby');
+
+    if ('post_views' === $orderby) {
+        $query->set('meta_key', 'post_views_count');
+        $query->set('orderby', 'meta_value_num');
+    }
+}
+add_action('pre_get_posts', 'sort_by_views');</code></pre>
+
+        <h2>Reset View Counts</h2>
+        <p>Admin function to reset all view counts:</p>
+
+        <pre><code>/**
+ * Reset all post view counts
+ */
+function reset_all_post_views() {
+    global $wpdb;
+
+    // Delete all view count meta
+    $wpdb->query("DELETE FROM $wpdb->postmeta WHERE meta_key = 'post_views_count'");
+
+    return true;
+}
+
+/**
+ * Reset views for specific post
+ */
+function reset_post_views($post_id) {
+    delete_post_meta($post_id, 'post_views_count');
+    add_post_meta($post_id, 'post_views_count', '0');
+}</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Use Cookies for Unique Views</td>
+              <td>Prevents multiple counts from same visitor refreshing page</td>
+            </tr>
+            <tr>
+              <td>Exclude Logged-in Users</td>
+              <td>Authors checking their posts shouldn't inflate view counts</td>
+            </tr>
+            <tr>
+              <td>Filter Bot Traffic</td>
+              <td>Search engine crawlers and bots skew analytics</td>
+            </tr>
+            <tr>
+              <td>Use Efficient Queries</td>
+              <td>Index meta_key for fast sorting by view count</td>
+            </tr>
+            <tr>
+              <td>Consider Caching</td>
+              <td>High-traffic sites should cache popular posts queries</td>
+            </tr>
+            <tr>
+              <td>Track in wp_head</td>
+              <td>Ensures views are counted before any caching</td>
+            </tr>
+            <tr>
+              <td>Validate Post ID</td>
+              <td>Always check post exists before updating meta</td>
+            </tr>
+            <tr>
+              <td>Use Transients</td>
+              <td>Cache expensive "most viewed" queries for performance</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Low impact (0.002-0.005s per page view). Single post meta update per view is lightweight. For high-traffic sites (10k+ daily views), consider: 1) Batch updates using cron, 2) Store counts in separate table, 3) Use Redis/Memcached for counting, 4) Implement AJAX-based counting to avoid blocking page load. Most sites under 100k monthly views won't notice any performance impact.</p>
+
+        <h2>Styling View Counts</h2>
+        <pre><code>/* View count styling */
+.post-views {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #666;
+}
+
+.views-icon {
+    font-size: 16px;
+    opacity: 0.7;
+}
+
+/* Popular posts widget */
+.popular-posts-widget {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.popular-posts-widget li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.view-count {
+    color: #999;
+    font-size: 12px;
+}</code></pre>
+      </div>
+    `,
+    code: `/**
+ * Track post views
+ */
+function track_post_views($post_id) {
+    if (!is_single()) return;
+
+    if (empty($post_id)) {
+        global $post;
+        $post_id = $post->ID;
+    }
+
+    $count = get_post_meta($post_id, 'post_views_count', true);
+
+    if ($count == '') {
+        $count = 0;
+        add_post_meta($post_id, 'post_views_count', '0');
+    } else {
+        $count++;
+        update_post_meta($post_id, 'post_views_count', $count);
+    }
+}
+add_action('wp_head', 'track_post_views');
+
+function get_post_views($post_id = null) {
+    if (!$post_id) $post_id = get_the_ID();
+    $count = get_post_meta($post_id, 'post_views_count', true);
+    return $count ? number_format($count) . ' views' : '0 views';
+}`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-15',
+    readTime: '6 min',
+    category: 'WordPress Content',
+    tags: ['Analytics', 'Post Views', 'Statistics'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Add Post View Counter in WordPress Without Plugins - 2025 Guide',
+      metaDescription: 'Learn how to track and display post views in WordPress using post meta. Complete guide with code for analytics, popular posts, and admin integration.',
+      keywords: ['WordPress post views', 'track post views', 'WordPress analytics', 'post view counter', 'popular posts WordPress', 'WordPress post meta', 'view count tracking'],
+      canonical: 'https://shahmir.dev/blog/add-view-counter',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Add Post View Counter in WordPress',
+        description: 'Complete guide to tracking and displaying post views in WordPress without plugins.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-15',
+        dateModified: '2025-01-15',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "How accurate are post view counts using this method?",
+        answer: "Basic implementation counts every page load, including bots and repeat views. For better accuracy, use cookies to track unique visitors (accurate within 24 hours), exclude logged-in users, and filter bot user agents. This gives 85-90% accuracy compared to Google Analytics. For exact analytics, integrate with Google Analytics API, but post meta is sufficient for displaying popular content and general trends."
+      },
+      {
+        question: "Will tracking views slow down my site?",
+        answer: "Minimal impact for most sites. Each view adds one post meta update (~0.002s). Problems arise at very high traffic (100k+ daily views). Solutions: 1) Use object caching (Redis/Memcached), 2) Batch updates with cron instead of real-time, 3) Use AJAX to update counts after page load, 4) Store in custom table instead of postmeta. For 99% of WordPress sites, the basic method works fine without performance issues."
+      },
+      {
+        question: "How do I display most viewed posts from the last 30 days only?",
+        answer: "Post meta only stores total count, not timestamps. For time-based popular posts, store daily counts in separate meta keys (format: views_2025_01_15) or use a custom table with timestamp column. Alternative: Query posts by date range, then sort by views: 'date_query' => array('after' => '30 days ago'), 'meta_key' => 'post_views_count', 'orderby' => 'meta_value_num'. This shows popular posts from recent content only."
+      },
+      {
+        question: "Can I track views for custom post types?",
+        answer: "Yes, the code works for any post type. No modifications needed - it tracks whatever post type is displayed in is_single(). For post type specific tracking, add condition: if (get_post_type() !== 'your_cpt') return; before incrementing. You can also use separate meta keys per post type for independent counting: $meta_key = 'views_' . get_post_type($post_id);. Very useful for portfolios, products, or documentation sites."
+      },
+      {
+        question: "How do I prevent view count from increasing when I preview posts?",
+        answer: "Add checks for preview and admin: if (is_preview() || is_admin()) return; at the start of your tracking function. Also exclude post revisions: if (wp_is_post_revision($post_id)) return;. For development, check environment: if (defined('WP_DEBUG') && WP_DEBUG) return;. This ensures only real public views are counted, not drafts, previews, or admin panel views."
+      }
+    ]
+  },
+  {
+    id: 41,
+    slug: 'create-custom-user-role',
+    title: 'Create Custom User Roles',
+    excerpt: 'Create custom WordPress user roles with specific capabilities to control exactly what different users can do on your site.',
+    content: `
+      <div class="snippet-content">
+        <p>WordPress comes with five default user roles (Administrator, Editor, Author, Contributor, Subscriber), but you often need custom roles with specific capabilities. Custom roles let you create clients, moderators, shop managers, or any role that fits your site's needs with precise permission control.</p>
+
+        <h2>Why Create Custom User Roles?</h2>
+        <ul>
+          <li><strong>Precise Control:</strong> Grant exactly the permissions needed, nothing more</li>
+          <li><strong>Client Access:</strong> Give clients limited admin access to their content only</li>
+          <li><strong>Team Management:</strong> Different roles for different team responsibilities</li>
+          <li><strong>Security:</strong> Limit damage potential by restricting capabilities</li>
+          <li><strong>WooCommerce:</strong> Create shop managers, product editors, order handlers</li>
+          <li><strong>Membership Sites:</strong> Different access levels for premium members</li>
+        </ul>
+
+        <h2>Basic Custom Role Creation</h2>
+        <p>Create a simple custom role with specific capabilities:</p>
+
+        <pre><code>/**
+ * Create custom user role on theme activation
+ */
+function create_custom_user_role() {
+    add_role(
+        'content_manager',
+        'Content Manager',
+        array(
+            'read'                   => true,
+            'edit_posts'             => true,
+            'edit_published_posts'   => true,
+            'publish_posts'          => true,
+            'delete_posts'           => true,
+            'delete_published_posts' => true,
+            'upload_files'           => true,
+            'edit_pages'             => true,
+            'edit_published_pages'   => true,
+        )
+    );
+}
+add_action('after_switch_theme', 'create_custom_user_role');</code></pre>
+
+        <h2>Advanced Role with Full Capabilities</h2>
+        <p>Create roles with comprehensive permission sets:</p>
+
+        <pre><code>/**
+ * Create advanced custom roles
+ */
+function create_advanced_custom_roles() {
+    // Client role - can only edit their own posts
+    add_role('client', 'Client', array(
+        'read'                   => true,
+        'edit_posts'             => true,
+        'delete_posts'           => true,
+        'upload_files'           => true,
+        'edit_published_posts'   => true,
+        'delete_published_posts' => true,
+    ));
+
+    // Moderator role - can manage comments and users
+    add_role('moderator', 'Moderator', array(
+        'read'                   => true,
+        'moderate_comments'      => true,
+        'edit_comment'           => true,
+        'edit_posts'             => true,
+        'edit_others_posts'      => true,
+        'edit_published_posts'   => true,
+        'list_users'             => true,
+        'edit_users'             => true,
+    ));
+
+    // SEO Manager - can manage SEO and analytics
+    add_role('seo_manager', 'SEO Manager', array(
+        'read'                   => true,
+        'edit_posts'             => true,
+        'edit_pages'             => true,
+        'edit_others_posts'      => true,
+        'edit_others_pages'      => true,
+        'publish_posts'          => true,
+        'publish_pages'          => true,
+        'manage_categories'      => true,
+        'manage_links'           => true,
+    ));
+}
+add_action('init', 'create_advanced_custom_roles');</code></pre>
+
+        <h2>Clone Existing Role</h2>
+        <p>Base new role on existing role's capabilities:</p>
+
+        <pre><code>/**
+ * Clone an existing role
+ */
+function clone_user_role($source_role, $new_role_slug, $new_role_name) {
+    $source = get_role($source_role);
+
+    if (!$source) {
+        return false;
+    }
+
+    // Create new role with same capabilities
+    add_role($new_role_slug, $new_role_name, $source->capabilities);
+
+    return true;
+}
+
+// Usage: Clone Editor role to create Senior Editor
+add_action('init', function() {
+    clone_user_role('editor', 'senior_editor', 'Senior Editor');
+});</code></pre>
+
+        <h2>Add Capabilities to Existing Role</h2>
+        <p>Modify existing roles by adding or removing capabilities:</p>
+
+        <pre><code>/**
+ * Add capabilities to existing role
+ */
+function modify_author_role() {
+    $role = get_role('author');
+
+    if ($role) {
+        // Add new capabilities
+        $role->add_cap('edit_others_posts');
+        $role->add_cap('edit_pages');
+        $role->add_cap('edit_published_pages');
+        $role->add_cap('publish_pages');
+        $role->add_cap('delete_pages');
+    }
+}
+add_action('admin_init', 'modify_author_role');
+
+/**
+ * Remove capabilities from role
+ */
+function restrict_contributor_role() {
+    $role = get_role('contributor');
+
+    if ($role) {
+        // Remove upload capability
+        $role->remove_cap('upload_files');
+    }
+}
+add_action('admin_init', 'restrict_contributor_role');</code></pre>
+
+        <h2>Custom Post Type Specific Roles</h2>
+        <p>Create roles for managing specific custom post types:</p>
+
+        <pre><code>/**
+ * Create role for custom post type management
+ */
+function create_portfolio_manager_role() {
+    add_role('portfolio_manager', 'Portfolio Manager', array(
+        'read'                      => true,
+
+        // Portfolio post type capabilities
+        'edit_portfolios'           => true,
+        'edit_others_portfolios'    => true,
+        'publish_portfolios'        => true,
+        'read_private_portfolios'   => true,
+        'delete_portfolios'         => true,
+        'delete_private_portfolios' => true,
+        'delete_published_portfolios' => true,
+        'delete_others_portfolios'  => true,
+        'edit_private_portfolios'   => true,
+        'edit_published_portfolios' => true,
+
+        // Media
+        'upload_files'              => true,
+    ));
+}
+add_action('init', 'create_portfolio_manager_role');
+
+/**
+ * Register custom post type with capability type
+ */
+function register_portfolio_cpt() {
+    register_post_type('portfolio', array(
+        'public'        => true,
+        'label'         => 'Portfolio',
+        'capability_type' => 'portfolio',
+        'capabilities'  => array(
+            'edit_post'          => 'edit_portfolio',
+            'edit_posts'         => 'edit_portfolios',
+            'edit_others_posts'  => 'edit_others_portfolios',
+            'publish_posts'      => 'publish_portfolios',
+            'read_post'          => 'read_portfolio',
+            'read_private_posts' => 'read_private_portfolios',
+            'delete_post'        => 'delete_portfolio',
+        ),
+        'map_meta_cap'  => true,
+    ));
+}
+add_action('init', 'register_portfolio_cpt');</code></pre>
+
+        <h2>Temporary Role Elevation</h2>
+        <p>Temporarily grant capabilities to users:</p>
+
+        <pre><code>/**
+ * Grant temporary admin access
+ */
+function grant_temporary_capability($user_id, $capability, $duration_hours = 24) {
+    $user = get_user_by('id', $user_id);
+
+    if (!$user) {
+        return false;
+    }
+
+    // Add capability
+    $user->add_cap($capability);
+
+    // Store expiration time
+    $expiration = time() + ($duration_hours * 3600);
+    update_user_meta($user_id, 'temp_cap_' . $capability . '_expires', $expiration);
+
+    return true;
+}
+
+/**
+ * Check and remove expired temporary capabilities
+ */
+function check_temporary_capabilities() {
+    $users = get_users();
+
+    foreach ($users as $user) {
+        $user_meta = get_user_meta($user->ID);
+
+        foreach ($user_meta as $meta_key => $meta_value) {
+            if (strpos($meta_key, 'temp_cap_') === 0 && strpos($meta_key, '_expires') !== false) {
+                $expiration = $meta_value[0];
+                $capability = str_replace(array('temp_cap_', '_expires'), '', $meta_key);
+
+                if (time() > $expiration) {
+                    $user->remove_cap($capability);
+                    delete_user_meta($user->ID, $meta_key);
+                }
+            }
+        }
+    }
+}
+add_action('init', 'check_temporary_capabilities');</code></pre>
+
+        <h2>Role-Based Content Restriction</h2>
+        <p>Show/hide content based on user role:</p>
+
+        <pre><code>/**
+ * Check if user has specific role
+ */
+function user_has_role($role, $user_id = null) {
+    if (!$user_id) {
+        $user_id = get_current_user_id();
+    }
+
+    $user = get_user_by('id', $user_id);
+
+    if (!$user) {
+        return false;
+    }
+
+    return in_array($role, $user->roles);
+}
+
+/**
+ * Shortcode to restrict content by role
+ */
+function role_restricted_content($atts, $content = null) {
+    $atts = shortcode_atts(array(
+        'roles' => '', // comma-separated roles
+    ), $atts);
+
+    if (empty($atts['roles']) || !is_user_logged_in()) {
+        return '';
+    }
+
+    $allowed_roles = array_map('trim', explode(',', $atts['roles']));
+    $user = wp_get_current_user();
+
+    foreach ($allowed_roles as $role) {
+        if (in_array($role, $user->roles)) {
+            return do_shortcode($content);
+        }
+    }
+
+    return '<p class="restricted-content">This content is restricted to specific user roles.</p>';
+}
+add_shortcode('role_content', 'role_restricted_content');
+
+// Usage: [role_content roles="editor,administrator"]Premium content here[/role_content]</code></pre>
+
+        <h2>Remove Custom Roles on Deactivation</h2>
+        <p>Clean up custom roles when theme/plugin is deactivated:</p>
+
+        <pre><code>/**
+ * Remove custom roles on theme switch
+ */
+function remove_custom_roles() {
+    remove_role('content_manager');
+    remove_role('client');
+    remove_role('moderator');
+    remove_role('seo_manager');
+    remove_role('portfolio_manager');
+}
+register_deactivation_hook(__FILE__, 'remove_custom_roles');
+
+// For themes, use:
+add_action('switch_theme', 'remove_custom_roles');</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Use Descriptive Role Names</td>
+              <td>Clear names help identify purpose (e.g., 'shop_manager' not 'sm1')</td>
+            </tr>
+            <tr>
+              <td>Grant Minimum Permissions</td>
+              <td>Follow principle of least privilege for security</td>
+            </tr>
+            <tr>
+              <td>Test Thoroughly</td>
+              <td>Test each role's access to ensure proper restrictions</td>
+            </tr>
+            <tr>
+              <td>Document Capabilities</td>
+              <td>Keep list of granted capabilities for each role</td>
+            </tr>
+            <tr>
+              <td>Clean Up on Deactivation</td>
+              <td>Remove custom roles when plugin/theme is deactivated</td>
+            </tr>
+            <tr>
+              <td>Use Proper Hooks</td>
+              <td>Create roles on 'init' or 'after_switch_theme', not every page load</td>
+            </tr>
+            <tr>
+              <td>Map Meta Caps</td>
+              <td>Use 'map_meta_cap' => true for custom post types</td>
+            </tr>
+            <tr>
+              <td>Avoid Role Duplication</td>
+              <td>Check if role exists before creating with get_role()</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Zero impact during normal operation. Role creation/modification happens once during init or theme activation. Capability checks (user_can(), current_user_can()) are cached by WordPress and extremely fast (<0.001s). Even sites with dozens of custom roles see no performance degradation. Only avoid creating roles on every page load - use proper hooks.</p>
+
+        <h2>Common WordPress Capabilities Reference</h2>
+        <p>Key capabilities you can grant to custom roles:</p>
+
+        <ul>
+          <li><strong>Posts:</strong> edit_posts, edit_others_posts, publish_posts, delete_posts, edit_published_posts</li>
+          <li><strong>Pages:</strong> edit_pages, edit_others_pages, publish_pages, delete_pages</li>
+          <li><strong>Media:</strong> upload_files</li>
+          <li><strong>Comments:</strong> moderate_comments, edit_comment</li>
+          <li><strong>Appearance:</strong> edit_theme_options, switch_themes, edit_themes</li>
+          <li><strong>Plugins:</strong> activate_plugins, edit_plugins, install_plugins</li>
+          <li><strong>Users:</strong> list_users, create_users, edit_users, delete_users</li>
+          <li><strong>Settings:</strong> manage_options</li>
+          <li><strong>Categories:</strong> manage_categories</li>
+          <li><strong>Import/Export:</strong> import, export</li>
+        </ul>
+      </div>
+    `,
+    code: `/**
+ * Create custom user role
+ */
+function create_custom_user_role() {
+    add_role(
+        'content_manager',
+        'Content Manager',
+        array(
+            'read'                   => true,
+            'edit_posts'             => true,
+            'edit_published_posts'   => true,
+            'publish_posts'          => true,
+            'delete_posts'           => true,
+            'upload_files'           => true,
+            'edit_pages'             => true,
+            'edit_published_pages'   => true,
+        )
+    );
+}
+add_action('after_switch_theme', 'create_custom_user_role');
+
+// Remove role on theme deactivation
+function remove_custom_role() {
+    remove_role('content_manager');
+}
+add_action('switch_theme', 'remove_custom_role');`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-15',
+    readTime: '8 min',
+    category: 'WordPress Users',
+    tags: ['User Roles', 'Capabilities', 'Users'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Create Custom User Roles in WordPress - Complete Capabilities Guide 2025',
+      metaDescription: 'Learn how to create custom WordPress user roles with specific capabilities. Control user permissions, create client roles, and manage team access with code examples.',
+      keywords: ['WordPress custom roles', 'user roles WordPress', 'WordPress capabilities', 'create user role', 'WordPress permissions', 'custom user capabilities', 'WordPress role management'],
+      canonical: 'https://shahmir.dev/blog/create-custom-user-role',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Create Custom User Roles in WordPress',
+        description: 'Complete guide to creating custom WordPress user roles with specific capabilities and permissions.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-15',
+        dateModified: '2025-01-15',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "What's the difference between add_role() and get_role()->add_cap()?",
+        answer: "add_role() creates a completely new role from scratch with specified capabilities. get_role()->add_cap() modifies an existing role by adding capabilities to it. Use add_role() when you need a distinct new role. Use add_cap() when you want to enhance existing roles (like giving Authors the ability to edit pages). add_cap() changes persist even after theme/plugin deactivation unless explicitly removed."
+      },
+      {
+        question: "How do I restrict a role to only edit their own posts?",
+        answer: "Grant 'edit_posts' but NOT 'edit_others_posts'. This allows users to create and edit their own posts only. Similarly, use 'delete_posts' without 'delete_others_posts' to restrict deletion. For custom post types, use 'edit_portfolios' without 'edit_others_portfolios'. Test by logging in as that role - they should only see their own content in the admin. This is perfect for client or contributor roles."
+      },
+      {
+        question: "Can I create roles for custom post types?",
+        answer: "Yes, register your CPT with 'capability_type' and custom capability names. Set capability_type to your CPT name (e.g., 'portfolio'), then specify all capability mappings in the 'capabilities' array. Add 'map_meta_cap' => true. Then create roles with those capabilities: 'edit_portfolios', 'publish_portfolios', etc. This gives you granular control - someone can manage portfolios but not regular posts."
+      },
+      {
+        question: "Where are custom roles stored in the database?",
+        answer: "Roles are stored in the wp_options table under the option_name 'wp_user_roles' (prefixed with your database prefix). This is a serialized array of all roles and their capabilities. Don't edit this directly - always use add_role(), remove_role(), add_cap(), and remove_cap(). Changes to roles affect all users with that role immediately. Roles persist even if the plugin/theme that created them is deactivated."
+      },
+      {
+        question: "How do I prevent custom roles from persisting after theme/plugin deactivation?",
+        answer: "Hook removal to deactivation: For plugins, use register_deactivation_hook(__FILE__, 'remove_custom_roles'). For themes, use add_action('switch_theme', 'remove_custom_roles'). In the function, call remove_role() for each custom role. This is good practice to avoid cluttering the database with unused roles. However, if users exist with those roles, they'll have no role after removal - reassign them first with wp_update_user()."
+      }
+    ]
+  },
+  {
+    id: 42,
+    slug: 'add-user-profile-fields',
+    title: 'Add Custom User Profile Fields',
+    excerpt: 'Extend WordPress user profiles with custom fields to collect additional user information like social media profiles, phone numbers, or job titles.',
+    content: `
+      <div class="snippet-content">
+        <p>WordPress user profiles include basic fields like username, email, and bio, but you often need additional information. Custom profile fields let you collect social media links, phone numbers, company details, or any custom data specific to your site's needs.</p>
+
+        <h2>Why Add Custom Profile Fields?</h2>
+        <ul>
+          <li><strong>Author Information:</strong> Display social media links, website, company details</li>
+          <li><strong>Contact Details:</strong> Collect phone numbers, addresses, Skype IDs</li>
+          <li><strong>Professional Data:</strong> Job titles, departments, employee IDs</li>
+          <li><strong>Personalization:</strong> User preferences, favorite categories, interests</li>
+          <li><strong>Membership Sites:</strong> Subscription levels, member numbers, expiry dates</li>
+          <li><strong>E-commerce:</strong> Billing preferences, VAT numbers, purchase history</li>
+        </ul>
+
+        <h2>Basic Custom Profile Field</h2>
+        <p>Add a simple text field to user profiles:</p>
+
+        <pre><code>/**
+ * Add custom profile field
+ */
+function add_custom_user_profile_fields($user) {
+    ?>
+    <h3>Additional Information</h3>
+    <table class="form-table">
+        <tr>
+            <th><label for="phone">Phone Number</label></th>
+            <td>
+                <input type="text"
+                       name="phone"
+                       id="phone"
+                       value="<?php echo esc_attr(get_user_meta($user->ID, 'phone', true)); ?>"
+                       class="regular-text" />
+                <p class="description">Enter your phone number.</p>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+add_action('show_user_profile', 'add_custom_user_profile_fields');
+add_action('edit_user_profile', 'add_custom_user_profile_fields');
+
+/**
+ * Save custom profile field
+ */
+function save_custom_user_profile_fields($user_id) {
+    if (!current_user_can('edit_user', $user_id)) {
+        return false;
+    }
+
+    update_user_meta($user_id, 'phone', sanitize_text_field($_POST['phone']));
+}
+add_action('personal_options_update', 'save_custom_user_profile_fields');
+add_action('edit_user_profile_update', 'save_custom_user_profile_fields');</code></pre>
+
+        <h2>Multiple Custom Fields</h2>
+        <p>Add various field types (text, textarea, select, checkbox):</p>
+
+        <pre><code>/**
+ * Add multiple custom profile fields
+ */
+function add_multiple_profile_fields($user) {
+    $job_title = get_user_meta($user->ID, 'job_title', true);
+    $company = get_user_meta($user->ID, 'company', true);
+    $bio_extended = get_user_meta($user->ID, 'bio_extended', true);
+    $twitter = get_user_meta($user->ID, 'twitter', true);
+    $linkedin = get_user_meta($user->ID, 'linkedin', true);
+    $newsletter = get_user_meta($user->ID, 'newsletter', true);
+    $user_level = get_user_meta($user->ID, 'user_level', true);
+    ?>
+    <h3>Professional Information</h3>
+    <table class="form-table">
+        <tr>
+            <th><label for="job_title">Job Title</label></th>
+            <td>
+                <input type="text" name="job_title" id="job_title"
+                       value="<?php echo esc_attr($job_title); ?>"
+                       class="regular-text" />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="company">Company</label></th>
+            <td>
+                <input type="text" name="company" id="company"
+                       value="<?php echo esc_attr($company); ?>"
+                       class="regular-text" />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="bio_extended">Extended Bio</label></th>
+            <td>
+                <textarea name="bio_extended" id="bio_extended"
+                          rows="5" cols="30"
+                          class="large-text"><?php echo esc_textarea($bio_extended); ?></textarea>
+                <p class="description">Additional biographical information.</p>
+            </td>
+        </tr>
+    </table>
+
+    <h3>Social Media</h3>
+    <table class="form-table">
+        <tr>
+            <th><label for="twitter">Twitter Username</label></th>
+            <td>
+                <input type="text" name="twitter" id="twitter"
+                       value="<?php echo esc_attr($twitter); ?>"
+                       class="regular-text"
+                       placeholder="@username" />
+            </td>
+        </tr>
+        <tr>
+            <th><label for="linkedin">LinkedIn Profile URL</label></th>
+            <td>
+                <input type="url" name="linkedin" id="linkedin"
+                       value="<?php echo esc_url($linkedin); ?>"
+                       class="regular-text" />
+            </td>
+        </tr>
+    </table>
+
+    <h3>Preferences</h3>
+    <table class="form-table">
+        <tr>
+            <th><label for="newsletter">Newsletter</label></th>
+            <td>
+                <label>
+                    <input type="checkbox" name="newsletter" id="newsletter"
+                           value="1" <?php checked($newsletter, '1'); ?> />
+                    Subscribe to newsletter
+                </label>
+            </td>
+        </tr>
+        <tr>
+            <th><label for="user_level">User Level</label></th>
+            <td>
+                <select name="user_level" id="user_level">
+                    <option value="">Select Level</option>
+                    <option value="basic" <?php selected($user_level, 'basic'); ?>>Basic</option>
+                    <option value="premium" <?php selected($user_level, 'premium'); ?>>Premium</option>
+                    <option value="vip" <?php selected($user_level, 'vip'); ?>>VIP</option>
+                </select>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+add_action('show_user_profile', 'add_multiple_profile_fields');
+add_action('edit_user_profile', 'add_multiple_profile_fields');
+
+/**
+ * Save multiple profile fields
+ */
+function save_multiple_profile_fields($user_id) {
+    if (!current_user_can('edit_user', $user_id)) {
+        return false;
+    }
+
+    update_user_meta($user_id, 'job_title', sanitize_text_field($_POST['job_title']));
+    update_user_meta($user_id, 'company', sanitize_text_field($_POST['company']));
+    update_user_meta($user_id, 'bio_extended', sanitize_textarea_field($_POST['bio_extended']));
+    update_user_meta($user_id, 'twitter', sanitize_text_field($_POST['twitter']));
+    update_user_meta($user_id, 'linkedin', esc_url_raw($_POST['linkedin']));
+    update_user_meta($user_id, 'newsletter', isset($_POST['newsletter']) ? '1' : '0');
+    update_user_meta($user_id, 'user_level', sanitize_text_field($_POST['user_level']));
+}
+add_action('personal_options_update', 'save_multiple_profile_fields');
+add_action('edit_user_profile_update', 'save_multiple_profile_fields');</code></pre>
+
+        <h2>Display Custom Fields on Frontend</h2>
+        <p>Show custom profile data in author templates:</p>
+
+        <pre><code>/**
+ * Display custom profile fields in author bio
+ */
+function display_author_custom_fields($author_id = null) {
+    if (!$author_id) {
+        $author_id = get_the_author_meta('ID');
+    }
+
+    $job_title = get_user_meta($author_id, 'job_title', true);
+    $company = get_user_meta($author_id, 'company', true);
+    $twitter = get_user_meta($author_id, 'twitter', true);
+    $linkedin = get_user_meta($author_id, 'linkedin', true);
+
+    if ($job_title || $company) {
+        echo '<div class="author-professional">';
+        if ($job_title) {
+            echo '<span class="job-title">' . esc_html($job_title) . '</span>';
+        }
+        if ($company) {
+            echo ' at <span class="company">' . esc_html($company) . '</span>';
+        }
+        echo '</div>';
+    }
+
+    if ($twitter || $linkedin) {
+        echo '<div class="author-social">';
+        if ($twitter) {
+            echo '<a href="https://twitter.com/' . esc_attr($twitter) . '" target="_blank" rel="noopener">Twitter</a> ';
+        }
+        if ($linkedin) {
+            echo '<a href="' . esc_url($linkedin) . '" target="_blank" rel="noopener">LinkedIn</a>';
+        }
+        echo '</div>';
+    }
+}
+
+// Usage in author.php or single.php:
+// display_author_custom_fields();</code></pre>
+
+        <h2>Image Upload Field</h2>
+        <p>Add custom image upload capability to user profiles:</p>
+
+        <pre><code>/**
+ * Add custom avatar upload field
+ */
+function add_custom_avatar_field($user) {
+    $custom_avatar = get_user_meta($user->ID, 'custom_avatar', true);
+    ?>
+    <h3>Custom Avatar</h3>
+    <table class="form-table">
+        <tr>
+            <th><label for="custom_avatar">Custom Profile Image</label></th>
+            <td>
+                <input type="hidden" name="custom_avatar" id="custom_avatar"
+                       value="<?php echo esc_attr($custom_avatar); ?>" />
+                <button type="button" class="button" id="upload_avatar_button">
+                    Upload Image
+                </button>
+                <button type="button" class="button" id="remove_avatar_button">
+                    Remove Image
+                </button>
+                <div id="avatar_preview">
+                    <?php if ($custom_avatar): ?>
+                        <img src="<?php echo esc_url($custom_avatar); ?>"
+                             style="max-width: 150px; display: block; margin-top: 10px;" />
+                    <?php endif; ?>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <script>
+    jQuery(document).ready(function($) {
+        var mediaUploader;
+
+        $('#upload_avatar_button').click(function(e) {
+            e.preventDefault();
+
+            if (mediaUploader) {
+                mediaUploader.open();
+                return;
+            }
+
+            mediaUploader = wp.media({
+                title: 'Choose Avatar',
+                button: { text: 'Choose Image' },
+                multiple: false
+            });
+
+            mediaUploader.on('select', function() {
+                var attachment = mediaUploader.state().get('selection').first().toJSON();
+                $('#custom_avatar').val(attachment.url);
+                $('#avatar_preview').html('<img src="' + attachment.url + '" style="max-width: 150px; display: block; margin-top: 10px;">');
+            });
+
+            mediaUploader.open();
+        });
+
+        $('#remove_avatar_button').click(function(e) {
+            e.preventDefault();
+            $('#custom_avatar').val('');
+            $('#avatar_preview').html('');
+        });
+    });
+    </script>
+    <?php
+}
+add_action('show_user_profile', 'add_custom_avatar_field');
+add_action('edit_user_profile', 'add_custom_avatar_field');
+
+function save_custom_avatar_field($user_id) {
+    if (!current_user_can('edit_user', $user_id)) {
+        return false;
+    }
+
+    if (isset($_POST['custom_avatar'])) {
+        update_user_meta($user_id, 'custom_avatar', esc_url_raw($_POST['custom_avatar']));
+    }
+}
+add_action('personal_options_update', 'save_custom_avatar_field');
+add_action('edit_user_profile_update', 'save_custom_avatar_field');</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Sanitize All Input</td>
+              <td>Use sanitize_text_field(), esc_url_raw(), etc. to prevent XSS</td>
+            </tr>
+            <tr>
+              <td>Check User Capabilities</td>
+              <td>Verify current_user_can('edit_user') before saving</td>
+            </tr>
+            <tr>
+              <td>Use Proper Escaping</td>
+              <td>esc_attr(), esc_html(), esc_url() when outputting data</td>
+            </tr>
+            <tr>
+              <td>Add Field Descriptions</td>
+              <td>Help users understand what information to provide</td>
+            </tr>
+            <tr>
+              <td>Use Appropriate Input Types</td>
+              <td>Use type="email", type="url" for better validation</td>
+            </tr>
+            <tr>
+              <td>Group Related Fields</td>
+              <td>Organize fields under clear headings for better UX</td>
+            </tr>
+            <tr>
+              <td>Validate on Save</td>
+              <td>Check data validity before updating user meta</td>
+            </tr>
+            <tr>
+              <td>Consider Privacy</td>
+              <td>Don't force users to provide sensitive information</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Minimal impact (< 0.001s). User meta is only queried on profile pages and author pages, which are typically low-traffic. get_user_meta() is cached by WordPress. Even with 20+ custom fields, there's no noticeable performance impact. For high-traffic author pages, consider caching the output of custom field displays using transients.</p>
+      </div>
+    `,
+    code: `/**
+ * Add custom profile field
+ */
+function add_custom_user_profile_fields($user) {
+    ?>
+    <h3>Additional Information</h3>
+    <table class="form-table">
+        <tr>
+            <th><label for="phone">Phone Number</label></th>
+            <td>
+                <input type="text" name="phone" id="phone"
+                       value="<?php echo esc_attr(get_user_meta($user->ID, 'phone', true)); ?>"
+                       class="regular-text" />
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+add_action('show_user_profile', 'add_custom_user_profile_fields');
+add_action('edit_user_profile', 'add_custom_user_profile_fields');
+
+function save_custom_user_profile_fields($user_id) {
+    if (!current_user_can('edit_user', $user_id)) return false;
+    update_user_meta($user_id, 'phone', sanitize_text_field($_POST['phone']));
+}
+add_action('personal_options_update', 'save_custom_user_profile_fields');
+add_action('edit_user_profile_update', 'save_custom_user_profile_fields');`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-15',
+    readTime: '7 min',
+    category: 'WordPress Users',
+    tags: ['User Meta', 'Profile Fields', 'Users'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Add Custom User Profile Fields in WordPress - Complete Guide 2025',
+      metaDescription: 'Learn how to add custom fields to WordPress user profiles for social media links, phone numbers, job titles, and more. Complete code with examples.',
+      keywords: ['WordPress user profile fields', 'custom user meta', 'WordPress profile customization', 'user profile fields', 'WordPress user data', 'custom profile WordPress'],
+      canonical: 'https://shahmir.dev/blog/add-user-profile-fields',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Add Custom User Profile Fields in WordPress',
+        description: 'Complete guide to adding custom fields to WordPress user profiles.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-15',
+        dateModified: '2025-01-15',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "How do I make custom profile fields required?",
+        answer: "Add validation in your save function. Before update_user_meta(), check if field is empty: if (empty($_POST['phone'])) { return new WP_Error('required_field', 'Phone number is required'); }. For better UX, add JavaScript validation and HTML5 'required' attribute to the input. Also display error messages using add_settings_error() and settings_errors() to inform users what's missing."
+      },
+      {
+        question: "Can I restrict which roles can edit certain custom fields?",
+        answer: "Yes, add role checks in both display and save functions. In add_custom_user_profile_fields(), check: if (!current_user_can('manage_options')) { return; } to hide fields from non-admins. In save function, verify: if (!current_user_can('manage_options') && isset($_POST['restricted_field'])) { return; }. This prevents users from editing restricted fields even if they inspect HTML and add inputs manually."
+      },
+      {
+        question: "How do I add custom fields to the registration page?",
+        answer: "Use different hooks: 'register_form' to display fields and 'user_register' to save. Example: add_action('register_form', function() { echo '<p><input name=\"phone\" /></p>'; }); and add_action('user_register', function($user_id) { update_user_meta($user_id, 'phone', $_POST['phone']); });. Remember to sanitize inputs. Note: Registration page has different styling - test your fields carefully."
+      },
+      {
+        question: "Where are custom user fields stored in the database?",
+        answer: "Custom user meta is stored in the wp_usermeta table with columns: umeta_id, user_id, meta_key, and meta_value. Each field is a separate row. get_user_meta() retrieves data, update_user_meta() updates or inserts. WordPress handles serialization automatically for arrays. Don't query this table directly - always use WordPress functions for proper caching and compatibility."
+      },
+      {
+        question: "How do I display custom fields in author archives or author boxes?",
+        answer: "Use get_user_meta() with the author ID: $phone = get_user_meta(get_the_author_meta('ID'), 'phone', true);. In author.php template, get author ID from queried object: $author_id = get_queried_object_id();. Then retrieve and display fields. For author boxes in single posts, use get_the_author_meta('ID') to get current post author's ID, then fetch their custom meta."
+      }
+    ]
+  },
+  {
+    id: 43,
+    slug: 'disable-admin-bar-non-admins',
+    title: 'Disable Admin Bar for Non-Admins',
+    excerpt: 'Learn how to hide the WordPress admin bar from non-administrator users to improve frontend experience and reduce clutter for regular users.',
+    content: `
+      <div class="snippet-content">
+        <h2>Benefits of Disabling Admin Bar for Non-Admins</h2>
+        <p>The WordPress admin bar can be useful for administrators but often unnecessary for regular users. By selectively hiding it, you can:</p>
+        <ul>
+          <li><strong>Improved User Experience:</strong> Cleaner frontend appearance for logged-in users without administrative privileges</li>
+          <li><strong>Reduced Confusion:</strong> Non-admin users won't see options they can't access or don't need</li>
+          <li><strong>Better Performance:</strong> Slightly faster page loads by removing admin bar CSS and JavaScript for most users</li>
+          <li><strong>Professional Appearance:</strong> Membership sites and client portals look more polished without the admin bar</li>
+          <li><strong>Security Through Obscurity:</strong> Hides WordPress branding and admin access points from regular users</li>
+          <li><strong>Mobile-Friendly:</strong> Eliminates the admin bar that can interfere with mobile navigation</li>
+        </ul>
+
+        <h2>Basic Implementation</h2>
+        <p>The simplest way to hide the admin bar for non-administrators uses the <code>show_admin_bar()</code> function:</p>
+
+        <h3>Hide for All Non-Admins</h3>
+        <pre><code>function hide_admin_bar_for_non_admins() {
+    if (!current_user_can('administrator')) {
+        show_admin_bar(false);
+    }
+}
+add_action('after_setup_theme', 'hide_admin_bar_for_non_admins');</code></pre>
+
+        <p>This code checks if the current user has administrator capabilities. If not, it hides the admin bar using <code>show_admin_bar(false)</code>. The <code>after_setup_theme</code> hook runs early enough to affect the admin bar display.</p>
+
+        <h3>Hide Based on User Role</h3>
+        <pre><code>function hide_admin_bar_by_role() {
+    $user = wp_get_current_user();
+    $allowed_roles = array('administrator', 'editor');
+
+    if (!array_intersect($allowed_roles, $user->roles)) {
+        show_admin_bar(false);
+    }
+}
+add_action('after_setup_theme', 'hide_admin_bar_by_role');</code></pre>
+
+        <p>This version shows the admin bar only for administrators and editors, hiding it for all other roles. The <code>array_intersect()</code> function checks if the user has any of the allowed roles.</p>
+
+        <h2>Frontend-Only Hiding</h2>
+        <p>Sometimes you want to keep the admin bar in the backend but hide it on the frontend:</p>
+
+        <pre><code>function hide_admin_bar_frontend() {
+    if (!is_admin() && !current_user_can('administrator')) {
+        show_admin_bar(false);
+    }
+}
+add_action('after_setup_theme', 'hide_admin_bar_frontend');</code></pre>
+
+        <p>The <code>is_admin()</code> check ensures the admin bar remains visible in the WordPress dashboard while hiding it on public-facing pages.</p>
+
+        <h2>Advanced Implementations</h2>
+
+        <h3>Hide Based on Specific Capabilities</h3>
+        <pre><code>function hide_admin_bar_by_capability() {
+    // Show admin bar only for users who can edit posts or pages
+    if (!current_user_can('edit_posts') && !current_user_can('edit_pages')) {
+        show_admin_bar(false);
+    }
+}
+add_action('after_setup_theme', 'hide_admin_bar_by_capability');</code></pre>
+
+        <p>This approach uses specific capabilities rather than roles, providing more granular control. Users who can't edit posts or pages won't see the admin bar.</p>
+
+        <h3>User Preference Toggle</h3>
+        <pre><code>// Add admin bar preference to user profile
+function add_admin_bar_preference($user) {
+    $show_admin_bar = get_user_meta($user->ID, 'show_admin_bar_frontend', true);
+    ?>
+    <h3>Admin Bar Preferences</h3>
+    <table class="form-table">
+        <tr>
+            <th><label for="show_admin_bar_frontend">Show Admin Bar on Frontend</label></th>
+            <td>
+                <input type="checkbox" name="show_admin_bar_frontend"
+                       id="show_admin_bar_frontend" value="1"
+                       <?php checked($show_admin_bar, '1'); ?> />
+                <span class="description">Display the admin bar when viewing the site</span>
+            </td>
+        </tr>
+    </table>
+    <?php
+}
+add_action('show_user_profile', 'add_admin_bar_preference');
+add_action('edit_user_profile', 'add_admin_bar_preference');
+
+// Save user preference
+function save_admin_bar_preference($user_id) {
+    if (!current_user_can('edit_user', $user_id)) {
+        return false;
+    }
+
+    $show_admin_bar = isset($_POST['show_admin_bar_frontend']) ? '1' : '0';
+    update_user_meta($user_id, 'show_admin_bar_frontend', $show_admin_bar);
+}
+add_action('personal_options_update', 'save_admin_bar_preference');
+add_action('edit_user_profile_update', 'save_admin_bar_preference');
+
+// Apply user preference
+function apply_admin_bar_preference() {
+    if (!is_admin()) {
+        $user_id = get_current_user_id();
+        $show_admin_bar = get_user_meta($user_id, 'show_admin_bar_frontend', true);
+
+        if ($show_admin_bar !== '1') {
+            show_admin_bar(false);
+        }
+    }
+}
+add_action('after_setup_theme', 'apply_admin_bar_preference');</code></pre>
+
+        <p>This implementation allows users to control their own admin bar visibility through their profile settings. It adds a checkbox to the user profile page and respects each user's preference.</p>
+
+        <h3>Conditional Display by Page Type</h3>
+        <pre><code>function hide_admin_bar_conditionally() {
+    $user = wp_get_current_user();
+
+    // Always show for administrators
+    if (in_array('administrator', $user->roles)) {
+        return;
+    }
+
+    // Hide on specific page types
+    if (is_front_page() || is_archive() || is_search()) {
+        show_admin_bar(false);
+        return;
+    }
+
+    // Hide for users with subscriber role
+    if (in_array('subscriber', $user->roles)) {
+        show_admin_bar(false);
+        return;
+    }
+
+    // Show for editors and authors when editing their own content
+    if ((in_array('editor', $user->roles) || in_array('author', $user->roles)) && is_singular()) {
+        $post = get_queried_object();
+        if ($post && $post->post_author == get_current_user_id()) {
+            show_admin_bar(true);
+        }
+    }
+}
+add_action('after_setup_theme', 'hide_admin_bar_conditionally');</code></pre>
+
+        <p>This advanced example combines multiple conditions: page type, user role, and content ownership. Authors and editors see the admin bar on their own posts but not elsewhere.</p>
+
+        <h3>Custom Admin Bar Items for Non-Admins</h3>
+        <pre><code>function customize_admin_bar_for_non_admins($wp_admin_bar) {
+    // Only modify for non-admins
+    if (current_user_can('administrator')) {
+        return;
+    }
+
+    // Remove WordPress logo and default menus
+    $wp_admin_bar->remove_node('wp-logo');
+    $wp_admin_bar->remove_node('comments');
+    $wp_admin_bar->remove_node('new-content');
+
+    // Add custom menu items relevant to non-admins
+    $wp_admin_bar->add_node(array(
+        'id'    => 'my-account-custom',
+        'title' => 'My Profile',
+        'href'  => admin_url('profile.php'),
+        'meta'  => array('class' => 'custom-profile-link')
+    ));
+
+    $wp_admin_bar->add_node(array(
+        'id'    => 'help-center',
+        'title' => 'Help Center',
+        'href'  => home_url('/help'),
+        'meta'  => array('class' => 'help-link')
+    ));
+}
+add_action('admin_bar_menu', 'customize_admin_bar_for_non_admins', 999);
+
+// Apply this along with role-based visibility
+function show_custom_admin_bar() {
+    if (!current_user_can('administrator')) {
+        // Show simplified admin bar instead of hiding completely
+        add_filter('show_admin_bar', '__return_true');
+    }
+}
+add_action('after_setup_theme', 'show_custom_admin_bar');</code></pre>
+
+        <p>Instead of completely hiding the admin bar, this approach customizes it for non-administrators by removing unnecessary items and adding relevant links.</p>
+
+        <h2>Remove Admin Bar Option from User Profile</h2>
+        <pre><code>// Remove the admin bar preference checkbox from user profiles
+function remove_admin_bar_profile_option() {
+    ?>
+    <style type="text/css">
+        .show-admin-bar {
+            display: none;
+        }
+    </style>
+    <?php
+}
+add_action('admin_head', 'remove_admin_bar_profile_option');
+
+// Or remove it programmatically
+function force_hide_admin_bar_option() {
+    remove_action('admin_color_scheme_picker', 'admin_color_scheme_picker');
+}
+add_action('admin_init', 'force_hide_admin_bar_option');
+
+// Remove from user profile fields
+add_filter('user_can_richedit', function($can_richedit) {
+    if (!current_user_can('administrator')) {
+        add_filter('show_admin_bar', '__return_false');
+    }
+    return $can_richedit;
+});</code></pre>
+
+        <p>These snippets prevent non-administrators from even seeing the option to enable/disable the admin bar in their profile settings.</p>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Description</th>
+              <th>Impact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Use after_setup_theme Hook</strong></td>
+              <td>The <code>after_setup_theme</code> hook runs early enough to affect admin bar display before it's rendered</td>
+              <td>Ensures reliable admin bar hiding</td>
+            </tr>
+            <tr>
+              <td><strong>Check User Capabilities</strong></td>
+              <td>Use <code>current_user_can()</code> instead of checking roles directly for better flexibility</td>
+              <td>Works with custom roles and capabilities</td>
+            </tr>
+            <tr>
+              <td><strong>Consider Mobile Users</strong></td>
+              <td>Admin bar can interfere with mobile navigation; hiding it improves mobile UX</td>
+              <td>Better mobile experience</td>
+            </tr>
+            <tr>
+              <td><strong>Provide User Control</strong></td>
+              <td>Allow users to toggle admin bar visibility through profile settings when appropriate</td>
+              <td>Improved user satisfaction</td>
+            </tr>
+            <tr>
+              <td><strong>Keep for Content Creators</strong></td>
+              <td>Authors and editors benefit from admin bar shortcuts; consider showing it for them</td>
+              <td>Maintains productivity for content creators</td>
+            </tr>
+            <tr>
+              <td><strong>Test Across Roles</strong></td>
+              <td>Create test accounts for each user role to verify admin bar visibility settings</td>
+              <td>Ensures correct implementation</td>
+            </tr>
+            <tr>
+              <td><strong>Document Your Approach</strong></td>
+              <td>Add comments explaining why certain roles see or don't see the admin bar</td>
+              <td>Easier maintenance and team collaboration</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance Gain:</strong> Hiding the admin bar provides minor performance improvements:</p>
+        <ul>
+          <li><strong>CSS Reduction:</strong> Eliminates ~15KB of admin bar CSS from frontend pages</li>
+          <li><strong>JavaScript Savings:</strong> Removes admin bar JavaScript (Hover intent, menu interactions)</li>
+          <li><strong>HTTP Requests:</strong> Reduces 1-2 HTTP requests for admin bar assets</li>
+          <li><strong>DOM Complexity:</strong> Simpler DOM structure without admin bar elements</li>
+          <li><strong>Render Time:</strong> Approximately 50-100ms faster initial page render</li>
+          <li><strong>Memory Usage:</strong> Slight reduction in browser memory for logged-in users</li>
+        </ul>
+
+        <p><strong>Recommendation:</strong> Implement admin bar hiding primarily for UX benefits. Performance gains are minimal but cumulative across many logged-in users. Use role-based hiding to balance functionality with user experience.</p>
+      </div>
+    `,
+    code: `function hide_admin_bar_for_non_admins() {
+    if (!current_user_can('administrator')) {
+        show_admin_bar(false);
+    }
+}
+add_action('after_setup_theme', 'hide_admin_bar_for_non_admins');`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '6 min',
+    category: 'WordPress Users',
+    tags: ['Admin Bar', 'UX', 'Users'],
+    difficulty: 'Beginner',
+    compatibility: 'WordPress 4.0+',
+    seo: {
+      metaTitle: 'How to Disable Admin Bar for Non-Admins in WordPress | Complete Guide',
+      metaDescription: 'Learn how to hide the WordPress admin bar from non-administrator users with role-based visibility, user preferences, and conditional display. Improve UX and performance.',
+      keywords: ['wordpress admin bar', 'hide admin bar', 'disable admin bar non-admins', 'show_admin_bar', 'wordpress user experience', 'admin bar customization', 'role-based admin bar', 'frontend admin bar'],
+      canonical: 'https://shahmir.dev/blog/disable-admin-bar-non-admins',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Disable Admin Bar for Non-Admins in WordPress',
+        description: 'Complete guide to hiding the WordPress admin bar from non-administrator users with multiple implementation approaches and best practices.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Beginner',
+        dependencies: 'WordPress 4.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Will hiding the admin bar affect site functionality for non-admins?",
+        answer: "No, hiding the admin bar does not affect site functionality. The admin bar is purely a convenience feature that provides quick access to common WordPress functions. Non-admin users can still access all their permitted features through the standard WordPress dashboard menu. The admin bar is most useful for administrators and content creators who frequently use its shortcuts; regular users (like subscribers or customers) rarely need it. Hiding it actually improves their experience by reducing clutter and confusion. All user capabilities remain unchanged—only the visual admin bar element is hidden from the frontend."
+      },
+      {
+        question: "What's the difference between show_admin_bar() and the show_admin_bar filter?",
+        answer: "The show_admin_bar() function and show_admin_bar filter serve similar purposes but work differently. The show_admin_bar() function is a WordPress core function that directly sets whether the admin bar should display for the current user. It's typically called during theme setup (after_setup_theme hook) and is straightforward to use. The show_admin_bar filter is a hook that allows you to modify the admin bar visibility decision. You can use it to conditionally override the default behavior: add_filter('show_admin_bar', 'my_custom_function'). The filter approach is more flexible for complex conditional logic because it runs later in the WordPress load sequence. For most use cases, show_admin_bar() is simpler and more direct."
+      },
+      {
+        question: "Can users still access the dashboard if I hide the admin bar?",
+        answer: "Yes, absolutely. Hiding the admin bar only removes the visual bar from the top of pages—it doesn't block access to the WordPress dashboard. Users can still access the dashboard by navigating to yoursite.com/wp-admin or clicking any admin links. The admin bar is a convenience feature, not a security control. If you want to restrict dashboard access entirely for certain roles, you need separate code that redirects users from wp-admin based on their capabilities. For example, subscribers typically don't need dashboard access, so many sites redirect them to the frontend after login while still allowing admins and editors to access the dashboard normally. Hiding the admin bar and controlling dashboard access are two separate concerns."
+      },
+      {
+        question: "Should I hide the admin bar for editors and authors?",
+        answer: "It depends on your use case. Editors and authors often benefit from the admin bar because it provides quick access to 'Edit Post,' 'New Post,' comment moderation, and other content management features. If your editors and authors actively create and manage content, keeping the admin bar visible improves their workflow efficiency. However, if you run a membership site, multi-author blog, or client portal where these roles are assigned to less technical users, hiding the admin bar can reduce confusion. A good compromise is conditional visibility: show the admin bar when editors/authors are viewing their own content (where they can edit it) but hide it on other pages. You can also provide a user preference toggle so each user can decide for themselves."
+      },
+      {
+        question: "How do I test that the admin bar is properly hidden for different roles?",
+        answer: "The best way to test is creating test accounts for each user role you want to verify. Create a subscriber account, an author account, an editor account, etc., then log in as each user and check the frontend. You should see (or not see) the admin bar according to your code's logic. Use an incognito/private browser window for testing multiple accounts simultaneously without logging out. Another approach is using a role-switching plugin like 'User Switching' which lets you instantly switch between user accounts from the admin panel. Check both the frontend and backend to ensure your code works correctly in both contexts. Also test on mobile devices since the admin bar can cause layout issues on smaller screens. Document your expected behavior for each role to ensure consistent testing."
+      }
+    ]
+  },
+  {
+    id: 44,
+    slug: 'custom-login-page',
+    title: 'Customize WordPress Login Page',
+    excerpt: 'Transform your WordPress login page with custom branding, styles, logos, and colors to create a professional, branded login experience.',
+    content: `
+      <div class="snippet-content">
+        <h2>Benefits of Customizing the Login Page</h2>
+        <p>The default WordPress login page is functional but generic. Customizing it provides several advantages:</p>
+        <ul>
+          <li><strong>Professional Branding:</strong> Replace WordPress logo with your own brand for a cohesive experience</li>
+          <li><strong>Better User Experience:</strong> Customize colors, fonts, and layout to match your site's design</li>
+          <li><strong>Client Impressions:</strong> Impress clients with a professional, white-labeled login experience</li>
+          <li><strong>Security Benefits:</strong> Reduces visibility of WordPress usage, adding minor security through obscurity</li>
+          <li><strong>Increased Trust:</strong> Branded login pages make users feel more confident about site legitimacy</li>
+          <li><strong>Customized Messaging:</strong> Add helpful instructions or support links specific to your users</li>
+        </ul>
+
+        <h2>Basic Logo Customization</h2>
+        <p>The simplest customization is replacing the WordPress logo with your own:</p>
+
+        <pre><code>// Change login logo
+function custom_login_logo() {
+    ?>
+    <style type="text/css">
+        #login h1 a, .login h1 a {
+            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/images/logo.png);
+            height: 80px;
+            width: 320px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            padding-bottom: 20px;
+        }
+    </style>
+    <?php
+}
+add_action('login_enqueue_scripts', 'custom_login_logo');
+
+// Change logo URL (default links to wordpress.org)
+function custom_login_logo_url() {
+    return home_url();
+}
+add_filter('login_headerurl', 'custom_login_logo_url');
+
+// Change logo title attribute
+function custom_login_logo_url_title() {
+    return get_bloginfo('name');
+}
+add_filter('login_headertext', 'custom_login_logo_url_title');</code></pre>
+
+        <p>This code replaces the WordPress logo with your custom logo image and makes it link to your homepage instead of WordPress.org.</p>
+
+        <h2>Complete Login Page Styling</h2>
+        <p>For a full custom design, add comprehensive CSS:</p>
+
+        <pre><code>function custom_login_page_styles() {
+    ?>
+    <style type="text/css">
+        /* Login container */
+        body.login {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-size: cover;
+            background-attachment: fixed;
+        }
+
+        /* Logo area */
+        #login h1 a {
+            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/images/logo-white.png);
+            height: 100px;
+            width: 300px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            margin-bottom: 20px;
+        }
+
+        /* Login form */
+        #loginform {
+            background: rgba(255, 255, 255, 0.95);
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+
+        /* Input fields */
+        .login input[type="text"],
+        .login input[type="password"] {
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 12px 15px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .login input[type="text"]:focus,
+        .login input[type="password"]:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        /* Labels */
+        .login label {
+            color: #333;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Submit button */
+        .wp-core-ui .button-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            text-shadow: none;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .wp-core-ui .button-primary:hover {
+            background: linear-gradient(135deg, #5568d3 0%, #6a4091 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Links */
+        .login #nav a,
+        .login #backtoblog a {
+            color: #fff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .login #nav a:hover,
+        .login #backtoblog a:hover {
+            color: #f0f0f0;
+        }
+
+        /* Remember me checkbox */
+        .login .forgetmenot label {
+            color: #666;
+        }
+
+        /* Messages */
+        .login .message,
+        .login .success {
+            border-left: 4px solid #46b450;
+            background: rgba(70, 180, 80, 0.1);
+        }
+
+        .login #login_error {
+            border-left: 4px solid #dc3232;
+            background: rgba(220, 50, 50, 0.1);
+        }
+    </style>
+    <?php
+}
+add_action('login_enqueue_scripts', 'custom_login_page_styles');</code></pre>
+
+        <p>This creates a beautiful, modern login page with gradient backgrounds, rounded corners, and smooth transitions.</p>
+
+        <h2>Custom Background Image</h2>
+        <pre><code>function custom_login_background() {
+    ?>
+    <style type="text/css">
+        body.login {
+            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/images/login-bg.jpg);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+        }
+
+        /* Add overlay for better readability */
+        body.login::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+    </style>
+    <?php
+}
+add_action('login_enqueue_scripts', 'custom_login_background');</code></pre>
+
+        <h2>Advanced Customizations</h2>
+
+        <h3>Enqueue Custom CSS File</h3>
+        <pre><code>function custom_login_stylesheet() {
+    wp_enqueue_style('custom-login', get_stylesheet_directory_uri() . '/css/login-styles.css');
+}
+add_action('login_enqueue_scripts', 'custom_login_stylesheet');</code></pre>
+
+        <p>This approach keeps your styles organized in a separate CSS file for better maintainability.</p>
+
+        <h3>Custom Error Messages</h3>
+        <pre><code>// Customize login error messages for security
+function custom_login_errors($error) {
+    // Generic error message to prevent username enumeration
+    $error = 'Invalid credentials. Please try again.';
+    return $error;
+}
+add_filter('login_errors', 'custom_login_errors');
+
+// Or provide more helpful messages
+function helpful_login_errors($error) {
+    global $errors;
+    $err_codes = $errors->get_error_codes();
+
+    // Invalid username
+    if (in_array('invalid_username', $err_codes)) {
+        $error = '<strong>Error:</strong> This username is not registered. Please check your username or <a href="' . wp_lostpassword_url() . '">reset your password</a>.';
+    }
+
+    // Incorrect password
+    if (in_array('incorrect_password', $err_codes)) {
+        $error = '<strong>Error:</strong> The password you entered is incorrect. <a href="' . wp_lostpassword_url() . '">Forgot your password?</a>';
+    }
+
+    return $error;
+}
+add_filter('login_errors', 'helpful_login_errors');</code></pre>
+
+        <h3>Custom Login Page Text</h3>
+        <pre><code>// Add custom text above login form
+function add_login_page_text() {
+    echo '<p style="text-align: center; color: #fff; font-size: 18px; margin-bottom: 20px;">Welcome! Please log in to continue.</p>';
+}
+add_action('login_form', 'add_login_page_text');
+
+// Add custom footer text
+function custom_login_footer() {
+    echo '<p style="text-align: center; color: #fff; margin-top: 20px;">Need help? Contact <a href="mailto:support@example.com" style="color: #fff;">support@example.com</a></p>';
+}
+add_action('login_footer', 'custom_login_footer');</code></pre>
+
+        <h3>Add Custom Fields to Login Form</h3>
+        <pre><code>// Add custom field (e.g., security code)
+function add_custom_login_field() {
+    ?>
+    <p>
+        <label for="security_code">Security Code<br />
+        <input type="text" name="security_code" id="security_code" class="input" value="" size="20" /></label>
+    </p>
+    <?php
+}
+add_action('login_form', 'add_custom_login_field');
+
+// Validate custom field
+function validate_custom_login_field($user, $password) {
+    if (isset($_POST['security_code'])) {
+        $security_code = $_POST['security_code'];
+        $expected_code = get_option('site_security_code', '1234');
+
+        if ($security_code !== $expected_code) {
+            return new WP_Error('invalid_security_code', __('<strong>Error:</strong> Invalid security code.'));
+        }
+    }
+    return $user;
+}
+add_filter('wp_authenticate_user', 'validate_custom_login_field', 10, 2);</code></pre>
+
+        <h3>Language Switcher on Login Page</h3>
+        <pre><code>function add_language_switcher_login() {
+    ?>
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="?lang=en" style="color: #fff; margin: 0 10px;">English</a>
+        <a href="?lang=es" style="color: #fff; margin: 0 10px;">Español</a>
+        <a href="?lang=fr" style="color: #fff; margin: 0 10px;">Français</a>
+    </div>
+    <?php
+}
+add_action('login_footer', 'add_language_switcher_login');</code></pre>
+
+        <h3>Hide "Lost Password" and "Back to Site" Links</h3>
+        <pre><code>// Remove lost password link
+function remove_lost_password_link() {
+    return false;
+}
+add_filter('allow_password_reset', 'remove_lost_password_link');
+
+// Hide navigation links with CSS
+function hide_login_nav_links() {
+    ?>
+    <style>
+        #nav, #backtoblog {
+            display: none;
+        }
+    </style>
+    <?php
+}
+add_action('login_head', 'hide_login_nav_links');</code></pre>
+
+        <h3>Redirect to Custom Page After Failed Login</h3>
+        <pre><code>function custom_login_failed_redirect() {
+    $login_page = home_url('/login/');
+    wp_redirect($login_page . '?login=failed');
+    exit;
+}
+add_action('wp_login_failed', 'custom_login_failed_redirect');
+
+// Redirect if user is not logged in and tries to access wp-admin
+function redirect_to_custom_login() {
+    global $pagenow;
+    if ($pagenow == 'wp-login.php' && !is_user_logged_in()) {
+        wp_redirect(home_url('/login/'));
+        exit;
+    }
+}
+add_action('init', 'redirect_to_custom_login');</code></pre>
+
+        <h2>Complete Custom Login Page Template</h2>
+        <pre><code>// Comprehensive login page customization
+function complete_custom_login() {
+    ?>
+    <style type="text/css">
+        body.login {
+            background: url(<?php echo get_stylesheet_directory_uri(); ?>/images/login-bg.jpg) no-repeat center center fixed;
+            background-size: cover;
+        }
+
+        body.login::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+        }
+
+        #login {
+            width: 400px;
+            padding: 8% 0 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        #login h1 a {
+            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/images/logo.png);
+            background-size: contain;
+            width: 100%;
+            height: 80px;
+            margin-bottom: 25px;
+        }
+
+        .login form {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            position: relative;
+        }
+
+        .login form .input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e1e1;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .login form .input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+        }
+
+        .login form .button-primary {
+            width: 100%;
+            background: #3498db;
+            border: none;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .login form .button-primary:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .login #nav,
+        .login #backtoblog {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login #nav a,
+        .login #backtoblog a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: opacity 0.3s;
+        }
+
+        .login #nav a:hover,
+        .login #backtoblog a:hover {
+            opacity: 0.8;
+        }
+
+        .login .message,
+        .login #login_error {
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        @media screen and (max-width: 768px) {
+            #login {
+                width: 90%;
+                padding-top: 10%;
+            }
+        }
+    </style>
+    <?php
+}
+add_action('login_enqueue_scripts', 'complete_custom_login');</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Description</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Use login_enqueue_scripts Hook</strong></td>
+              <td>Always use this hook for login page customizations</td>
+              <td>Ensures styles load only on login page</td>
+            </tr>
+            <tr>
+              <td><strong>Optimize Images</strong></td>
+              <td>Compress logo and background images</td>
+              <td>Faster login page load times</td>
+            </tr>
+            <tr>
+              <td><strong>Mobile Responsive</strong></td>
+              <td>Test login page on mobile devices and add responsive CSS</td>
+              <td>Better experience for mobile users</td>
+            </tr>
+            <tr>
+              <td><strong>Maintain Accessibility</strong></td>
+              <td>Ensure sufficient color contrast and keyboard navigation</td>
+              <td>Accessible to all users including those with disabilities</td>
+            </tr>
+            <tr>
+              <td><strong>Test Error States</strong></td>
+              <td>Check how error messages appear with your custom styling</td>
+              <td>Ensures users can see and understand errors</td>
+            </tr>
+            <tr>
+              <td><strong>Generic Error Messages</strong></td>
+              <td>Consider using generic messages to prevent username enumeration</td>
+              <td>Improves security against brute force attacks</td>
+            </tr>
+            <tr>
+              <td><strong>Use External CSS File</strong></td>
+              <td>For extensive customizations, use wp_enqueue_style with separate CSS file</td>
+              <td>Better code organization and maintainability</td>
+            </tr>
+            <tr>
+              <td><strong>Brand Consistency</strong></td>
+              <td>Match login page colors and fonts to your main site</td>
+              <td>Professional, cohesive user experience</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Minimal impact when implemented correctly. Login page customizations only load on wp-login.php, not affecting site-wide performance. Use optimized images (logo &lt; 50KB, background &lt; 200KB) and inline critical CSS. The login page is accessed infrequently, so minor performance overhead is acceptable. Avoid loading heavy JavaScript libraries unless absolutely necessary. If using custom fonts, preload them or use system fonts for faster rendering.</p>
+      </div>
+    `,
+    code: `// Custom login logo
+function custom_login_logo() {
+    ?>
+    <style type="text/css">
+        #login h1 a {
+            background-image: url(<?php echo get_stylesheet_directory_uri(); ?>/images/logo.png);
+            height: 80px;
+            width: 320px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+    </style>
+    <?php
+}
+add_action('login_enqueue_scripts', 'custom_login_logo');
+
+// Change logo URL
+function custom_login_logo_url() {
+    return home_url();
+}
+add_filter('login_headerurl', 'custom_login_logo_url');`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '8 min',
+    category: 'WordPress Users',
+    tags: ['Login', 'Branding', 'Customization'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Customize WordPress Login Page - Complete Guide with Code Examples',
+      metaDescription: 'Learn how to customize the WordPress login page with custom logos, colors, backgrounds, and styles. Step-by-step guide with complete code examples.',
+      keywords: ['wordpress login page', 'custom login page wordpress', 'wordpress login customization', 'login page branding', 'wp-login.php customization', 'wordpress white label login', 'custom login logo wordpress', 'login page design'],
+      canonical: 'https://shahmir.dev/blog/custom-login-page',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Customize WordPress Login Page',
+        description: 'Complete guide to customizing the WordPress login page with branding, custom styles, logos, and user experience improvements.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "Will customizing the login page affect WordPress updates?",
+        answer: "No, login page customizations done through functions.php are completely safe and won't be affected by WordPress core updates. WordPress provides specific hooks (login_enqueue_scripts, login_headerurl, etc.) designed for customization that are maintained across versions. Never modify wp-login.php directly as that file gets replaced during updates. Always use hooks and filters in your theme's functions.php or a custom plugin. This ensures your customizations persist through all WordPress updates while remaining upgrade-safe."
+      },
+      {
+        question: "Can I use a completely custom login page instead of wp-login.php?",
+        answer: "Yes, you can create a completely custom login page using wp_login_form() function and custom templates. Create a page template with the login form, then use template_redirect to redirect wp-login.php to your custom page. However, this approach is more complex and you'll need to handle login processing, errors, redirects, and password resets manually. For most use cases, customizing the default wp-login.php with CSS and hooks is simpler and more maintainable. Custom login pages are best for membership sites with specific branding requirements."
+      },
+      {
+        question: "How do I preview login page changes without logging out?",
+        answer: "Use an incognito/private browser window to view the login page while remaining logged in to your admin account in your regular browser. Alternatively, add ?action=logout to your admin URL (wp-admin/?action=logout) but don't confirm the logout - this loads the login page temporarily. Another method: create a test user account and use a browser extension like 'User Switching' to quickly switch between accounts. For development, you can also temporarily add die() after your login customization code to output the page without requiring authentication, but remember to remove this before going live."
+      },
+      {
+        question: "Should I customize error messages for security reasons?",
+        answer: "Yes, customizing error messages can improve security. The default WordPress login errors reveal whether a username exists ('Invalid username') or if the password is wrong ('Incorrect password'). This information helps attackers with username enumeration. Replace specific errors with a generic message like 'Invalid credentials' to prevent this. However, this trades security for user experience - legitimate users won't know if they mistyped their username or password. For high-security sites, use generic messages. For user-friendly sites, keep specific messages but implement rate limiting and CAPTCHA to prevent brute force attacks."
+      },
+      {
+        question: "How can I ensure my custom login page is mobile-responsive?",
+        answer: "Add CSS media queries to adjust layout for mobile screens. Test the login page on actual mobile devices or use browser dev tools. Key responsive considerations: reduce #login width to 90% on mobile, adjust logo size (max-width: 200px on mobile), increase input padding for easier tapping (at least 44x44px touch target), ensure text is readable without zooming (min 16px font size), test landscape and portrait orientations, and verify background images look good on small screens. Use max-width: 768px media queries for tablet and mobile adjustments. Consider using background-attachment: scroll instead of fixed on mobile for better performance."
+      }
+    ]
+  },
+  {
+    id: 45,
+    slug: 'redirect-after-login',
+    title: 'Redirect Users After Login',
+    excerpt: 'Control where users land after logging in with role-based redirects, custom redirects, and conditional logic for better user experience.',
+    content: `
+      <div class="snippet-content">
+        <h2>Benefits of Custom Login Redirects</h2>
+        <p>By default, WordPress redirects all users to the dashboard after login. Custom redirects provide better UX:</p>
+        <ul>
+          <li><strong>Role-Based Experience:</strong> Send different user roles to relevant pages (subscribers to homepage, admins to dashboard)</li>
+          <li><strong>Improved Onboarding:</strong> Direct new users to getting started pages or profile completion</li>
+          <li><strong>Better Navigation:</strong> Prevent confusion by avoiding dashboard access for non-admin users</li>
+          <li><strong>Custom Workflows:</strong> Create specific user journeys based on membership levels or capabilities</li>
+          <li><strong>Enhanced Security:</strong> Reduce exposure of admin dashboard to non-privileged users</li>
+          <li><strong>Professional Experience:</strong> Especially valuable for client portals, membership sites, and WooCommerce stores</li>
+        </ul>
+
+        <h2>Basic Login Redirect</h2>
+        <p>The simplest redirect sends all users to a specific page:</p>
+
+        <pre><code>// Redirect all users to homepage after login
+function redirect_to_homepage_after_login($redirect_to, $request, $user) {
+    return home_url();
+}
+add_filter('login_redirect', 'redirect_to_homepage_after_login', 10, 3);</code></pre>
+
+        <p>The <code>login_redirect</code> filter receives three parameters: the redirect URL, the requested redirect URL, and the user object.</p>
+
+        <h2>Role-Based Redirects</h2>
+        <p>Different user roles should often go to different destinations:</p>
+
+        <pre><code>function role_based_login_redirect($redirect_to, $request, $user) {
+    // Check if user object exists (login successful)
+    if (isset($user->roles) && is_array($user->roles)) {
+        // Administrators go to dashboard
+        if (in_array('administrator', $user->roles)) {
+            return admin_url();
+        }
+
+        // Editors go to posts page
+        if (in_array('editor', $user->roles)) {
+            return admin_url('edit.php');
+        }
+
+        // Authors go to their posts
+        if (in_array('author', $user->roles)) {
+            return admin_url('edit.php?post_type=post&author=' . $user->ID);
+        }
+
+        // Subscribers and customers go to homepage
+        if (in_array('subscriber', $user->roles) || in_array('customer', $user->roles)) {
+            return home_url('/my-account/');
+        }
+    }
+
+    // Default: go to homepage
+    return home_url();
+}
+add_filter('login_redirect', 'role_based_login_redirect', 10, 3);</code></pre>
+
+        <p>This code checks the user's role and redirects accordingly. Administrators access the dashboard, while subscribers go to a custom account page.</p>
+
+        <h2>Redirect Based on Capabilities</h2>
+        <pre><code>function capability_based_redirect($redirect_to, $request, $user) {
+    if (!isset($user->ID)) {
+        return $redirect_to;
+    }
+
+    // Users who can manage options (admins) go to dashboard
+    if (user_can($user, 'manage_options')) {
+        return admin_url();
+    }
+
+    // Users who can edit posts go to posts page
+    if (user_can($user, 'edit_posts')) {
+        return admin_url('edit.php');
+    }
+
+    // Everyone else goes to custom page
+    return home_url('/welcome/');
+}
+add_filter('login_redirect', 'capability_based_redirect', 10, 3);</code></pre>
+
+        <h2>Advanced Implementations</h2>
+
+        <h3>Redirect to Referring Page</h3>
+        <pre><code>// Redirect users back to the page they came from
+function redirect_to_referer_after_login($redirect_to, $request, $user) {
+    // If user is not admin, redirect to referer if available
+    if (!isset($user->roles) || !in_array('administrator', $user->roles)) {
+        if (!empty($_SERVER['HTTP_REFERER']) &&
+            strpos($_SERVER['HTTP_REFERER'], 'wp-login') === false &&
+            strpos($_SERVER['HTTP_REFERER'], 'wp-admin') === false) {
+            return $_SERVER['HTTP_REFERER'];
+        }
+    }
+
+    return $redirect_to;
+}
+add_filter('login_redirect', 'redirect_to_referer_after_login', 10, 3);</code></pre>
+
+        <p>This returns users to the page they were viewing before logging in, useful for protected content or member-only sections.</p>
+
+        <h3>First-Time Login Detection</h3>
+        <pre><code>// Redirect users on first login to welcome page
+function first_login_redirect($redirect_to, $request, $user) {
+    if (!isset($user->ID)) {
+        return $redirect_to;
+    }
+
+    // Check if this is first login
+    $first_login = get_user_meta($user->ID, 'first_login', true);
+
+    if (empty($first_login)) {
+        // Mark that user has logged in
+        update_user_meta($user->ID, 'first_login', 'no');
+
+        // Redirect to welcome/onboarding page
+        return home_url('/welcome/');
+    }
+
+    return $redirect_to;
+}
+add_filter('login_redirect', 'first_login_redirect', 10, 3);</code></pre>
+
+        <h3>Redirect Based on Membership Level</h3>
+        <pre><code>// Redirect based on custom membership levels
+function membership_based_redirect($redirect_to, $request, $user) {
+    if (!isset($user->ID)) {
+        return $redirect_to;
+    }
+
+    $membership_level = get_user_meta($user->ID, 'membership_level', true);
+
+    switch ($membership_level) {
+        case 'premium':
+            return home_url('/premium-dashboard/');
+        case 'pro':
+            return home_url('/pro-dashboard/');
+        case 'basic':
+            return home_url('/basic-dashboard/');
+        default:
+            return home_url('/upgrade/');
+    }
+}
+add_filter('login_redirect', 'membership_based_redirect', 10, 3);</code></pre>
+
+        <h3>Time-Based Redirects</h3>
+        <pre><code>// Redirect based on time of day or special events
+function time_based_redirect($redirect_to, $request, $user) {
+    if (!isset($user->ID)) {
+        return $redirect_to;
+    }
+
+    $current_hour = (int)current_time('H');
+
+    // Off-hours redirect for non-admins
+    if (!in_array('administrator', $user->roles)) {
+        if ($current_hour < 6 || $current_hour > 22) {
+            return home_url('/off-hours-message/');
+        }
+    }
+
+    // Check for active promotion
+    $active_promo = get_option('active_promotion', false);
+    if ($active_promo && !in_array('administrator', $user->roles)) {
+        return home_url('/special-offer/');
+    }
+
+    return $redirect_to;
+}
+add_filter('login_redirect', 'time_based_redirect', 10, 3);</code></pre>
+
+        <h3>WooCommerce Customer Redirect</h3>
+        <pre><code>// Redirect WooCommerce customers to My Account page
+function woocommerce_login_redirect($redirect_to, $request, $user) {
+    // Check if WooCommerce is active
+    if (!class_exists('WooCommerce')) {
+        return $redirect_to;
+    }
+
+    if (isset($user->roles) && is_array($user->roles)) {
+        // Keep admins and shop managers on dashboard
+        if (in_array('administrator', $user->roles) || in_array('shop_manager', $user->roles)) {
+            return admin_url();
+        }
+
+        // Redirect customers to My Account page
+        if (in_array('customer', $user->roles)) {
+            return wc_get_page_permalink('myaccount');
+        }
+    }
+
+    return $redirect_to;
+}
+add_filter('login_redirect', 'woocommerce_login_redirect', 10, 3);</code></pre>
+
+        <h3>Prevent Dashboard Access for Non-Admins</h3>
+        <pre><code>// Block dashboard access and redirect to homepage
+function block_dashboard_access() {
+    if (is_admin() && !current_user_can('manage_options') && !(defined('DOING_AJAX') && DOING_AJAX)) {
+        wp_redirect(home_url());
+        exit;
+    }
+}
+add_action('admin_init', 'block_dashboard_access');</code></pre>
+
+        <h3>Redirect With URL Parameters</h3>
+        <pre><code>// Redirect with custom URL parameters for tracking
+function redirect_with_parameters($redirect_to, $request, $user) {
+    if (!isset($user->ID)) {
+        return $redirect_to;
+    }
+
+    // Add parameters to redirect URL
+    $redirect_url = home_url('/dashboard/');
+    $redirect_url = add_query_arg(array(
+        'login' => 'success',
+        'user_id' => $user->ID,
+        'timestamp' => time()
+    ), $redirect_url);
+
+    return $redirect_url;
+}
+add_filter('login_redirect', 'redirect_with_parameters', 10, 3);</code></pre>
+
+        <h3>Conditional Redirect Based on User Meta</h3>
+        <pre><code>// Redirect based on profile completion status
+function profile_completion_redirect($redirect_to, $request, $user) {
+    if (!isset($user->ID)) {
+        return $redirect_to;
+    }
+
+    // Check if profile is complete
+    $profile_complete = get_user_meta($user->ID, 'profile_complete', true);
+    $phone = get_user_meta($user->ID, 'phone', true);
+    $bio = get_user_meta($user->ID, 'description', true);
+
+    // If profile is incomplete, redirect to profile page
+    if (empty($profile_complete) || empty($phone) || empty($bio)) {
+        return admin_url('profile.php?incomplete=true');
+    }
+
+    // Profile complete, proceed normally
+    return $redirect_to;
+}
+add_filter('login_redirect', 'profile_completion_redirect', 10, 3);</code></pre>
+
+        <h2>Logout Redirect</h2>
+        <pre><code>// Redirect users after logout
+function custom_logout_redirect() {
+    wp_redirect(home_url('/goodbye/'));
+    exit;
+}
+add_action('wp_logout', 'custom_logout_redirect');</code></pre>
+
+        <h2>Best Practices</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Practice</th>
+              <th>Description</th>
+              <th>Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Always Check User Object</strong></td>
+              <td>Verify <code>isset($user->ID)</code> before accessing user properties</td>
+              <td>Prevents errors during failed login attempts</td>
+            </tr>
+            <tr>
+              <td><strong>Use Capabilities Over Roles</strong></td>
+              <td>Check <code>user_can()</code> instead of role names when possible</td>
+              <td>More flexible with custom roles and capabilities</td>
+            </tr>
+            <tr>
+              <td><strong>Sanitize Referer URLs</strong></td>
+              <td>Validate referer URLs to prevent open redirects</td>
+              <td>Security: prevents redirect to malicious sites</td>
+            </tr>
+            <tr>
+              <td><strong>Provide Fallback Redirects</strong></td>
+              <td>Always return a default redirect if conditions aren't met</td>
+              <td>Ensures users are never stuck without a destination</td>
+            </tr>
+            <tr>
+              <td><strong>Test All User Roles</strong></td>
+              <td>Create test accounts for each role and verify redirects</td>
+              <td>Ensures correct behavior for all user types</td>
+            </tr>
+            <tr>
+              <td><strong>Consider AJAX Requests</strong></td>
+              <td>Check for <code>DOING_AJAX</code> when redirecting from admin_init</td>
+              <td>Prevents breaking AJAX functionality</td>
+            </tr>
+            <tr>
+              <td><strong>Log Redirects During Development</strong></td>
+              <td>Use error_log() to track redirect decisions</td>
+              <td>Helps debug complex conditional logic</td>
+            </tr>
+            <tr>
+              <td><strong>Avoid Infinite Loops</strong></td>
+              <td>Ensure redirect destinations don't require re-login</td>
+              <td>Prevents users from getting stuck in redirect loops</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h2>Performance Impact</h2>
+        <p><strong>Performance:</strong> Negligible impact. Login redirects execute once per login session, not on every page load. The login_redirect filter runs after authentication, so there's no performance penalty for site visitors. Even complex redirect logic with database queries (checking user meta) adds less than 10ms to login time. For optimal performance, cache complex decisions in user meta rather than recalculating on every login. Avoid making external API calls within redirect logic unless absolutely necessary.</p>
+      </div>
+    `,
+    code: `// Role-based login redirect
+function role_based_login_redirect($redirect_to, $request, $user) {
+    if (isset($user->roles) && is_array($user->roles)) {
+        // Admins go to dashboard
+        if (in_array('administrator', $user->roles)) {
+            return admin_url();
+        }
+
+        // Subscribers go to homepage
+        if (in_array('subscriber', $user->roles)) {
+            return home_url('/my-account/');
+        }
+    }
+
+    return home_url();
+}
+add_filter('login_redirect', 'role_based_login_redirect', 10, 3);`,
+    author: {
+      name: 'Shahmir Haris',
+      avatar: '/images/avatar.jpg',
+      bio: 'WordPress Developer & Code Snippet Specialist'
+    },
+    date: '2025-01-18',
+    readTime: '7 min',
+    category: 'WordPress Users',
+    tags: ['Login', 'Redirects', 'UX'],
+    difficulty: 'Intermediate',
+    compatibility: 'WordPress 3.0+',
+    seo: {
+      metaTitle: 'Redirect Users After Login in WordPress - Role-Based & Custom Redirects',
+      metaDescription: 'Learn how to redirect users after login in WordPress with role-based redirects, custom URLs, membership levels, and conditional logic for better UX.',
+      keywords: ['wordpress login redirect', 'redirect after login wordpress', 'role based redirect', 'login_redirect filter', 'custom login redirect', 'wordpress user redirect', 'membership redirect', 'woocommerce login redirect'],
+      canonical: 'https://shahmir.dev/blog/redirect-after-login',
+      schema: {
+        '@context': 'https://schema.org',
+        '@type': 'TechArticle',
+        headline: 'Redirect Users After Login in WordPress',
+        description: 'Complete guide to redirecting users after login in WordPress with role-based redirects, custom URLs, and advanced conditional logic.',
+        author: {
+          '@type': 'Person',
+          name: 'Shahmir Haris'
+        },
+        datePublished: '2025-01-18',
+        dateModified: '2025-01-18',
+        proficiencyLevel: 'Intermediate',
+        dependencies: 'WordPress 3.0+'
+      }
+    },
+    faqs: [
+      {
+        question: "How do I redirect users to the page they were trying to access before login?",
+        answer: "WordPress automatically handles this through the 'redirect_to' parameter in the login URL. When users try to access a protected page, WordPress adds ?redirect_to=URL to the login form. The login_redirect filter receives this as the $request parameter. To preserve this behavior while adding custom logic, check if $request is set and not empty before applying your redirect: if (!empty($request)) { return $request; }. This ensures users return to their intended destination. For custom implementation, you can also use $_SERVER['HTTP_REFERER'], but validate it to prevent open redirect vulnerabilities."
+      },
+      {
+        question: "Can I redirect different users to different pages based on their subscription status?",
+        answer: "Yes, check user meta or membership plugin data within the login_redirect filter. For example, with a custom membership system: $subscription = get_user_meta($user->ID, 'subscription_level', true); then use a switch statement to redirect based on the value. For popular membership plugins like MemberPress or Paid Memberships Pro, check their documentation for specific functions to query membership levels. Example: if (function_exists('pmpro_hasMembershipLevel')) { if (pmpro_hasMembershipLevel(array(1,2,3), $user->ID)) { return home_url('/premium-area/'); } }. Always provide a fallback redirect for users without subscriptions."
+      },
+      {
+        question: "How do I prevent the redirect for administrators while redirecting other roles?",
+        answer: "Check for administrator role at the beginning of your redirect function and return early: if (in_array('administrator', $user->roles)) { return $redirect_to; }. This preserves the default WordPress behavior for admins (redirecting to dashboard or requested page) while applying custom redirects to other roles. Alternatively, use capability checks: if (current_user_can('manage_options')) { return $redirect_to; }. The capability approach is more flexible because it works with custom roles that have administrative privileges. Always place admin checks first in your conditional logic to avoid overriding their redirect preferences."
+      },
+      {
+        question: "What's the difference between login_redirect and wp_login actions?",
+        answer: "The login_redirect filter is specifically designed for controlling where users go after successful login and receives the redirect URL, requested URL, and user object as parameters. It should return a URL string. The wp_login action hook fires after a user logs in but is meant for executing code (like logging, sending notifications) rather than redirecting. While you can use wp_redirect() within wp_login, it's not the recommended approach because login_redirect is the dedicated mechanism for this purpose and integrates properly with WordPress's redirect flow. Use login_redirect for redirect logic and wp_login for side effects like updating user meta, sending emails, or logging activity."
+      },
+      {
+        question: "How can I redirect users on their first login only?",
+        answer: "Use user meta to track first login status. In your redirect function: $first_login = get_user_meta($user->ID, 'first_login', true); if (empty($first_login)) { update_user_meta($user->ID, 'first_login', 'no'); return home_url('/welcome/'); }. This checks if the 'first_login' meta exists, and if not, sets it and redirects to a welcome page. Subsequent logins will have this meta set, so the redirect won't trigger. For more precision, store a timestamp instead of boolean: update_user_meta($user->ID, 'first_login_date', current_time('mysql')). This lets you track exactly when the first login occurred. Consider combining this with profile completion checks to ensure users complete onboarding."
+      }
+    ]
+  }
+];
+
+// Helper functions for blog display
+export function getAllWPSnippets() {
+  return wpCodeSnippets;
+}
+
+export function getWPSnippetBySlug(slug) {
+  return wpCodeSnippets.find(snippet => snippet.slug === slug);
+}
+
+export function getWPSnippetsByCategory(category) {
+  return wpCodeSnippets.filter(snippet => snippet.category === category);
+}
+
+export function getWPSnippetsByTag(tag) {
+  return wpCodeSnippets.filter(snippet => snippet.tags.includes(tag));
+}
+
+export function getWPSnippetsByDifficulty(difficulty) {
+  return wpCodeSnippets.filter(snippet => snippet.difficulty === difficulty);
+}

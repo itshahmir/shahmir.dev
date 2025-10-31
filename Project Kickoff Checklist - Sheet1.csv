@@ -1,0 +1,46 @@
+"Project Kickoff Checklist
+
+Project Name: MYSOOV Booking Plugin
+Client: MYSOOV.COM
+Kickoff Date: 3 Sept 2024",,,,,,,❌,✅,🧭
+,,,,,,,Not done,Done,Under Progress
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,,,,,,,,,
+,Items,Status,Reviewed,Approved,Notes,SOPs,,,
+Pre-Kickoff Preparation,Client Agreement Signed,✅,✅,✅,Contract Created on Ali Haider Fiverr Account,Ensure the contract and any necessary legal agreements are signed by both parties.,,,
+,Scope Defined and Approved,✅,✅,✅,Project Brief,"Ensure that the project scope (outlined in the Project Brief) has been reviewed and approved by the client.
+Document any out-of-scope items explicitly.
+",,,
+,Project Brief Completed,✅,✅,✅,Project Brief,"Confirm that the Project Brief, detailing objectives, deliverables, and timelines, has been finalized and shared with the client.",,,
+,Milestones Established,✅,✅,✅,Project Brief,"Establish and confirm the key milestones (e.g., development, testing, and launch dates).Confirm the timeline with all stakeholders.
+",,,
+,,,,,,,,,
+Development and Technical Setup,Technical Requirements Clarified,✅,✅,✅,Project Brief,"Confirm understanding of technical requirements (e.g., booking by age group/time slots, deposit functionality, notification integration).
+",,,
+,Development Environment Setup,✅,✅,✅,WordPress on Xampp,"Set up the local and staging environments for development. Ensure any required plugins, APIs (e.g., WhatsApp API), or third-party services are ready for integration.",,,
+,Version Control Established,✅,✅,✅,https://github.com/pixelabs-wp/mysoov-bookings,"Set up Git repository or preferred version control system. Ensure project branches are created for different stages (e.g., dev, QA, production).
+",,,
+,Plugin Requirements Finalized,✅,✅,✅,Plugin Development Document,"Ensure that all feature requirements and specifications for the WordPress plugin are clearly documented.
+",,,
+,Communication Channels Established,✅,✅,✅,Whatsapp,"Confirm that all communication channels (Slack, WhatsApp, Email) between the client, development team, and other stakeholders are set up.
+Clarify the escalation process for urgent matters.",,,
+,Task Management Tools Ready,✅,✅,✅,Task List,"Set up Github Project to track development tasks, bug fixes, and testing tasks.",,,
+,,,,,,,,,
+Team Roles Defined,Team Roles Defined,❌,❌,❌,Ali Shahmir,"Assign responsibilities for Development, QA and testing.
+Clarify who from the client-side will handle approvals and feedback.",,,
+,Client Contact Confirmed:,❌,❌,❌,Elio & Ikbal from MySoov,"Identify the key client point of contact for ongoing communication, approvals, and feedback.",,,
+,,,,,,,,,
+Testing and QA Planning,QA Plan Finalized,❌,❌,❌,,"Develop a clear QA plan to ensure the plugin functions as expected, especially around payment processing and notifications.
+Establish the process for bug reporting and fixing.",,,
+,"Test Cases Created:
+",❌,❌,❌,,"Create test cases for each major functionality, including booking flows, payment handling, and notification triggers.",,,
+,,,,,,,,,
+Launch and Support Planning,Go-Live Strategy Defined,❌,❌,❌,,"Confirm the strategy for launching the plugin on the client’s website.
+Plan for a soft launch or staging deployment before the final go-live to ensure all functionalities are working smoothly.",,,
+,Post-Launch Support Defined,❌,❌,❌,,"Define the support period post-launch for any potential issues or bug fixes.
+Clarify how to handle urgent support requests.",,,
+,,,,,,,,,
+Approval and Sign-Off,Client Sign-Off:,❌,❌,❌,,Obtain client sign-off to begin development.,,,
+,Internal Approval:,❌,❌,❌,,Confirm that the internal team is ready to proceed with development as per the finalized requirements.,,,

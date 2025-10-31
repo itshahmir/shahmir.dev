@@ -1,0 +1,91 @@
+Sprint Planning Checklist,,,,,,,Project Name,,Date,Sprint Number
+Items,Sub Items,Status,Review,Approval,Notes,Objective,Process,,,
+1. Pre-Planning Preparation,Review Product Backlog,❌,❌,❌,,"Ensure the product backlog is up-to-date, prioritized, and clear for sprint planning.","Open the product backlog in your project management tool (e.g., Jira, Trello).
+Review each item for completeness. Ensure descriptions, acceptance criteria, and priority are defined.
+Confirm that backlog items are aligned with the overall project roadmap.
+Collaborate with stakeholders if any priorities need adjustment.",,,
+,Assess Previous Sprint,❌,❌,❌,,Assess the previous sprint’s incomplete tasks and decide on the next steps.,"Review the sprint board for incomplete tasks.
+Determine if tasks should be carried over to the next sprint or deprioritized.
+Analyze the reasons for incomplete tasks (e.g., scope, blockers).
+Document learnings for process improvement.",,,
+,Identify Sprint Goal,❌,❌,❌,,"Define a clear, singular focus for the sprint.","Based on the product backlog, identify a major feature, improvement, or milestone.
+Collaborate with the Product Owner and stakeholders to ensure alignment.
+Formulate the sprint goal as a concise statement that is achievable within the sprint.",,,
+,Capacity Planning,❌,❌,❌,,Understand team availability for accurate task assignment.,"Review the team calendar for availability (consider meetings, holidays, etc.).
+Calculate the total available hours for each team member for the sprint.
+Adjust expectations accordingly based on available capacity.",,,
+,Ensure Task Clarity,❌,❌,❌,,Ensure tasks are well-defined with clear requirements.,"Review each task in the backlog to confirm detailed descriptions and acceptance criteria.
+Clarify any ambiguities with stakeholders or the product owner before the planning meeting.
+Ensure technical tasks have clear documentation on implementation needs.",,,
+,,❌,❌,❌,,,,,,
+2. Task Prioritization,Prioritize High-Value Items,❌,❌,❌,,Focus on the most impactful tasks.,"Identify tasks that provide the most business or client value.
+Collaborate with stakeholders to validate these priorities.
+Place these tasks at the top of the sprint backlog.",,,
+,Balance Urgency and Importance,❌,❌,❌,,Ensure a balanced mix of urgent and important tasks in the sprint.,"Categorize tasks as urgent or important (or both).
+Ensure urgent items don’t overshadow important tasks that drive long-term value.
+Add an appropriate number of urgent tasks while reserving room for important tasks.",,,
+,Consider Dependencies,❌,❌,❌,,Account for task dependencies during sprint planning.,"Identify dependencies between tasks.
+Ensure dependent tasks are ordered correctly in the sprint backlog.
+Communicate dependency-related risks to the team and stakeholders.",,,
+,,❌,❌,❌,,,,,,
+3. Task Estimation,Estimate Time for Each Task,❌,❌,❌,,Ensure tasks are accurately estimated based on complexity.,"Assign time estimates using the established complexity tiers: Simple, Moderate, and Complex.
+Use historical data and past experience to validate time estimates.
+Adjust time estimates based on task-specific details or team feedback.",,,
+,Assign Complexity Tiers,❌,❌,❌,,Categorize tasks into complexity tiers for consistent estimation.,"Review task requirements and technical complexity.
+Assign a tier (Simple, Moderate, or Complex) based on SOP guidelines.
+Cross-check with previous tasks of similar nature for consistency.",,,
+,Incorporate Buffer Time,❌,❌,❌,,Add buffer time to account for unexpected issues.,"Add an additional 10-15% of the total sprint time for unforeseen challenges (bugs, urgent changes).
+Review past sprints to determine if adjustments are needed.
+Communicate buffer expectations with the team.",,,
+,,❌,❌,❌,,,,,,
+4. Task Assignment,Distribute Workload Equitably,❌,❌,❌,,Ensure tasks are distributed according to expertise and capacity.,"Review team members’ skills and workload.
+Assign tasks based on expertise, availability, and complexity.
+Check for balance to avoid overloading any team member.",,,
+,Define Clear Ownership,❌,❌,❌,,Make sure every task has a designated owner.,"Assign each task to a specific team member.
+Clarify ownership responsibilities for completing and tracking the task.
+Ensure owners are comfortable with their assigned tasks.",,,
+,Assign Review and Testing Roles,❌,❌,❌,,Establish roles for task verification and testing.,"Assign reviewers for code or work product testing.
+Confirm that testers and reviewers have the necessary context to validate the work.
+Schedule review and testing deadlines within the sprint.",,,
+,,❌,❌,❌,,,,,,
+5. Sprint Goal & Commitment,Set a Sprint Goal,❌,❌,❌,,Define a shared goal to drive the sprint.,"Reiterate the sprint goal from the sprint planning meeting.
+Ensure every team member understands the goal and how their tasks contribute to it.
+Communicate the goal to stakeholders.",,,
+,Finalize Sprint Scope,❌,❌,❌,,Lock in the tasks to be completed during the sprint.,"Finalize the sprint backlog based on capacity and priority.
+Get team consensus on the commitment to the defined scope.
+Adjust scope only if absolutely necessary during the sprint.",,,
+,Create a Definition of Done,❌,❌,❌,,Define clear completion criteria for tasks.,"Agree on what constitutes “done” (e.g., fully tested, reviewed, deployed).
+Apply this definition to every task in the sprint.
+Ensure team-wide adherence to the agreed-upon definition.",,,
+,,❌,❌,❌,,,,,,
+6. Sprint Planning Meeting,Conduct the Planning Meeting,❌,❌,❌,,Facilitate a productive planning meeting.,"Present prioritized tasks and estimates.
+Review each task for clarity, dependencies, and feasibility.
+Confirm task assignment and sprint goals with the team.",,,
+,Discuss Potential Blockers,❌,❌,❌,,Identify and address possible roadblocks early on.,"Ask each team member to identify potential blockers.
+Develop contingency plans or solutions for identified issues.
+Monitor blockers throughout the sprint and update as needed.",,,
+,Ensure Team Alignment,❌,❌,❌,,Ensure all team members understand their roles and responsibilities.,"Confirm that every team member understands the sprint goal, task assignments, and expectations.
+Address any concerns or questions.
+Foster a collaborative attitude towards achieving sprint objectives.",,,
+,,❌,❌,❌,,,,,,
+7. Task Breakdown & Task Board Setup,Break Down Large Tasks,❌,❌,❌,,Split large tasks into manageable subtasks.,"Identify larger tasks that may need to be divided.
+Break them down into smaller subtasks with clear objectives.
+Assign subtasks where appropriate and update the sprint board.",,,
+,Set Up Task Board,❌,❌,❌,,Ensure the task board is properly organized.,"Create task cards for each item in the sprint backlog.
+Set up columns (Backlog, In Progress, Review, Testing, Done).
+Ensure every task is placed correctly and assigned to the relevant column.",,,
+,Define WIP Limits,❌,❌,❌,,Avoid over-commitment by defining limits on work in progress.,"Set WIP limits based on team capacity.
+Ensure that no team member exceeds these limits without prior discussion.
+Monitor WIP adherence throughout the sprint.",,,
+,,❌,❌,❌,,,,,,
+8. Sprint Planning Documentation,Document the Sprint Plan,❌,❌,❌,,Maintain a clear and organized sprint plan.,"Record the sprint goal, assigned tasks, and time estimates.
+Include key metrics like total sprint hours, capacity, and buffer time.
+Store the document in a shared location accessible to the entire team.",,,
+,Share Sprint Plan with Stakeholders,❌,❌,❌,,Keep stakeholders informed of the sprint's focus and scope.,"Send a summary of the sprint plan to stakeholders (e.g., email, Slack).
+Include key information such as the sprint goal and expected deliverables.
+Maintain open communication with stakeholders throughout the sprint.",,,
+,,❌,❌,❌,,,,,,
+9. Review and Adjust,Plan for Mid-Sprint Review,❌,❌,❌,,Schedule a mid-sprint review to assess progress.,"Schedule a brief meeting mid-way through the sprint.
+Review the sprint board for progress and blockers.
+Adjust workload or priorities if necessary to stay on track.",,,
+,Leave Room for Urgent Requests,❌,❌,❌,,Reserve a gap in total story points to handle any urgent requests,Leave a 5% buffer for any urgent requests that might arise while the sprint is in progress,,,

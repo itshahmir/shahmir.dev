@@ -1,0 +1,196 @@
+Task Completion SOPs (WordPress + Elementor + Figma + Jira)
+
+1. Research Team
+Objective: Provide the foundation for IA, content requirements, and documentation.
+Jira Workflow: To Do → Blocked → In Progress (Research) → Ready for Design
+Process:
+Requirement Gathering: Collect business needs, user requirements, competitor benchmarks.
+
+
+Information Architecture (IA): Define sitemap, hierarchy, content flow.
+
+
+Documentation: Prepare functional documentation (acceptance criteria, dependencies).
+
+
+Content Prep: Draft copy, media references, and guidelines.
+
+
+Deliverables to Design:
+
+
+IA diagrams (sitemap, content hierarchy).
+
+
+Documentation (functional + user flow).
+
+
+Content drafts.
+
+
+
+2. Design Team (Figma)
+Objective: Translate IA & documentation into high-fidelity, developer-ready designs.
+Jira Workflow: Ready for Design → In Progress (Design) → Ready for Dev
+Process:
+Review IA + Docs: Confirm IA and requirements are complete.
+
+
+Wireframes (if needed): Create low-fidelity wireframes for layout validation.
+
+
+Figma Design: Build responsive designs aligned with brand style guide.
+
+
+Design Documentation: Annotate spacing, typography, interactions, hover states.
+
+
+Asset Prep: Export icons, images, and other design assets for dev.
+
+
+Handoff to Dev: Attach Figma file + design notes to Jira ticket.
+
+
+Deliverables to Development:
+Figma designs (desktop, tablet, mobile).
+
+
+Exported assets (SVG/PNG).
+
+
+Documentation for spacing, colors, fonts.
+
+
+
+3. Development Team (WordPress + Elementor + Custom Code)
+Objective: Implement Figma designs + IA in WordPress using Elementor and code.
+Jira Workflow: Ready for Dev → In Progress (Dev) → Ready for QA/Review
+Process:
+Setup Environment: Ensure WP instance + Elementor + plugins are ready.
+
+
+Review Figma + IA: Align structure with IA + visual fidelity with Figma.
+
+
+Elementor Implementation: Build layouts with widgets, templates, and sections.
+
+
+Custom Development: Write PHP/JS for advanced features.
+
+
+Code Standards: Follow WordPress coding standards + PSR-12.
+
+
+Version Control: Commit frequently; reference Jira ticket ID in commit messages.
+
+
+Move to QA: Submit PR + attach link/screenshots to Jira task.
+
+
+Deliverables to QA:
+Implemented feature/page.
+
+
+Linked PR/branch in Jira.
+
+
+Notes on any limitations/differences from design.
+
+
+
+4. QA Team
+Objective: Validate implementation against IA, Figma, and requirements.
+Jira Workflow: Ready for QA/Review → In QA (Dev) → Done / Back to Dev
+Process:
+Design Validation: Compare implementation vs. Figma designs.
+
+
+IA Check: Ensure structure matches documentation.
+
+
+Functionality Testing: Verify acceptance criteria.
+
+
+Responsiveness Testing: Mobile, tablet, desktop.
+
+
+Cross-browser Testing: Chrome, Firefox, Safari, Edge.
+
+
+Bug Logging: Create sub-tasks in Jira with screenshots.
+
+
+Re-Test: Verify fixes before approving task.
+
+
+Deliverables to Task Closure:
+QA checklist/report in Jira.
+
+
+Bugs resolved and verified.
+
+
+Confirmation that acceptance criteria are met.
+
+
+
+5. Task Closure (PM / Dev Lead)
+Objective: Ensure completed task meets all requirements and is properly documented.
+Jira Workflow: In QA (Dev) → Done
+Process:
+Final Verification: Confirm QA approval + acceptance criteria.
+
+
+Deployment: Move changes to staging/production.
+
+
+Documentation Update: Update Confluence / internal docs with details.
+
+
+Jira Update: Move task to Done, close all subtasks.
+
+
+Retrospective (if needed): Note lessons learned for process improvement.
+
+
+Deliverables:
+Live/staging deployment link.
+
+
+Updated documentation.
+
+
+Jira task closed.
+
+
+
+🔄 Overall Jira Workflow Across Teams
+To Do (Research)
+
+
+Blocked (Research/Design/Dev)
+
+
+In Progress (Research)
+
+
+Ready for Design
+
+
+In Progress (Design)
+
+
+Ready for Dev
+
+
+In Progress (Dev)
+
+
+Ready for QA/Review
+
+
+In QA (Dev)
+
+
+Done
+

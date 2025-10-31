@@ -1,0 +1,35 @@
+{
+  "name": "shahmir-dev",
+  "version": "1.0.0",
+  "description": "Shahmir Khan's personal website",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "npm run generate:sitemap && vite build",
+    "build:seo": "npm run generate:sitemap && vite build && npm run prerender:run",
+    "prerender:run": "concurrently --kill-others --success first \"vite preview --port 4173\" \"wait-on http://localhost:4173 && node prerender.js\"",
+    "generate:sitemap": "node generate-sitemap.js",
+    "preview": "vite preview",
+    "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0"
+  },
+  "dependencies": {
+    "gsap": "^3.13.0",
+    "react": "^18.3.1",
+    "react-router-dom": "^7.9.5"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.15.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.14",
+    "puppeteer": "^24.27.0",
+    "react-dom": "^18.3.1",
+    "react-helmet-async": "^2.0.5",
+    "vite": "^6.0.1",
+    "wait-on": "^9.0.1"
+  }
+}

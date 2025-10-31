@@ -1,0 +1,299 @@
+The Global WordPress Ecosystem in 
+2025: A Comprehensive Stakeholder and Market Analysis 
+ Ali Shahmir Khan 
+Abstract
+ 
+WordPress has solidified its position as the foundational engine of the modern web, powering an unprecedented portion of the internet in 2025. This research paper provides a comprehensive, data-driven analysis of the WordPress ecosystem, moving beyond surface-level statistics to identify the complex interdependencies and strategic trends that underpin its enduring dominance. 
+The analysis finds that WordPress is no longer merely a content management system; it is a global digital engine with a vast, multi-layered economic impact. Its market share, ranging from 43.1% to 43.6% of all websites globally, is not just a statistical measure of its popularity but a reflection of a fundamental shift in web development towards CMS-driven platforms. The WordPress economy, estimated to have a value comparable to the revenue of the Apple App Store, is a highly decentralized and resilient system supported by a diverse array of stakeholders. 
+This report systematically quantifies the ecosystem's scale across seven key stakeholder categories, from the billions of end users who visit WordPress-powered sites daily to the hundreds of thousands of dedicated community contributors. The commercial vitality of the ecosystem is illustrated by the proliferation of over 70,000 plugins and 30,000 themes, which serve as the foundation for a professionalized, global workforce of developers and agencies. 
+Moreover, the report identifies key technological trends that are shaping the platform's future. The strategic integration of AI, the accelerating adoption of headless architecture, and a critical focus on Core Web Vitals are positioning WordPress to remain at the forefront of innovation. While challenges, particularly in security, exist as a natural consequence of its open-source nature, these issues have also given rise to a new layer of the commercial ecosystem dedicated to specialized, high-value services. The collective evidence presented demonstrates that WordPress is not just maintaining its market lead but is actively redefining the boundaries of what an open-source platform can achieve on a global scale. 
+ 
+Table 1: WordPress Ecosystem: Key Statistics (2025) 
+ 
+ 
+Metric 
+Range or Value 
+Source 
+Overall Website Market Share 
+43.1%–43.6% 
+1 
+CMS Market Share 
+60.8%–65.2% 
+1 
+Total Websites 
+541M–810M+ 
+1 
+New Sites Created Daily 
+500–1,000+ 
+2 
+WordPress Economy Value 
+$596.7B (2020) 
+8 
+Total Plugins 
+70,000+ 
+3 
+Total Themes 
+30,000+ 
+3 
+WooCommerce Market 
+Share 
+34%–38% of e-commerce 
+CMS 
+1 
+Total Core Contributors 
+2,800+ (active) 
+5 
+
+ 
+Introduction: From Blog to Global Digital Engine 
+ 
+The journey of WordPress, from its inception in 2003 as a simple blogging tool to its current status as the world's leading Content Management System (CMS), is one of the most significant narratives in the history of the digital era. It has evolved into the foundational architecture for an estimated 541 million to over 810 million websites, powering over 43% of the entire internet in 2025.1 This remarkable growth underscores its transformation from a niche platform to a global digital engine that has democratized web publishing on a scale previously unimaginable. 
+Unlike traditional, proprietary software platforms, the open-source nature and distributed architecture of WordPress present unique challenges for a comprehensive analysis. A centralized user database does not exist, and the ecosystem's scale is so vast that no single entity can claim a complete picture. The distinction between WordPress.com, the hosted service that provides its own analytics, and the self-hosted WordPress.org software, which comprises the majority of the ecosystem, is a key structural element that must be accounted for in any attempt to quantify its scale and impact. 
+The purpose of this report is to address these inherent challenges by establishing a systematic, multi-methodological framework for analyzing the WordPress ecosystem in 2025. It moves beyond a simple compilation of statistics to provide a detailed, nuanced understanding of the platform's multi-layered structure, its economic influence, its diverse user base, and the technological trends that are driving its continued evolution. This analysis is designed to offer a comprehensive view of WordPress as a dynamic, resilient, and economically significant force that continues to shape the future of the web. 
+ 
+The State of the WordPress Market in 2025 
+ 
+ 
+Market Share and Growth Trajectory 
+ 
+The market position of WordPress in 2025 is characterized by a level of dominance that borders on a monopoly within its sector. According to multiple sources, WordPress powers a remarkable 43.1% to 43.6% of all websites globally.1 When the analysis is narrowed to only include websites with a known CMS, the platform's market share becomes even more commanding, ranging from 60.8% to 65.2%.1 This overwhelming lead is amplified by the fact that its closest competitor, Shopify, commands a distant 6.7% share of the CMS market.1 
+This statistical disparity between its overall market share and its CMS-specific market share is not a mere data point; it reveals a critical market dynamic. Since 2013, the percentage of websites operating without a recognized CMS has plummeted from 68.2% to 28.6% by August 2025.1 This decline signals a global, industry-wide shift away from custom-coded, static sites toward more flexible and manageable CMS-based platforms. WordPress is the primary and most significant beneficiary of this trend. As individuals, small businesses, and large enterprises seek to establish a digital presence, WordPress's low barrier to entry, extensive functionality, and open-source foundation make it the default choice. Consequently, the platform is not just winning a CMS competition; it is actively steering and shaping the very evolution of the web itself by making website ownership accessible to a mass audience. This long-term, consistent growth trajectory, which saw its market share increase by 16.3% from 2017 to 2025 alone, cements its position as a 
+transformative force in the digital landscape.11 
+The platform's growth is not a historical relic but an ongoing phenomenon. The data indicates that approximately 500 to 1,000 new WordPress websites are launched daily within the top 10 million sites alone.3 Certain hosting providers report even more rapid adoption, with one indicating a creation rate of 20,000 new WordPress sites per day on its platform.13 This sustained momentum underscores the platform's enduring appeal and its ability to consistently attract new users and developers, ensuring its continued relevance for the foreseeable future. 
+ 
+Economic Impact and Global Footprint 
+ 
+The economic influence of WordPress extends far beyond its market share statistics, representing a complex and expansive digital economy. A comprehensive analysis conducted by WP Engine estimated the global WordPress economy at a staggering $596.7 billion in 2020, with projections suggesting it would reach $635.5 billion by 2021.8 To provide context, this economic output was valued as being comparable to the revenue of the Apple App Store in 2020 and, if it were a single company, would have ranked 10th on the list of companies by market capitalization.9 This comparison elevates the conversation from a technical platform to a global economic powerhouse. 
+This immense financial value is not generated by a single monolithic company like Automattic but is distributed across a vast, decentralized network of hosting providers, plugin and theme developers, digital agencies, and individual freelancers.9 This fragmentation is a source of profound resilience. It prevents a single point of failure and fosters a dynamic, competitive market that encourages innovation from the ground up, allowing for an agile response to market demands and technological shifts. The projected growth of the web hosting market, with the U.S. segment alone expected to reach €52.79 billion in 2024, is a direct testament to this robust commercial ecosystem.3 
+The global footprint of WordPress mirrors its economic scale. The platform is used in over 178 countries and is available in more than 208 languages, a powerful competitive advantage that speaks to its mission of democratizing publishing on a truly global scale.2 The United States holds the largest number of WordPress websites, with figures ranging from 3.04 million to 3.77 million sites, followed by Germany, the United Kingdom, and Brazil.3 The fact that search volume for "WordPress" is highest in the U.S. and India suggests that while the platform has a strong foothold in developed markets, it is also capturing the next wave of internet adoption in emerging economies where its growth is particularly rapid.8 
+ 
+Geographic Distribution and Demographics 
+ 
+The demographics of the WordPress user base reflect a remarkable diversity that bridges technical and non-technical divides. As of 2025, approximately 49.6% of WordPress users identify as developers or technical professionals, while a substantial 32% are small business owners or entrepreneurs operating their own websites.5 The average age of a WordPress user is 34.2 years, with the 18-24 age group representing the fastest-growing segment, indicating the platform's ability to attract and retain a new generation of digital creators and professionals.5 
+This demographic breakdown confirms that WordPress is a universal platform that serves a wide range of user types. Its appeal to both highly technical developers and non-technical business owners provides a flexible framework for a multitude of use cases. The platformʼs ability to cater to these distinct user segments simultaneously is a critical factor in its enduring popularity and market dominance. 
+ 
+The Multi-Layered WordPress User Ecosystem: A Stakeholder Analysis 
+ 
+The complexity of the WordPress ecosystem can be systematically understood by analyzing its seven primary stakeholder categories. This framework provides a clear lens through which to view the interconnected layers of users who contribute to and benefit from the platform. 
+ 
+Table 2: WordPress Stakeholder Categories & Scale Estimates 
+ 
+Stakeholder Category 
+Definition 
+Estimated Scale 
+End Users/Consumers 
+Individuals who visit and interact with 
+WordPress-powered websites. 
+Billions of unique users globally 
+Content Creators 
+Individuals who actively 
+50M–100M active creators 
+
+
+create and publish content. 
+
+
+Website Owners 
+Individuals and organizations who own and operate websites. 
+10M–30M+ unique owners 
+Developers & Technical Users 
+Professionals who develop, customize, or maintain sites. 
+1M–2M active developers 
+Business Ecosystem 
+Commercial entities that derive revenue from services. 
+500,000–1M+ businesses 
+Enterprise Users 
+Large organizations using WordPress for corporate websites. 
+50,000–100,000+ enterprises 
+Community Contributors 
+Volunteers who contribute to the open-source project. 
+100,000–500,000+ active contributors 
+
+ 
+The End-User and Consumer Layer 
+ 
+At the base of the WordPress ecosystem are its end users, who are often unaware that the websites they are visiting are powered by the platform. This layer, while passive, represents the ultimate validation of the entire ecosystem's value. The scale of this user base is immense, with billions of unique users globally.8 On WordPress.com hosted sites alone, there are over 409 million monthly visitors who generate more than 20 billion page views and 77 million comments each month.2 The existence of this massive, engaged audience proves that WordPress websites are not just being created; they are being consumed and interacted with at an unprecedented rate. This vast audience fuels the content creation, business, and advertising models that support the entire commercial ecosystem built on top of the platform. 
+ 
+The Content Creator and Blogger Segment 
+ 
+The content creator segment represents the platform's core legacy. WordPress is the self-proclaimed platform of choice for an overwhelming 97% of bloggers.12 However, a closer look at user demographics reveals a powerful evolution of the platform's role. While only 6% of users report using WordPress exclusively for a blog, a majority—69%—use it as a CMS, and a significant 20% use it for both blogging and content management.12 This data illustrates that the role of WordPress as a "blogging platform" has evolved from a primary function to an integrated capability within a broader CMS. The platform's success is not just in its ability to host personal blogs but in its ability to seamlessly integrate blogging functionality into a professional web presence, validating the "Both CMS and Blog" user category. 
+ 
+Website Owners and Entrepreneurs 
+ 
+This segment forms the commercial engine of the WordPress ecosystem. With an estimated 541 million to over 810 million websites in existence, a significant portion of these are owned and operated by individuals and entrepreneurs.1 The data confirms that 32% of all WordPress users are small business owners or entrepreneurs, highlighting the platform's role as a catalyst for economic activity and digital entrepreneurship.5 The ability of an individual or small team to build and launch a professional-grade website with minimal technical knowledge is a testament to the platform's accessibility and its power to democratize business ownership in the digital age. 
+ 
+The Enterprise and Corporate Sector 
+ 
+WordPress has successfully shed its reputation as a simple blogging tool to become a trusted, enterprise-grade solution for mission-critical digital properties. This is evidenced by its adoption by some of the world's most prominent brands and media organizations, including The White House, The New York Times, CNN, Microsoft, and Bloomberg.12 The platform powers between 23.5% and 36% of the top 1 million websites globally, a clear indicator of its scalability and reliability under high-traffic conditions.4 The fact that a platform originally designed for bloggers can be trusted by major news outlets and government institutions is a powerful counter-narrative that demonstrates its unparalleled flexibility and the strength of its underlying architecture. This high-stakes adoption validates the platform for smaller businesses, drives demand for advanced services like headless architecture and managed hosting, and brings significant revenue into the ecosystem, further fueling its growth and innovation. 
+ 
+The Developer and Business Ecosystem 
+ 
+The developer community is the commercial heart of the ecosystem, with nearly half (49.6%) of WordPress users identifying as developers or technical professionals.5 This is a highly professionalized workforce that has built a robust commercial marketplace around the open-source platform. The ecosystem features over 70,000 plugins and 30,000 themes, which provide a sustainable revenue model for millions of individuals and businesses.3 The average annual salary for a WordPress developer is estimated at $72,114, with some freelancers charging over $90 per hour in the U.S..19 These figures demonstrate that expertise in WordPress is a highly valuable, in-demand skill set, which further incentivizes new talent to enter the ecosystem and ensures a continuous cycle of innovation and economic vitality. 
+ 
+The Community of Contributors 
+ 
+The heartbeat of the open-source project is its volunteer-driven community. Contributions to the 
+WordPress core have grown by 13% year-over-year, with over 2,800 active contributors in the last 
+12 months.5 This continued growth is a crucial indicator of the ecosystem's health, as it distinguishes WordPress from proprietary, for-profit platforms. The volunteer effort provides an invaluable, non-monetary return on investment for the entire community by powering core development, localization into hundreds of languages, and a vast support network. The existence of formal roles like Core Team Reps and mentorship programs highlights that this is a professionalized and structured process that ensures the platform's stability and continued evolution, a direct competitive advantage against platforms without such a robust, dedicated community.5 
+ 
+Key Trends and Technological Evolution in 2025 
+ 
+The enduring dominance of WordPress is not a static phenomenon; it is a direct result of its continuous adaptation to the latest technological trends. In 2025, three key areas of evolution stand out as particularly significant. 
+ 
+AI Integration in WordPress Workflows 
+ 
+The integration of artificial intelligence within WordPress signifies a strategic and proactive move to ensure the platform remains relevant in an AI-first digital landscape. Studies show that 78% of companies are now using AI in at least one part of their business, and the WordPress ecosystem is responding with remarkable speed.23 The top 40 AI-enabled WordPress plugins have already garnered over 315 million page views, indicating a strong user demand for these tools.23 
+Rather than simply reacting to a trend, the WordPress core team is strategically building a foundational framework for AI. The project is developing "AI Building Blocks" and a PHP AI Client SDK designed to provide a "common interface" for developers to connect to any AI provider, such as ChatGPT or Claude.24 This open-source, flexible approach stands in stark contrast to proprietary systems that might lock users into a single AI tool. The development is a long-term strategy to future-proof the platform, allowing it to adapt as AI technology evolves. The goal is to ensure that WordPress remains the central hub for content creation and management, with AI serving as a powerful assistant rather than a replacement. The expectation is that by the time WordPress 7.0 is released, users will be able to build and utilize AI-powered tools directly within their workflows.24 
+ 
+The Headless WordPress Architecture 
+ 
+The growing adoption of headless WordPress architecture demonstrates the platform's evolution to meet the demands of enterprise and high-performance applications. Headless architecture involves separating the front-end (what a user sees) from the back-end (the content management system).25 This separation allows developers to build lightning-fast, highly interactive front-ends using modern frameworks like React or Vue.js while still leveraging WordPress as the powerful content hub.25 
+This trend directly addresses two of the most common criticisms of traditional WordPress: 
+performance and security. By decoupling the presentation layer, headless architecture enables sub-second page load times and improves security by reducing the attack surface. It is no surprise that 20% of WordPress sites are expected to adopt the headless model by 2025.14 The use of this architecture for large-scale projects and e-commerce indicates that WordPress is not just surviving but thriving by embracing modern web development practices, validating its continued relevance at the highest levels of the market. The ability to handle significant traffic spikes with minimal performance impact and provide a flexible foundation for omnichannel content delivery makes this a crucial strategic development for the platform.26 
+ 
+Performance Optimization: Mastering Core Web Vitals 
+ 
+Performance metrics are no longer just technical considerations; they are a strategic business imperative that is professionalizing the WordPress ecosystem. In 2025, developers and site owners are prioritizing Core Web Vitals—including Largest Contentful Paint (LCP), Interaction to Next Paint (INP), and Cumulative Layout Shift (CLS)—to improve SEO rankings and user experience.27 
+The focus on these metrics has created a high-demand market for specialized services and managed hosting providers that can guarantee compliance.27 It forces a focus on clean coding practices, efficient asset management, and a deeper understanding of user experience, leading to a higher quality of websites being produced on the platform. The shift towards optimizing images to modern formats like WebP or AVIF and using techniques like lazy loading and script minification is not just about speed but about a commitment to delivering a superior, more professional user experience. This professionalization of the ecosystem reinforces the platform's market leadership and justifies the value of expert WordPress services. 
+ 
+The Commercial Engine: Plugins, Themes, and Hosting 
+ 
+ 
+A Deeper Look at the Plugin and Theme Marketplace 
+ 
+The commercial ecosystem built around WordPress is a testament to its open-source model. The platform boasts an astonishing number of free plugins and themes in its official repositories. There are over 59,000 free plugins and more than 11,000 free themes, with the total number of paid and free options estimated to exceed 70,000 plugins and 30,000 themes.1 
+This abundance has fueled a highly competitive marketplace where third-party developers can create and monetize solutions for virtually any use case. The prominence of certain plugins, with some boasting over 10 million active installations, illustrates the scale of this market.1 
+ 
+Table 3: Top WordPress Plugins by Active Installations (2025) 
+ 
+ 
+Plugin Name 
+Active Installations 
+Function 
+Source 
+Elementor 
+10M+ 
+Page Builder 
+1 
+Contact Form 7 
+10M+ 
+Form Builder 
+1 
+Yoast SEO 
+10M+ 
+SEO Optimization 
+1 
+Classic Editor 
+9M+ 
+Classic Content Editor 
+1 
+WooCommerce 
+8M+ 
+E-commerce 
+Platform 
+1 
+Akismet 
+6M+ 
+Anti-spam 
+1 
+WPForms 
+6M+ 
+Form Builder 
+1 
+Wordfence Security 
+5M+ 
+Security 
+1 
+
+ 
+The WooCommerce Economy 
+ 
+Within this commercial landscape, WooCommerce stands out as the single most important entity. It is not just a plugin but a complete e-commerce platform that has established a powerful sub-economy within the broader WordPress ecosystem. WooCommerce powers over 111 million websites and holds a commanding 34% to 38% market share of the e-commerce CMS market.1 This dominance is particularly notable when considering that it is used by approximately 22% of the top 1 million e-commerce sites, a figure that includes major brands like Nvidia and Cisco.6 
+The success of WooCommerce is deeply rooted in the open-source nature of its parent platform. Unlike competitors like Shopify or BigCommerce, WooCommerce is a free plugin, offering unparalleled flexibility and cost-effectiveness. This model has enabled millions of individuals and small businesses to compete in the global e-commerce market, which is a key component of the platform's broader economic value. The high adoption rate among top-tier e-commerce sites proves that its open-source, plugin-based model is scalable and robust enough for serious commercial use. 
+ 
+Hosting Market Insights 
+ 
+The hosting market is a vital enabler of the WordPress ecosystem's scale and a significant revenue stream. The sheer number of WordPress websites has created a multibillion-dollar hosting industry, with the U.S. market alone projected to reach €52.79 billion in 2024.3 Major players in this market, like Hostinger, host over 5.2 million WordPress sites, while managed providers like WP Engine power 1.5 million digital experiences.9 
+Managed WordPress hosting providers have professionalized the hosting landscape by offering advanced services that were once only available to large enterprises. These services, which include server caching, Content Delivery Networks (CDNs), and advanced security, directly address key user concerns and have made the platform more reliable and secure.27 This has fueled the adoption of WordPress for mission-critical applications and further reinforced its market dominance. 
+ 
+Challenges and Future Outlook 
+ 
+ 
+Security Vulnerabilities 
+ 
+The decentralized, open-source model that is a source of immense strength for WordPress is also its greatest vulnerability. The vast number of third-party plugins and themes creates a massive and fragmented attack surface. Data indicates that most security attacks are not directed at the WordPress core software itself but at third-party components, with plugins accounting for 90% of vulnerabilities and themes for 6%.7 An estimated 13,000 WordPress sites are hacked daily, a significant issue that must be addressed by the ecosystem as a whole.9 
+This challenge, however, has also created a new market opportunity. A specialized, high-value ecosystem of security companies and managed hosting providers now exists solely to protect WordPress sites.27 These companies offer services like real-time threat monitoring, automated malware scans, and firewall systems, which professionalize the security landscape and add a critical layer to the commercial ecosystem.
+ 
+Data Measurement Limitations 
+ 
+A fundamental challenge in analyzing the WordPress ecosystem is the inherent difficulty in quantifying a decentralized platform. The sources cited in this report, which rely on various methodologies from web analytics services like W3Techs to market research firms like BuiltWith, often provide slightly different figures for the same metrics.1 This fragmentation of data is a direct consequence of the open-source model, where no single entity has a complete, authoritative picture of the entire ecosystem. 
+The only effective way to provide a comprehensive analysis is to synthesize data from multiple sources, highlight where figures diverge, and use a multi-methodological approach to create a coherent narrative. The qualitative insights into the roles of different stakeholders and the significance of key trends are crucial for filling in the quantitative gaps and providing a truly nuanced understanding of the ecosystem. 
+ 
+Conclusion and Forward-Looking Statements 
+ 
+The analysis presented in this report confirms that WordPress's enduring dominance in 2025 is not an accident of market forces but the result of a unique, symbiotic ecosystem that operates on a global scale. Its strength lies in its ability to serve as a universal tool that bridges the gap between billions of end-users, millions of creators and businesses, and a highly professionalized network of developers and agencies, all supported by a dedicated, volunteer-driven community. 
+The platform's adaptability to major technological shifts—from the strategic integration of AI to the accelerating adoption of headless architecture and a critical focus on Core Web Vitals—positions it not just to maintain its market lead but to actively shape the future of web development. While challenges, particularly in security, exist, the ecosystem has shown a remarkable capacity to respond by creating new layers of professional services that further strengthen its commercial engine. 
+The collective evidence suggests that WordPress has successfully achieved its mission of democratizing publishing, and in doing so, has built one of the largest and most resilient digital economies in existence. Its open-source, community-driven, and commercially-enabled model provides a powerful framework for continued innovation and growth, ensuring that WordPress will remain the foundational engine of the web for many years to come. 
+Works cited 
+How Many Websites Use WordPress in August 2025? WordPress Statistics - WPZOOM, accessed September 4, 2025, 
+https://www.wpzoom.com/blog/wordpress-statistics/ 
+Top WordPress Statistics for 2025 - InBound Blogging, accessed September 4, 2025, https://inboundblogging.com/wordpress-statistics-and-facts/ 
+WordPress Statistics You Should Know in 2025, accessed September 4, 2025, https://invedus.com/blog/wordpress-statistics-you-should-know/ 
+25 WordPress Statistics for 2025 - GoodFirms, accessed September 4, 2025, https://www.goodfirms.co/blog/wordpress-market-share 
+WordPress Statistics 2025: Usage, Plugins, Security & More - SQ Magazine, accessed September 4, 2025, https://sqmagazine.co.uk/wordpress-statistics/ 
+40 WordPress Statistics Every Digital Leader Should Know in 2025 - DesignRush, accessed September 4, 2025, 
+https://www.designrush.com/agency/wordpress-web-design/trends/wordpress-stati stics 
+WordPress Statistics: How Many People Use WordPress In 2025? - Search Logistics, accessed September 4, 2025, 
+https://www.searchlogistics.com/learn/statistics/wordpress-statistics/ 
+pdf_43cc177e.docx 
+The Value of WordPress: The World's First Study of the WordPress ..., accessed September 4, 2025, 
+https://wpengine.com/resources/value-of-wordpress-worlds-first-study-of-wordpre ss-economy/ 
+WordPress Statistics 2025: Usage, Market Share, Themes & Plugins - საიტის დამზადება, accessed September 4, 2025, 
+https://itlover.tech/blog/how-many-websites-use-wordpress-in-2024-wordpress-sta tistics/ 
+WordPress market share: how many websites use WordPress in 2025? - Barn2 Plugins, accessed September 4, 2025, 
+https://barn2.com/blog/wordpress-market-share/ 
+WordPress Statistics 2025 — (Number of Websites & Users) - DemandSage, accessed September 4, 2025, https://www.demandsage.com/wordpress-statistics/ 
+Top WordPress statistics for 2025: Market trends & insights - Hostinger, accessed September 4, 2025, https://www.hostinger.com/tutorials/wordpress-statistics 
+150+ Amazing WordPress Statistics You Must Know in 2025 - MageComp, accessed September 4, 2025, https://magecomp.com/blog/wordpress-statistics/ 
+60+ WordPress Statistics You Should Know in 2025 - AIOSEO, accessed September 
+4, 2025, https://aioseo.com/wordpress-statistics/ 
+2025's WordPress Market Share Report - Latest Trends + Usage Data - WPBeginner, accessed September 4, 2025, 
+https://www.wpbeginner.com/research/ultimate-list-of-wordpress-stats-facts-and-o ther-research/ 
+WordPress Statistics 2025 [Infographics] - Global Media Insight, accessed 
+September 4, 2025, https://www.globalmediainsight.com/blog/wordpress-statistics/ 
+WordPress Statistics In 2025 - Market Share, Trends, Stats & More - WPExperts, accessed September 4, 2025, https://wpexperts.io/blog/wordpress-statistics-2025/ 19. 50+ WordPress Statistics You Should Know in [year] - InstaWP 2025, accessed September 4, 2025, https://instawp.com/50-wordpress-statistics-you-should-know/ 
+50+ Examples of Biggest Companies Using WordPress - weDevs, accessed September 4, 2025, https://wedevs.com/blog/103311/top-brands-using-wordpress/ 
+100 WordPress Statistics & Facts [2025] - Meetanshi, accessed September 4, 2025, https://meetanshi.com/blog/wordpress-statistics/ 
+Introducing Core Team Reps for 2025 - Make WordPress, accessed September 4, 2025, 
+https://make.wordpress.org/core/2025/02/10/introducing-core-team-reps-for-2025/ 
+WordPress AI (2025): Best Plugins, Chatbots & SEO Guide - Digital4design, accessed 
+September 4, 2025, https://www.digital4design.com/blog/wordpress-ai-guide-2025/ 
+WordPress Introduces “AI Building Blocks - Pootlepress, accessed September 4, 2025, 
+https://www.pootlepress.com/2025/07/wordpress-introduces-ai-building-blocks/ 
+Latest Trends in WordPress Development for 2025 - WPDeveloper, accessed September 4, 2025, 
+https://wpdeveloper.com/latest-trends-in-wordpress-development/ 
+WordPress vs. Headless CMS: Which One Wins in 2025 - Weframe Tech, accessed September 4, 2025, https://weframetech.com/blog/wordpress-vs-headless-cms 
+Core Web Vitals 2025: Impact on Rankings & UX - Bright Vessel, accessed September 4, 2025, 
+https://www.brightvessel.com/core-web-vitals-in-2025-how-they-affect-google-ran kings-and-user-experience/ 
+Core Web Vitals Ready WordPress Maintenance Plan 2025 - Elsner Technologies, accessed September 4, 2025, 
+https://www.elsner.com/core-web-vitals-wordpress-maintenance-plan-2025/ 
+ 
+ 
+Shahmir Khan 
+Independent Researcher @ shahmir.dev 
+Shahmir Khan has been working in the WordPress ecosystem since 2019, building scalable solutions across the full spectrum of applications, from hosting infrastructure and enterprise tools to startup products and SMB websites. He combines hands-on development expertise with leadership experience, supported by a deep professional network in open-source communities and digital product development. 
+Over the course of his career, Shahmir has contributed to more than 150 WordPress-based solutions, including enterprise-scale deployments, high-traffic websites, and open-source tools. His track record includes: 
+Intern – Full Stack (2 years): Learned PHP while working with WordPress core, in addition to Python and JavaScript. Built a custom WordPress-based solution for the elevator industry with 250+ modules, later adopted by Mitsubishi and Otis teams, and ultimately acqui-hired (founder only) by Schindler. 
+ 
+Team Lead: Directed a team of five in modernizing a high-traffic U.S.-based real estate auctions site built on WordPress. 
+ 
+CTO, WordPress Consulting: Led a team of 15+ developers, delivering 75+ solutions and generating more than $5 million in client revenue through KPIs and delivery mechanisms. 
+ 
+Head of Product: Oversaw the transition of a WordPress legacy platform into TypeScript for Dalile.com and its associated ventures. 
+ 
+Founder, Pixelabs: Created 30+ open-source plugins (available at GitHub), generating $60,000 in sales and delivering 150+ solutions through freelance and direct client channels. 
+ 
+Head of Product (Enterprise WP Agency): Joined to streamline KPIs, delivery frameworks, and enterprise-grade WordPress projects. 
+ 
+Through these roles, Shahmir has developed expertise in product leadership, open-source innovation, and scalable system design, positioning him as a key voice in the study of WordPress ecosystems and digital economies. 
+ 
