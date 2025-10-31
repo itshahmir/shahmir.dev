@@ -1,4 +1,6 @@
 import puppeteer from 'puppeteer'
+import puppeteerCore from 'puppeteer-core'
+import chromium from '@sparticuz/chromium'
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -21,15 +23,32 @@ const routes = [
 const distDir = path.join(__dirname, 'dist')
 const PORT = 4173 // Vite preview port
 
+// Detect if running on Vercel or similar serverless environment
+const isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME
+
 async function prerender() {
   console.log('🚀 Starting pre-rendering process...')
   console.log(`📁 Output directory: ${distDir}`)
   console.log(`📄 Total routes to render: ${routes.length}`)
+  console.log(`🌐 Environment: ${isServerless ? 'Serverless (Vercel/AWS)' : 'Local'}`)
 
-  const browser = await puppeteer.launch({
-    headless: 'new',
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  })
+  let browser
+
+  if (isServerless) {
+    // Use serverless Chromium for Vercel/AWS
+    browser = await puppeteerCore.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless
+    })
+  } else {
+    // Use regular Puppeteer for local development
+    browser = await puppeteer.launch({
+      headless: 'new',
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    })
+  }
 
   const page = await browser.newPage()
 
